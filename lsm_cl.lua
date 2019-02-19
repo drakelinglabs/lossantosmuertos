@@ -143,7 +143,7 @@ local safezones={
     -- relationship="HATES_PLAYER"},--LSPD
 
     {x=975.88543701172,y=-119.29508972168,z=74.220664978027,r=50.0,
-    models={-44746786,1330042375,1032073858,850468060},
+    models={275618457},
     weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     relationship="HATES_PLAYER"},--Lost MC
 
@@ -422,7 +422,6 @@ end
 
 AddEventHandler("playerSpawned",function()
     local ped=PlayerPedId()
-    SetPedRelationshipGroupHash(ped,GetHashKey("player"))
     StopAudioScenes()
     StartAudioScene("AH_3B_ESCAPE_START")
     SetMaxWantedLevel(0)
@@ -444,6 +443,7 @@ AddEventHandler("playerSpawned",function()
         ped=PlayerPedId()
         SetPedRandomComponentVariation(ped,false)
     end
+    --SetPedRelationshipGroupHash(ped,GetHashKey("player"))
     --GiveWeaponToPed(PlayerPedId(), GetHashKey("WEAPON_COMBATPISTOL"), 12, false, true);
     --GiveWeaponToPed(ped, GetHashKey("WEAPON_MACHETE"), 1000, false, true);
 end)
@@ -491,11 +491,10 @@ cigarettes="Cigarettes",
 }
 local item_index_to_name={}
 local item_name_to_index={}
-local total_item_types=0
 for k,v in pairs(item_names) do
-    total_item_types=total_item_types+1
-    item_index_to_name[total_item_types]=k
-    item_name_to_index[k]=total_item_types
+    local hash=(GetHashKey(k)&0x7FFFFFFF)
+    item_index_to_name[hash]=k
+    item_name_to_index[k]=hash
 end
 
 local inventory={}
@@ -537,16 +536,16 @@ local birds={
 
 --- table with models and weapons
 local deadbodiesrewards_random={
-{"WEAPON_SWITCHBLADE",1},
+{"SWITCHBLADE",1},
 {"cigarettes",1},
 }
 local deadbodiesrewards={
-[-681004504]={GetHashKey("WEAPON_NIGHTSTICK"),1}, --security
+[-681004504]={"NIGHTSTICK",1}, --security
 [1581098148]={"pistolammo",15}, --cop male
 [368603149]={"pistolammo",15}, --cop female
-[-673538407]={GetHashKey("WEAPON_HAMMER"),1}, --construct
-[-277793362]={GetHashKey("WEAPON_REVOLVER"),12}, --ranger m
-[-1614285257]={GetHashKey("WEAPON_REVOLVER"),12}, --ranger f
+[-673538407]={"HAMMER",1}, --construct
+[-277793362]={"REVOLVER",12}, --ranger m
+[-1614285257]={"REVOLVER",12}, --ranger f
 [-1286380898]={"medkit",1}, --medic
 }
 local inventory_items_chances={
@@ -755,6 +754,8 @@ local function give_item_to_inventory(add_name,add_amount)
                     GiveWeaponToPed(ped, hash, 0, false, true)
                     WriteNotification("You got ~g~"..(item_names[add_name] or add_name).."~s~.")
                     return true
+                else
+                    return false
                 end
             end
         elseif inventory.total<inventory.max then
@@ -804,7 +805,7 @@ Citizen.CreateThread(function()
         -- SetScenarioPedDensityMultiplierThisFrame(1.0)
         DisableVehicleDistantlights(true)
         DisplayDistantVehicles(false)
-        HideHudComponentThisFrame(14)
+        --HideHudComponentThisFrame(14)
         -- SetVehicleDensityMultiplierThisFrame(0.1)
         -- SetSomeVehicleDensityMultiplierThisFrame(0.1)
         -- SetRandomVehicleDensityMultiplierThisFrame(0.1)
@@ -1146,7 +1147,7 @@ Citizen.CreateThread(function()
                         end
                     end
                     if inventory.current~=0 then
-                        print("current="..inventory.current)
+                        --print("current="..inventory.current)
                         local i=inventory.current
                             local x=(inventory.total+1-i-i)*.025*temp_scale+.5
                             DrawSprite("lsm", 
@@ -1236,7 +1237,7 @@ Citizen.CreateThread(function()
                     end
                 end
                 if inventory.current~=0 then
-                    print("current="..inventory.current)
+                    --print("current="..inventory.current)
                     local i=inventory.current
                         local x=pos_x+scale_x*.5-((math.floor((i-1)%inventory.rows)+.5)*(scale_x/inventory.rows))
                         local y=pos_y+scale_y*.5-((math.floor((i-1)/inventory.rows)+.5)*(scale_y/inventory.lines))
@@ -1479,72 +1480,76 @@ Citizen.CreateThread(function()
                     --sell car
                 end
                 if zone~=nil and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
-                    -- place in garage
-                    local flags=0
-                    local myped=PlayerPedId()
-                    local myveh=GetVehiclePedIsIn(myped)
-                    
-                    vehiclesave.model=GetEntityModel(myveh)
-                    vehiclesave.enginehp=GetVehicleEngineHealth(myveh)
-                    vehiclesave.fuellevel=GetVehicleFuelLevel(myveh)
-                    flags=0
-                    for i=0,7 do
-                        if IsVehicleDoorDamaged(myveh,i) then flags=flags|(1<<i) end
-                    end
-                    vehiclesave.doors=flags
-                    vehiclesave.colors={}
-                    vehiclesave.colors[1],vehiclesave.colors[2]=GetVehicleColours(myveh)
-                    vehiclesave.colors[3],vehiclesave.colors[4]=GetVehicleExtraColours(myveh)
-                    vehiclesave.modkit=GetVehicleModKit(myveh)
-                    local mod
-                    vehiclesave.mods={}
-                    vehiclesave.total_mods=0
-                    for i=0,200 do
-                        mod=GetVehicleMod(myveh,i)
-                        if mod~=-1 then
-                            vehiclesave.total_mods=vehiclesave.total_mods+1
-                            vehiclesave.mods[i]=mod
-                        else
-                            vehiclesave.mods[i]=nil
+                    if vehiclesave~=nil and vehiclesave.model~=nil then
+                        WriteNotification("You already have ~g~"..GetDisplayNameFromVehicleModel(vehiclesave.model).." ~s~in garage.")
+                    else
+                        -- place in garage
+                        local flags=0
+                        local myped=PlayerPedId()
+                        local myveh=GetVehiclePedIsIn(myped)
+                        
+                        vehiclesave.model=GetEntityModel(myveh)
+                        vehiclesave.enginehp=GetVehicleEngineHealth(myveh)
+                        vehiclesave.fuellevel=GetVehicleFuelLevel(myveh)
+                        flags=0
+                        for i=0,7 do
+                            if IsVehicleDoorDamaged(myveh,i) then flags=flags|(1<<i) end
                         end
+                        vehiclesave.doors=flags
+                        vehiclesave.colors={}
+                        vehiclesave.colors[1],vehiclesave.colors[2]=GetVehicleColours(myveh)
+                        vehiclesave.colors[3],vehiclesave.colors[4]=GetVehicleExtraColours(myveh)
+                        vehiclesave.modkit=GetVehicleModKit(myveh)
+                        local mod
+                        vehiclesave.mods={}
+                        vehiclesave.total_mods=0
+                        for i=0,200 do
+                            mod=GetVehicleMod(myveh,i)
+                            if mod~=-1 then
+                                vehiclesave.total_mods=vehiclesave.total_mods+1
+                                vehiclesave.mods[i]=mod
+                            else
+                                vehiclesave.mods[i]=nil
+                            end
+                        end
+                        flags=0
+                        if IsVehicleTyreBurst(myveh, 0, false) then flags=flags|1 end
+                        if IsVehicleTyreBurst(myveh, 1, false) then flags=flags|2 end
+                        if IsVehicleTyreBurst(myveh, 2, false) then flags=flags|4 end
+                        if IsVehicleTyreBurst(myveh, 3, false) then flags=flags|8 end
+                        if IsVehicleTyreBurst(myveh, 4, false) then flags=flags|16 end
+                        if IsVehicleTyreBurst(myveh, 5, false) then flags=flags|32 end
+                        if IsVehicleTyreBurst(myveh, 6, false) then flags=flags|64 end
+                        if IsVehicleTyreBurst(myveh, 7, false) then flags=flags|128 end
+                        if IsVehicleTyreBurst(myveh, 45, false) then flags=flags|256 end
+                        if IsVehicleTyreBurst(myveh, 47, false) then flags=flags|512 end
+                        vehiclesave.tyres=flags
+                        
+                        WriteNotification("~g~"..GetDisplayNameFromVehicleModel(vehiclesave.model).." ~s~saved in garage.")
+                        SetEntityAsMissionEntity(myveh)
+                        DeleteEntity(myveh)
+                        
+                        SetResourceKvpInt("garage_1_model",vehiclesave.model)
+                        SetResourceKvpFloat("garage_1_enginehp",vehiclesave.enginehp)
+                        SetResourceKvpFloat("garage_1_fuel",vehiclesave.fuellevel)
+                        SetResourceKvpInt("garage_1_doors",vehiclesave.doors)
+                        SetResourceKvpInt("garage_1_tyres",vehiclesave.tyres)
+                        local colors=vehiclesave.colors[1]|(vehiclesave.colors[2]<<8)|(vehiclesave.colors[3]<<16)|(vehiclesave.colors[4]<<24)
+                        SetResourceKvpInt("garage_1_colors",colors)
+                        SetResourceKvpInt("garage_1_total_mods",vehiclesave.total_mods)
+                        -- local mod_index=0
+                        -- for k,v in pairs(vehiclesave.mods) then
+                            -- mod_index=mod_index+1
+                            -- SetResourceKvpInt("garage_1_mod_"..mod_index,(v|(v<<16)))
+                        -- end
+                        
+                        local modstring=""
+                        for k,v in pairs(vehiclesave.mods) do
+                            modstring=modstring..string.char(k+1,v+1)
+                        end
+                        --WriteNotification("saving "..#modstring)
+                        SetResourceKvp("garage_1_modstring",modstring)
                     end
-                    flags=0
-                    if IsVehicleTyreBurst(myveh, 0, false) then flags=flags|1 end
-                    if IsVehicleTyreBurst(myveh, 1, false) then flags=flags|2 end
-                    if IsVehicleTyreBurst(myveh, 2, false) then flags=flags|4 end
-                    if IsVehicleTyreBurst(myveh, 3, false) then flags=flags|8 end
-                    if IsVehicleTyreBurst(myveh, 4, false) then flags=flags|16 end
-                    if IsVehicleTyreBurst(myveh, 5, false) then flags=flags|32 end
-                    if IsVehicleTyreBurst(myveh, 6, false) then flags=flags|64 end
-                    if IsVehicleTyreBurst(myveh, 7, false) then flags=flags|128 end
-                    if IsVehicleTyreBurst(myveh, 45, false) then flags=flags|256 end
-                    if IsVehicleTyreBurst(myveh, 47, false) then flags=flags|512 end
-                    vehiclesave.tyres=flags
-                    
-                    WriteNotification("~g~"..GetDisplayNameFromVehicleModel(vehiclesave.model).." ~s~saved in garage.")
-                    SetEntityAsMissionEntity(myveh)
-                    DeleteEntity(myveh)
-                    
-                    SetResourceKvpInt("garage_1_model",vehiclesave.model)
-                    SetResourceKvpFloat("garage_1_enginehp",vehiclesave.enginehp)
-                    SetResourceKvpFloat("garage_1_fuel",vehiclesave.fuellevel)
-                    SetResourceKvpInt("garage_1_doors",vehiclesave.doors)
-                    SetResourceKvpInt("garage_1_tyres",vehiclesave.tyres)
-                    local colors=vehiclesave.colors[1]|(vehiclesave.colors[2]<<8)|(vehiclesave.colors[3]<<16)|(vehiclesave.colors[4]<<24)
-                    SetResourceKvpInt("garage_1_colors",colors)
-                    SetResourceKvpInt("garage_1_total_mods",vehiclesave.total_mods)
-                    -- local mod_index=0
-                    -- for k,v in pairs(vehiclesave.mods) then
-                        -- mod_index=mod_index+1
-                        -- SetResourceKvpInt("garage_1_mod_"..mod_index,(v|(v<<16)))
-                    -- end
-                    
-                    local modstring=""
-                    for k,v in pairs(vehiclesave.mods) do
-                        modstring=modstring..string.char(k+1,v+1)
-                    end
-                    --WriteNotification("saving "..#modstring)
-                    SetResourceKvp("garage_1_modstring",modstring)
                 end
             elseif zone~=nil and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
                 -- laod car from garage
@@ -1560,14 +1565,16 @@ Citizen.CreateThread(function()
                     vehiclesave.total_mods=SetResourceKvpInt("garage_1_total_mods")
                     vehiclesave.mods={}
                     local modstring=GetResourceKvpString("garage_1_modstring")
-                    --WriteNotification("loading "..#modstring)
-                    for i=1,#modstring,2 do
-                        local k,v=string.byte(modstring,i,i+1)
-                        k,v=k-1,v-1
-                        vehiclesave.mods[k]=v
+                    if modstring~=nil then
+                        --WriteNotification("loading "..#modstring)
+                        for i=1,#modstring,2 do
+                            local k,v=string.byte(modstring,i,i+1)
+                            k,v=k-1,v-1
+                            vehiclesave.mods[k]=v
+                        end
                     end
                 end
-                if vehiclesave~=nil then
+                if vehiclesave~=nil and vehiclesave.model~=nil then
                     local vs=vehiclesave
                     local flags=0
                     local myped=PlayerPedId()
@@ -1614,6 +1621,8 @@ Citizen.CreateThread(function()
                         if (flags&256)~=0 then SetVehicleTyreBurst(myveh, 45, false, 1000.1-.1) end
                         if (flags&512)~=0 then SetVehicleTyreBurst(myveh, 47, false, 1000.1-.1) end
                         WriteNotification("You took ~g~"..GetDisplayNameFromVehicleModel(vs.model).." ~s~from your garage.")
+                        vehiclesave.model=nil
+                        DeleteResourceKvp("garage_1_model")
                     else
                         WriteNotification("You don't have anything in your garage.")
                     end
@@ -1871,10 +1880,10 @@ Citizen.CreateThread(function()
                                 end
                             end
                             --print("set "..current)
-                            local texture=GetPedTextureVariation(pped,current_menu,current)
-                            --local textures=GetNumberOfPedTextureVariations(pped,current_menu,current)
-                            --if textures>0 then textures=math.random(0,textures-1) end
-                            SetPedComponentVariation(pped,current_menu,current,texture,0)
+                            --local texture=GetPedTextureVariation(pped,current_menu,current)
+                            local textures=GetNumberOfPedTextureVariations(pped,current_menu,current)
+                            if textures>0 then textures=math.random(0,textures-1) end
+                            SetPedComponentVariation(pped,current_menu,current,textures,0)
                         else
                             local current=GetPedPropIndex(pped,current_menu-12)
                             print("current "..current)
@@ -1902,10 +1911,10 @@ Citizen.CreateThread(function()
                                 current=total
                             end
                             --print("set "..current)
-                            local texture=GetPedTextureVariation(pped,current_menu,current)
-                            --local textures=GetNumberOfPedTextureVariations(pped,current_menu,current)
-                            --if textures>0 then textures=math.random(0,textures-1) end
-                            SetPedComponentVariation(pped,current_menu,current,texture,0)
+                            --local texture=GetPedTextureVariation(pped,current_menu,current)
+                            local textures=GetNumberOfPedTextureVariations(pped,current_menu,current)
+                            if textures>0 then textures=math.random(0,textures-1) end
+                            SetPedComponentVariation(pped,current_menu,current,textures,0)
                         else
                             local current=GetPedPropIndex(pped,current_menu-12)
                             print("current "..current)
@@ -2047,6 +2056,7 @@ Citizen.CreateThread(function()
                                 RequestModel(hash) while not HasModelLoaded(hash) do Wait(0) end
                                 SetPlayerModel(PlayerId(),hash)
                                 pped=PlayerPedId()
+                                --SetPedRelationshipGroupHash(pped,GetHashKey("player"))
                                 SetPedRandomComponentVariation(pped,false)
                                 ClearAllPedProps(pped)
                                 SetPedRandomProps(pped)
@@ -2307,8 +2317,8 @@ Citizen.CreateThread(function()
                 end
             elseif IsControlJustPressed(0,177) then --backspace / rmb / esc
                 inventory.highlight=0
-            elseif IsControlJustPressed(0,37) then --select weapon 
-                inventory.highlight=500
+            -- elseif IsControlJustPressed(0,37) then --select weapon 
+                -- inventory.highlight=500
             elseif IsControlJustPressed(0,191) then --INPUT_FRONTEND_RDOWN 
                 if inventory.highlight>0 and inventory[inventory.current]~=nil and inventory[inventory.current].amount>0 then
                     if inventory[inventory.current].item=="water" then
@@ -2394,9 +2404,13 @@ Citizen.CreateThread(function()
                         if IsPedInAnyVehicle(pped) then
                             local pveh=GetVehiclePedIsIn(pped)
                             if NetworkHasControlOfEntity(pveh) then
-                                SetVehicleEngineHealth(pveh,GetVehicleEngineHealth(pveh)+100.0)
-                                inventory[inventory.current].amount=inventory[inventory.current].amount-100
-                                check_inv_slot_for_zero_amount()
+                                if GetVehicleEngineHealth(pveh)<1000.0 then
+                                    SetVehicleEngineHealth(pveh,GetVehicleEngineHealth(pveh)+10.0)
+                                    inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                                    check_inv_slot_for_zero_amount()
+                                else
+                                    WriteNotification("Vehicle engine is in perfect condition.")
+                                end
                             else
                                 NetworkRequestControlOfEntity(pveh)
                             end
@@ -3168,12 +3182,18 @@ end)
 --- Bodies and trunk search owo uwu
 Citizen.CreateThread(function()
     local function try_to_loot_engine(veh)
-        local engine=GetVehicleEngineHealth(veh)
-        local parts=math.floor(engine-no_engine_parts)
-        if parts>0 then
-            if give_item_to_inventory("engineparts",parts) then --"engine_parts"
-                SetVehicleEngineHealth(veh,engine-parts)
+        if not GetPedInVehicleSeat(veh,-1) and not GetPedInVehicleSeat(veh,0) and not GetPedInVehicleSeat(veh,1) and not GetPedInVehicleSeat(veh,2) 
+        and not GetPedInVehicleSeat(veh,3) and not GetPedInVehicleSeat(veh,4) and not GetPedInVehicleSeat(veh,5) and not GetPedInVehicleSeat(veh,6) 
+        then
+            local engine=GetVehicleEngineHealth(veh)
+            local parts=math.floor((engine-no_engine_parts)*.1)
+            if parts>0 then
+                if give_item_to_inventory("engineparts",parts) then --"engine_parts"
+                    SetVehicleEngineHealth(veh,engine-parts*10)
+                end
             end
+        else
+            WriteNotification("Cannot loot engine while someone is in car.")
         end
     end
     local function try_to_loot_trunk(veh)
@@ -3664,8 +3684,8 @@ end)
 
 local replace_models={
 --cops
-[1581098148]=275618457,
-[368603149]=275618457,
+-- [1581098148]=275618457,
+-- [368603149]=275618457,
 --altruists
 [1413662315]=0xFFFFFFFF&-1782092083,
 [1430544400]=0xFFFFFFFF&-261389155,
@@ -3759,7 +3779,7 @@ Citizen.CreateThread(function() --if true then return end
     }
     local objects_bp={}
     local objects_hlm={}
-    while true do
+    while true do --ped props pedprops
         Wait(0)
         local peds_bp={}
         local peds_hlm={}
@@ -4065,6 +4085,34 @@ RequestModel(prop_mb_crate_01a)
 Citizen.CreateThread(function()
 Wait(2000)
 TriggerServerEvent("requestsignals")
+end)
+
+Citizen.CreateThread(function()
+    local step=0.02
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local mypos=GetEntityCoords(myped)
+        local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
+        local y=0.32
+        if inventory.highlight<=0 then
+            WriteText(4,"~c~Press ~s~ENTER ~c~to open inventory",0.3,255,255,255,255,0.005,y) y=y+step
+        else
+            WriteText(4,"~c~Press ~s~BACKSPACE ~c~to close inventory",0.3,255,255,255,255,0.005,y) y=y+step
+            WriteText(4,"~c~Press ~s~ENTER ~c~to use item",0.3,255,255,255,255,0.005,y) y=y+step
+            WriteText(4,"~c~Press ~s~DELETE ~c~to drop item",0.3,255,255,255,255,0.005,y) y=y+step
+        end
+        if zone~=nil then
+            if zone.craftpos~=nil and in_radius(mypos,zone.craftpos,1)
+            or zone.clothespos~=nil and in_radius(mypos,zone.clothespos,1)
+            or zone.tradepos~=nil and in_radius(mypos,zone.tradepos,1)
+            or zone.changingroompos~=nil and in_radius(mypos,zone.changingroompos,1)
+            or zone.garagepos~=nil and in_radius(mypos,zone.garagepos,1)
+            or zone.vehpos~=nil and in_radius(mypos,zone.vehpos,1)
+            then 
+                WriteText(4,"~c~Press ~s~E ~c~to interact",0.3,255,255,255,255,0.005,y) y=y+step
+            end
+        end
+    end
 end)
 
 -- Citizen.CreateThread(function()
