@@ -1,3 +1,86 @@
+local string_registered_labels={}
+local string_workarounds=0
+if true then --disabled
+    local function cache_format_string(formatstring)
+        local index=string_registered_labels[formatstring]
+        if index==nil then
+            local label=string.format("WRND%X",string_workarounds)
+            string_registered_labels[formatstring]=string_workarounds
+            string_workarounds=string_workarounds+1
+            AddTextEntry(label,formatstring)
+            return label
+        else
+            return string.format("WRND%X",index)
+        end
+    end
+    local function add_text_function_arguments(first,args)
+        local i=first
+        while args[i]~=nil do
+            local type_of_arg=type(args[i])
+            if type_of_arg=='string' then
+                --AddTextComponentSubstringPlayerName(args[i])
+                AddTextComponentSubstringTextLabel(cache_format_string(args[i]))
+            elseif type_of_arg=='number' then
+                type_of_arg=math.type(args[i])
+                if type_of_arg=="float" then
+                    AddTextComponentFloat(args[i],3)
+                elseif type_of_arg=="integer" then
+                    AddTextComponentInteger(args[i])
+                else
+                    AddTextComponentSubstringPlayerName(type_of_arg)
+                end
+            else
+                AddTextComponentSubstringPlayerName(type_of_arg)
+            end
+            i=i+1
+        end
+    end
+    SetBlipName=function(...)
+        local args={...}
+        BeginTextCommandSetBlipName(cache_format_string(args[2]))
+        add_text_function_arguments(3,args)
+        EndTextCommandSetBlipName(args[1])
+    end
+    SimpleNotification=function(...)
+        local args={...}
+        SetNotificationTextEntry(cache_format_string(args[1]))
+        add_text_function_arguments(2,args)
+        DrawNotification(false,false)
+    end
+    TextCommandPrint=function(...)
+        local args={...}
+        BeginTextCommandPrint(cache_format_string(args[3]))
+        add_text_function_arguments(4,args)
+        EndTextCommandPrint(args[1], args[2])
+    end
+    -- BeginTextCommandSetBlipName("STRING")
+    -- AddTextComponentString("Trailer");
+    -- EndTextCommandSetBlipName(blip)
+    
+    -- AddTextEntry('DOLLAR_TEXT', '$~1~') -- call once
+    -- BeginTextCommandDrawText('DOLLAR_TEXT')
+    -- AddTextComponentInteger(5)
+    -- EndTextCommandDrawText(0.0, 0.0)
+    
+    TextCommandDisplayText=function(...)
+        local args={...}
+        --if args[4]==nil then
+        --    BeginTextCommandDisplayText("STRING")
+        --    AddTextComponentSubstringPlayerName(args[3])
+        --else
+            BeginTextCommandDisplayText(cache_format_string(args[3]))
+            add_text_function_arguments(4,args)
+        --end
+        EndTextCommandDisplayText(args[1],args[2])
+    end
+    SimpleHelpText=function(...)
+        local args={...}
+        BeginTextCommandDisplayHelp(cache_format_string(args[1]))
+        add_text_function_arguments(2,args)
+        EndTextCommandDisplayHelp(0,0,1,-1)
+    end
+end
+
 local modelgroups={}
 modelgroups.military={
 GetHashKey("s_m_y_armymech_01"),
@@ -856,7 +939,7 @@ Citizen.CreateThread(function()
             loop=(handle~=-1)
             while loop do
                 local fuel=(math.floor(DecorGetFloat(veh,"zm_fuel")-5)>0)--(math.floor(GetVehicleFuelLevel(veh)-5)>0)
-                local engine=(math.floor(GetVehicleEngineHealth(veh)-no_engine_parts)>0)
+                local engine=(math.floor(GetVehicleEngineHealth(veh)-no_engine_parts)>=10)
                 local loot=not DecorExistOn(veh,"zm_looted")
                 if (fuel or engine or loot) then
                     local vpos=GetEntityCoords(veh)
@@ -1014,13 +1097,13 @@ Citizen.CreateThread(function()
                         IsVehicleTyreBurst(veh, i, true)
                     end
                 end
-                if (rand&512)~=0 then
+                if (rand&768)~=0 then
                     SetEntityRenderScorched(veh,true)
                     if GetVehicleEngineHealth(veh)>-3999.8 then
                         SetVehicleEngineHealth(veh,-3999.9)
                     end
                 else
-                    rand=1000-511+(rand&511)
+                    rand=400+(rand&255)
                     if GetVehicleEngineHealth(veh)>rand then
                         SetVehicleEngineHealth(veh,rand-.1)
                     end
@@ -1553,7 +1636,7 @@ Citizen.CreateThread(function()
                 end
             elseif zone~=nil and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
                 -- laod car from garage
-                if GetResourceKvpInt("garage_1_model") then
+                if vehiclesave==nil and GetResourceKvpInt("garage_1_model")~=0 then
                     vehiclesave={}
                     vehiclesave.model=GetResourceKvpInt("garage_1_model")
                     vehiclesave.enginehp=GetResourceKvpFloat("garage_1_enginehp")
@@ -1582,7 +1665,7 @@ Citizen.CreateThread(function()
                     local myheading=GetEntityHeading(myped)
                     if vs.model then
                         RequestModel(vs.model)
-                        while not HasModelLoaded(vs.model) do Wait(0) end
+                        while not HasModelLoaded(vs.model) do Wait(0) WriteText(2,"Loading vehicle",1.0,255,255,255,255,0.5,0.5) end
                         local myveh=CreateVehicle(vs.model, mypos.x, mypos.y, mypos.z, zone.garagepos.angle, true, false);
                         DecorSetBool(myveh,"zm_looted",true)                
                         DecorSetBool(myveh,"post_apoc_car",true)
@@ -1621,7 +1704,7 @@ Citizen.CreateThread(function()
                         if (flags&256)~=0 then SetVehicleTyreBurst(myveh, 45, false, 1000.1-.1) end
                         if (flags&512)~=0 then SetVehicleTyreBurst(myveh, 47, false, 1000.1-.1) end
                         WriteNotification("You took ~g~"..GetDisplayNameFromVehicleModel(vs.model).." ~s~from your garage.")
-                        vehiclesave.model=nil
+                        vehiclesave=nil
                         DeleteResourceKvp("garage_1_model")
                     else
                         WriteNotification("You don't have anything in your garage.")
@@ -3178,13 +3261,20 @@ end)
     -- end
 -- end)
 
+local function any_player_inside(veh)
+    for i=-1,GetVehicleNumberOfPassengers(veh) do
+        local ped=GetPedInVehicleSeat(veh,i)
+        if ped~=nil and ped~=0 and IsPedAPlayer(ped) then
+            return true
+        end
+    end
+    return false
+end
 
 --- Bodies and trunk search owo uwu
 Citizen.CreateThread(function()
     local function try_to_loot_engine(veh)
-        if not GetPedInVehicleSeat(veh,-1) and not GetPedInVehicleSeat(veh,0) and not GetPedInVehicleSeat(veh,1) and not GetPedInVehicleSeat(veh,2) 
-        and not GetPedInVehicleSeat(veh,3) and not GetPedInVehicleSeat(veh,4) and not GetPedInVehicleSeat(veh,5) and not GetPedInVehicleSeat(veh,6) 
-        then
+        if not any_player_inside(veh) then
             local engine=GetVehicleEngineHealth(veh)
             local parts=math.floor((engine-no_engine_parts)*.1)
             if parts>0 then
@@ -4114,6 +4204,49 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+local gasstations={
+    {
+        trader={x=162.09725952148,y=6636.5678710938,z=31.556589126587,blip=361},
+        tank={x=172.08010864258,y=6622.7368164063,z=31.832139968872,blip=431},
+    },
+}
+
+
+Citizen.CreateThread(function()
+    local blip
+    for k,v in ipairs(gasstations) do
+        blip=AddBlipForCoord(v.tank.x,v.tank.y,v.tank.z)
+        SetBlipSprite(blip, v.tank.blip)
+        SetBlipAsShortRange(blip,true)
+        SetBlipColour(blip, 4)
+        SetBlipName(blip, "Sell fuel tank")
+        
+        blip=AddBlipForCoord(v.trader.x,v.trader.y,v.trader.z)
+        SetBlipSprite(blip, v.trader.blip)
+        SetBlipAsShortRange(blip,true)
+        SetBlipColour(blip, 4)
+        SetBlipName(blip, "Gas station")
+    end
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local mypos=GetEntityCoords(myped)
+        for k,v in ipairs(gasstations) do
+            if in_radius(mypos,v.trader,2) then
+                
+            elseif in_radius(mypos,v.tank,2) then
+            
+            end
+        end
+    end
+end)
+
+-- Citizen.CreateThread(function()
+    -- while true do Wait(0)
+    -- SimpleHelpText("BCKS ~INPUT_CELLPHONE_CANCEL~ ENTER ~INPUT_FRONTEND_RDOWN~")
+    -- end
+    
+-- end)
 
 -- Citizen.CreateThread(function()
     -- local heistobject={}
