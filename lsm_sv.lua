@@ -5,7 +5,7 @@ Citizen.CreateThread(function()
     local heists={}
     for k=1,maxheists do
         local v={}
-        local traveldistance=.2
+        local traveldistance=.05
         v.x=math.random(-3000,3000)
         v.y=math.random(-3000,10000)
         v.r=250.0
@@ -59,7 +59,7 @@ Citizen.CreateThread(function()
                 end
             end
             TriggerClientEvent("heist",-1,k,v.x,v.y,v.r)
-            Wait(10)
+            Wait(50)
         end
     end
 end)
@@ -77,7 +77,7 @@ AddEventHandler("signalfound",function(id)
     local signal=signals[id]
     if signal~=nil then
         if signal.loot==nil then
-            signal.loot={mre=10,water=10,canfood=5,medkit=2}
+            signal.loot={mre=2,water=2,canfood=2,medkit=1}
         end
         TriggerClientEvent("updatelootcrate",source,id,signal.loot)
     end
@@ -112,6 +112,17 @@ AddEventHandler("requestsignals",function()
         Wait(100)
     end
 end)
+
+local gasstations={
+{fuel=0},
+}
+
+local gasstations={
+    {
+        trader={x=162.09725952148,y=6636.5678710938,z=31.556589126587,blip=361,gasoline=100},
+        tank={x=172.08010864258,y=6622.7368164063,z=31.832139968872,blip=431,gasoline=100},
+    },
+}
 
 
     
