@@ -536,14 +536,40 @@ AddEventHandler("playerSpawned",function()
     player.hydration=100
     player.saturation=100
     player.drunk=0
-    local x,y,z=GetResourceKvpFloat("x"),GetResourceKvpFloat("y"),GetResourceKvpFloat("z")
-    if x and y and z then SetEntityCoords(ped,x,y,z) end
-    local pedmodel=GetResourceKvpInt("pedmodel")
-    if pedmodel then
-        RequestModel(pedmodel) while not HasModelLoaded(pedmodel) do Wait(0) WriteText(4,"Loading model "..pedmodel,0.4,255,255,255,255,0.2,0.7) end
-        SetPlayerModel(PlayerId(),pedmodel)
-        ped=PlayerPedId()
-        SetPedRandomComponentVariation(ped,false)
+    local lsm_random_spawn=GetConvarInt("lsm_random_spawn",0)
+    if lsm_random_spawn==1 then
+        
+        SetPedRandomComponentVariation(ped)
+        
+        local animdict="missarmenian2lamar_idles"
+        local anim="idle_look_behind_left"
+        RequestAnimDict(animdict)
+        while not HasAnimDictLoaded(animdict) do Wait(0) end
+        local duration=math.floor(GetAnimDuration(animdict, anim)*1000+.5)
+        TaskPlayAnim(PlayerPedId(), animdict, anim, 1.0, 1.0, duration, 0, .0, false, false, false);
+        -- missarmenian2lamar_idles idle_look_behind_left
+        
+        
+        -- local model=GetEntityModel(ped)
+        
+        -- if model==GetHashKey("S_M_Y_HWayCop_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_NIGHTSTICK"), 0, false, true) end
+        -- if model==GetHashKey("A_M_Y_DownTown_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_BAT"), 0, false, true) end
+        -- if model==GetHashKey("A_M_Y_Cyclist_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_SWITCHBLADE"), 0, false, true) end
+        -- if model==GetHashKey("A_M_M_Indian_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_MACHETE"), 0, false, true) end
+        -- if model==GetHashKey("S_M_Y_Fireman_01") then GiveWeaponToPed(ped, GetHashKey(""), 0, false, true) end
+        -- if model==GetHashKey("S_M_M_UPS_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_BATTLEAXE"), 0, false, true) end
+        -- if model==GetHashKey("A_F_Y_EastSA_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_KNIFE"), 0, false, true) end
+        
+    elseif lsm_random_spawn==0 then
+        local x,y,z=GetResourceKvpFloat("x"),GetResourceKvpFloat("y"),GetResourceKvpFloat("z")
+        if x and y and z then SetEntityCoords(ped,x,y,z) end
+        local pedmodel=GetResourceKvpInt("pedmodel")
+        if pedmodel then
+            RequestModel(pedmodel) while not HasModelLoaded(pedmodel) do Wait(0) WriteText(4,"Loading model "..pedmodel,0.4,255,255,255,255,0.2,0.7) end
+            SetPlayerModel(PlayerId(),pedmodel)
+            ped=PlayerPedId()
+            SetPedRandomComponentVariation(ped,false)
+        end
     end
     --SetPedRelationshipGroupHash(ped,GetHashKey("player"))
     --GiveWeaponToPed(PlayerPedId(), GetHashKey("WEAPON_COMBATPISTOL"), 12, false, true);
