@@ -1,3 +1,15 @@
+local localization={
+ratbike="Ratbike",
+cerberus="Cerberus",
+scarab="Scarab",
+a_m_y_hiker_01="Male Hiker",
+a_f_y_hiker_01="Female Hiker",
+pipebomb="Pipe bomb",
+molotov="Molotov Cocktail",
+s_m_y_cop_01="Male Cop",
+s_f_y_cop_01="Female Cop",
+}
+
 local string_registered_labels={}
 local string_workarounds=0
 if true then --disabled
@@ -79,6 +91,32 @@ if true then --disabled
         add_text_function_arguments(2,args)
         EndTextCommandDisplayHelp(0,0,1,-1)
     end
+    
+    function WriteText(font,text,scale,r,g,b,a,posx,posy)
+        SetTextOutline()
+        SetTextFont(font)
+        SetTextScale(scale, scale)
+        SetTextColour(r,g,b,a)
+        if type(text)=='table' then
+            TextCommandDisplayText(posx,posy,table.unpack(text))
+        elseif localization[text]~=nil then
+            TextCommandDisplayText(posx,posy,localization[text])
+        else
+            TextCommandDisplayText(posx,posy,text)
+        end
+    end
+    function WriteTextNoOutline(font,text,scale,r,g,b,a,posx,posy)
+        SetTextFont(font)
+        SetTextScale(scale, scale)
+        SetTextColour(r,g,b,a)
+        if type(text)=='table' then
+            TextCommandDisplayText(posx,posy,table.unpack(text))
+        elseif localization[text]~=nil then
+            TextCommandDisplayText(posx,posy,localization[text])
+        else
+            TextCommandDisplayText(posx,posy,text)
+        end
+    end
 end
 
 local modelgroups={}
@@ -129,37 +167,18 @@ AddEventHandler("heist",function(k,x,y,r)
     end
 end)
 
-local localization={
-ratbike="Ratbike",
-cerberus="Cerberus",
-scarab="Scarab",
-a_m_y_hiker_01="Male Hiker",
-a_f_y_hiker_01="Female Hiker",
-pipebomb="Pipe bomb",
-molotov="Molotov Cocktail",
-s_m_y_cop_01="Male Cop",
-s_f_y_cop_01="Female Cop",
-}
 
-local function WriteText(font,text,scale,r,g,b,a,posx,posy)
-    SetTextOutline()
-    SetTextFont(font)
-    SetTextScale(scale, scale)
-    SetTextColour(r,g,b,a)
-    SetTextEntry("STRING")
-    if localization[text]~=nil then text=localization[text] end
-    AddTextComponentString(text)
-    EndTextCommandDisplayText(posx,posy)
-end
-local function WriteTextNoOutline(font,text,scale,r,g,b,a,posx,posy)
-    SetTextFont(font)
-    SetTextScale(scale, scale)
-    SetTextColour(r,g,b,a)
-    SetTextEntry("STRING")
-    if localization[text]~=nil then text=localization[text] end
-    AddTextComponentString(text)
-    EndTextCommandDisplayText(posx,posy)
-end
+
+-- local function WriteText(font,text,scale,r,g,b,a,posx,posy)
+    -- SetTextOutline()
+    -- SetTextFont(font)
+    -- SetTextScale(scale, scale)
+    -- SetTextColour(r,g,b,a)
+    -- SetTextEntry("STRING")
+    -- if localization[text]~=nil then text=localization[text] end
+    -- AddTextComponentString(text)
+    -- EndTextCommandDisplayText(posx,posy)
+-- end
 
 local function WriteNotification(notif_string)
     SetNotificationTextEntry("STRING");
@@ -237,7 +256,7 @@ local safezones={
     friends=true,
     trade={
         {"water",1,"cash",15},
-        {"gasoline",1,"cash",30},
+        {"gasoline",1,"cash",10},
         {"bandage",1,"cash",10},
         {"canfood",1,"cash",15},
         {"cash",30,"cigarettes",1},
@@ -883,12 +902,13 @@ Citizen.CreateThread(function()
     for i=1,15 do
         EnableDispatchService(i,false)
     end
+    NetworkSetTalkerProximity(50.0)
     while true do
         -- SetPedDensityMultiplierThisFrame(1.0)
         -- SetScenarioPedDensityMultiplierThisFrame(1.0)
         DisableVehicleDistantlights(true)
         DisplayDistantVehicles(false)
-        --HideHudComponentThisFrame(14)
+        HideHudComponentThisFrame(14)
         -- SetVehicleDensityMultiplierThisFrame(0.1)
         -- SetSomeVehicleDensityMultiplierThisFrame(0.1)
         -- SetRandomVehicleDensityMultiplierThisFrame(0.1)
@@ -1071,51 +1091,53 @@ end
 
 
 Citizen.CreateThread(function()
-    local loop,handle,veh,rand,ped
+    local loop,handle,veh,rand,ped,class
     while true do
         handle,veh=FindFirstVehicle()
         loop=(handle~=-1)
         while loop do
-            if not DecorExistOn(veh,"post_apoc_car") then
-                rand=GetHashKey(GetVehicleNumberPlateText(veh))
-                if (rand&1024)~=0 then
-                    SmashVehicleWindow(veh,0)
-                    SmashVehicleWindow(veh,1)
-                    SmashVehicleWindow(veh,2)
-                    SmashVehicleWindow(veh,3)
-                end
-                for i=0,5 do
-                    local i2=(i<<1)
-                    if (rand&(2048<<i2))~=0 then
-                        SetVehicleDoorBroken(veh,i,true)
-                    elseif (rand&(4096<<i2))~=0 then
-                        SetVehicleDoorOpen(veh,i,true,true)
+            class=GetVehicleClass(veh)
+            if class~=15 and class~=16 then
+                if not DecorExistOn(veh,"post_apoc_car") then
+                    rand=GetHashKey(GetVehicleNumberPlateText(veh))
+                    if (rand&1024)~=0 then
+                        SmashVehicleWindow(veh,0)
+                        SmashVehicleWindow(veh,1)
+                        SmashVehicleWindow(veh,2)
+                        SmashVehicleWindow(veh,3)
                     end
-                end
-                for i=0,5 do
-                    if (rand&(1<<i))~=0 then
-                        IsVehicleTyreBurst(veh, i, true)
+                    for i=0,5 do
+                        local i2=(i<<1)
+                        if (rand&(2048<<i2))~=0 then
+                            SetVehicleDoorBroken(veh,i,true)
+                        elseif (rand&(4096<<i2))~=0 then
+                            SetVehicleDoorOpen(veh,i,true,true)
+                        end
                     end
-                end
-                if (rand&768)~=0 then
-                    SetEntityRenderScorched(veh,true)
-                    if GetVehicleEngineHealth(veh)>-3999.8 then
-                        SetVehicleEngineHealth(veh,-3999.9)
+                    for i=0,5 do
+                        if (rand&(1<<i))~=0 then
+                            IsVehicleTyreBurst(veh, i, true)
+                        end
                     end
-                else
-                    rand=400+(rand&255)
-                    if GetVehicleEngineHealth(veh)>rand then
-                        SetVehicleEngineHealth(veh,rand-.1)
+                    if (rand&768)~=0 then
+                        SetEntityRenderScorched(veh,true)
+                        if GetVehicleEngineHealth(veh)>-3999.8 then
+                            SetVehicleEngineHealth(veh,-3999.9)
+                        end
+                    else
+                        rand=400+(rand&255)
+                        if GetVehicleEngineHealth(veh)>rand then
+                            SetVehicleEngineHealth(veh,rand-.1)
+                        end
+                        rand=(rand&63)*0.2
+                        SetVehicleFuelLevel(veh,rand)
+                        DecorSetFloat(veh,"zm_fuel",rand)
                     end
-                    rand=(rand&63)*0.2
-                    SetVehicleFuelLevel(veh,rand)
-                    DecorSetFloat(veh,"zm_fuel",rand)
+                    SetVehicleEngineOn(veh, false, true, false)
+                    --SetVehicleHandbrake(veh,true)
+                    SetVehicleHalt(veh, 0.1, 1, false);
+                    DecorSetBool(veh,"post_apoc_car",true)
                 end
-                SetVehicleEngineOn(veh, false, true, false)
-                --SetVehicleHandbrake(veh,true)
-                SetVehicleHalt(veh, 0.1, 1, false);
-                DecorSetBool(veh,"post_apoc_car",true)
-            end
                 ped=GetPedInVehicleSeat(veh,-1)
                 if ped~=0 and not IsPedAPlayer(ped) then
                     local vpos=GetEntityCoords(veh)
@@ -1131,6 +1153,7 @@ Citizen.CreateThread(function()
                 --else
                     --SetVehicleOutOfControl(veh,true,false)
                 end
+            end
             loop,veh=FindNextVehicle(handle)
         end
         EndFindVehicle(handle)
@@ -2875,7 +2898,7 @@ Citizen.CreateThread(function()
         if IsPedHuman(ped) then
             zone=is_in_safe_zone(zpos.x,zpos.y,zpos.z)
             if zone==nil then
-                if math.random(1,20)==1 then --loners
+                if IsPedInAnyHeli(ped) or math.random(1,20)==1 then --loners
                     DecorSetBool(ped,"raider",false)
                     if IsPedUsingAnyScenario(ped) then ClearPedTasksImmediately(ped) end
                     SetPedRelationshipGroupHash(ped,GetHashKey("HATES_PLAYER"))
@@ -3881,7 +3904,16 @@ Citizen.CreateThread(function() --if true then return end
                 DeleteObject(obj)
                 objects_bp[k]=nil
             else
-                peds_bp[ped]=true
+                local ped_pos=GetEntityCoords(ped)
+                local obj_pos=GetEntityCoords(obj)
+                if math.abs(obj_pos.x-ped_pos.x)+math.abs(obj_pos.y-ped_pos.y)+math.abs(obj_pos.z-ped_pos.z)>2 then
+                    SetEntityAsNoLongerNeeded(obj)
+                    SetEntityAsMissionEntity(obj)
+                    DeleteObject(obj)
+                    objects_bp[k]=nil
+                else
+                    peds_bp[ped]=true
+                end
             end
         end
         for k,obj in pairs(objects_hlm) do
@@ -3892,7 +3924,16 @@ Citizen.CreateThread(function() --if true then return end
                 DeleteObject(obj)
                 objects_hlm[k]=nil
             else
-                peds_hlm[ped]=true
+                local ped_pos=GetEntityCoords(ped)
+                local obj_pos=GetEntityCoords(obj)
+                if math.abs(obj_pos.x-ped_pos.x)+math.abs(obj_pos.y-ped_pos.y)+math.abs(obj_pos.z-ped_pos.z)>2 then
+                    SetEntityAsNoLongerNeeded(obj)
+                    SetEntityAsMissionEntity(obj)
+                    DeleteObject(obj)
+                    objects_hlm[k]=nil
+                else
+                    peds_hlm[ped]=true
+                end
             end
         end
         local handle,ped=FindFirstPed()
@@ -4214,6 +4255,8 @@ local gasstations={
 
 
 Citizen.CreateThread(function()
+    local price=5
+    local sellprice=10
     local blip
     for k,v in ipairs(gasstations) do
         blip=AddBlipForCoord(v.tank.x,v.tank.y,v.tank.z)
@@ -4232,9 +4275,51 @@ Citizen.CreateThread(function()
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
         for k,v in ipairs(gasstations) do
-            if in_radius(mypos,v.trader,2) then
-                
-            elseif in_radius(mypos,v.tank,2) then
+            if in_radius(mypos,v.trader,20) then
+            
+                DrawMarker(20, v.trader.x, v.trader.y, v.trader.z, 
+                0.0, 0.0, 0.0, --dir
+                0.0, 0.0, 0.0, --rot
+                1.0, 1.0, -1.0, --scl
+                200, 200, 200, 200, 
+                true, false, 2, true, 0, 0, false);
+            
+                if in_radius(mypos,v.trader,2) then
+                    --TriggerServerEvent("ask_for_gasoline_amount",k)
+                    local inv_index_price=0
+                    local inv_index_goods=0
+                    local youhaveamount_price=0
+                    local youhaveamount_goods=0
+                    for j=1,inventory.total do
+                        if inventory[j].item=="cash" then
+                            youhaveamount_price=inventory[j].amount
+                            inv_index_price=j
+                        elseif inventory[j].item=="gasoline" then
+                            youhaveamount_goods=inventory[j].amount
+                            inv_index_goods=j
+                        end
+                    end
+                    WriteText(4,"Buy gasoline for ~g~$"..price,0.8,255,255,255,255,0.4,0.5)
+                    WriteText(4,"~g~E ~s~to accept",0.65,255,255,255,255,0.4,0.55)
+                    if v.gasoline~=nil then
+                        WriteText(4,{"Gas station has ~1~ gasoline",v.gasoline},0.65,255,255,255,255,0.4,0.65)
+                    end
+                    WriteText(4,{"You have ~1~ gasoline and ~1~ cash",youhaveamount_goods,youhaveamount_price},0.65,255,255,255,255,0.4,0.70)
+                    
+                    
+                    if IsControlJustPressed(0,86) then
+                        if youhaveamount_price>=price then
+                            if give_item_to_inventory("gasoline",1) then
+                                inventory[inv_index_price].amount=youhaveamount_price-price
+                                TriggerServerEvent("buy_gasoline",k)
+                                TriggerServerEvent("ask_for_gasoline_amount",k)
+                            end
+                        else
+                            SimpleNotification("Not enough cash.")
+                        end
+                    end
+                end
+            elseif in_radius(mypos,v.tank,20) then
             
             end
         end
