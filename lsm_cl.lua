@@ -1,3 +1,5 @@
+DecorRegister("gasoline",3)
+
 local localization={
 ratbike="Ratbike",
 cerberus="Cerberus",
@@ -97,7 +99,9 @@ if true then --disabled
         SetTextFont(font)
         SetTextScale(scale, scale)
         SetTextColour(r,g,b,a)
-        if type(text)=='table' then
+        if text==nil then
+            TextCommandDisplayText(posx,posy,"~r~NULL")
+        elseif type(text)=='table' then
             TextCommandDisplayText(posx,posy,table.unpack(text))
         elseif localization[text]~=nil then
             TextCommandDisplayText(posx,posy,localization[text])
@@ -117,6 +121,14 @@ if true then --disabled
             TextCommandDisplayText(posx,posy,text)
         end
     end
+end
+
+local hint_y=0.32
+Citizen.CreateThread(function()
+    while true do hint_y=0.32 Wait(0) end
+end)
+local function WriteHint(text)
+    WriteText(4,text,0.3,255,255,255,255,0.005,hint_y) hint_y=hint_y+0.02
 end
 
 local modelgroups={}
@@ -230,6 +242,9 @@ local normal_crafts={
         "bandage",2
         },
     },
+    {"pipebomb",
+        {"chemicals",1},
+    },
 }
 for k,v in pairs(weaponsarray.raiders) do
     weaponsarray.raiders[k]=GetHashKey("weapon_"..v)
@@ -244,13 +259,14 @@ local safezones={
     -- weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     -- relationship="HATES_PLAYER"},--LSPD
 
-    {x=975.88543701172,y=-119.29508972168,z=74.220664978027,r=50.0,
+    {x=975.88543701172,y=-119.29508972168,z=74.220664978027,r=50.0,blip=495,color=20,
     models={275618457},
+    name="~o~Lost M.C.~s~",
     weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     relationship="HATES_PLAYER"},--Lost MC
 
     --Altruists camp
-    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,
+    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=181,color=5,
     models={-12678997,1694362237,1939545845,-1105135100},
     name="~g~Old Cult Camp~s~",
     friends=true,
@@ -310,7 +326,7 @@ local safezones={
     
     
     --LSPD station
-    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,
+    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=60,color=3,
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     name="~g~LSPD Station~s~",
     friends=true,
@@ -666,6 +682,20 @@ local birds={
 local deadbodiesrewards_random={
 {"SWITCHBLADE",1},
 {"cigarettes",1},
+{"weed",1},
+{"soda",1},
+{"water",1},
+}
+local deadbodiesrewards_survivors={
+{"SWITCHBLADE",1},
+{"cigarettes",1},
+{"weed",1},
+{"soda",1},
+{"water",1},
+{"pistolammo",-20},
+{"shotgunammo",-10},
+{"snspistol",1},
+{"knife",1},
 }
 local deadbodiesrewards={
 [-681004504]={"NIGHTSTICK",1}, --security
@@ -722,22 +752,22 @@ local pickups_objects={
 [-1839065906]={"food",1}, -- big cheese
 [-1816283392]={"food",1}, -- 14 in glass candies
 [1228376703]={"food",1}, -- meteorite
-[-54719154]={"food",10,"canfood",30,spoiled=true}, -- shop 30 canned and fod on low
-[-220235377]={"soda",40,spoiled=true}, -- shop 40 soda
-[643522702]={"alcohol",40,spoiled=true}, -- shop 40 alcohol
-[1437777724]={"food",40,spoiled=true}, -- shop bread 
-[-532065181]={"food",20,"chemicals",20,spoiled=true}, -- food and chem
+[-54719154]={"food",10,"canfood",30,exp=true}, -- shop 30 canned and fod on low
+[-220235377]={"soda",40,exp=true}, -- shop 40 soda
+[643522702]={"alcohol",40,exp=true}, -- shop 40 alcohol
+[1437777724]={"food",40,exp=true}, -- shop bread 
+[-532065181]={"food",20,"chemicals",20,exp=true}, -- food and chem
 [756199591]={"food",15}, -- shop gums
 [2067313593]={"food",25}, -- shop long gums
 [1404018125]={"alcohol",1}, -- green liquor
 [-1461673141]={"alcohol",1}, -- orange blocky
 [-169049173]={"alcohol",1}, -- black big alcohol
-[1421582485]={"food",10,spoiled=true}, -- shop ponchiks
+[1421582485]={"food",10,exp=true}, -- shop ponchiks
 [-802238381]={"food",10}, -- fruits
 [663958207]={"food",10}, -- shop guns shop type 3
-[1238061242]={"alcohol",25,spoiled=true}, -- spoiled alcohol
-[511490507]={"alcohol",100,spoiled=true}, -- spoiled alcohol
-[-1766954369]={"alcohol",40,spoiled=true}, -- spoiled shelf
+[1238061242]={"alcohol",25,exp=true}, -- spoiled alcohol
+[511490507]={"alcohol",100,exp=true}, -- spoiled alcohol
+[-1766954369]={"alcohol",40,exp=true}, -- spoiled shelf
 [-1243177429]={"alcohol",1}, -- 1 alcohol green
 [-1317590321]={"food",25}, -- shop long gums meth shop
 [2085590335]={"alcohol",6}, -- 6 triangle yellow bottles
@@ -754,6 +784,19 @@ local pickups_objects={
 [-1406045366]={"cigarettes",30}, -- 3 lines of cigs
 [759654580]={"cash",100,solid=true}, -- cash register
 [303280717]={"cash",200,solid=true}, -- cash register
+[1093460780]={"ammo",10}, --green open rifle thing
+[-1920611843]={"pistolammo",50}, --blue case
+[1430410579]={"pistolammo",50}, --white case
+[2084498973]={"machete",1}, -- camo machete
+[1179681321]={"machete",1}, -- black machete
+[27391672]={"shotgunammo",40}, -- box
+[-278834633]={"heavyrifleammo",50}, -- box
+[1580014892]={"ammo",50}, --green closed rifle thing
+[1936480843]={"pistolammo",50}, --green closed rifle thing
+[1158698200]={"engineparts",50}, --car battery
+[-2124552702]={"engineparts",20}, --car black fix box
+[-1532806025]={"gasoline",30}, --beige diesel
+[-449200111]={"cash",100}, --100$ bill
 }
 
 --local zombie={
@@ -874,18 +917,59 @@ local function give_item_to_inventory(add_name,add_amount)
             end
         end
         if valid_weapon then
-            if add_amount>1 then
-                return false
-            else
-                local ped=PlayerPedId()
+            --groups GetWeapontypeGroup
+            -- melee      -728555052
+            -- throwable  1548507267
+            local wtg=GetWeapontypeGroup(hash)
+            local ped=PlayerPedId()
+            if wtg==1548507267 then
+                local oldammo
+                local has_weapon
                 if not HasPedGotWeapon(ped,hash) then
+                    has_weapon=false
+                    oldammo=0
+                else
+                    has_weapon=true
+                    oldammo=GetAmmoInPedWeapon(ped,hash)
+                end
+                GiveWeaponToPed(ped, hash, add_amount, false, true)
+                if HasPedGotWeapon(ped,hash) and GetAmmoInPedWeapon(ped,hash)==oldammo+add_amount then
+                    WriteNotification("You got ~g~"..(item_names[add_name] or localization[add_name] or add_name).."~s~.")
+                    return true
+                else
+                    SetPedAmmo(ped,hash,oldammo)
+                    if not has_weapon then
+                        RemoveWeaponFromPed(ped,hash)
+                    end
+                    return false
+                end
+            else
+                if add_amount<=1 and not HasPedGotWeapon(ped,hash) then
                     GiveWeaponToPed(ped, hash, 0, false, true)
-                    WriteNotification("You got ~g~"..(item_names[add_name] or add_name).."~s~.")
+                    WriteNotification("You got ~g~"..(item_names[add_name] or localization[add_name] or add_name).."~s~.")
                     return true
                 else
                     return false
                 end
             end
+                    -- if HasPedGotWeapon(ped,hash) then
+                        -- print("you now have weapon")
+                        
+                        -- return true
+                    -- else print("failed to give weapon")
+                        -- GiveWeaponToPed(ped, hash, 1, false, true)
+                        -- if HasPedGotWeapon(ped,hash) then
+                            -- WriteNotification("You got ~g~"..(item_names[add_name] or localization[add_name] or add_name).."~s~.")
+                            -- return true
+                        -- else
+                            -- return false
+                        -- end
+                    -- end
+                -- else
+                    -- local oldammo=GetAmmoInPedWeapon(ped, hash)
+                    -- GiveWeaponToPed(ped, hash, 1, false, true)
+                    -- return (GetAmmoInPedWeapon(ped, hash)>oldammo)
+                -- end
         elseif inventory.total<inventory.max then
             inventory.total=inventory.total+1
             inventory[inventory.total]={item=add_name,amount=add_amount}
@@ -975,7 +1059,7 @@ Citizen.CreateThread(function()
     RegisterCommand("hints",function(source,args,raw)
         showhints=not showhints
     end,false)
-    
+    Wait(100)
     while true do Wait(0)
         while not showhints do Wait(300) end
         local pped=PlayerPedId()
@@ -1055,8 +1139,10 @@ Citizen.CreateThread(function()
                                 SetTextCentre(true)
                                 if model[3] then
                                     WriteText(font,"~g~E ~s~to pick up ~g~"..model[1].."~s~ and ~g~"..model[3],size,255,255,255,alpha,x,y)
+                                    WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..model[1].."~c~ and ~g~"..model[3])
                                 else
                                     WriteText(font,"~g~E ~s~to pick up ~g~"..model[1],size,255,255,255,alpha,x,y)
+                                    WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..model[1])
                                 end
                             end
                         end
@@ -1153,7 +1239,12 @@ Citizen.CreateThread(function()
                     else
                         rand=400+(rand&255)
                         if GetVehicleEngineHealth(veh)>rand then
-                            SetVehicleEngineHealth(veh,rand-.1)
+                            if (rand%10)==0 then
+                                SetVehicleEngineHealth(veh,rand-.1)
+                            else
+                                --SetVehicleUndriveable(veh,true)
+                                SetVehicleEngineHealth(veh,-3999.9)
+                            end
                         end
                         rand=(rand&63)*0.2
                         SetVehicleFuelLevel(veh,rand)
@@ -1619,10 +1710,11 @@ Citizen.CreateThread(function()
                         local flags=0
                         local myped=PlayerPedId()
                         local myveh=GetVehiclePedIsIn(myped)
-                        
-                        vehiclesave.model=GetEntityModel(myveh)
-                        vehiclesave.enginehp=GetVehicleEngineHealth(myveh)
-                        vehiclesave.fuellevel=GetVehicleFuelLevel(myveh)
+                        vehiclesave={
+                        model=GetEntityModel(myveh),
+                        enginehp=GetVehicleEngineHealth(myveh),
+                        fuellevel=GetVehicleFuelLevel(myveh),
+                        }
                         flags=0
                         for i=0,7 do
                             if IsVehicleDoorDamaged(myveh,i) then flags=flags|(1<<i) end
@@ -2514,37 +2606,45 @@ Citizen.CreateThread(function()
                     elseif inventory[inventory.current].item=="gasoline" then
                         if IsPedInAnyVehicle(pped) then
                             local pveh=GetVehiclePedIsIn(pped)
-                            if NetworkHasControlOfEntity(pveh) then
-                                local fuel=DecorGetFloat(pveh,"zm_fuel")
-                                if fuel<80.0 then
-                                    if fuel<5.0 then
-                                        fuel=5.9+.1
-                                    else
-                                        fuel=fuel+(.9+.1)
+                            if GetPedInVehicleSeat(pveh,-1)==pped then
+                                if NetworkHasControlOfEntity(pveh) then
+                                    local fuel=DecorGetFloat(pveh,"zm_fuel")
+                                    if fuel<80.0 then
+                                        if fuel<5.0 then
+                                            fuel=5.9+.1
+                                        else
+                                            fuel=fuel+(.9+.1)
+                                        end
+                                        SetVehicleFuelLevel(pveh,fuel)
+                                        DecorSetFloat(pveh,"zm_fuel",fuel)
+                                        inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                                        check_inv_slot_for_zero_amount()
+                                        SetVehicleFuelLevel(pveh,fuel)
                                     end
-                                    SetVehicleFuelLevel(pveh,fuel)
-                                    DecorSetFloat(pveh,"zm_fuel",fuel)
-                                    inventory[inventory.current].amount=inventory[inventory.current].amount-1
-                                    check_inv_slot_for_zero_amount()
-                                    SetVehicleFuelLevel(pveh,fuel)
+                                else
+                                    NetworkRequestControlOfEntity(pveh)
                                 end
                             else
-                                NetworkRequestControlOfEntity(pveh)
+                                WriteNotification("You must be in driver seat to refuel vehicle.")
                             end
                         end
                     elseif inventory[inventory.current].item=="engineparts" then
                         if IsPedInAnyVehicle(pped) then
                             local pveh=GetVehiclePedIsIn(pped)
-                            if NetworkHasControlOfEntity(pveh) then
-                                if GetVehicleEngineHealth(pveh)<1000.0 then
-                                    SetVehicleEngineHealth(pveh,GetVehicleEngineHealth(pveh)+10.0)
-                                    inventory[inventory.current].amount=inventory[inventory.current].amount-1
-                                    check_inv_slot_for_zero_amount()
+                            if GetPedInVehicleSeat(pveh,-1)==pped then
+                                if NetworkHasControlOfEntity(pveh) then
+                                    if GetVehicleEngineHealth(pveh)<1000.0 then
+                                        SetVehicleEngineHealth(pveh,GetVehicleEngineHealth(pveh)+10.0)
+                                        inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                                        check_inv_slot_for_zero_amount()
+                                    else
+                                        WriteNotification("Vehicle engine is in perfect condition.")
+                                    end
                                 else
-                                    WriteNotification("Vehicle engine is in perfect condition.")
+                                    NetworkRequestControlOfEntity(pveh)
                                 end
                             else
-                                NetworkRequestControlOfEntity(pveh)
+                                WriteNotification("You must be in driver seat to repair vehicle.")
                             end
                         end
                     elseif inventory[inventory.current].item=="ammo" then
@@ -2635,6 +2735,12 @@ Citizen.CreateThread(function()
                         end
                     end
                 end
+            end
+        else--if inventory.mode then
+            if IsControlJustPressed(0,191) then
+                inventory.highlight=500
+            elseif IsControlJustPressed(0,177) then
+                inventory.highlight=0
             end
         end
     end
@@ -3340,28 +3446,40 @@ Citizen.CreateThread(function()
             --GiveWeaponToPed(PlayerPedId(), 883325847, 21, false, true)
             local randomitem
             local platenumber=GetVehicleNumberPlateText(veh)
-            if (GetHashKey(platenumber)&7)==0 then
-                local randomamount=math.random(1,20)
-                local randchose=math.random(1,15)
-                if      randchose==1  then randomitem="water" 
-                elseif  randchose==2  then randomitem="canfood" 
-                elseif  randchose==3  then randomitem="mre" 
-                elseif  randchose==4  then randomitem="weed" 
-                elseif  randchose==5  then randomitem="chemicals" 
-                elseif  randchose==6  then randomitem="gasoline" 
-                elseif  randchose==7  then randomitem="juice" 
-                elseif  randchose==8  then randomitem="soda" 
-                elseif  randchose==9  then randomitem="medkit" 
-                elseif  randchose==10 then randomitem="alcohol" 
-                elseif  randchose==11 then randomitem="bandage" 
-                elseif  randchose==12 then randomitem="ammo" 
-                elseif  randchose==13 then randomitem="pistolammo" 
-                elseif  randchose==14 then randomitem="heavyrifleammo" 
-                elseif  randchose==15 then randomitem="shotgunammo" 
+            if (GetHashKey(platenumber)&3)~=0 then
+                local randomamount--=math.random(1,20)
+                local randchose=math.random(1,26)
+                if      randchose==1  then randomitem="water"               randomamount=math.random(1,2)
+                elseif  randchose==2  then randomitem="canfood"             randomamount=math.random(1,2)
+                elseif  randchose==3  then randomitem="mre"                 randomamount=1
+                elseif  randchose==4  then randomitem="weed"                randomamount=math.random(1,2)
+                elseif  randchose==5  then randomitem="chemicals"           randomamount=math.random(1,2)
+                elseif  randchose==6  then randomitem="gasoline"            randomamount=math.random(1,5)
+                elseif  randchose==7  then randomitem="juice"               randomamount=math.random(1,2)
+                elseif  randchose==8  then randomitem="soda"                randomamount=math.random(1,2)
+                elseif  randchose==9  then randomitem="medkit"              randomamount=math.random(1,1)
+                elseif  randchose==10 then randomitem="alcohol"             randomamount=math.random(1,2)
+                elseif  randchose==11 then randomitem="bandage"             randomamount=math.random(1,2)
+                elseif  randchose==12 then randomitem="ammo"                randomamount=math.random(1,50)
+                elseif  randchose==13 then randomitem="pistolammo"          randomamount=math.random(1,50)
+                elseif  randchose==14 then randomitem="heavyrifleammo"      randomamount=math.random(1,50)
+                elseif  randchose==15 then randomitem="shotgunammo"         randomamount=math.random(1,20)
+                elseif  randchose==16 then randomitem="snspistol"           randomamount=1
+                elseif  randchose==17 then randomitem="vintagepistol"       randomamount=1
+                elseif  randchose==17 then randomitem="revolver"            randomamount=1
+                elseif  randchose==18 then randomitem="dbshotgun"           randomamount=1
+                elseif  randchose==19 then randomitem="crowbar"             randomamount=1
+                elseif  randchose==20 then randomitem="bat"                 randomamount=1
+                elseif  randchose==21 then randomitem="poolcue"             randomamount=1
+                elseif  randchose==22 then randomitem="dagger"              randomamount=1
+                elseif  randchose==23 then randomitem="hatchet"             randomamount=1
+                elseif  randchose==24 then randomitem="knife"               randomamount=1
+                elseif  randchose==25 then randomitem="pipebomb"            randomamount=1
+                elseif  randchose==26 then randomitem="molotov"             randomamount=1
                 end
-                local finalrandammo
-                if randchose>=12 then finalrandammo=randomamount else finalrandammo=1 end
-                if give_item_to_inventory(randomitem,finalrandammo) then
+                --local finalrandammo
+                --if randchose>=12 then finalrandammo=randomamount else finalrandammo=1 end
+                if give_item_to_inventory(randomitem,randomamount) then
                     DecorSetBool(veh,"zm_looted",true)
                 end
             else
@@ -3395,7 +3513,13 @@ Citizen.CreateThread(function()
                 loop=(handle~=-1)
                 while loop do
                     local reward=deadbodiesrewards[GetEntityModel(ped)]
-                    if reward==nil then reward=deadbodiesrewards_random[math.random(1,#deadbodiesrewards_random)] end
+                    if reward==nil then 
+                        if DecorExistOn(ped,"raider") then
+                            reward=deadbodiesrewards_survivors[math.random(1,#deadbodiesrewards_survivors)] 
+                        else
+                            reward=deadbodiesrewards_random[math.random(1,#deadbodiesrewards_random)] 
+                        end
+                    end
                     --if reward~=nil then
                         if IsPedDeadOrDying(ped,true) then
                                 local zpos=GetEntityCoords(ped)
@@ -3405,7 +3529,8 @@ Citizen.CreateThread(function()
                                     if NetworkHasControlOfEntity(ped) then
                                         TaskPlayAnim(pped, dict, anim, 1.0, 1.0, -1, 0, .0, false, false, false)
                                         --if type(reward[1])=='string' then
-                                            if math.random(0,7)==0 then
+                                            if math.random(0,5)~=0 then
+                                                if reward[2]<0 then reward[2]=math.random(1,-reward[2]) end
                                                 if give_item_to_inventory(reward[1],reward[2]) then DecorSetBool(ped,"zm_looted",true) end
                                             else
                                                 WriteNotification("Nothing useful.")
@@ -3523,31 +3648,40 @@ Citizen.CreateThread(function()
             for k,v in pairs(pickups_objects) do
                 obj=GetClosestObjectOfType(pos.x,pos.y,pos.z, 1.3, k, false, false, false)
                 if obj~=0 and NetworkGetEntityIsLocal(obj) then
-                    if v.solid and DecorExistOn(obj,"zm_looted") then
+                    if (v.solid or v.exp) and DecorExistOn(obj,"zm_looted") then
                         empty=true
-                    elseif not v.spoiled then
+                    elseif v.spoiled then
+                        spoiled=true
+                    else
+                        local took_something=false
+                        local local_spoiled=false
                         for i=1,5,2 do
                             if v[i]==nil then
                                 break
                             end
                             if (inventory_items_chances[v[i]]==nil) or (math.random(1,100)<inventory_items_chances[v[i]]) then
-                                give_item_to_inventory(v[i],v[i+1])
+                                if give_item_to_inventory(v[i],v[i+1]) then took_something=true end
                             else
                                 WriteNotification("This food is ~r~spoiled~s~.")
+                                local_spoiled=true
                             end
                         end
-                        local objpos=GetEntityCoords(obj)
-                        looted_array[coords_to_dword(objpos.x,objpos.y,objpos.z)]=current_date
-                        if v.solid then
-                            DecorSetBool(obj,"zm_looted",true)
-                        else
-                            SetEntityAsMissionEntity(obj)
-                            DeleteObject(obj)
+                        if took_something or local_spoiled then
+                            local objpos=GetEntityCoords(obj)
+                            looted_array[coords_to_dword(objpos.x,objpos.y,objpos.z)]=current_date
+                            if v.exp then
+                                DecorSetBool(obj,"zm_looted",true)
+                                local objpos=GetEntityCoords(obj)
+                                AddExplosion(objpos.x, objpos.y, objpos.z, 16, 0.05, false, true, false, true)
+                            elseif v.solid then
+                                DecorSetBool(obj,"zm_looted",true)
+                            else
+                                SetEntityAsMissionEntity(obj)
+                                DeleteObject(obj)
+                            end
                         end
                         found=true
                         break
-                    else
-                        spoiled=true
                     end
                 end
             end
@@ -3678,6 +3812,14 @@ Citizen.CreateThread(function()
                     DeleteObject(obj)
                 end
             end
+            if not HasPedGotWeapon(ped,GetHashKey("weapon_crowbar"),false) then --WEAPON.crowbar
+                obj=GetClosestObjectOfType(pos.x,pos.y,pos.z, 1.1, -142948810, false, false, false)
+                if obj~=0 then
+                    GiveWeaponToPed(ped,GetHashKey("weapon_crowbar"),1,false,true)
+                    SetEntityAsMissionEntity(obj)
+                    DeleteObject(obj)
+                end
+            end
             Wait(0)
         else
             Wait(0)
@@ -3686,6 +3828,7 @@ Citizen.CreateThread(function()
 end)
 -- deleting objects that are looted
 Citizen.CreateThread(function()
+    Wait(100)
     while true do Wait(0)
         local loop,handle,obj
         local hash,t,model
@@ -3694,11 +3837,15 @@ Citizen.CreateThread(function()
         while loop do
             model=pickups_objects[GetEntityModel(obj)]
             if model~=nil and not DecorExistOn(obj,"zm_looted")  then
-                hash=coords_to_dword(table.unpack(GetEntityCoords(obj)))
+                local pos=GetEntityCoords(obj)
+                hash=coords_to_dword(pos.x,pos.y,pos.z)
                 t=looted_array[hash]
                 if t~=nil then
                     if current_date-t>respawn_time then
                         looted_array[hash]=nil
+                    elseif model.exp then
+                        DecorSetBool(obj,"zm_looted",true)
+                        AddExplosion(pos.x, pos.y, pos.z, 16, 0.05, false, true, false, true)
                     elseif model.solid then
                         DecorSetBool(obj,"zm_looted",true)
                     else
@@ -3974,7 +4121,7 @@ Citizen.CreateThread(function() --if true then return end
                     if not HasModelLoaded(model) then
                         RequestModel(model)
                     else
-                        local obj=CreateObject(model, 0, 0, -199.6, true, false, false)
+                        local obj=CreateObject(model, 0, 0, -199.6, false, false, false)
                         SetEntityCollision(obj,false,false)
                         AttachEntityToEntity(obj,ped,GetPedBoneIndex(ped,bone),
                         prop[3],prop[4],prop[5],
@@ -3996,7 +4143,7 @@ Citizen.CreateThread(function() --if true then return end
                     if not HasModelLoaded(model) then
                         RequestModel(model)
                     else
-                        local obj=CreateObject(model, 0, 0, -199.6, true, false, false)
+                        local obj=CreateObject(model, 0, 0, -199.6, false, false, false)
                         SetEntityCollision(obj,false,false)
                         AttachEntityToEntity(obj,ped,GetPedBoneIndex(ped,bone),
                         prop[3],prop[4],prop[5],
@@ -4245,18 +4392,21 @@ TriggerServerEvent("requestsignals")
 end)
 
 Citizen.CreateThread(function()
-    local step=0.02
     while true do Wait(0)
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
+        local myveh=GetVehiclePedIsIn(myped)
+        local havetrailer,trailer=GetVehicleTrailerVehicle(myveh)
         local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
         local y=0.32
         if inventory.highlight<=0 then
-            WriteText(4,"~c~Press ~s~ENTER ~c~to open inventory",0.3,255,255,255,255,0.005,y) y=y+step
+            WriteHint("~c~Press ~s~ENTER ~c~to open inventory")
         else
-            WriteText(4,"~c~Press ~s~BACKSPACE ~c~to close inventory",0.3,255,255,255,255,0.005,y) y=y+step
-            WriteText(4,"~c~Press ~s~ENTER ~c~to use item",0.3,255,255,255,255,0.005,y) y=y+step
-            WriteText(4,"~c~Press ~s~DELETE ~c~to drop item",0.3,255,255,255,255,0.005,y) y=y+step
+            WriteHint("~c~Press ~s~BACKSPACE ~c~to close inventory")
+            if inventory.total>0 then
+                WriteHint("~c~Press ~s~ENTER ~c~to use item")
+                WriteHint("~c~Press ~s~DELETE ~c~to drop item")
+            end
         end
         if zone~=nil then
             if zone.craftpos~=nil and in_radius(mypos,zone.craftpos,1)
@@ -4266,7 +4416,23 @@ Citizen.CreateThread(function()
             or zone.garagepos~=nil and in_radius(mypos,zone.garagepos,1)
             or zone.vehpos~=nil and in_radius(mypos,zone.vehpos,1)
             then 
-                WriteText(4,"~c~Press ~s~E ~c~to interact",0.3,255,255,255,255,0.005,y) y=y+step
+                WriteHint("~c~Press ~s~E ~c~to interact")
+            end
+        end
+        if player.hydration<=0.1 then
+            WriteHint("~c~Your ~r~hydration is low ~c~you can't run anymore")
+        end
+        if player.saturation<=0.1 then
+            WriteHint("~c~You are ~r~starving~c~ to death")
+        end
+        if havetrailer then
+            local trailermodel=GetEntityModel(trailer)
+            if trailermodel==-730904777 or trailermodel==1956216962 then
+                if DecorExistOn(trailer,"gasoline") then
+                    WriteHint({"~c~This trailer tank has ~o~~1~ gasoline",DecorGetInt(trailer,"gasoline")})
+                else
+                    WriteHint("~c~This trailer tank has ~o~no gasoline ~c~inside")
+                end
             end
         end
     end
@@ -4276,9 +4442,23 @@ local gasstations={
     {
         trader={x=162.09725952148,y=6636.5678710938,z=31.556589126587,blip=361},
         tank={x=172.08010864258,y=6622.7368164063,z=31.832139968872,blip=431},
+        gasoline=0,
+    },
+    {
+        trader={x=646.29534912109,y=267.25625610352,z=103.26166534424,blip=361},
+        tank={x=635.08709716797,y=255.35494995117,z=103.12169647217,blip=431},
+        gasoline=0,
     },
 }
+local gasoline_generators={
+    {x=1527.603515625,y=-2113.7202148438,z=76.686614990234,blip=648,color=51},
+}
 
+RegisterNetEvent("gasstation_update")
+AddEventHandler("gasstation_update",function(id,amount)
+    gasstations[id].gasoline=amount
+    gasstations[id].firsttimecheckdone=true
+end)
 
 Citizen.CreateThread(function()
     local price=5
@@ -4297,12 +4477,22 @@ Citizen.CreateThread(function()
         SetBlipColour(blip, 4)
         SetBlipName(blip, "Gas station")
     end
+    for k,v in ipairs(gasoline_generators) do
+        blip=AddBlipForCoord(v.x,v.y,v.z)
+        SetBlipSprite(blip, v.blip)
+        SetBlipAsShortRange(blip,true)
+        SetBlipColour(blip, v.color)
+        SetBlipName(blip, "Gasoline refinery")
+    end
     while true do Wait(0)
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
         for k,v in ipairs(gasstations) do
             if in_radius(mypos,v.trader,20) then
-            
+                if v.firsttimecheckdone==nil then
+                    TriggerServerEvent("request_gasstation",k)
+                    v.firsttimecheckdone=true
+                end
                 DrawMarker(20, v.trader.x, v.trader.y, v.trader.z, 
                 0.0, 0.0, 0.0, --dir
                 0.0, 0.0, 0.0, --rot
@@ -4328,26 +4518,191 @@ Citizen.CreateThread(function()
                     WriteText(4,"Buy gasoline for ~g~$"..price,0.8,255,255,255,255,0.4,0.5)
                     WriteText(4,"~g~E ~s~to accept",0.65,255,255,255,255,0.4,0.55)
                     if v.gasoline~=nil then
-                        WriteText(4,{"Gas station has ~1~ gasoline",v.gasoline},0.65,255,255,255,255,0.4,0.65)
+                        WriteText(4,{"Gas station has ~o~~1~ ~s~gasoline",v.gasoline},0.65,255,255,255,255,0.4,0.65)
                     end
-                    WriteText(4,{"You have ~1~ gasoline and ~1~ cash",youhaveamount_goods,youhaveamount_price},0.65,255,255,255,255,0.4,0.70)
+                    WriteText(4,{"You have ~o~~1~ ~s~gasoline and ~g~$~1~",youhaveamount_goods,youhaveamount_price},0.65,255,255,255,255,0.4,0.70)
                     
                     
                     if IsControlJustPressed(0,86) then
-                        if youhaveamount_price>=price then
+                        if youhaveamount_price>=price and v.gasoline>0 then
                             if give_item_to_inventory("gasoline",1) then
                                 inventory[inv_index_price].amount=youhaveamount_price-price
                                 TriggerServerEvent("buy_gasoline",k)
-                                TriggerServerEvent("ask_for_gasoline_amount",k)
                             end
                         else
-                            SimpleNotification("Not enough cash.")
+                            SimpleNotification("Not enough cash or there is no gasoline at this gas station.")
                         end
                     end
                 end
-            elseif in_radius(mypos,v.tank,20) then
-            
             end
+            if in_radius(mypos,v.tank,20) then
+                DrawMarker(20, v.tank.x, v.tank.y, v.tank.z, 
+                0.0, 0.0, 0.0, --dir
+                0.0, 0.0, 0.0, --rot
+                1.0, 1.0, -1.0, --scl
+                200, 200, 100, 200, 
+                true, false, 2, true, 0, 0, false);
+                if in_radius(mypos,v.tank,5) then
+                    if v.gasoline<2000 then
+                        if IsPedInAnyVehicle(myped) then
+                            local myveh=GetVehiclePedIsIn(myped)
+                            if GetPedInVehicleSeat(myveh,-1)~=myped then
+                                WriteHint("~c~Only driver can sell gasoline")
+                            elseif IsControlJustPressed(0,86) then
+                                local havetrailer,trailer=GetVehicleTrailerVehicle(myveh)
+                                if havetrailer then
+                                    local trailermodel=GetEntityModel(trailer)
+                                    if trailermodel==-730904777 or trailermodel==1956216962 then
+                                        if DecorExistOn(trailer,"gasoline") then
+                                            local curgas=DecorGetInt(trailer,"gasoline")
+                                            local gasneeded=2000-v.gasoline
+                                            local reward
+                                            if curgas>gasneeded then
+                                                reward=gasneeded*2
+                                                if give_item_to_inventory("cash",reward) then
+                                                    DecorSetInt(trailer,"gasoline",curgas-gasneeded)
+                                                    TriggerServerEvent("refill_gasstation",k,gasneeded)
+                                                    FlashMinimapDisplay()
+                                                    SimpleNotification("You sold ~o~~1~ gasoline ~s~and got ~g~$~1~",gasneeded,reward)
+                                                else
+                                                    SimpleNotification("You don't have place for reward in inventory")
+                                                end
+                                            else
+                                                reward=curgas*2
+                                                if give_item_to_inventory("cash",reward) then 
+                                                    --SetEntityAsMissionEntity(trailer)
+                                                    --DeleteVehicle(trailer)
+                                                    DecorRemove(trailer,"gasoline")
+                                                    TriggerServerEvent("refill_gasstation",k,curgas)
+                                                    FlashMinimapDisplay()
+                                                    SimpleNotification("You sold ~o~~1~ gasoline ~s~and got ~g~$~1~",curgas,reward)
+                                                else
+                                                    SimpleNotification("You don't have place for reward in inventory")
+                                                end
+                                            end
+                                        else
+                                            SimpleNotification("This trailer is empty")
+                                        end
+                                    else
+                                        SimpleNotification("This is wrong trailer")
+                                    end
+                                else
+                                    SimpleNotification("You don't have gasoline trailer tank attached!")
+                                end
+                            else
+                                WriteHint("~c~Press ~s~E ~c~to sell ~g~FILLED GASOLINE TRAILER TANK")
+                            end
+                        else
+                            WriteHint("~c~Bring ~g~FILLED GASOLINE TRAILER TANK ~c~here to sell it")
+                        end
+                    else
+                        WriteHint("~c~This ~g~GAS STATION IS FULL ~c~and doesn't require resupply")
+                    end
+                end
+            end
+        end
+        for k,v in ipairs(gasoline_generators) do
+            if in_radius(mypos,v,15) then
+                DrawMarker(20, v.x, v.y, v.z, 
+                0.0, 0.0, 0.0, --dir
+                0.0, 0.0, 0.0, --rot
+                1.0, 1.0, -1.0, --scl
+                250, 200, 50, 200, 
+                true, false, 2, true, 0, 0, false);
+                local myveh=GetVehiclePedIsIn(myped)
+                if GetPedInVehicleSeat(myveh,-1)==myped then
+                    local havetrailer,trailer=GetVehicleTrailerVehicle(myveh)
+                    if havetrailer then
+                        local trailermodel=GetEntityModel(trailer)
+                        if trailermodel==-730904777 or trailermodel==1956216962 then
+                            if DecorExistOn(trailer,"gasoline") then
+                                local curgas=DecorGetInt(trailer,"gasoline")
+                                if curgas<1000 then
+                                    DecorSetInt(trailer,"gasoline",curgas+1)
+                                end
+                            else
+                                DecorSetInt(trailer,"gasoline",1)
+                            end
+                            Wait(300)
+                        else
+                            WriteHint("~c~You cannot put gasoline in this trailer")
+                        end
+                    else
+                        WriteHint("~c~You need ~s~GASOLINE TRAILER ~c~to refill it")
+                    end
+                else
+                    WriteHint("~c~You need to be in vehicle and you need ~s~GASOLINE TRAILER ~c~to refill it")
+                end
+            end
+        end
+    end
+end)
+
+-- Citizen.CreateThread(function()
+    -- while true do Wait(0)
+    -- end
+-- end)
+
+Citizen.CreateThread(function()
+    local map_icons={
+    {x=108.92474365234,y=6626.1171875,z=31.787254333496,sprite=446,color=13,name="Car parts shop"}, --paleto
+    {x=1176.3358154297,y=2640.3842773438,z=37.754180908203,sprite=446,color=13,name="Car parts shop"}, --sandy
+    {x=-336.08795166016,y=-134.01849365234,z=39.010066986084,sprite=446,color=13,name="Car parts shop"}, --middle
+    {x=731.84368896484,y=-1082.7537841797,z=22.147554397583,sprite=446,color=13,name="Car parts shop"}, --anarchy
+    {x=-205.81533813477,y=-1319.939453125,z=30.238958358765,sprite=446,color=13,name="Car parts shop"}, --benny
+    {x=-1156.0357666016,y=-2009.0445556641,z=12.529552459717,sprite=446,color=13,name="Car parts shop"}, --airport
+    
+    {x=1962.7620849609,y=3744.193359375,z=32.343746185303,sprite=52,name="Provision store"}, --sandy
+    {x=1733.9096679688,y=6414.2333984375,z=35.037258148193,sprite=52,name="Provision store"}, --norrth
+    {x=-49.969524383545,y=-1753.4479980469,z=29.421014785767,sprite=52,name="Provision store"}, --ghetto
+    {x=29.157470703125,y=-1345.513671875,z=29.496995925903,sprite=52,name="Provision store"}, --north ghetto
+    {x=1159.0723876953,y=-321.81414794922,z=69.205070495605,sprite=52,name="Provision store"}, --EAST LS
+    {x=-711.62475585938,y=-912.67266845703,z=19.215587615967,sprite=52,name="Provision store"}, --little seul
+    {x=-1223.8529052734,y=-905.83740234375,z=12.3263463974,sprite=52,name="Provision store"}, --LEFT OF LITTLE SEUL
+    {x=-1488.1184082031,y=-381.16339111328,z=40.163387298584,sprite=52,name="Provision store"}, --WEST exit ls
+    {x=-1824.0257568359,y=790.37286376953,z=138.19316101074,sprite=52,name="Provision store"}, --WEST NORTH exit ls
+    {x=-2969.3889160156,y=390.57669067383,z=15.043313980103,sprite=52,name="Provision store"}, --banham 1 (southern)
+    {x=-3042.4968261719,y=588.54547119141,z=7.9089293479919,sprite=52,name="Provision store"}, --banham 2 
+    {x=-3243.7302246094,y=1005.2648925781,z=12.830717086792,sprite=52,name="Provision store"}, --banham 3 
+    {x=377.5036315918,y=326.63232421875,z=103.56637573242,sprite=52,name="Provision store"}, --ls north
+    {x=544.240234375,y=2669.169921875,z=42.156532287598,sprite=52,name="Provision store"}, --HARMONY
+    {x=2678.7194824219,y=3284.6645507813,z=55.24112701416,sprite=52,name="Provision store"}, --east near you tool
+    {x=1702.1368408203,y=4927.0517578125,z=42.063678741455,sprite=52,name="Provision store"}, --GRAPESEED
+    {x=1166.4211425781,y=2707.5710449219,z=38.15771484375,sprite=52,name="Provision store"}, --GRAND SENORA
+    {x=2555.1860351563,y=385.80474853516,z=108.62294769287,sprite=52,name="Provision store"}, --swat east
+    
+    {x=136.49124145508,y=-1708.3150634766,z=29.291620254517,sprite=71}, --barber ghetto near station
+    {x=-1283.5354003906,y=-1117.2982177734,z=6.9901118278503,sprite=71}, --barber NEAR BEACH
+    {x=-815.05908203125,y=-184.52572631836,z=37.56888961792,sprite=71}, --barber elite
+    {x=-33.047420501709,y=-152.32252502441,z=57.076499938965,sprite=71}, --barber CENTER CITY
+    {x=1212.4984130859,y=-472.68957519531,z=66.208000183105,sprite=71}, --barber east
+    {x=1932.1176757813,y=3729.2197265625,z=32.84423828125,sprite=71}, --barber sandy
+    {x=-278.52871704102,y=6228.6616210938,z=31.695261001587,sprite=71}, --barber paleto
+    
+    {x=1323.6118164063,y=-1652.4865722656,z=52.275413513184,sprite=75}, --tatoo east
+    {x=322.22174072266,y=181.4826965332,z=103.5864944458,sprite=75}, --tatoo north
+    {x=-3170.7678222656,y=1076.0648193359,z=20.82918548584,sprite=75}, --tatoo west
+    {x=1863.7347412109,y=3748.7912597656,z=33.031890869141,sprite=75}, --tatoo sandy
+    {x=-292.48239135742,y=6197.263671875,z=31.488706588745,sprite=75}, --tatoo paleto
+    {x=-1153.3564453125,y=-1426.2795410156,z=4.9544591903687,sprite=75}, --tatoo THE PIT
+    }
+    local blip
+    for k,v in ipairs(map_icons) do        
+        blip=AddBlipForCoord(v.x,v.y,v.z)
+        SetBlipSprite(blip, v.sprite)
+        SetBlipAsShortRange(blip,true)
+        SetBlipColour(blip, 4)
+        if v.name~=nil then
+            SetBlipName(blip, v.name)
+        end
+    end
+    for k,v in ipairs(safezones) do        
+        blip=AddBlipForCoord(v.x,v.y,v.z)
+        SetBlipSprite(blip, v.blip)
+        SetBlipAsShortRange(blip,true)
+        SetBlipColour(blip, v.color)
+        if v.name~=nil then
+            SetBlipName(blip, v.name)
         end
     end
 end)
