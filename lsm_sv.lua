@@ -113,16 +113,35 @@ AddEventHandler("requestsignals",function()
     end
 end)
 
-local gasstations={
-{fuel=0},
-}
 
 local gasstations={
     {
-        trader={x=162.09725952148,y=6636.5678710938,z=31.556589126587,blip=361,gasoline=100},
-        tank={x=172.08010864258,y=6622.7368164063,z=31.832139968872,blip=431,gasoline=100},
+        trader={x=162.09725952148,y=6636.5678710938,z=31.556589126587,blip=361},
+        tank={x=172.08010864258,y=6622.7368164063,z=31.832139968872,blip=431},
+        gasoline=math.random(1,100),
+    },
+    {
+        trader={x=646.29534912109,y=267.25625610352,z=103.26166534424,blip=361},
+        tank={x=635.08709716797,y=255.35494995117,z=103.12169647217,blip=431},
+        gasoline=math.random(1,100),
     },
 }
+
+RegisterServerEvent("buy_gasoline")
+AddEventHandler("buy_gasoline",function(id)
+    gasstations[id].gasoline=gasstations[id].gasoline-1
+    TriggerClientEvent("gasstation_update",-1,id,gasstations[id].gasoline)
+end)
+RegisterServerEvent("request_gasstation")
+AddEventHandler("request_gasstation",function(id)
+    TriggerClientEvent("gasstation_update",source,id,gasstations[id].gasoline)
+end)
+RegisterServerEvent("refill_gasstation")
+AddEventHandler("refill_gasstation",function(id,amount)
+    gasstations[id].gasoline=gasstations[id].gasoline+amount
+    TriggerClientEvent("gasstation_update",-1,id,gasstations[id].gasoline)
+end)
+
 
 
     
