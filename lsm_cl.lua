@@ -10,6 +10,7 @@ pipebomb="Pipe bomb",
 molotov="Molotov Cocktail",
 s_m_y_cop_01="Male Cop",
 s_f_y_cop_01="Female Cop",
+dbshotgun="Double Barrel Shotgun",
 }
 
 local string_registered_labels={}
@@ -128,7 +129,7 @@ Citizen.CreateThread(function()
     while true do hint_y=0.32 Wait(0) end
 end)
 local function WriteHint(text)
-    WriteText(4,text,0.3,255,255,255,255,0.005,hint_y) hint_y=hint_y+0.02
+    WriteText(4,text,0.4,255,255,255,255,0.005,hint_y) hint_y=hint_y+0.025
 end
 
 local modelgroups={}
@@ -226,25 +227,42 @@ local looted_array={}
 
 local normal_crafts={
     {"molotov",
-        {"gasoline",5,
-        "alcohol",1,},
+        {"gasoline",1,
+        "alcohol",1,
+        "rags",1},
     },
     {"pipebomb",
-        {"engineparts",15,
-        "chemicals",10,
-        "pistolammo",10},
+        {"engineparts",1,
+        "chemicals",1,
+        "scrapmetal",1},
+    },
+    {"proxmine",
+        {"engineparts",2,
+        "chemicals",3,
+        "scrapmetal",2,
+        "scrapplastic",2},
+    },
+    {"flare",
+        {"chemicals",1,
+        "scrapplastic",1,},
+    },
+    {"flaregun",
+        {"chemicals",1,
+        "scrapplastic",1,
+        "scrapmetal",1},
     },
     {"bandage",
         {"alcohol",1},
+        {"rags",2},
     },
-    {"medkit",
-        {"alcohol",2,
-        "bandage",2
-        },
-    },
-    {"pipebomb",
-        {"chemicals",1},
-    },
+    -- {"medkit",
+        -- {"alcohol",2,
+        -- "bandage",2
+        -- },
+    -- },
+    -- {"pipebomb",
+        -- {"chemicals",1},
+    -- },
 }
 for k,v in pairs(weaponsarray.raiders) do
     weaponsarray.raiders[k]=GetHashKey("weapon_"..v)
@@ -259,20 +277,36 @@ local safezones={
     -- weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     -- relationship="HATES_PLAYER"},--LSPD
 
-    {x=975.88543701172,y=-119.29508972168,z=74.220664978027,r=50.0,blip=495,color=20,
+    {x=1986.5546875,y=3049.6391601563,z=47.215106964111,r=50.0,blip=93,color=1,
+    name="~r~Yellow Jack~s~",
+    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
+    relationship="HATES_PLAYER"},--yellow jack
+    
+    {x=913.80059814453,y=-1699.5369873047,z=51.125102996826,r=15.0,blip=140,color=2,
     models={275618457},
-    name="~o~Lost M.C.~s~",
+    name="~g~Polak's hideout~s~",
+    friends=true,
+    trade={
+        {"cash",75,"weed",1},
+    },
+    tradepos={x=914.97869873047,y=-1702.4061279297,z=51.258224487305},
+    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
+    relationship="HATES_PLAYER"},--Pookys
+    
+    {x=975.88543701172,y=-119.29508972168,z=74.220664978027,r=50.0,blip=495,color=1,
+    models={275618457},
+    name="~r~Lost M.C.~s~",
     weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     relationship="HATES_PLAYER"},--Lost MC
 
     --Altruists camp
-    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=181,color=5,
+    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=181,color=2,
     models={-12678997,1694362237,1939545845,-1105135100},
     name="~g~Old Cult Camp~s~",
     friends=true,
     trade={
         {"water",1,"cash",15},
-        {"gasoline",1,"cash",10},
+        {"gasoline",1,"cash",30},
         {"bandage",1,"cash",10},
         {"canfood",1,"cash",15},
         {"cash",30,"cigarettes",1},
@@ -326,7 +360,7 @@ local safezones={
     
     
     --LSPD station
-    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=60,color=3,
+    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=60,color=2,
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     name="~g~LSPD Station~s~",
     friends=true,
@@ -538,6 +572,12 @@ local function load_data()
     end
 end
 
+Citizen.CreateThread(function()
+    while true do Wait(10000)
+        local lsm_random_spawn=GetConvarInt("lsm_random_spawn",0)
+    end
+end)
+    
 AddEventHandler("playerSpawned",function()
     local ped=PlayerPedId()
     StopAudioScenes()
@@ -549,10 +589,9 @@ AddEventHandler("playerSpawned",function()
     player.saturation=GetResourceKvpFloat("saturation")
     player.health=100
     player.blood=100
-    player.hydration=100
-    player.saturation=100
+    player.hydration=50
+    player.saturation=50
     player.drunk=0
-    local lsm_random_spawn=GetConvarInt("lsm_random_spawn",0)
     if lsm_random_spawn==1 then
         
         SetPedRandomComponentVariation(ped)
@@ -632,6 +671,9 @@ shotgunammo="Shotgun ammo",
 food="Food",
 cash="Cash",
 cigarettes="Cigarettes",
+scrapmetal="Scrap Metal",
+scrapplastic="Scrap Plastic",
+rags="Rags",
 }
 local item_index_to_name={}
 local item_name_to_index={}
@@ -679,24 +721,151 @@ local birds={
 }
 
 --- table with models and weapons
-local deadbodiesrewards_random={
-{"SWITCHBLADE",1},
-{"cigarettes",1},
-{"weed",1},
-{"soda",1},
-{"water",1},
+-- local deadbodiesrewards_random={
+-- {"SWITCHBLADE",1},
+-- {"cigarettes",1},
+-- {"weed",1},
+-- {"soda",1},
+-- }
+local deadbodiesrewards_tier1={
+{"scrapplastic",1},
+{"rags",-2},
 }
-local deadbodiesrewards_survivors={
-{"SWITCHBLADE",1},
+local deadbodiesrewards_tier2={
 {"cigarettes",1},
-{"weed",1},
+{"bandage",-2},
+}
+local deadbodiesrewards_tier3={
+{"food",1},
+{"canfood",1},
 {"soda",1},
-{"water",1},
-{"pistolammo",-20},
-{"shotgunammo",-10},
-{"snspistol",1},
+{"juice",1},
+{"switchblade",1},
 {"knife",1},
+{"dagger",1},
+{"flashlight",1},
+{"knuckle",1},
+{"molotov",1},
+{"pipebomb",1},
+{"flaregun",1},
 }
+local deadbodiesrewards_tier4={
+{"pistolammo",-10},
+{"shotgunammo",-10},
+{"ammo",-10},
+{"heavyrifleammo",-10},
+{"weed",-2},
+}
+local deadbodiesrewards_tier5={
+{"snspistol",1},
+{"vintagepistol",1},
+{"pistol",1},
+{"combatpistol",1},
+{"doubleaction",1},
+{"revolver",1},
+{"marksmanpistol",1},
+{"dbshotgun",1},
+}
+local deadbodiesrewards_tier6={
+{"medkit",1},
+}
+
+local trunkrewards_tier1={
+{"scrapplastic",-5},
+{"scrapmetal",-5},
+{"rags",-3},
+}
+local trunkrewards_tier2={
+{"cigarettes",-3},
+{"alcohol",-2},
+{"chemicals",1},
+{"bandage",-2},
+{"engineparts",-5},
+}
+local trunkrewards_tier3={
+{"food",-3},
+{"canfood",-2},
+{"soda",-2},
+{"juice",1},
+{"switchblade",1},
+{"knife",1},
+{"dagger",1},
+{"bat",1},
+{"battleaxe",1},
+{"crowbar",1},
+{"flashlight",1},
+{"knuckle",1},
+{"machete",1},
+{"wrench",1},
+{"poolcue",1},
+{"molotov",1},
+{"pipebomb",1},
+{"flaregun",1},
+}
+local trunkrewards_tier4={
+{"pistolammo",-50},
+{"shotgunammo",-20},
+{"ammo",-30},
+{"heavyrifleammo",-50},
+{"weed",-3},
+}
+local trunkrewards_tier5={
+{"snspistol",1},
+{"vintagepistol",1},
+{"pistol",1},
+{"combatpistol",1},
+{"doubleaction",1},
+{"revolver",1},
+--{"appistol",1},
+--{"heavypistol",1},
+{"marksmanpistol",1},
+--{"pistol50",1},
+--{"pistol_mk2",1},
+--{"revolver_mk2",1},
+--{"pistol_mk2",1},
+{"dbshotgun",1},
+{"musket",1},
+}
+local trunkrewards_tier6={
+{"medkit",-2},
+--{"assaultshotgun",1},
+--{"bullpupshotgun",1},
+{"heavyshotgun",1},
+{"pumpshotgun",1},
+--{"pumpshotgun_mk2",1},
+{"sawnoffshotgun",1},
+--{"autoshotgun",1},
+--{"assaltsmg",1},
+--{"combatmg",1},
+--{"combatmg_mk2",1},
+--{"combatpdw",1},
+--{"gusenberg",1},
+{"machinepistol",1},
+--{"mg",1},
+{"microsmg",1},
+{"minismg",1},
+{"smg",1},
+--{"smg_mk2",1},
+--{"advancedrifle",1},
+{"assaultrifle",1},
+--{"assaultrifle_mk2",1},
+{"bullpuprifle",1},
+--{"bullpuprifle_mk2",1},
+{"carbinerifle",1},
+--{"carbinerifle_mk2",1},
+{"compactrifle",1},
+{"specialcarbine",1},
+--{"specialcarbine_mk2",1},
+{"heavysniper",1},
+{"sniperrifle",1},
+{"marksmanrifle",1},
+--{"marksmanrifle_mk2",1},
+--{"heavysniper_mk2",1},
+--{"compactlauncher",1},
+--{"grenadelauncher",1},
+--{"assaultshotgun",1},
+}
+
 local deadbodiesrewards={
 [-681004504]={"NIGHTSTICK",1}, --security
 [1581098148]={"pistolammo",15}, --cop male
@@ -1013,12 +1182,25 @@ Citizen.CreateThread(function()
         EnableDispatchService(i,false)
     end
     NetworkSetTalkerProximity(50.0)
+    
+    local sniperrifles={
+    [GetHashKey("weapon_sniperrifle")]=true,
+    [GetHashKey("weapon_marksmanrifle")]=true,
+    [GetHashKey("weapon_heavysniper")]=true,
+    [GetHashKey("weapon_heavysniper_mk2")]=true,
+    }
+    
+    
     while true do
         -- SetPedDensityMultiplierThisFrame(1.0)
         -- SetScenarioPedDensityMultiplierThisFrame(1.0)
         DisableVehicleDistantlights(true)
         DisplayDistantVehicles(false)
-        HideHudComponentThisFrame(14)
+        local myped=PlayerPedId()
+        local myweapon=GetSelectedPedWeapon(myped)
+        if sniperrifles[myweapon]==nil or not IsFirstPersonAimCamActive() then
+            HideHudComponentThisFrame(14)
+        end
         -- SetVehicleDensityMultiplierThisFrame(0.1)
         -- SetSomeVehicleDensityMultiplierThisFrame(0.1)
         -- SetRandomVehicleDensityMultiplierThisFrame(0.1)
@@ -1243,6 +1425,7 @@ Citizen.CreateThread(function()
                                 SetVehicleEngineHealth(veh,rand-.1)
                             else
                                 --SetVehicleUndriveable(veh,true)
+                                SetEntityRenderScorched(veh,true)
                                 SetVehicleEngineHealth(veh,-3999.9)
                             end
                         end
@@ -2657,14 +2840,16 @@ Citizen.CreateThread(function()
                         give_ammo(pped,1285032059)
                     elseif inventory[inventory.current].item=="medkit" then
                         if player.health<100.0 then
-                            player.health=player.health+80
+                            --player.health=player.health+80
+                            local myhealth=GetEntityHealth(pped)
+                            SetEntityHealth(pped,myhealth+80)
                             if player.health>100 then player.health=100 end
                             inventory[inventory.current].amount=inventory[inventory.current].amount-1
                             check_inv_slot_for_zero_amount()
                         end
                     elseif inventory[inventory.current].item=="alcohol" then
                         if player.hydration<100 then
-                            player.hydration=player.hydration+20
+                            player.hydration=player.hydration+1
                             if player.hydration>100 then player.hydration=100 end
                             player.drunk=player.drunk+1.5
                             ShakeGameplayCam("DRUNK_SHAKE",player.drunk)
@@ -2673,7 +2858,7 @@ Citizen.CreateThread(function()
                         end
                     elseif inventory[inventory.current].item=="weed" then
                         if player.saturation<100 then
-                            player.saturation=player.saturation+20
+                            player.saturation=player.saturation+10
                             if player.saturation>100 then player.saturation=100 end
                             player.drunk=player.drunk+0.5
                             ShakeGameplayCam("FAMILY5_DRUG_TRIP_SHAKE",player.drunk)
@@ -2862,15 +3047,16 @@ Citizen.CreateThread(function()
                 end
                 if zone.name~=nil then
                     WriteNotification("You entered "..zone.name..".")
-                    WriteNotification("Now you respawn at "..zone.name..".")
                     print("you entered zone")
                     FlashMinimapDisplay()
-                    SetResourceKvpFloat("x",zone.spawnpos.x)
-                    SetResourceKvpFloat("y",zone.spawnpos.y)
-                    SetResourceKvpFloat("z",zone.spawnpos.z)
-                    
-                    SetResourceKvpInt("pedmodel",GetEntityModel(myped))
-                    --DisplayRadar(false)
+                    if lsm_random_spawn==0 and zone.spawnpos.x and zone.spawnpos.y and zone.spawnpos.z then
+                        WriteNotification("Now you respawn at "..zone.name..".")
+                        SetResourceKvpFloat("x",zone.spawnpos.x)
+                        SetResourceKvpFloat("y",zone.spawnpos.y)
+                        SetResourceKvpFloat("z",zone.spawnpos.z)
+                        
+                        SetResourceKvpInt("pedmodel",GetEntityModel(myped))
+                    end
                 end
             else
                 if traderblip~=nil then
@@ -3447,39 +3633,20 @@ Citizen.CreateThread(function()
             local randomitem
             local platenumber=GetVehicleNumberPlateText(veh)
             if (GetHashKey(platenumber)&3)~=0 then
-                local randomamount--=math.random(1,20)
-                local randchose=math.random(1,26)
-                if      randchose==1  then randomitem="water"               randomamount=math.random(1,2)
-                elseif  randchose==2  then randomitem="canfood"             randomamount=math.random(1,2)
-                elseif  randchose==3  then randomitem="mre"                 randomamount=1
-                elseif  randchose==4  then randomitem="weed"                randomamount=math.random(1,2)
-                elseif  randchose==5  then randomitem="chemicals"           randomamount=math.random(1,2)
-                elseif  randchose==6  then randomitem="gasoline"            randomamount=math.random(1,5)
-                elseif  randchose==7  then randomitem="juice"               randomamount=math.random(1,2)
-                elseif  randchose==8  then randomitem="soda"                randomamount=math.random(1,2)
-                elseif  randchose==9  then randomitem="medkit"              randomamount=math.random(1,1)
-                elseif  randchose==10 then randomitem="alcohol"             randomamount=math.random(1,2)
-                elseif  randchose==11 then randomitem="bandage"             randomamount=math.random(1,2)
-                elseif  randchose==12 then randomitem="ammo"                randomamount=math.random(1,50)
-                elseif  randchose==13 then randomitem="pistolammo"          randomamount=math.random(1,50)
-                elseif  randchose==14 then randomitem="heavyrifleammo"      randomamount=math.random(1,50)
-                elseif  randchose==15 then randomitem="shotgunammo"         randomamount=math.random(1,20)
-                elseif  randchose==16 then randomitem="snspistol"           randomamount=1
-                elseif  randchose==17 then randomitem="vintagepistol"       randomamount=1
-                elseif  randchose==17 then randomitem="revolver"            randomamount=1
-                elseif  randchose==18 then randomitem="dbshotgun"           randomamount=1
-                elseif  randchose==19 then randomitem="crowbar"             randomamount=1
-                elseif  randchose==20 then randomitem="bat"                 randomamount=1
-                elseif  randchose==21 then randomitem="poolcue"             randomamount=1
-                elseif  randchose==22 then randomitem="dagger"              randomamount=1
-                elseif  randchose==23 then randomitem="hatchet"             randomamount=1
-                elseif  randchose==24 then randomitem="knife"               randomamount=1
-                elseif  randchose==25 then randomitem="pipebomb"            randomamount=1
-                elseif  randchose==26 then randomitem="molotov"             randomamount=1
-                end
-                --local finalrandammo
-                --if randchose>=12 then finalrandammo=randomamount else finalrandammo=1 end
-                if give_item_to_inventory(randomitem,randomamount) then
+            
+                local tier=math.random(1,100)
+                local chosentier
+                if      tier>98 then    chosentier=trunkrewards_tier6
+                elseif  tier>93 then    chosentier=trunkrewards_tier5
+                elseif  tier>84 then    chosentier=trunkrewards_tier4
+                elseif  tier>68 then    chosentier=trunkrewards_tier3
+                elseif  tier>43 then    chosentier=trunkrewards_tier2
+                else                    chosentier=trunkrewards_tier1 end
+                
+                local reward=chosentier[math.random(1,#chosentier)] 
+                if reward[2]<0 then reward[2]=math.random(1,-reward[2]) end
+                
+                if give_item_to_inventory(reward[1],reward[2]) then
                     DecorSetBool(veh,"zm_looted",true)
                 end
             else
@@ -3515,9 +3682,35 @@ Citizen.CreateThread(function()
                     local reward=deadbodiesrewards[GetEntityModel(ped)]
                     if reward==nil then 
                         if DecorExistOn(ped,"raider") then
-                            reward=deadbodiesrewards_survivors[math.random(1,#deadbodiesrewards_survivors)] 
-                        else
-                            reward=deadbodiesrewards_random[math.random(1,#deadbodiesrewards_random)] 
+                            -- 98-100 - tier6 (2%) --big guns/medkits
+                            -- 93-97 - tier5 (4%) --small guns
+                            -- 84-92 - tier4 (8%) --ammo
+                            -- 68-83 - tier3 (15%) -- food
+                            -- 43-67 - tier2 (24%) -- cigs/bandages
+                            -- 0-42 - tier1 (42%) -- scrap/rags
+                            local tier=math.random(1,100)
+                            local chosentier
+                            if      tier>98 then    chosentier=deadbodiesrewards_tier6
+                            elseif  tier>93 then    chosentier=deadbodiesrewards_tier5
+                            elseif  tier>84 then    chosentier=deadbodiesrewards_tier4
+                            elseif  tier>68 then    chosentier=deadbodiesrewards_tier3
+                            elseif  tier>43 then    chosentier=deadbodiesrewards_tier2
+                            else                    chosentier=deadbodiesrewards_tier1 end
+                            reward=chosentier[math.random(1,#chosentier)] 
+                            if debug_mode then
+                                WriteNotification("Debug random loot number is: "..tier)
+                                print("Debug random loot number is: "..tier)
+                            end
+                        else --zombie loot
+                            local tier=math.random(1,100)
+                            local chosentier
+                            if  tier>90 then        chosentier=deadbodiesrewards_tier2
+                            else                    chosentier=deadbodiesrewards_tier1 end
+                            reward=chosentier[math.random(1,#chosentier)] 
+                            if debug_mode then
+                                WriteNotification("Debug random loot number is: "..tier)
+                                print("Debug random loot number is: "..tier)
+                            end
                         end
                     end
                     --if reward~=nil then
@@ -4077,16 +4270,16 @@ Citizen.CreateThread(function() --if true then return end
                 DeleteObject(obj)
                 objects_bp[k]=nil
             else
-                local ped_pos=GetEntityCoords(ped)
-                local obj_pos=GetEntityCoords(obj)
-                if math.abs(obj_pos.x-ped_pos.x)+math.abs(obj_pos.y-ped_pos.y)+math.abs(obj_pos.z-ped_pos.z)>2 then
-                    SetEntityAsNoLongerNeeded(obj)
-                    SetEntityAsMissionEntity(obj)
-                    DeleteObject(obj)
-                    objects_bp[k]=nil
-                else
+                -- local ped_pos=GetEntityCoords(ped)
+                -- local obj_pos=GetEntityCoords(obj)
+                -- if math.abs(obj_pos.x-ped_pos.x)+math.abs(obj_pos.y-ped_pos.y)+math.abs(obj_pos.z-ped_pos.z)>3 then
+                    -- SetEntityAsNoLongerNeeded(obj)
+                    -- SetEntityAsMissionEntity(obj)
+                    -- DeleteObject(obj)
+                    -- objects_bp[k]=nil
+                -- else
                     peds_bp[ped]=true
-                end
+                -- end
             end
         end
         for k,obj in pairs(objects_hlm) do
@@ -4449,6 +4642,11 @@ local gasstations={
         tank={x=635.08709716797,y=255.35494995117,z=103.12169647217,blip=431},
         gasoline=0,
     },
+    {
+        trader={x=1200.6888427734,y=2655.7438964844,z=37.851871490479,blip=361}, --NEAR SANDY
+        tank={x=1192.6104736328,y=2662.490234375,z=37.822631835938,blip=431},
+        gasoline=0,
+    },
 }
 local gasoline_generators={
     {x=1527.603515625,y=-2113.7202148438,z=76.686614990234,blip=648,color=51},
@@ -4685,6 +4883,18 @@ Citizen.CreateThread(function()
     {x=1863.7347412109,y=3748.7912597656,z=33.031890869141,sprite=75}, --tatoo sandy
     {x=-292.48239135742,y=6197.263671875,z=31.488706588745,sprite=75}, --tatoo paleto
     {x=-1153.3564453125,y=-1426.2795410156,z=4.9544591903687,sprite=75}, --tatoo THE PIT
+    
+    {x=-326.86383056641,y=6080.3544921875,z=31.45477104187,sprite=110}, --paleto
+    {x=2569.3251953125,y=297.60437011719,z=108.73485565186,sprite=110}, --swat east
+    {x=1695.0667724609,y=3756.5124511719,z=34.70531463623,sprite=110}, --sandy
+    {x=-3169.6496582031,y=1085.1940917969,z=20.838739395142,sprite=110}, --chumash
+    {x=-1116.6037597656,y=2695.0380859375,z=18.554153442383,sprite=110}, --near military base
+    {x=19.483867645264,y=-1110.0297851563,z=29.797027587891,sprite=110}, --near ALTA
+    {x=-663.71563720703,y=-938.05987548828,z=21.829229354858,sprite=110}, --little syaomi
+    {x=811.59045410156,y=-2154.2568359375,z=29.61901473999,sprite=110}, --east ls
+    {x=249.35090637207,y=-47.442733764648,z=69.941123962402,sprite=110}, --сутеук дщеы ща ырщзы
+    {x=843.78741455078,y=-1029.9522705078,z=28.194849014282,sprite=110}, --NEAR ANARCHISTS
+    { x=-1308.6551513672,y=-392.06604003906,z=36.695762634277,sprite=110}, --diagonal
     }
     local blip
     for k,v in ipairs(map_icons) do        
@@ -4704,6 +4914,22 @@ Citizen.CreateThread(function()
         if v.name~=nil then
             SetBlipName(blip, v.name)
         end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        while not IsPedDeadOrDying(PlayerPedId()) do Wait(0) end
+        inventory.total=0
+        inventory.current=0
+        SetResourceKvpInt("inventory_total",0)
+        SetResourceKvpInt("inventory_current",0)
+        for i=1,inventory.max do
+            inventory[i]=nil
+            DeleteResourceKvp("inventory_item_"..i)
+            DeleteResourceKvp("inventory_amount_"..i)
+        end
+        while IsPedDeadOrDying(PlayerPedId()) do Wait(0) end
     end
 end)
 
