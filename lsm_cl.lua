@@ -1,40 +1,64 @@
+local function range(a,b,except)
+    local ret={}
+    if except~=nil then
+        local blacklist={}
+        if type(except)=="table" then
+            for k,v in pairs(except) do
+                blacklist[v]=true
+            end
+        else
+            blacklist[except]=true
+        end
+        for i=a,b do
+            if not blacklist[i] then
+                table.insert(ret,i)
+            end
+        end
+    else
+        for i=a,b do
+            table.insert(ret,i)
+        end
+    end
+    return ret
+end
+
 local suits={ --need to substract 1 from var and tex --done
 standard={
 [0]={var=1-1,tex=1-1}, --head
-[1]={var=1-1,tex={2-1,6-1}}, --"beard" masks
-[2]={var=5-1,tex={2-1,5-1}}, --hair
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
 [3]={var=1-1,tex=1-1}, --"torso" hands
-[4]={var=1-1,tex={1-1,16-1}}, --legs
+[4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=2-1,tex={1-1,16-1}}, --foot 
+[6]={var=2-1,tex=range(1-1,16-1)}, --foot 
 [7]={var=1-1,tex=1-1}, --additional 
 [8]={var=0-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
-[11]={var=1-1,tex={2-1,5-1}}, --additional parts for torso
+[11]={var=1-1,tex=range(2-1,12-1,{7-1,10-1,11-1})}, --additional parts for torso
 bodyarmor={[9]={var=2-1,tex=2-1}},
 backpack={[5]={var=39-1,tex=1-1}},
 },
 marauder={
 [0]={var=1-1,tex=1-1}, --head
 [1]={var=1-1,tex=1-1}, --"beard" masks
-[2]={var=5-1,tex={2-1,5-1}}, --hair
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
 [3]={var=21-1,tex=1-1}, --"torso" hands
-[4]={var=10-1,tex={1-1,16-1}}, --legs
+[4]={var=10-1,tex=range(1-1,16-1,{5-1,6-1,9-1,16-1})}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
 [6]={var=25-1,tex=1-1}, --foot 
 [7]={var=1-1,tex=1-1}, --additional 
 [8]={var=0-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
-[11]={var=51-1,tex={1-1,5-1}}, --additional parts for torso
+[11]={var=51-1,tex=range(1-1,5-1)}, --additional parts for torso
 bodyarmor={[9]={var=2-1,tex=2-1}},
 backpack={[5]={var=39-1,tex=1-1}},
 },
 camouflage={
 [0]={var=1-1,tex=1-1}, --head
 [1]={var=1-1,tex=1-1}, --"beard" masks
-[2]={var=5-1,tex={2-1,5-1}}, --hair
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=32-1,tex=5-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
@@ -50,7 +74,7 @@ backpack={[5]={var=39-1,tex=1-1}},
 offdutysheriff={
 [0]={var=1-1,tex=1-1}, --head
 [1]={var=1-1,tex=1-1}, --"beard" masks
-[2]={var=5-1,tex={2-1,5-1}}, --hair
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=8-1,tex=5-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
@@ -1147,7 +1171,7 @@ launchergrenade="40mm grenade, used in grenade launchers.",
 clothes_marauder="Standard marauder outfit. Warm, offers decent protection against minor scratches. Light weight allows one to be mobile, while offering good base for tactical gear.",
 clothes_camouflage="Camouflage clothes. Forest camouflage allows one to hide in forest areas better.",
 armorplate="Armor plate, used in plate carriers, cannot be used by itself.",
-clothes_offdutysheriff="Off duty sheriff clothes, thick clothes offers decent protection against minor injuries.",
+clothes_offdutysheriff="Off duty sheriff clothes, thick clothes offers decent protection against minor injuries. Camouflaged raincoat allows one to hide body armor.",
 cowboyhat="Sheriff hat.",
 }
 local item_index_to_name={}
@@ -1407,7 +1431,7 @@ local deadbodiesrewards={
 [-1286380898]={"bandage",1}, --medic
 }
 local inventory_items_chances={
-water={chance=10,text="This water is ~r~spoiled~s~."},
+water={chance=80,text="This water is ~r~spoiled~s~."},
 juice={chance=15,text="This juice is ~r~spoiled~s~."},
 soda={chance=25,text="This soda is ~r~spoiled~s~."},
 alcohol={chance=45,text="This alcohol is ~r~spoiled~s~."},
@@ -1643,9 +1667,10 @@ local function check_inv_slot_for_zero_amount()
             inventory.current=inventory.total
         end
         SetResourceKvpInt("inventory_total",inventory.total)
-        if inventory.scroll*inventory.rows>=inventory.total then
+        if inventory.total<=inventory.rows then
+            inventory.scroll=0
+        elseif inventory.scroll*inventory.rows>=inventory.total then
             inventory.scroll=inventory.scroll-1
-            --if inventory.scroll<0 then inventory.scroll=0 end
         end
     else
         SetResourceKvpInt("inventory_amount_"..inventory.current,inventory[inventory.current].amount)
@@ -3636,6 +3661,12 @@ Citizen.CreateThread(function()
         if inventory.highlight>0 then
             inventory.highlight=inventory.highlight-1
         end
+        
+        if inventory.scroll<=0 or inventory.total==0 then 
+            inventory.scroll=0 
+        elseif inventory.scroll*inventory.rows>=inventory.total then
+            inventory.scroll=inventory.scroll-1
+        end
     
         --dialogs start
         if true then
@@ -4680,6 +4711,7 @@ Citizen.CreateThread(function()
                     inventory.current=inventory.current+1
                 else
                     inventory.current=1
+                    inventory.scroll=0
                 end
                 inventory.highlight=500
             elseif IsControlJustPressed(0,175) then --right
@@ -4902,7 +4934,7 @@ Citizen.CreateThread(function()
                         if player.health<100.0 then
                             --player.health=player.health+80
                             local myhealth=GetEntityHealth(pped)
-                            SetEntityHealth(pped,myhealth+50)
+                            SetEntityHealth(pped,myhealth+35)
                             if player.health>100 then player.health=100 end
                             inventory[inventory.current].amount=inventory[inventory.current].amount-1
                             check_inv_slot_for_zero_amount()
@@ -5017,8 +5049,8 @@ Citizen.CreateThread(function()
                 end
                 inventory.highlight=500
             elseif IsControlJustPressed(0,214) then --INPUT_FRONTEND_DELETE
-                if not IsPedInAnyVehicle(pped) then
-                    inventory.highlight=0
+                if not IsPedInAnyVehicle(pped) and inventory.highlight>0 and inventory[inventory.current]~=nil and inventory[inventory.current].amount>0 then
+                    if inventory.mode then inventory.highlight=0 end
                     local amounttodrop=inventory[inventory.current].amount
                     while true do Wait(0)
                         if IsControlPressed(0,174) then
