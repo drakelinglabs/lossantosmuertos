@@ -32,7 +32,7 @@ standard={
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
 [6]={var=2-1,tex=range(1-1,16-1)}, --foot 
 [7]={var=1-1,tex=1-1}, --additional 
-[8]={var=0-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=1-1,tex=range(2-1,12-1,{7-1,10-1,11-1})}, --additional parts for torso
@@ -48,7 +48,7 @@ marauder={
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
 [6]={var=25-1,tex=1-1}, --foot 
 [7]={var=1-1,tex=1-1}, --additional 
-[8]={var=0-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=51-1,tex=range(1-1,5-1)}, --additional parts for torso
@@ -64,7 +64,7 @@ camouflage={
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
 [6]={var=28-1,tex=1-1}, --foot 
 [7]={var=1-1,tex=1-1}, --additional 
-[8]={var=0-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=54-1,tex=4-1}, --additional parts for torso
@@ -80,20 +80,107 @@ offdutysheriff={
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
 [6]={var=12-1,tex=13-1}, --foot 
 [7]={var=1-1,tex=1-1}, --additional 
-[8]={var=0-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=218-1,tex=12-1}, --additional parts for torso
-bodyarmor={[9]={var=0-1,tex=1-1}},
+bodyarmor={[9]={var=14-1,tex=1-1}},
 backpack={[5]={var=39-1,tex=1-1}},
+},
+explorer={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=19-1,tex=1-1}, --"torso" hands
+[4]={var=99-1,tex=range(1-1,5-1)}, --legs
+[5]={var=1-1,tex=1-1}, --"hands" parachutes
+[6]={var=72-1,tex=range(1-1,5-1)}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=254-1,tex=range(1-1,5-1)}, --additional parts for torso
+bodyarmor={[9]={var=13-1,tex=2-1}},
+backpack={[5]={var=33-1,tex=5-1}},
+hat={[11]={var=252-1,tex=range(1-1,5-1)}},
+same_texvar={4,6,11},
+},
+mercenary={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=55-1,tex=1-1}, --"torso" hands
+[4]={var=108-1,tex=2-1}, --legs
+[5]={var=1-1,tex=1-1}, --"hands" parachutes
+[6]={var=85-1,tex=2-1}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=290-1,tex=11-1}, --additional parts for torso
+bodyarmor={[9]={var=14-1,tex=1-1}},
+backpack={[5]={var=70-1,tex=7-1}},
+},
+banditgoon={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=2-1,tex=1-1}, --"torso" hands
+[4]={var=6-1,tex={3-1,11-1}}, --legs
+[5]={var=1-1,tex=1-1}, --"hands" parachutes
+[6]={var=13-1,tex=7-1}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=15-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=169-1,tex={1-1,2-1}}, --additional parts for torso
+bodyarmor={[9]={var=13-1,tex=2-1}},
+backpack={[5]={var=52-1,tex=1-1}},
+},
+police={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=1-1,tex=1-1}, --"torso" hands
+[4]={var=36-1,tex=1-1}, --legs
+[5]={var=1-1,tex=1-1}, --"hands" parachutes
+[6]={var=25-1,tex=1-1}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=59-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=56-1,tex=1-1}, --additional parts for torso
+bodyarmor={[9]={var=11-1,tex=2-1}},
+backpack={[5]={var=67-1,tex=1-1}},
+},
+banditmercenary={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=55-1,tex=1-1}, --"torso" hands
+[4]={var=108-1,tex=2-1}, --legs
+[5]={var=1-1,tex=1-1}, --"hands" parachutes
+[6]={var=85-1,tex=2-1}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=290-1,tex=12-1}, --additional parts for torso
+bodyarmor={[9]={var=14-1,tex=1-1}},
+backpack={[5]={var=70-1,tex=7-1}},
 },
 }
 
 local hats={
 ["cowboyhat"]={var=14-1,tex=8-1},
+["camocap"]={var=7-1,tex=6-1},
+["lowcap"]={var=121-1,tex=1-1,removehair=true},
 }
 local masks={
 ["gasmask"]={[1]={var=47-1,tex=1-1}},
+["halfmask"]={[1]={var=52-1,tex=1-1}},
+["balaclava"]={[1]={var=53-1,tex=1-1}},
+["tshirtmask"]={[1]={var=55-1,tex=range(1-1,11-1)},blockhat=true},
 }
 
 
@@ -144,7 +231,7 @@ quest_box=400,
 quest_keys=300,
 }
 
-local survivor_hash,bandit_hash,government_hash
+local survivor_hash,bandit_hash,government_hash,raider_hash
 
 local weapons={
 switchblade=1,
@@ -349,68 +436,7 @@ local function WriteHint(text)
     WriteText(4,text,0.4,255,255,255,255,0.005,hint_y) hint_y=hint_y+0.025
 end
 
-local modelgroups={}
-modelgroups.military={
-GetHashKey("s_m_y_armymech_01"),
-GetHashKey("s_m_m_marine_01"),
-GetHashKey("s_m_m_marine_02"),
-GetHashKey("s_m_y_marine_01"),
-GetHashKey("s_m_y_marine_02"),
-GetHashKey("s_m_y_marine_03"),
-}
-modelgroups.mercenaries={
-GetHashKey("s_m_y_blackops_01"),
-GetHashKey("s_m_y_blackops_02"),
-GetHashKey("s_m_y_blackops_03"),
-}
-
-local weaponsarray={}
-weaponsarray.raiders={
-"dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-"dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-"dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-"dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-"dagger","knife","machete","crowbar","hatchet","bat","flaregun","poolcue","switchblade","poolcue","knuckle",
-"pistol","snspistol","vintagepistol","combatpistol",
-"dbshotgun","pumpshotgun",
-"musket"}
-weaponsarray.military={
-"carbinerifle","pistol","pumpshotgun","smg","sniperrifle"}
-
-local blipcolors={military=4,raiders=1}
-
 local signals={}
-
-local raids={}
-RegisterNetEvent("raid")
-AddEventHandler("raid",function(k,x,y,r,t)
-    local v=raids[k]
-    if v==nil then
-        if t~=nil and modelgroups[t]~=nil then
-            raids[k]={x=x,y=y,r=r,guard=true,models=modelgroups[t],relationship=GetHashKey("BANDIT"),weapons=weaponsarray[t]}
-        end
-    else
-        if x~=nil then
-            v.x=x
-            v.y=y
-            v.r=r
-            if v.blip==nil then 
-                v.blip=AddBlipForRadius(x,y,0,r)
-                SetBlipAlpha(v.blip,100)
-                SetBlipColour(blipcolors[t])
-            else
-                SetBlipCoords(v.blip,x,y,0)
-            end
-        else
-            if v.blip~=nil then
-                RemoveBlip(v.blip)
-            end
-            raids[k]=nil
-        end
-    end
-end)
-
-
 
 -- local function WriteText(font,text,scale,r,g,b,a,posx,posy)
     -- SetTextOutline()
@@ -451,7 +477,116 @@ player.bleeding=0
 player.reputation=GetResourceKvpInt("reputation") or 10
 
 
+local weaponsarray={
+    raiders={-- 1 raiders
+    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    "dagger","knife","machete","crowbar","hatchet","bat","flaregun","poolcue","switchblade","poolcue","knuckle",
+    "pistol","snspistol","vintagepistol","combatpistol",
+    "dbshotgun","pumpshotgun",
+    "musket"},
+    military={-- 2 military
+    "carbinerifle","pistol","pumpshotgun","smg","sniperrifle"
+    },
+    mercenaries={-- 4 mercenaries
+    "carbinerifle_mk2","pistol_mk2","assaultrifle_mk2","sniperrifle"
+    },
+}
+local modelgroups={
+    military={-- 2 military
+    GetHashKey("s_m_y_armymech_01"),
+    GetHashKey("s_m_m_marine_01"),
+    GetHashKey("s_m_m_marine_02"),
+    GetHashKey("s_m_y_marine_01"),
+    GetHashKey("s_m_y_marine_02"),
+    GetHashKey("s_m_y_marine_03"),
+    },
+    mercenaries={-- 4 mercenaries
+    GetHashKey("s_m_y_blackops_01"),
+    GetHashKey("s_m_y_blackops_02"),
+    GetHashKey("s_m_y_blackops_03"),
+    },
+}
 
+local raids={}
+Citizen.CreateThread(function()
+
+    --local blipcolors={military=2,mercenaries=4,raiders=1}
+    local types={
+        [1]="raiders",
+        [2]="military",
+        [4]="mercenaries",
+        [5]="raiders",
+    }
+
+    local relationships={
+        [1]=GetHashKey("BANDIT"),-- 1 raiders
+        [2]=GetHashKey("RAIDER"),-- 2 military
+        [4]=GetHashKey("RAIDER"),-- 4 mercenaries
+        [5]=GetHashKey("SURVIVOR"),-- 
+    }
+    RegisterNetEvent("raid")
+    AddEventHandler("raid",function(k,x,y,r,t)
+        --r=r+0.5
+        --print("raid "..k,x,y,r,t)
+        local v=raids[k]
+        if v==nil then
+            if t==nil then
+                raids[k]={x=x,y=y,r=r}
+            else
+                if modelgroups[types[t]]~=nil or relationships[t]~=nil then
+                    raids[k]={x=x,y=y,r=r,guard=true,models=modelgroups[types[t]],relationship=relationships[t],weapons=weaponsarray[types[t]]}
+                else
+                    raids[k]={x=x,y=y,r=r,t=t}
+                end
+            end
+        else
+            if x~=nil then
+                v.x=x
+                v.y=y
+                v.r=r
+                if v.blip==nil then 
+                    v.blip=AddBlipForRadius(x,y,0,r)
+                    SetBlipAlpha(v.blip,100)
+                    SetBlipColour(v.blip,t)
+                else
+                    SetBlipCoords(v.blip,x,y,0)
+                end
+            else
+                if v.blip~=nil then
+                    RemoveBlip(v.blip)
+                end
+                raids[k]=nil
+            end
+        end
+    end)
+    local prevtime=0
+    while true do Wait(0)
+        for k,v in pairs(raids) do
+            if v.t~=nil and v.r~=nil then
+                if v.t==72 then
+                    if player.mask~=nil or player.mask~="gasmask" then
+                        local ped=PlayerPedId()
+                        local pos=GetEntityCoords(ped)
+                        local dx,dy=pos.x-v.x,pos.y-v.y
+                        if dx*dx+dy*dy<v.r*v.r then
+                            local currenttime=GetGameTimer()
+                            WriteHint("~c~You're in ~r~toxic zone~c~, use gasmask.")
+                            if ((currenttime~prevtime)&-2048)~=0 then
+                                prevtime=currenttime
+                                SetEntityHealth(ped,GetEntityHealth(ped)-1)
+                            end
+                        end
+                    end
+                else
+                    
+                end
+            end
+        end
+    end
+end)
 
 local vehiclesave={}
 
@@ -467,6 +602,9 @@ local respawn_time=720 --two real days
 local looted_array={}
 
 local normal_crafts={
+    {"tshirtmask",1,
+        {"rags",5},
+    },
     {"molotov",1,
         {"gasoline",1,
         "alcohol",1,
@@ -605,12 +743,13 @@ local safezones={
     models={-12678997,1694362237,-1105135100},--,1939545845
     name="~y~Old Cult Camp~s~",
     friends=true,
-    tradespace=4,
+    tradespace=5,
     trade={
-        {"water",1,"cash",15},
+        {"water",1,"cash",30},
         {"gasoline",1,"cash",30},
-        {"bandage",1,"cash",10},
-        {"canfood",1,"cash",15},
+        {"bandage",1,"cash",20},
+        {"canfood",1,"cash",25},
+        {"clothes_explorer",1,"cash",4000},
         
         {"cash",30,"cigarettes",1},
         {"cash",40,"gunpowder",1},
@@ -675,10 +814,10 @@ local safezones={
     friends=true,
     tradespace=4,
     trade={
-        {"pistolammo",30,"cash",70},
-        {"shotgunammo",10,"cash",50},
-        {"pistol",1,"cash",200},
-        {"pumpshotgun",1,"cash",500},
+        {"pistolammo",30,"cash",150},
+        {"shotgunammo",10,"cash",100},
+        {"pistol",1,"cash",400},
+        {"pumpshotgun",1,"cash",800},
         
         {"cash",30,"cigarettes",1},
         {"cash",40,"gunpowder",1},
@@ -688,6 +827,7 @@ local safezones={
         {"cash",30,"water",1},
         {"cash",30,"canfood",1},
         {"cash",50,"mre",1},
+        {"cash",400,"policedocs",1},
     },
     tradepos={x=452.37100219727,y=-980.07110595703,z=30.689582824707},
     clothes={
@@ -803,7 +943,136 @@ local safezones={
     craftpos={x=2138.8669433594,y=4791.0888671875,z=40.970325469971},
     crafts=normal_crafts,
     spawnpos={x=2146.0759277344,y=4781.9990234375,z=40.998649597168,angle=119.87452697754},
-    relationship="SURVIVOR"},--Altruists camp
+    relationship="SURVIVOR"},--Northern hangar
+    
+    ----------------------------------------------------
+    {x=1894.6357421875,y=3922.03125,z=32.888240814209,r=50.0,blip=434,color=36,
+    models={-12678997,1694362237,-1105135100},--,1939545845
+    name="~y~Pawn Shop~s~",
+    friends=true,
+    trade={
+        {"cash",1,"rags",1},
+        {"cash",1,"scrapplastic",1},
+        {"cash",2,"scrapmetal",1},
+        {"cash",20,"meat",1},
+        {"cash",30,"chemicals",1},
+        {"cash",250,"pistolammo",50},
+        {"cash",50,"gasmask",1},
+        {"cash",200,"bodyarmor",1},
+        {"cash",200,"brasscatcher",1},
+        {"cash",100,"radio",1},
+    },
+    tradepos={x=1887.5930175781,y=3913.580078125,z=33.016674041748},
+    --clothespos={x=-1146.4151611328,y=4940.9018554688,z=222.26872253418},
+    --changingroompos={x=-1137.6760253906,y=4940.2631835938,z=222.26852416992},
+    provision={
+        "water",3,
+        "canfood",2,
+    },
+    --provisionpos={ x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
+    questpos={x=1905.4584960938,y=3922.9091796875,z=32.743022918701},
+    weapons={"pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
+    --garagepos={x=2155.5866699219,y=4780.2172851563,z=41.044399261475,angle=1.4582903385162},
+    --vehpos={x=2138.4460449219,y=4815.662109375,z=41.194259643555,angle=115.94924163818},
+    vehshop={
+        {"microlight",
+            {"scrapmetal",50,
+            "cash",1500,
+            "engineparts",3},
+        },
+    },
+    --craftpos={x=2138.8669433594,y=4791.0888671875,z=40.970325469971},
+    crafts=normal_crafts,
+    spawnpos={x=1905.4584960938,y=3922.9091796875,z=32.743022918701},
+    relationship="SURVIVOR"},--Pawn Shop
+    
+    ----------------------------------------------------
+    {x=1710.7409667969,y=4751.3974609375,z=41.995300292969,r=75.0,blip=52,color=36,
+    models={-163714847,-1422914553},--,1939545845
+    name="~y~North Trading Post~s~",
+    friends=true,
+    tradespace=9,
+    trade={
+        {"water",1,"cash",25},
+        {"bandage",1,"cash",15},
+        {"canfood",1,"cash",20},
+        {"cigarettes",1,"cash",25},
+        {"soda",1,"cash",10},
+        {"juice",1,"cash",10},
+        {"alcohol",1,"cash",20},
+        {"chemicals",1,"cash",30},
+        {"clothes_mercenary",1,"cash",5000},
+        
+        {"cash",100,"mre",1},
+        {"cash",200,"armorplate",1},
+        {"cash",300,"medkit",1},
+        {"cash",275,"pistolammo",50},
+        
+    },
+    tradepos={x=1712.7950439453,y=4790.521484375,z=41.990787506104},
+    --clothespos={x=-1146.4151611328,y=4940.9018554688,z=222.26872253418},
+    --changingroompos={x=-1137.6760253906,y=4940.2631835938,z=222.26852416992},
+    provision={
+        "water",3,
+        "canfood",2,
+    },
+    --provisionpos={ x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
+    questpos={x=1662.2485351563,y=4776.201171875,z=42.007522583008},
+    weapons={"pistol","pumpshotgun","combatpistol","machinepistol"},
+    garagepos={x=1709.0181884766,y=4746.4306640625,z=41.864681243896,angle=53.457618713379},
+    vehpos={x=1708.8276367188,y=4803.8701171875,z=41.798683166504,angle=276.10998535156},
+    vehshop={
+        {"boxville5",
+            {"scrapmetal",500,
+            "cash",2500,
+            "engineparts",3},
+        },
+    },
+    --craftpos={x=2138.8669433594,y=4791.0888671875,z=40.970325469971},
+    crafts=normal_crafts,
+    spawnpos={x=1664.0472412109,y=4739.5366210938,z=42.010166168213,angle=288.13848876953},
+    relationship="SURVIVOR"},--North Trading Post
+    
+    
+    
+----------------------------------------------------
+    {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=84,color=1,
+    models={1746653202,-44746786,1330042375,1032073858,850468060,275618457},
+    name="~r~Prison~s~",
+    tradespace=4,
+    trade={
+        {"gasoline",1,"cash",30},
+        {"bandage",1,"cash",20},
+        {"canfood",1,"cash",25},
+        {"clothes_banditgoon",1,"cash",300},
+        {"clothes_police",1,"cash",1500},
+        {"clothes_banditmercenary",1,"cash",8000},
+        
+        {"cash",40,"cigarettes",1},
+        {"cash",30,"gunpowder",1},
+        {"cash",20,"soda",1},
+        {"cash",15,"juice",1},
+        {"cash",35,"alcohol",1},
+        {"cash",120,"mre",1},
+        {"cash",220,"armorplate",1},
+        {"cash",330,"medkit",1},
+        {"cash",400,"ammo",30},
+    },
+    questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
+    tradepos={x=1682.52734375,y=2476.2099609375,z=45.823303222656},
+    craftpos={x=1689.4483642578,y=2552.2507324219,z=45.56485748291},
+    crafts=normal_crafts,
+    weapons={"carbinerifle","pumpshotgun","sniperrifle"},    
+    garagepos={x=1655.3520507813,y=2665.0593261719,z=45.465591430664,angle=229.13996887207},
+    vehpos={x=1710.98828125,y=2691.3481445313,z=45.472282409668,angle=180.61428833008},
+    vehshop={
+        {"placeholder",
+            {"cash",1000,
+            "engineparts",5,
+            "scrapmetal",500},
+        },
+    },
+    relationship="BANDIT"},--Prison
 }
 for _,z in pairs(safezones) do
     if z.relationship and type(z.relationship)~="number" then
@@ -1014,7 +1283,7 @@ local quest_description={
 ["quest_cellphone"]="I'm more interested in my SIM card, but you wont just leave phone there, right? . ",
 ["quest_docs"]="Just my work documents, I'd really like to continue my work. ",
 ["quest_disc"]="DVD disc. It's in transparent box. ",
-["quest_gameconsole"]="Look, I udnerstand how it sounds, but we're dying of boredom here. It's either guard patrol, maintenance work or raids to city. We need something to relax. ",
+["quest_gameconsole"]="Look, I understand how it sounds, but we're dying of boredom here. It's either guard patrol, maintenance work or raids to city. We need something to relax. ",
 ["quest_medicalrecords"]="I would never have thought that I would need my medical records in apocalypse... but local doctor says I need them to correctly diagnose my disease. ",
 ["quest_box"]="That's just a wrapped cardboard box. ",
 ["quest_keys"]="These are keys from my car, house and workplace. ",
@@ -1109,6 +1378,16 @@ clothes_camouflage="Camouflage clothes",
 armorplate="Armor plate",
 clothes_offdutysheriff="Off duty sheriff",
 cowboyhat="Cowboy hat",
+halfmask="Half mask",
+balaclava="Balaclava",
+tshirtmask="T-shirt mask",
+camocap="Camouflage cap",
+clothes_explorer="Explorer clothes",
+clothes_mercenary="Mercenary clothes",
+clothes_banditgoon="Bandit goon clothes",
+clothes_police="Police uniform",
+lowcap="Beanie",
+clothes_banditmercenary="Bandit mercenary",
 }
 local item_descriptions={
 water="Bottle filled with fresh water.",
@@ -1173,6 +1452,16 @@ clothes_camouflage="Camouflage clothes. Forest camouflage allows one to hide in 
 armorplate="Armor plate, used in plate carriers, cannot be used by itself.",
 clothes_offdutysheriff="Off duty sheriff clothes, thick clothes offers decent protection against minor injuries. Camouflaged raincoat allows one to hide body armor.",
 cowboyhat="Sheriff hat.",
+halfmask="High quality half mask, offers no protection, but disguise one's identity.",
+balaclava="Balaclava, used for stealth or to disguise one's identity.",
+tshirtmask="Self made balaclava from T-shirt.",
+camocap="Camouflage military cap.",
+clothes_explorer="Excellent quality clothes, made out of very lasting materials. Extremily comfortable, allows one to slowly regenerate health if injured.",
+clothes_mercenary="Self made heavy armor. Stiff materials gives 20% damage resistance to bullets, but heavy weight makes it harder to run and lowers mobility, making one recieve 30% more damage in melee combat.",
+clothes_banditgoon="Low rank bandit clothes. Thick material gives 5% resistance to melee damage. There are many bandits, use these clothes to disguise yourself as bandit.",
+clothes_police="Standard uniform of LSPD, nothing special, police wear it to distinguish themselves from other survivors.",
+lowcap="Beanie, quite popular among local bandits.",
+clothes_banditmercenary="Modified mercenary armor. Lighter materals were used, now one does not recieve more melee damage because of lower mobility. However it's still too heavy to sprint. Wearer recieves 20% less bullet damage. Distinct bandit decals makes one appear as bandit.",
 }
 local item_index_to_name={}
 local item_name_to_index={}
@@ -1255,7 +1544,6 @@ local deadbodiesrewards_tier3={
 {"ball",1},
 {"flaregunammo",-5},
 {"painkillers",1},
-{"mre",1},
 }
 local deadbodiesrewards_tier4={
 {"pistolammo",-10},
@@ -1273,6 +1561,12 @@ local deadbodiesrewards_tier4={
 {"radio",1},
 {"clothes_marauder",1},
 {"clothes_camouflage",1},
+{"halfmask",1},
+{"balaclava",1},
+{"camocap",1},
+{"clothes_banditgoon",1},
+{"clothes_lowcap",1},
+{"mre",1},
 }
 local deadbodiesrewards_tier5={
 {"snspistol",1},
@@ -1349,6 +1643,10 @@ local trunkrewards_tier4={
 {"cash",-110},
 {"clothes_marauder",1},
 {"clothes_camouflage",1},
+{"halfmask",1},
+{"balaclava",1},
+{"camocap",1},
+{"clothes_banditgoon",1},
 }
 local trunkrewards_tier5={
 {"snspistol",1},
@@ -1534,8 +1832,8 @@ local pickups_objects={
 [-1497794201]={"bodyarmor",1,"armorplate",2}, --green armor
 [2022153476]={"bodyarmor",1,"armorplate",2}, --sand armor
 
---[-1422265815]={"grenade",15}, --green closed rifle thing
---[1824078756]={"grenade",10}, --white closed rifle thing
+[-1422265815]={"grenade",5,"gunpowder",5}, --15green closed rifle thing
+[1824078756]={"grenade",3,"gunpowder",5}, --10white closed rifle thing
 
 [1158698200]={"engineparts",50}, --car battery
 [-2124552702]={"engineparts",20}, --car black fix box
@@ -1874,6 +2172,11 @@ local function check_clothes(pped) --if true then return true end
                 override[k]=v
             end
         end
+        if player.mask and masks[player.mask].blockhat and not player.hat and s.hat then
+            for k,v in pairs(s.hat) do
+                override[k]=v
+            end
+        end
         if player.bodyarmor and s.bodyarmor then
             for k,v in pairs(s.bodyarmor) do
                 override[k]=v
@@ -1891,6 +2194,9 @@ local function check_clothes(pped) --if true then return true end
             end
         end
         if player.hat and hats[player.hat] then --add prop to head
+            if hats[player.hat].removehair then
+                override[2]={var=1-1,tex=1-1}
+            end
             SetPedPropIndex(pped, 0, hats[player.hat].var, hats[player.hat].tex, true);
         else
             ClearPedProp(pped,0)
@@ -1982,6 +2288,41 @@ local function check_clothes(pped) --if true then return true end
                 end
                 SetPedComponentVariation(pped,i,newvar,newtex,0)
                 --print(newvar.."/"..newtex)
+            end
+        end
+        if s.same_texvar then
+            for k=2,#s.same_texvar do
+                local i=s.same_texvar[k]
+                --print("replace ["..k.."]="..i)
+                local var
+                if override[i] then
+                    var=override[i].var
+                else
+                    var=s[i].var
+                end
+
+                local newvar
+                local oldvar=GetPedDrawableVariation(pped,i)
+                if type(var)=="table" then
+                    if oldvar<var[1] or oldvar>var[#var] then
+                        newvar=var[math.random(1,#var)]
+                    end
+                else
+                    if oldvar~=var then
+                        newvar=var
+                    end
+                end
+                local source=GetPedTextureVariation(pped,s.same_texvar[1])
+                if newvar or GetPedTextureVariation(pped,i)~=source then
+                    if not newvar then
+                        if type(var)=="table" then
+                            newvar=var[math.random(1,#var)]
+                        else
+                            newvar=var
+                        end
+                    end
+                    SetPedComponentVariation(pped,i,newvar,source,0)
+                end
             end
         end
     --end
@@ -2104,6 +2445,8 @@ end)
 
 local engine_pos={
     [767087018]=true,--albany alpha
+    [GetHashKey("panto")]=true,--panto
+    [GetHashKey("lazer")]=false,--lazer
 }
 
 local function engine_at_front(veh,model)
@@ -2111,7 +2454,13 @@ local function engine_at_front(veh,model)
         return engine_pos[model]
     end
     local pos=GetOffsetFromEntityGivenWorldCoords(veh,GetWorldPositionOfEntityBone(veh,GetEntityBoneIndexByName(veh,'engine')))
-    return (pos.y>0)
+    if pos.y>0 then
+        engine_pos[model]=true
+        return true
+    else
+        engine_pos[model]=false
+        return false
+    end
 end
 
 
@@ -2230,29 +2579,32 @@ Citizen.CreateThread(function()
             handle,obj=FindFirstObject()
             loop=(handle~=-1)
             while loop do
-                local model=pickups_objects[GetEntityModel(obj)]
-                if model~=nil then
-                    if not model.spoiled and not DecorExistOn(obj,"zm_looted") then
+                local model=GetEntityModel(obj)
+                local prop=pickups_objects[model]
+                if prop~=nil then
+                    if not prop.spoiled and not DecorExistOn(obj,"zm_looted") then
                         local objpos=GetEntityCoords(obj)
                         if #(objpos-mypos)<1.3 then
                             local not_on_screen,x,y=N_0xf9904d11f1acbec3(objpos.x,objpos.y,objpos.z)
                             if not not_on_screen then
-                                SetTextCentre(true)
-                                if model[3] then
-                                    WriteText(font,"~g~E ~s~to pick up ~g~"..model[1].."~s~ and ~g~"..model[3],size,255,255,255,alpha,x,y)
-                                    WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..model[1].."~c~ and ~g~"..model[3])
-                                else
-                                    WriteText(font,"~g~E ~s~to pick up ~g~"..model[1],size,255,255,255,alpha,x,y)
-                                    WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..model[1])
+                                local attached=GetEntityAttachedTo(obj)
+                                if not IsEntityAPed(attached) or IsPedDeadOrDying(attached) then
+                                    SetTextCentre(true)
+                                    if prop[3] then
+                                        WriteText(font,"~g~E ~s~to pick up ~g~"..prop[1].."~s~ and ~g~"..prop[3],size,255,255,255,alpha,x,y)
+                                        WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..prop[1].."~c~ and ~g~"..prop[3])
+                                    else
+                                        WriteText(font,"~g~E ~s~to pick up ~g~"..prop[1],size,255,255,255,alpha,x,y)
+                                        WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..prop[1])
+                                    end
                                 end
                             end
                         end
                     end
                 end
-                model=GetEntityModel(obj)
-                local doorpos=GetEntityCoords(obj)
                 local doorkey=doormodels[model]
                 if doorkey~=nil then
+                    local doorpos=GetEntityCoords(obj)
                     if not get_inventory_item_slot(doorkey) then
                         FreezeEntityPosition(obj,true)
                         if #(doorpos-mypos)<2.0 then
@@ -2801,6 +3153,64 @@ Citizen.CreateThread(function()
     end
 end)
 
+--suits managment
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        if player.suit~=nil then
+            if player.suit=="explorer" then
+                local myhealth=GetEntityHealth(myped)
+                if myhealth<150 then
+                    SetEntityHealth(myped,myhealth+1)
+                    Wait(3000)
+                end
+            elseif player.suit=="mercenary" then
+                -- local clipset="clipset@move@trash_fast_turn"
+                -- RequestClipSet(clipset)
+                -- SetPedMovementClipset(pped,clipset ,1.0)
+                --ResetPlayerStamina(PlayerId())
+                SetPlayerSprint(PlayerId(),false)
+                SetPlayerMeleeWeaponDefenseModifier(PlayerId(),1.2+0.1)
+                SetPlayerWeaponDefenseModifier(PlayerId(),0.7+0.1)
+            elseif player.suit=="banditmercenary" then
+                SetPlayerSprint(PlayerId(),false)
+                SetPlayerMeleeWeaponDefenseModifier(PlayerId(),0.9+0.1)
+                SetPlayerWeaponDefenseModifier(PlayerId(),0.7+0.1)
+            elseif player.suit=="banditgoon" then
+                SetPlayerSprint(PlayerId(),true)
+                SetPlayerMeleeWeaponDefenseModifier(PlayerId(),0.85+0.1)
+                SetPlayerWeaponDefenseModifier(PlayerId(),0.9+0.1)
+            else
+                SetPlayerSprint(PlayerId(),true)
+                SetPlayerMeleeWeaponDefenseModifier(PlayerId(),0.9+0.1)
+                SetPlayerWeaponDefenseModifier(PlayerId(),0.9+0.1)
+                Wait(3000)
+            end
+        end
+    end
+end)
+
+--relationship management
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local myfaction=GetPedRelationshipGroupHash(myped)
+        if player.suit~=nil then
+            if player.suit=="banditgoon" or player.suit=="banditmercenary" then
+                if myfaction~=GetHashKey("BANDIT") then
+                    SetPedRelationshipGroupHash(myped,GetHashKey("BANDIT"))
+                end
+            elseif player.suit=="police" then
+                if myfaction~=GetHashKey("GOVERNMENT") then
+                    SetPedRelationshipGroupHash(myped,GetHashKey("GOVERNMENT"))
+                end
+            else
+                SetPedRelationshipGroupHash(myped,GetHashKey("SURVIVOR"))
+            end
+        end
+    end
+end)
+
 --stats management
 Citizen.CreateThread(function()
     local oldhealth=0
@@ -3144,21 +3554,36 @@ Citizen.CreateThread(function()
     if true then --load quests
         local n=GetResourceKvpInt("quests")
         if n~=nil and n>0 then
-            local my_relationship=GetPedRelationshipGroupHash(PlayerPedId())
             for i=1,n do
+                local x=GetResourceKvpFloat("quest_"..i.."_x")
+                local y=GetResourceKvpFloat("quest_"..i.."_y")
+                local t=GetResourceKvpInt("quest_"..i.."_type")
+                local id=GetResourceKvpInt("quest_"..i.."_id")
+                local item=GetResourceKvpString("quest_"..i.."_item")
                 local rx=GetResourceKvpFloat("quest_"..i.."_return_x")
                 local ry=GetResourceKvpFloat("quest_"..i.."_return_y")
-                local zone=get_closest_friendly_zone_with_questpos(rx,ry,my_relationship)
-                table.insert(quests,{
-                    x=GetResourceKvpFloat("quest_"..i.."_x"),
-                    y=GetResourceKvpFloat("quest_"..i.."_y"),
-                    t=GetResourceKvpInt("quest_"..i.."_type"),
-                    i=GetResourceKvpString("quest_"..i.."_item"),
-                    id=GetResourceKvpInt("quest_"..i.."_id"),
-                    rx=rx,
-                    ry=ry,
-                    zone=zone,
-                })
+                if t==0 then --get item from car
+                    table.insert(quests,{
+                        x=x,y=y,t=t,id=id,i=item,rx=rx,ry=ry,
+                        r=300.0,
+                        --zone=zone,
+                    })
+                else
+                    table.insert(quests,{
+                        x=x,y=y,t=t,id=id,i=item,rx=rx,ry=ry,
+                        --zone=zone,
+                    })
+                    print("ERROR! Quest type "..t.." is not implemented!")
+                end
+            end
+            print("loaded "..n.." quests")
+        end
+        Wait(10000)
+        local my_relationship=GetPedRelationshipGroupHash(PlayerPedId())
+        for k,v in pairs(quests) do
+            if v.zone==nil and v.rx~=nil and v.ry~=nil then
+                v.zone=get_closest_friendly_zone_with_questpos(v.rx,v.ry,my_relationship)
+                print("found quest return zone")
             end
         end
     end
@@ -3296,6 +3721,22 @@ end)
 
 -- missions thread
 Citizen.CreateThread(function()
+    local function remove_quest(k)
+        table.remove(quests,k)
+        SetResourceKvpInt("quests",#quests)
+        if k<=#quests then
+            for i=k,#quests do
+                local q=quests[i]
+                SetResourceKvpInt("quest_"..i.."_type",q.t)
+                SetResourceKvpInt("quest_"..i.."_id",q.id)
+                SetResourceKvpFloat("quest_"..i.."_x",q.x)
+                SetResourceKvpFloat("quest_"..i.."_y",q.y)
+                SetResourceKvp("quest_"..i.."_item",q.i)
+                SetResourceKvpFloat("quest_"..i.."_return_x",q.rx)
+                SetResourceKvpFloat("quest_"..i.."_return_y",q.ry)
+            end
+        end
+    end
     while true do Wait(0)
         if #quests>0 then
             local myped=PlayerPedId()
@@ -3304,6 +3745,7 @@ Citizen.CreateThread(function()
             for k,v in ipairs(quests) do
                 if v.t==0 then --find item in car
                     if v.done and v.rx and v.ry then
+                        --WriteHint("Quest "..k.." done")
                         if v.zone and v.zone.questpos then
                             v.rx=v.zone.questpos.x
                             v.ry=v.zone.questpos.y
@@ -3322,15 +3764,15 @@ Citizen.CreateThread(function()
                                 true, false, 2, true, 0, 0, false)
                             end
                             if d<1 and IsControlJustPressed(0,86) then
-                                local slot=get_inventory_item_slot(v.i)
                                 if v.errors~=nil and v.errors>6000 then
                                     if give_item_to_inventory("cash",npc_items_pricelist[v.i]) then
                                         if v.blip~=nil then
                                             RemoveBlip(v.blip)
                                         end
-                                        table.remove(quests,k)
+                                        remove_quest(k)
                                     end
                                 else
+                                    local slot=get_inventory_item_slot(v.i)
                                     if slot then
                                         if give_item_to_inventory("cash",npc_items_pricelist[v.i]) then --quest finished
                                             inventory.current=slot
@@ -3339,13 +3781,14 @@ Citizen.CreateThread(function()
                                             if v.blip~=nil then
                                                 RemoveBlip(v.blip)
                                             end
-                                            table.remove(quests,k)
+                                            remove_quest(k)
                                         end
                                     end
                                 end
                             end
                         end
                     elseif v.x and v.y and v.r then
+                        --WriteHint("Quest "..k.." in progress")
                         if not v.blip then
                             v.blip=AddBlipForRadius(v.x,v.y,0,v.r)
                             SetBlipAlpha(v.blip,100)
@@ -3417,21 +3860,7 @@ Citizen.CreateThread(function()
                                     end
                                     EndFindVehicle(handle)
                                     if not found then
-                                        v.errors=(v.errors or 0)+1
-                                        v.r=v.r+0.1
-                                        if v.errors>6000 then
-                                            v.done=true
-                                            -- v.errors=nil
-                                            -- v.marked=nil
-                                            WriteNotification("There is no car, I should return to ~g~"..(v.zone and v.zone.name or "base").." ~s~and report about it")
-                                            if v.blip then RemoveBlip(v.blip) v.blip=nil end
-                                            v.blip=AddBlipForCoord(
-                                            v.zone.questpos.x,
-                                            v.zone.questpos.y,
-                                            v.zone.questpos.z)
-                                            SetBlipColour(v.blip,2)
-                                        end
-                                        WriteHint("~c~Search the area for car")
+                                        v.marked=nil
                                     end
                                 else
                                     local handle,veh=FindFirstVehicle()
@@ -3474,9 +3903,34 @@ Citizen.CreateThread(function()
                                     end
                                     EndFindVehicle(handle)
                                 end
+                                if not v.marked then
+                                    v.errors=(v.errors or 0)+1
+                                    v.r=v.r+0.1
+                                    if v.errors>6000 then
+                                        v.done=true
+                                        -- v.errors=nil
+                                        WriteNotification("There is no car, I should return to ~g~"..(v.zone and v.zone.name or "base").." ~s~and report about it")
+                                        if v.blip then RemoveBlip(v.blip) v.blip=nil end
+                                        if v.zone and v.zone.questpos then
+                                            v.blip=AddBlipForCoord(
+                                            v.zone.questpos.x,
+                                            v.zone.questpos.y,
+                                            v.zone.questpos.z)
+                                        else
+                                            v.blip=AddBlipForCoord(
+                                            v.rx,
+                                            v.ry,
+                                            0)
+                                        end
+                                        SetBlipColour(v.blip,2)
+                                    end
+                                    WriteHint("~c~Search the area for car")
+                                end
                             end
                         end
                     end
+                else
+                    WriteHint("~r~ERROR! ~s~Quest type "..v.t.." is ~r~not implemented!")
                 end
             end
         end
@@ -3653,6 +4107,32 @@ Citizen.CreateThread(function()
         end
         waiting_for_server_resonse=false
     end)
+    local function try_to_load_garage()
+        if vehiclesave==nil or vehiclesave.model==nil then
+            local kvp_car_model=GetResourceKvpInt("garage_1_model")
+            if kvp_car_model~=nil and kvp_car_model~=0 then
+                vehiclesave={}
+                vehiclesave.model=kvp_car_model
+                vehiclesave.enginehp=GetResourceKvpFloat("garage_1_enginehp")
+                vehiclesave.fuellevel=GetResourceKvpFloat("garage_1_fuel")
+                vehiclesave.doors=GetResourceKvpInt("garage_1_doors")
+                vehiclesave.tyres=GetResourceKvpInt("garage_1_tyres")
+                local colors=GetResourceKvpInt("garage_1_colors")
+                vehiclesave.colors={colors&0xFF,(colors>>8)&0xFF,(colors>>16)&0xFF,(colors>>24)&0xFF}
+                vehiclesave.total_mods=SetResourceKvpInt("garage_1_total_mods")
+                vehiclesave.mods={}
+                local modstring=GetResourceKvpString("garage_1_modstring")
+                if modstring~=nil then
+                    --WriteNotification("loading "..#modstring)
+                    for i=1,#modstring,2 do
+                        local k,v=string.byte(modstring,i,i+1)
+                        k,v=k-1,v-1
+                        vehiclesave.mods[k]=v
+                    end
+                end
+            end
+        end
+    end
     while true do Wait(0)
         local pped=PlayerPedId()
         local mypos=GetEntityCoords(pped)
@@ -3677,113 +4157,119 @@ Citizen.CreateThread(function()
             while loop do
                 if (not IsPedAPlayer(npc)) 
                 and GetPedType(npc)~=28 --animal
-                and DecorExistOn(npc,"questnpc")
                 and GetPedRelationshipGroupHash(npc)==myfaction
                 then
-                    if GetBlipFromEntity(npc)==0
-                    then
-                        if GetIsTaskActive(npc,15) --donothing
-                        and (not GetIsTaskActive(npc,35)) --complexmovement
+                    if DecorExistOn(npc,"questnpc") and not IsPedDeadOrDying(npc) then
+                        if GetBlipFromEntity(npc)==0
                         then
-                            --print("Adding blip to "..npc)
-                            --npcblips[npc]=
-                            SetBlipSprite(AddBlipForEntity(npc),133)
+                            if GetIsTaskActive(npc,15) --donothing
+                            and (not GetIsTaskActive(npc,35)) --complexmovement
+                            then
+                                --print("Adding blip to "..npc)
+                                --npcblips[npc]=
+                                SetBlipSprite(AddBlipForEntity(npc),133)
+                            end
+                        else
+                            local npcpos=GetEntityCoords(npc)
+                            local dist=#(mypos-npcpos)
+                            if dist<3 then
+                                local talking=false
+                                local headshot
+                                WriteHint("~c~Press ~g~E ~c~to talk")
+                                local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
+                                if not not_on_screen then
+                                    SetTextCentre(true)
+                                    WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
+                                end
+                                if IsControlJustPressed(0,86) then
+                                    talking=true
+                                    talking_state="Main"
+                                    change_lines(talkingstate,npc)
+                                    curline=1
+                                    quest_zone=get_closest_friendly_zone_with_questpos(mypos.x,mypos.y,myfaction)
+                                    headshot=RegisterPedheadshot(npc)
+                                end
+                                while talking do Wait(0) --dialogue
+                                    pped=PlayerPedId()
+                                    mypos=GetEntityCoords(pped)
+                                    npcpos=GetEntityCoords(npc)
+                                    dist=#(mypos-npcpos)
+                                    if dist>3 then
+                                        talking=false
+                                    end
+                                    inventory.highlight=0
+                                    DrawRect(0.5,0.3,0.45,0.4,0,0,0,200)
+                                    if headshot==nil then
+                                        headshot=RegisterPedheadshot(npc)
+                                        DrawRect(0.305,0.155,0.035,0.065,0,0,255,255)
+                                    elseif not IsPedheadshotValid(headshot) then
+                                        UnregisterPedheadshot(headshot)
+                                        headshot=nil
+                                        DrawRect(0.305,0.155,0.035,0.065,255,0,0,255)
+                                    elseif IsPedheadshotReady(headshot) then
+                                        local txd=GetPedheadshotTxdString(headshot)
+                                        DrawSprite(txd,txd,
+                                            0.305,0.155,0.035,0.065,
+                                            0.0, 255, 255, 255, 255)
+                                    end
+                                    WriteText(4,"Survivor",0.7,255,255,255,255,0.33,0.145)
+                                    
+                                    if #npc_lines>0 then
+                                        for i=1,#npc_lines do
+                                            SetTextWrap(0.5-(0.45/2)+0.015,0.5+(0.45/2)-0.015)
+                                            WriteText(4,npc_lines[i],0.4,255,255,255,255,0.29,0.18+i*0.025)
+                                        end
+                                    end
+                                    if #my_lines>0 then
+                                        for i=1,#my_lines do
+                                            pos=pos+1
+                                            WriteText(4,my_lines[i],0.4,255,255,255,255,0.28,0.47+i*0.025)
+                                            local col=0
+                                            local alpha=200
+                                            if curline==i then col=255 alpha=255 end
+                                            DrawRect(0.5,0.485+i*0.025,0.45,0.025,col,col,col,alpha)
+                                        end
+                                    end
+                                    if IsControlJustPressed(0,172) then if curline==1 then curline=#my_lines else curline=curline-1 end end
+                                    if IsControlJustPressed(0,173) then if curline>=#my_lines then curline=1 else curline=curline+1 end end
+                                    if IsControlJustPressed(0,191) then
+                                        talking_state=my_lines[curline]
+                                        change_lines(talkingstate,npc)
+                                        curline=1
+                                    end
+                                    if talking_state=="[Back]" then 
+                                        talking_state="Main"
+                                        change_lines(talkingstate,npc)
+                                        curline=1
+                                    elseif talking_state=="Thanks" then 
+                                        talking_state="Main"
+                                        change_lines(talkingstate,npc)
+                                        curline=1
+                                    elseif talking_state=="Sorry, but no" then 
+                                        talking_state="Main"
+                                        change_lines(talkingstate,npc)
+                                        curline=1
+                                    elseif talking_state=="No" then 
+                                        talking_state="Main"
+                                        change_lines(talkingstate,npc)
+                                        curline=1
+                                    elseif talking_state=="[Exit]" then 
+                                        talking=false
+                                        curline=1
+                                    end
+                                end
+                                if headshot~=nil then
+                                    if IsPedheadshotValid(headshot) then
+                                        UnregisterPedheadshot(headshot)
+                                    end
+                                    headshot=nil
+                                end
+                            end
                         end
                     else
-                        local npcpos=GetEntityCoords(npc)
-                        local dist=#(mypos-npcpos)
-                        if dist<3 then
-                            local talking=false
-                            local headshot
-                            WriteHint("~c~Press ~g~E ~c~to talk")
-                            local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
-                            if not not_on_screen then
-                                SetTextCentre(true)
-                                WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
-                            end
-                            if IsControlJustPressed(0,86) then
-                                talking=true
-                                talking_state="Main"
-                                change_lines(talkingstate,npc)
-                                curline=1
-                                quest_zone=get_closest_friendly_zone_with_questpos(mypos.x,mypos.y,myfaction)
-                                headshot=RegisterPedheadshot(npc)
-                            end
-                            while talking do Wait(0) --dialogue
-                                pped=PlayerPedId()
-                                mypos=GetEntityCoords(pped)
-                                npcpos=GetEntityCoords(npc)
-                                dist=#(mypos-npcpos)
-                                if dist>3 then
-                                    talking=false
-                                end
-                                inventory.highlight=0
-                                DrawRect(0.5,0.3,0.45,0.4,0,0,0,200)
-                                if headshot==nil then
-                                    headshot=RegisterPedheadshot(npc)
-                                    DrawRect(0.305,0.155,0.035,0.065,0,0,255,255)
-                                elseif not IsPedheadshotValid(headshot) then
-                                    UnregisterPedheadshot(headshot)
-                                    headshot=nil
-                                    DrawRect(0.305,0.155,0.035,0.065,255,0,0,255)
-                                elseif IsPedheadshotReady(headshot) then
-                                    local txd=GetPedheadshotTxdString(headshot)
-                                    DrawSprite(txd,txd,
-                                        0.305,0.155,0.035,0.065,
-                                        0.0, 255, 255, 255, 255)
-                                end
-                                WriteText(4,"Survivor",0.7,255,255,255,255,0.33,0.145)
-                                
-                                if #npc_lines>0 then
-                                    for i=1,#npc_lines do
-                                        SetTextWrap(0.5-(0.45/2)+0.015,0.5+(0.45/2)-0.015)
-                                        WriteText(4,npc_lines[i],0.4,255,255,255,255,0.29,0.18+i*0.025)
-                                    end
-                                end
-                                if #my_lines>0 then
-                                    for i=1,#my_lines do
-                                        pos=pos+1
-                                        WriteText(4,my_lines[i],0.4,255,255,255,255,0.28,0.47+i*0.025)
-                                        local col=0
-                                        local alpha=200
-                                        if curline==i then col=255 alpha=255 end
-                                        DrawRect(0.5,0.485+i*0.025,0.45,0.025,col,col,col,alpha)
-                                    end
-                                end
-                                if IsControlJustPressed(0,172) then if curline==1 then curline=#my_lines else curline=curline-1 end end
-                                if IsControlJustPressed(0,173) then if curline>=#my_lines then curline=1 else curline=curline+1 end end
-                                if IsControlJustPressed(0,191) then
-                                    talking_state=my_lines[curline]
-                                    change_lines(talkingstate,npc)
-                                    curline=1
-                                end
-                                if talking_state=="[Back]" then 
-                                    talking_state="Main"
-                                    change_lines(talkingstate,npc)
-                                    curline=1
-                                elseif talking_state=="Thanks" then 
-                                    talking_state="Main"
-                                    change_lines(talkingstate,npc)
-                                    curline=1
-                                elseif talking_state=="Sorry, but no" then 
-                                    talking_state="Main"
-                                    change_lines(talkingstate,npc)
-                                    curline=1
-                                elseif talking_state=="No" then 
-                                    talking_state="Main"
-                                    change_lines(talkingstate,npc)
-                                    curline=1
-                                elseif talking_state=="[Exit]" then 
-                                    talking=false
-                                    curline=1
-                                end
-                            end
-                            if headshot~=nil then
-                                if IsPedheadshotValid(headshot) then
-                                    UnregisterPedheadshot(headshot)
-                                end
-                                headshot=nil
-                            end
+                        local blip=GetBlipFromEntity(npc)
+                        if blip~=0 and GetBlipSprite(blip)==133 then
+                            RemoveBlip(blip)
                         end
                     end
                 end
@@ -3893,8 +4379,192 @@ Citizen.CreateThread(function()
             if IsPedInAnyVehicle(pped) then 
                 if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) then
                     --sell car
+                    local myveh=GetVehiclePedIsIn(pped)
+                    local current_menu=0
+                    SetVehicleModKit(myveh,0)
+                    local menu_start=0
+                    local menu_end=250
+                    local component_name={
+                    
+                    }
+                    for i=0,250 do
+                        local num=GetNumVehicleMods(myveh,i)
+                        local name=GetModSlotName(myveh,i)
+                        if name==nil then
+                            name="nil"
+                        elseif name=="" then
+                            name="empty_string"
+                        elseif name==0 then
+                            name="zero"
+                        elseif name==-1 then
+                            name="minus_one"
+                        end
+                        component_name[i]=i.." "..name
+                        local mod=GetVehicleMod(myveh,i)
+                        local text=GetModTextLabel(myveh,i,mod)
+                        if text==nil then
+                            text="nil"
+                        elseif text=="" then
+                            text="empty_string"
+                        elseif text==0 then
+                            text="zero"
+                        elseif text==-1 then
+                            text="minus_one"
+                        end
+                        print(i.." "..name.." "..mod.."/"..num.." ("..text..")")
+                        --SetVehicleMod(myveh,i,math.tointeger(mod),false)
+                    end
+                    local current_menu=menu_start
+                    SetEntityVelocity(myveh,0,0,0)
+                    while true do Wait(0)
+                        inventory.highlight=0
+                        pped=PlayerPedId()
+                        mypos=GetEntityCoords(pped)
+                        if IsControlJustPressed(0,177) or not in_radius(mypos,zone.vehpos,5) or GetVehiclePedIsIn(pped)~=myveh then
+                            break
+                        elseif IsControlJustPressed(0,173) then --down
+                            if current_menu<menu_end then
+                                repeat
+                                    current_menu=current_menu+1
+                                until GetNumVehicleMods(myveh,current_menu)~=0 or current_menu==menu_end
+                            else
+                                current_menu=menu_start
+                            end
+                        elseif IsControlJustPressed(0,172) then --up
+                            if current_menu>menu_start then
+                                repeat
+                                    current_menu=current_menu-1
+                                until GetNumVehicleMods(myveh,current_menu)~=0 or current_menu==menu_start
+                            else
+                                current_menu=menu_end
+                            end
+                        elseif IsControlJustPressed(0,175) then --right
+                            -- if player.headshot~=nil then UnregisterPedheadshot(player.headshot) player.headshot=nil end
+                            -- if current_menu<12 then
+                                local current=GetVehicleMod(myveh,current_menu)
+                                local total=GetNumVehicleMods(myveh,current_menu)
+                                if current<total then
+                                    current=current+1
+                                else
+                                    current=-1
+                                end
+                                --print("set "..current)
+                                --local texture=GetPedTextureVariation(pped,current_menu,current)
+                                --local textures=GetNumberOfPedTextureVariations(pped,current_menu,current)
+                                --if textures>0 then textures=math.random(0,textures-1) end
+                                --SetPedComponentVariation(pped,current_menu,current,textures,0)
+                                SetVehicleMod(myveh,current_menu,current,false)
+                            -- else
+                                -- local current=GetPedPropIndex(pped,current_menu-12)
+                                -- --print("current "..current)
+                                -- local total=GetNumberOfPedPropDrawableVariations(pped,current_menu-12)-1
+                                -- if current<total then
+                                    -- current=current+1
+                                -- else
+                                    -- current=-1
+                                -- end
+                                -- --print("set "..current)
+                                -- --local texture=GetPedPropTextureIndex(pped,current_menu-12,current)
+                                -- local textures=GetNumberOfPedPropTextureVariations(pped,current_menu-12,current)
+                                -- if textures>0 then textures=math.random(0,textures-1) end
+                                -- ClearPedProp(pped,current_menu-12)
+                                -- SetPedPropIndex(pped,current_menu-12,current,textures,true)
+                            -- end
+                        elseif IsControlJustPressed(0,174) then --left
+                            --if player.headshot~=nil then UnregisterPedheadshot(player.headshot) player.headshot=nil end
+                            -- if current_menu<12 then
+                                local current=GetVehicleMod(myveh,current_menu)
+                                local total=GetNumVehicleMods(myveh,current_menu)
+                                if current>-1 then
+                                    current=current-1
+                                else
+                                    current=total
+                                end
+                                --print("set "..current)
+                                --local texture=GetPedTextureVariation(pped,current_menu,current)
+                                --local textures=GetNumberOfPedTextureVariations(pped,current_menu,current)
+                                --if textures>0 then textures=math.random(0,textures-1) end
+                                --SetPedComponentVariation(pped,current_menu,current,textures,0)
+                                SetVehicleMod(myveh,current_menu,current,false)
+                            -- else
+                                -- local current=GetPedPropIndex(pped,current_menu-12)
+                                -- --print("current "..current)
+                                -- local total=GetNumberOfPedPropDrawableVariations(pped,current_menu-12)-1
+                                -- if current>-1 then
+                                    -- current=current-1
+                                -- else
+                                    -- current=total
+                                -- end
+                                -- --print("set "..current)
+                                -- --local texture=GetPedPropTextureIndex(pped,current_menu-12,current)
+                                -- local textures=GetNumberOfPedPropTextureVariations(pped,current_menu-12,current)
+                                -- if textures>0 then textures=math.random(0,textures-1) end
+                                -- ClearPedProp(pped,current_menu-12)
+                                -- SetPedPropIndex(pped,current_menu-12,current,textures,true)
+                            -- end
+                        elseif IsControlJustPressed(0,86) then --e veh horn
+                            -- if player.headshot~=nil then UnregisterPedheadshot(player.headshot) player.headshot=nil end
+                            -- if current_menu<12 then
+                                -- local current=GetPedDrawableVariation(pped,current_menu)
+                                -- local texture=GetPedTextureVariation(pped,current_menu,current)
+                                -- local textures=GetNumberOfPedTextureVariations(pped,current_menu,current)
+                                -- if textures>0 then
+                                    -- if texture<textures-1 then
+                                        -- texture=texture+1
+                                    -- else
+                                        -- texture=0
+                                    -- end
+                                -- end
+                                -- SetPedComponentVariation(pped,current_menu,current,texture,0)
+                            -- else
+                                -- local current=GetPedPropIndex(pped,current_menu-12)
+                                -- local texture=GetPedPropTextureIndex(pped,current_menu-12,current)
+                                -- local textures=GetNumberOfPedPropTextureVariations(pped,current_menu-12,current)
+                                -- if textures>0 then
+                                    -- if texture<textures-1 then
+                                        -- texture=texture+1
+                                    -- else
+                                        -- texture=0
+                                    -- end
+                                -- end
+                                -- ClearPedProp(pped,current_menu-12)
+                                -- SetPedPropIndex(pped,current_menu-12,current,texture,true)
+                            -- end
+                        end
+                        DrawRect(0.25,0.65,0.2,0.6,0,0,0,175)
+                        DrawRect(0.25,0.40,0.2,0.1,0,150,200,255) --blue header
+                        SetTextCentre(true)
+                        WriteText(7,"Vehicle modification",1.0,255,255,255,255,0.25,0.375)
+                        
+                        local txt_pos=0.428+0.025
+                        for i=menu_start,menu_end do
+                            local variations=GetNumVehicleMods(myveh,i)
+                            if variations~=0 then
+                                local current=GetVehicleMod(myveh,i)
+                                local alpha=(variations>0) and 255 or 100
+                                if i==current_menu then
+                                    DrawRect(0.25,0.012+txt_pos,0.2,0.025,255,255,255,255) --chosenline
+                                    --local textures=GetNumberOfPedTextureVariations(pped,i,current)
+                                    --local texture=GetPedTextureVariation(pped,i,current)
+                                    WriteTextNoOutline(2,component_name[i],0.35,0,0,0,alpha,0.16,txt_pos) --chosen line text
+                                    --if (variations~=0) then current=current+1 end
+                                    --if (textures~=0) then texture=texture+1 end
+                                    WriteTextNoOutline(4,"<",0.35,0,0,0,alpha,0.280,txt_pos) --chosen line text
+                                    WriteTextNoOutline(4,current.." / "..variations.." >",0.35,0,0,0,alpha,0.285,txt_pos) --chosen line text
+                                    --WriteTextNoOutline(4,"E "..texture.." / "..textures,0.35,0,0,0,alpha,0.315,0.428+.025+i*.025) --chosen line text
+                                else
+                                    WriteTextNoOutline(2,component_name[i],0.35,255,255,255,alpha,0.16,txt_pos) --not chosen line text
+                                    --if (variations~=0) then current=current+1 end
+                                    WriteTextNoOutline(4,current.." / "..variations,0.35,255,255,255,alpha,0.285,txt_pos) --not chosen line text
+                                end
+                                txt_pos=txt_pos+0.025
+                            end
+                        end
+                        
+                    end
                 end
                 if zone~=nil and not zone.raided and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
+                    try_to_load_garage()
                     if vehiclesave~=nil and vehiclesave.model~=nil then
                         WriteNotification("You already have ~g~"..GetDisplayNameFromVehicleModel(vehiclesave.model).." ~s~in garage.")
                     else
@@ -3968,28 +4638,8 @@ Citizen.CreateThread(function()
                     end
                 end
             elseif zone~=nil and not zone.raided and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
-                -- laod car from garage
-                if vehiclesave==nil and GetResourceKvpInt("garage_1_model")~=0 then
-                    vehiclesave={}
-                    vehiclesave.model=GetResourceKvpInt("garage_1_model")
-                    vehiclesave.enginehp=GetResourceKvpFloat("garage_1_enginehp")
-                    vehiclesave.fuellevel=GetResourceKvpFloat("garage_1_fuel")
-                    vehiclesave.doors=GetResourceKvpInt("garage_1_doors")
-                    vehiclesave.tyres=GetResourceKvpInt("garage_1_tyres")
-                    local colors=GetResourceKvpInt("garage_1_colors")
-                    vehiclesave.colors={colors&0xFF,(colors>>8)&0xFF,(colors>>16)&0xFF,(colors>>24)&0xFF}
-                    vehiclesave.total_mods=SetResourceKvpInt("garage_1_total_mods")
-                    vehiclesave.mods={}
-                    local modstring=GetResourceKvpString("garage_1_modstring")
-                    if modstring~=nil then
-                        --WriteNotification("loading "..#modstring)
-                        for i=1,#modstring,2 do
-                            local k,v=string.byte(modstring,i,i+1)
-                            k,v=k-1,v-1
-                            vehiclesave.mods[k]=v
-                        end
-                    end
-                end
+                -- load car from garage
+                try_to_load_garage()
                 if vehiclesave~=nil and vehiclesave.model~=nil then
                     local vs=vehiclesave
                     local flags=0
@@ -4180,7 +4830,7 @@ Citizen.CreateThread(function()
                             end
                         end
                         mypos=GetEntityCoords(PlayerPedId())
-                        if IsControlJustPressed(0,177) or not in_radius(mypos,zone.tradepos,5) then
+                        if IsControlJustPressed(0,177) or not in_radius(mypos,zone.tradepos,3) then
                             break
                         elseif IsControlJustPressed(0,175) then --right
                             if current_trade<#zone.trade then
@@ -4964,11 +5614,46 @@ Citizen.CreateThread(function()
                             player.mask="gasmask"
                         end
                         check_clothes(pped)
+                    elseif inventory[inventory.current].item=="halfmask" then
+                        if player.mask=="halfmask" then 
+                            player.mask=nil
+                        else
+                            player.mask="halfmask"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="balaclava" then
+                        if player.mask=="balaclava" then 
+                            player.mask=nil
+                        else
+                            player.mask="balaclava"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="tshirtmask" then
+                        if player.mask=="tshirtmask" then 
+                            player.mask=nil
+                        else
+                            player.mask="tshirtmask"
+                        end
+                        check_clothes(pped)
                     elseif inventory[inventory.current].item=="cowboyhat" then
                         if player.hat=="cowboyhat" then 
                             player.hat=nil
                         else
                             player.hat="cowboyhat"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="camocap" then
+                        if player.hat=="camocap" then 
+                            player.hat=nil
+                        else
+                            player.hat="camocap"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="lowcap" then
+                        if player.hat=="lowcap" then 
+                            player.hat=nil
+                        else
+                            player.hat="lowcap"
                         end
                         check_clothes(pped)
                         -- local obj
@@ -5021,6 +5706,15 @@ Citizen.CreateThread(function()
                         end
                     elseif inventory[inventory.current].item=="bodyarmor" then
                         player.bodyarmor=not player.bodyarmor
+                        if not player.bodyarmor then
+                            local armor=GetPedArmour(pped)
+                            if armor==100 then
+                                give_item_to_inventory("armorplate",2)
+                            elseif armor>=50 then
+                                give_item_to_inventory("armorplate",1)
+                            end
+                            SetPedArmour(pped,0)
+                        end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="radio" then
                         player.radio=not player.radio
@@ -5043,6 +5737,41 @@ Citizen.CreateThread(function()
                             player.suit="standard"
                         else
                             player.suit="offdutysheriff"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_explorer" then
+                        if player.suit=="explorer" then
+                            player.suit="standard"
+                        else
+                            player.suit="explorer"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_mercenary" then
+                        if player.suit=="mercenary" then
+                            player.suit="standard"
+                        else
+                            player.suit="mercenary"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_banditgoon" then
+                        if player.suit=="banditgoon" then
+                            player.suit="standard"
+                        else
+                            player.suit="banditgoon"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_police" then
+                        if player.suit=="police" then
+                            player.suit="standard"
+                        else
+                            player.suit="police"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_banditmercenary" then
+                        if player.suit=="banditmercenary" then
+                            player.suit="standard"
+                        else
+                            player.suit="banditmercenary"
                         end
                         check_clothes(pped)
                     end
@@ -5335,6 +6064,7 @@ Citizen.CreateThread(function()
     _,survivor_hash=AddRelationshipGroup("SURVIVOR")
     _,bandit_hash=AddRelationshipGroup("BANDIT")
     _,government_hash=AddRelationshipGroup("GOVERNMENT")
+    _,raider_hash=AddRelationshipGroup("RAIDER")
     
     -------------------
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("SURVIVOR"))
@@ -5342,12 +6072,16 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(0, GetHashKey("SURVIVOR"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(3, GetHashKey("SURVIVOR"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("MERC"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(0, GetHashKey("BANDIT"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("MERC"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -5356,6 +6090,29 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(0, GetHashKey("GOVERNMENT"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(3, GetHashKey("GOVERNMENT"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("BANDIT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("MERC"))
+    
+    
+    SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
+    SetRelationshipBetweenGroups(0, GetHashKey("RAIDER"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("SURVIVOR"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("BANDIT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("COP"))
+    SetRelationshipBetweenGroups(5, GetHashKey("COP"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("MERC"))
+    
+    SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
+    SetRelationshipBetweenGroups(0, GetHashKey("MERC"), GetHashKey("MERC"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("SURVIVOR"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("BANDIT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("COP"))
+    SetRelationshipBetweenGroups(5, GetHashKey("COP"), GetHashKey("MERC"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("RAIDER"))
     -------------------
     
     
@@ -5411,11 +6168,21 @@ Citizen.CreateThread(function()
         SetPedCombatAttributes(ped, 1424, false)
         SetPedFleeAttributes(ped, 0, 0);
     end
+    local function TaskWanderInArea(ped,x,y,z,r,d,t)
+        Citizen.InvokeNative(0xE054346CA3A0F315,ped,x,y,z,r,d,t)
+    end
     local function raider_think() --need ped, zpos and zone
         if zone==nil then
             if IsPedUsingAnyScenario(ped) then TaskGuardCurrentPosition(ped, 35.1, 35.1, true) end
-        elseif zone.guard then
-            TaskGuardCurrentPosition(ped, 35.1, 35.1, true)
+        elseif zone.guard and not GetIsTaskActive(ped,342) then
+            --TaskGuardCurrentPosition(ped, 35.1, 35.1, true)
+            -- if not GetIsTaskActive(ped,222) then
+                -- local pedpos=GetEntityCoords(ped)
+                -- TaskWanderInArea(ped, pedpos.x, pedpos.y, pedpos.z, math.random(20,50)+0.1, math.random(10,30)+0.1, math.random(1,4)+0.1);
+            -- end 
+            if not GetIsTaskActive(ped,221) then
+                TaskWanderStandard(ped, 9.9+0.1, 10);
+            end
         elseif zone.goto_center and not GetIsTaskActive(ped,342) then
             if math.abs(zpos.x-zone.x)+math.abs(zpos.y-zone.y)<30.0 then
                 --TaskGuardCurrentPosition(ped, 35.1, 35.1, true)
@@ -5446,11 +6213,11 @@ Citizen.CreateThread(function()
             DecorSetBool(ped,"raider",true)
         elseif IsPedHuman(ped) then
             zone=is_in_safe_zone(zpos.x,zpos.y,zpos.z)
-            if zone==nil then
+            if zone==nil or zone.relationship==nil then
                 if IsPedInAnyHeli(ped) or IsPedInAnyPlane(ped) or math.random(1,20)==1 then --loners
                     DecorSetBool(ped,"raider",true)
                     if IsPedUsingAnyScenario(ped) then ClearPedTasksImmediately(ped) end
-                    SetPedRelationshipGroupHash(ped,GetHashKey("BANDIT"))
+                    SetPedRelationshipGroupHash(ped,GetHashKey("RAIDER"))
                     SetPedCombatAttributes(ped, 0, true)
                     SetPedCombatAttributes(ped, 1, true)
                     SetPedCombatAttributes(ped, 2, true)
@@ -5535,7 +6302,8 @@ Citizen.CreateThread(function()
                 -- end
                 SetPedRelationshipGroupHash(ped,zone.relationship)
                 --SetEntityCoords(ped,zone.x, zone.y, zone.z)
-                --if zone.guard then TaskWanderInArea(ped, zone.x, zone.y, zone.z, 10.0, 3.0, 5.0); end
+                --if zone.guard then TaskWanderInArea(ped, zone.x, zone.y, zone.z, zone.r, 3.0, 5.0); end
+                --TaskGuardCurrentPosition(ped, 5.1, 5.1, true); 
                 raider_think()
                 SetPedSeeingRange(ped,100.1)
                 SetPedCombatAttributes(ped, 0, true)
@@ -5554,10 +6322,12 @@ Citizen.CreateThread(function()
                 SetPedFleeAttributes(ped, 32, 0)
                 SetPedFleeAttributes(ped, 64, 0)
                 local weaponsarray=zone.weapons
-                local randomweapon=math.random(1,#weaponsarray)
-                GiveWeaponToPed(ped, weaponsarray[randomweapon], 5000, false, true)
+                if weaponsarray then
+                    local randomweapon=math.random(1,#weaponsarray)
+                    GiveWeaponToPed(ped, weaponsarray[randomweapon], 5000, false, true)
+                    SetPedCanSwitchWeapon(ped,false)
+                end
                 
-                SetPedCanSwitchWeapon(ped,false)
             end
             SetPedConfigFlag(ped,281,true)
         end
@@ -5651,7 +6421,7 @@ Citizen.CreateThread(function()
             loop=(handle~=-1)
             while loop do
                 if (ped&maxfilter)==filter then --heavy
-                    if not IsPedAPlayer(ped) and not IsPedDeadOrDying(ped) then
+                    if not IsPedAPlayer(ped) and not IsPedDeadOrDying(ped) and IsPedHuman(ped) then
                         zpos=GetEntityCoords(ped)
                         if DecorExistOn(ped,"zombie_type") then
                             if survivors==nil then get_survivors() end
@@ -5671,7 +6441,7 @@ Citizen.CreateThread(function()
                         end
                     end
                 else --light
-                    if not IsPedAPlayer(ped) then
+                    if not IsPedAPlayer(ped) and IsPedHuman(ped) then
                         if not IsPedDeadOrDying(ped) then
                             if DecorExistOn(ped,"zombie_type") then
                                 SetPedMute(ped)
@@ -5741,7 +6511,7 @@ Citizen.CreateThread(function()
             handle,ped=FindFirstPed()
             loop=(handle~=-1)
             while loop do
-                if not IsPedAPlayer(ped) then
+                if not IsPedAPlayer(ped) and IsPedHuman(ped) then
                     if not IsPedDeadOrDying(ped) then
                         if DecorExistOn(ped,"zombie_type") then
                             if IsPedUsingAnyScenario(ped) then
@@ -6087,41 +6857,45 @@ Citizen.CreateThread(function()
             local found=false
             for k,v in pairs(pickups_objects) do
                 obj=GetClosestObjectOfType(pos.x,pos.y,pos.z, 1.3, k, false, false, false)
-                if obj~=0 and not NetworkGetEntityIsNetworked(obj) then
-                    if (v.solid or v.exp) and DecorExistOn(obj,"zm_looted") then
-                        empty=true
-                    elseif v.spoiled then
-                        spoiled=true
-                    else
-                        local took_something=false
-                        local local_spoiled=false
-                        for i=1,5,2 do
-                            if v[i]==nil then
-                                break
+                if obj~=0 then --and not NetworkGetEntityIsNetworked(obj) then
+                    local attached=GetEntityAttachedTo(obj)
+                    if not IsEntityAPed(attached) or IsPedDeadOrDying(attached) then
+                        if (v.solid or v.exp) and DecorExistOn(obj,"zm_looted") then
+                            empty=true
+                        elseif v.spoiled then
+                            spoiled=true
+                        else
+                            local took_something=false
+                            local local_spoiled=false
+                            for i=1,5,2 do
+                                if v[i]==nil then
+                                    break
+                                end
+                                if (inventory_items_chances[v[i]]==nil) or (math.random(1,100)<inventory_items_chances[v[i]].chance) then
+                                    print("trying to pickup "..v[i])
+                                    if give_item_to_inventory(v[i],v[i+1]) then took_something=true end
+                                else
+                                    WriteNotification(inventory_items_chances[v[i]].text)
+                                    local_spoiled=true
+                                end
                             end
-                            if (inventory_items_chances[v[i]]==nil) or (math.random(1,100)<inventory_items_chances[v[i]].chance) then
-                                if give_item_to_inventory(v[i],v[i+1]) then took_something=true end
-                            else
-                                WriteNotification(inventory_items_chances[v[i]].text)
-                                local_spoiled=true
-                            end
-                        end
-                        if took_something or local_spoiled then
-                            local objpos=GetEntityCoords(obj)
-                            looted_array[coords_to_dword(objpos.x,objpos.y,objpos.z)]=current_date
-                            if v.exp then
-                                DecorSetBool(obj,"zm_looted",true)
+                            if took_something or local_spoiled then
                                 local objpos=GetEntityCoords(obj)
-                                AddExplosion(objpos.x, objpos.y, objpos.z, 16, 0.05, false, true, false, true)
-                            elseif v.solid then
-                                DecorSetBool(obj,"zm_looted",true)
-                            else
-                                SetEntityAsMissionEntity(obj)
-                                DeleteObject(obj)
+                                looted_array[coords_to_dword(objpos.x,objpos.y,objpos.z)]=current_date
+                                if v.exp then
+                                    DecorSetBool(obj,"zm_looted",true)
+                                    local objpos=GetEntityCoords(obj)
+                                    AddExplosion(objpos.x, objpos.y, objpos.z, 16, 0.05, false, true, false, true)
+                                elseif v.solid then
+                                    DecorSetBool(obj,"zm_looted",true)
+                                else
+                                    SetEntityAsMissionEntity(obj)
+                                    DeleteObject(obj)
+                                end
                             end
+                            found=true
+                            break
                         end
-                        found=true
-                        break
                     end
                 end
             end
@@ -6553,7 +7327,7 @@ Citizen.CreateThread(function() --if true then return end
         local loop=(handle~=-1)
         local prop,model,bone
         while loop do
-            if DecorExistOn(ped,"raider") then
+            if DecorExistOn(ped,"raider") and not IsPedDeadOrDying(ped) then
                 bone=0x60f2
                 if peds_bp[ped]==nil then
                     prop=backpacks[math.random(1,#backpacks)]
@@ -6803,7 +7577,11 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t)
             signal.weapons=weaponsarray[t]
             signal.models=modelgroups[t]
             signal.goto_center=true
-            signal.relationship=GetHashKey("BANDIT")
+            if t=="raiders" then
+                signal.relationship=GetHashKey("RAIDER")
+            else
+                signal.relationship=GetHashKey("BANDIT")
+            end
         end
         if z==nil then
             z=-250.5
@@ -6937,7 +7715,7 @@ Citizen.CreateThread(function()
         end
         if havetrailer then
             local trailermodel=GetEntityModel(trailer)
-            if trailermodel==-730904777 or trailermodel==1956216962 then
+            if trailermodel==-730904777 or trailermodel==1956216962 or trailermodel==-1207431159 then
                 if DecorExistOn(trailer,"gasoline") then
                     WriteHint({"~c~This trailer tank has ~o~~1~ gasoline",DecorGetInt(trailer,"gasoline")})
                 else
@@ -6999,11 +7777,11 @@ Citizen.CreateThread(function()
     local sellprice=10
     local blip
     for k,v in ipairs(gasstations) do
-        blip=AddBlipForCoord(v.tank.x,v.tank.y,v.tank.z)
-        SetBlipSprite(blip, v.tank.blip)
-        SetBlipAsShortRange(blip,true)
-        SetBlipColour(blip, 4)
-        SetBlipName(blip, "Sell fuel tank")
+        -- blip=AddBlipForCoord(v.tank.x,v.tank.y,v.tank.z)
+        -- SetBlipSprite(blip, v.tank.blip)
+        -- SetBlipAsShortRange(blip,true)
+        -- SetBlipColour(blip, 4)
+        -- SetBlipName(blip, "Sell fuel tank")
         
         blip=AddBlipForCoord(v.trader.x,v.trader.y,v.trader.z)
         SetBlipSprite(blip, v.trader.blip)
@@ -7086,7 +7864,7 @@ Citizen.CreateThread(function()
                                 local havetrailer,trailer=GetVehicleTrailerVehicle(myveh)
                                 if havetrailer then
                                     local trailermodel=GetEntityModel(trailer)
-                                    if trailermodel==-730904777 or trailermodel==1956216962 then
+                                    if trailermodel==-730904777 or trailermodel==1956216962 or trailermodel==-1207431159 then
                                         if DecorExistOn(trailer,"gasoline") then
                                             local curgas=DecorGetInt(trailer,"gasoline")
                                             local gasneeded=2000-v.gasoline
@@ -7148,7 +7926,7 @@ Citizen.CreateThread(function()
                     local havetrailer,trailer=GetVehicleTrailerVehicle(myveh)
                     if havetrailer then
                         local trailermodel=GetEntityModel(trailer)
-                        if trailermodel==-730904777 or trailermodel==1956216962 then
+                        if trailermodel==-730904777 or trailermodel==1956216962 or trailermodel==-1207431159 then
                             if DecorExistOn(trailer,"gasoline") then
                                 local curgas=DecorGetInt(trailer,"gasoline")
                                 if curgas<1000 then
@@ -7338,8 +8116,115 @@ AddEventHandler("zonestatus",function(name,status)
     end
 end)
 
+Citizen.CreateThread(function()
+    Wait(10000)
+    local oldweapons=0
+    --local totalweapons=0
+    local hashsum=0
+    local ammosum=0
+    local oldammo=0
+    local ammo=0
+    local myped=PlayerPedId()
+    for name,_ in pairs(weapons) do
+        local hash=GetHashKey("weapon_"..name)
+        if not IsWeaponValid(hash) then
+            hash=GetHashKey("gadget_"..name)
+            if not IsWeaponValid(hash) then
+                hash=GetHashKey(name)
+                if not IsWeaponValid(hash) then
+                    hash=nil
+                end
+            end
+        end
+        if hash then
+            weapons[name]=hash
+            if GetResourceKvpInt(name)~=0 then
+                GiveWeaponToPed(myped,hash,0,false,true)
+                oldweapons=oldweapons~hash
+                --totalweapons=totalweapons+1
+            end
+        end
+    end
+    for name,hash in pairs(ammo_types) do
+        ammo=GetResourceKvpInt(name)
+        SetPedAmmoByType(myped,hash,ammo)
+        oldammo=oldammo+ammo
+    end
+    while true do
+        Wait(0)
+        hashsum=0
+        myped=PlayerPedId()
+        for name,hash in pairs(weapons) do
+            if HasPedGotWeapon(myped,hash) then
+                hashsum=hashsum~hash
+            end
+        end
+        if hashsum~=oldweapons then
+            Wait(0)
+            oldweapons=0
+            for name,hash in pairs(weapons) do
+                myped=PlayerPedId()
+                if HasPedGotWeapon(myped,hash) then
+                    oldweapons=oldweapons~hash
+                    SetResourceKvpInt(name,1)
+                else
+                    DeleteResourceKvp(name)
+                end
+                Wait(0)
+            end
+        end
+        Wait(0)
+        myped=PlayerPedId()
+        ammosum=0
+        for name,hash in pairs(ammo_types) do
+            ammo=GetPedAmmoByType(myped,hash)
+            ammosum=ammosum+ammo
+        end
+        if ammosum~=oldammo then
+            Wait(0)
+            oldammo=0
+            for name,hash in pairs(ammo_types) do
+                myped=PlayerPedId()
+                ammo=GetPedAmmoByType(myped,hash)
+                SetResourceKvpInt(name,ammo)
+                oldammo=oldammo+ammo
+                Wait(0)
+            end
+        end
+    end
+end)
 
+local teleports={
+{x=1717.3126220703,y=4791.8251953125,z=41.984027862549},--,angle=261.28918457031}, --north trading post
+{x=1716.1958007813,y=4792.0146484375,z=41.983989715576},--,angle=80.689674377441},
+}
 
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local mypos=GetEntityCoords(myped)
+        for k,v in ipairs(teleports) do
+            local dist=#(vector3(mypos.x,mypos.y,mypos.z)-vector3(v.x,v.y,v.z))
+            if dist<100.0 then
+                DrawMarker(0, v.x, v.y, v.z, 
+                0.0, 0.0, 0.0, --dir
+                0.0, 0.0, 0.0, --rot
+                0.6, 0.6, 0.6, --scl
+                255, 255, 150, 200, 
+                true, false, 2, true, 0, 0, false)
+                if dist<1.0 then
+                    if IsControlJustPressed(0,86) then
+                        if k%2==1 then --не четное like 1 3 5 7
+                            SetEntityCoords(myped,teleports[k+1].x,teleports[k+1].y,teleports[k+1].z-1.0)
+                        else
+                            SetEntityCoords(myped,teleports[k-1].x,teleports[k-1].y,teleports[k-1].z-1.0)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
 
 --custom dispatch
 -- Citizen.CreateThread(function()
