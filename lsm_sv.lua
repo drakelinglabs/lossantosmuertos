@@ -110,24 +110,23 @@ local safezones={}
 
 Citizen.CreateThread(function()
     local raids={
-    {x=56.786067962646,y=6302.458984375,z=31.234939575195,r=150,t="raiders"},
-    {x=56.786067962646,y=3302.458984375,z=31.234939575195,r=150,t="military"},
+    {x=-140.69189453125,y=6385.9951171875,z=52.0,r=150.0,t=1},
+    {x=1906.786067962646,y=5002.458984375,z=31.234939575195,r=150.0,t=5},
+    {x=-1800.0466308594,y=3111.767578125,z=43.999034881592,r=100.0,t=2},
+    {x=1056.786067962646,y=3302.458984375,z=31.234939575195,r=750.0,t=72},
     }
-    local maxraids=2
-    if maxraids>0 then
-        for k=1,maxraids do
-            local v={}
-            local traveldistance=.05
-            v.x=math.random(-3000,3000)
-            v.y=math.random(-3000,10000)
-            v.r=250.0
-            v.rotation_x=math.cos(.01)
-            v.rotation_y=math.sin(.01)
-            local angle=math.random(0,31416)*.0002
-            v.speed_x=math.cos(angle)*traveldistance
-            v.speed_y=math.sin(angle)*traveldistance
-            raids[k]=v
-        end
+    for k,v in pairs(raids) do
+        --local v={}
+        local traveldistance=.05
+        --v.x=math.random(-3000,3000)
+        --v.y=math.random(-3000,10000)
+        --v.r=250.0
+        v.rotation_x=math.cos(.01)
+        v.rotation_y=math.sin(.01)
+        local angle=math.random(0,31416)*.0002
+        v.speed_x=math.cos(angle)*traveldistance
+        v.speed_y=math.sin(angle)*traveldistance
+        --raids[k]=v
     end
     local function rotate2d(x,y,c,s)
         return x*c+y*s,y*c-x*s
@@ -136,7 +135,7 @@ Citizen.CreateThread(function()
     xmin=-2000,
     xmax=3000,
     ymin=-2000,
-    ymax=6000,
+    ymax=7000,
     }
     while true do
         for k,v in pairs(raids) do
@@ -195,6 +194,8 @@ local heists={
 {x=-234.09332275391,y=-2006.7995605469,z=24.685373306274,r=150,health=200,t="raiders"}, --arena fame
 {x=870.16912841797,y=-2309.2395019531,z=30.570411682129,r=150,health=200,t="raiders"}, --promzone small int
 {x=712.86987304688,y=-963.63873291016,z=30.39533996582,r=150,health=200,t="raiders"}, --lester warh
+{x=-1910.8470458984,y=2084.9750976563,z=140.38409423828,r=150,health=200,t="raiders"}, --виноград
+{x=-56.35758972168,y=1905.7098388672,z=195.38105773926,r=150,health=200,t="raiders"}, --farm
 }
 
 local signals={}
@@ -209,6 +210,7 @@ RegisterServerEvent("signalfound")
 AddEventHandler("signalfound",function(id)
     local signal=signals[id]
     if signal~=nil then
+        signal.abandoned=nil
         if signal.health then
             signal.health=signal.health-1
             if signal.health<0 then signal.health=nil end
@@ -225,6 +227,7 @@ RegisterServerEvent("loot")
 AddEventHandler("loot",function(id,thing)
     local signal=signals[id]
     if signal~=nil then
+        signal.abandoned=nil
         local loot=signal.loot
         if loot~=nil and thing~=nil and loot[thing]~=nil then
             TriggerClientEvent("loot_crate_give",source,thing,loot[thing])
@@ -281,12 +284,21 @@ Citizen.CreateThread(function()
     while true do Wait(60000)
         local active=0
         for k,v in pairs(signals) do
-            if v.b==nil or v.b~=310 then 
-                active=active+1
+            if v.b==nil or v.b~=310 then
+                if v.abandoned==nil then
+                    active=active+1
+                    v.abandoned=0
+                elseif v.abandoned<25 then
+                    active=active+1
+                    v.abandoned=v.abandoned+1
+                else
+                    signals[k]=nil
+                    TriggerClientEvent("updatesignal",-1,k)
+                end
             else
                 if v.abandoned==nil then
                     v.abandoned=0
-                elseif v.abandoned<15 then
+                elseif v.abandoned<20 then
                     v.abandoned=v.abandoned+1
                 else
                     signals[k]=nil
