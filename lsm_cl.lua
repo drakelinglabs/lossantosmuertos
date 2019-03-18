@@ -544,6 +544,13 @@ Citizen.CreateThread(function()
             end
         else
             if x~=nil then
+                if t<=5 and t>=1 then
+                    local success,nodepos=GetClosestMajorVehicleNode(x, y, 0.0, 3.0, 0)
+                    if success then
+                        x=nodepos.x
+                        y=nodepos.y
+                    end
+                end
                 v.x=x
                 v.y=y
                 v.r=r
@@ -567,7 +574,7 @@ Citizen.CreateThread(function()
         for k,v in pairs(raids) do
             if v.t~=nil and v.r~=nil then
                 if v.t==72 then
-                    if player.mask~=nil or player.mask~="gasmask" then
+                    if player.mask==nil or player.mask~="gasmask" then
                         local ped=PlayerPedId()
                         local pos=GetEntityCoords(ped)
                         local dx,dy=pos.x-v.x,pos.y-v.y
@@ -931,7 +938,7 @@ local safezones={
     --provisionpos={ x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
     questpos={x=2159.0524902344,y=4782.1181640625,z=41.961029052734},
     weapons={"pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
-    garagepos={x=2155.5866699219,y=4780.2172851563,z=41.044399261475,angle=1.4582903385162},
+    garagepos={x=2132.4584960938,y=4785.529296875,z=40.872440338135,angle=24.739751815796},
     vehpos={x=2138.4460449219,y=4815.662109375,z=41.194259643555,angle=115.94924163818},
     vehshop={
         {"microlight",
@@ -1458,7 +1465,7 @@ tshirtmask="Self made balaclava from T-shirt.",
 camocap="Camouflage military cap.",
 clothes_explorer="Excellent quality clothes, made out of very lasting materials. Extremily comfortable, allows one to slowly regenerate health if injured.",
 clothes_mercenary="Self made heavy armor. Stiff materials gives 20% damage resistance to bullets, but heavy weight makes it harder to run and lowers mobility, making one recieve 30% more damage in melee combat.",
-clothes_banditgoon="Low rank bandit clothes. Thick material gives 5% resistance to melee damage. There are many bandits, use these clothes to disguise yourself as bandit.",
+clothes_banditgoon="Low rank bandit clothes. Thick material gives 15% resistance to melee damage. There are many bandits, use these clothes to disguise yourself as bandit.",
 clothes_police="Standard uniform of LSPD, nothing special, police wear it to distinguish themselves from other survivors.",
 lowcap="Beanie, quite popular among local bandits.",
 clothes_banditmercenary="Modified mercenary armor. Lighter materals were used, now one does not recieve more melee damage because of lower mobility. However it's still too heavy to sprint. Wearer recieves 20% less bullet damage. Distinct bandit decals makes one appear as bandit.",
@@ -1565,7 +1572,7 @@ local deadbodiesrewards_tier4={
 {"balaclava",1},
 {"camocap",1},
 {"clothes_banditgoon",1},
-{"clothes_lowcap",1},
+{"lowcap",1},
 {"mre",1},
 }
 local deadbodiesrewards_tier5={
@@ -1625,7 +1632,6 @@ local trunkrewards_tier3={
 {"soda",-2},
 {"juice",1},
 {"gasoline",-7},
-{"mre",-2},
 {"painkillers",-2},
 }
 local trunkrewards_tier4={
@@ -1647,6 +1653,8 @@ local trunkrewards_tier4={
 {"balaclava",1},
 {"camocap",1},
 {"clothes_banditgoon",1},
+{"lowcap",1},
+{"mre",-2},
 }
 local trunkrewards_tier5={
 {"snspistol",1},
@@ -3178,7 +3186,7 @@ Citizen.CreateThread(function()
                 SetPlayerWeaponDefenseModifier(PlayerId(),0.7+0.1)
             elseif player.suit=="banditgoon" then
                 SetPlayerSprint(PlayerId(),true)
-                SetPlayerMeleeWeaponDefenseModifier(PlayerId(),0.85+0.1)
+                SetPlayerMeleeWeaponDefenseModifier(PlayerId(),0.75+0.1)
                 SetPlayerWeaponDefenseModifier(PlayerId(),0.9+0.1)
             else
                 SetPlayerSprint(PlayerId(),true)
