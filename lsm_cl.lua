@@ -8926,6 +8926,8 @@ local relationship_names={
 [GetHashKey("NEUTRAL")]="Scavengers",
 [GetHashKey("DAWN")]="Dawn",
 [GetHashKey("GOVERNMENT")]="Government",
+[GetHashKey("BANDIT")]="Bandits",
+[GetHashKey("RAIDER")]="Raiders",
 }
 
 
