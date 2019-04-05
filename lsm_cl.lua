@@ -477,6 +477,7 @@ molotov="Molotov Cocktail",
 s_m_y_cop_01="Male Cop",
 s_f_y_cop_01="Female Cop",
 dbshotgun="Double Barrel Shotgun",
+GBurrito2="Dawn van",
 }
 
 local string_registered_labels={}
@@ -650,20 +651,10 @@ local weaponsarray={
     "dbshotgun","pumpshotgun",
     "musket"},
     bandit={-- 
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","flaregun","poolcue","switchblade","poolcue","knuckle",
     "pistol","snspistol","vintagepistol","combatpistol",
     "dbshotgun","pumpshotgun",
     "musket"},
     survivor={-- 
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","flaregun","poolcue","switchblade","poolcue","knuckle",
     "pistol","snspistol","vintagepistol","combatpistol",
     "dbshotgun","pumpshotgun",
     "musket"},
@@ -858,7 +849,7 @@ local dawn_crafts={
         "scrapplastic",2},
     },
     {"mgammo",50,
-        {"ammo",1,
+        {"ammo",50,
         "scrapplastic",1},
     },
     {"ammo",30,
@@ -3114,6 +3105,7 @@ Citizen.CreateThread(function()
                     end
                     if (rand&800)~=0 then
                         SetEntityRenderScorched(veh,true)
+                        SetEntityInvincible(veh,true)
                         DecorSetBool(veh,"scorched",true)
                         if GetVehicleEngineHealth(veh)>-3999.9 then
                             SetVehicleEngineHealth(veh,-3999.99)
@@ -3126,6 +3118,7 @@ Citizen.CreateThread(function()
                             else
                                 --SetVehicleUndriveable(veh,true)
                                 SetEntityRenderScorched(veh,true)
+                                --SetEntityInvincible(veh,true)
                                 DecorSetBool(veh,"scorched",true)
                                 SetVehicleEngineHealth(veh,-3999.99)
                             end
@@ -3996,7 +3989,7 @@ Citizen.CreateThread(function()
         local mypos=GetEntityCoords(myped)
         local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
         local myfaction=GetPedRelationshipGroupHash(myped)
-        if zone~=nil and zone.relationship~=nil and GetRelationshipBetweenGroups(myfaction,zone.relationship)<=3 then
+        if zone~=nil and zone.relationship~=nil and GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4 then
             --WriteHint(zone.relationship)
             local handle,npc=FindFirstPed()
             local loop=(handle~=-1)
@@ -4967,7 +4960,7 @@ Citizen.CreateThread(function()
                     end
                 end
                 if zone~=nil and not zone.raided and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
-                    if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=3) then
+                    if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                         try_to_load_garage()
                         if vehiclesave~=nil and vehiclesave.model~=nil then
                             WriteNotification("You already have ~g~"..GetDisplayNameFromVehicleModel(vehiclesave.model).." ~s~in garage.")
@@ -5046,7 +5039,7 @@ Citizen.CreateThread(function()
                 end
             elseif zone~=nil and not zone.raided and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
                 -- load car from garage
-                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=3) then
+                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                     try_to_load_garage()
                     if vehiclesave~=nil and vehiclesave.model~=nil then
                         local vs=vehiclesave
@@ -5057,46 +5050,50 @@ Citizen.CreateThread(function()
                         if vs.model then
                             RequestModel(vs.model)
                             while not HasModelLoaded(vs.model) do Wait(0) WriteText(2,"Loading vehicle",1.0,255,255,255,255,0.5,0.5) end
-                            local myveh=CreateVehicle(vs.model, mypos.x, mypos.y, mypos.z, zone.garagepos.angle, true, false);
-                            DecorSetBool(myveh,"zm_looted",true)                
-                            DecorSetBool(myveh,"post_apoc_car",true)
-                            DecorSetFloat(myveh,"zm_fuel",vs.fuellevel)
-                            SetPedIntoVehicle(myped,myveh,-1)
-                            
-                            SetVehicleEngineHealth(myveh,vs.enginehp)
-                            SetVehicleFuelLevel(myveh,vs.fuellevel)
-                            
-                            flags=vs.doors
-                            for i=0,7 do
-                                if (flags&(1<<i))~=0 then SetVehicleDoorBroken(myveh,i,true) end
-                            end
-                            
-                            SetVehicleColours(myveh,vs.colors[1],vs.colors[2])
-                            SetVehicleExtraColours(myveh,vs.colors[3],vs.colors[4])
-                            SetVehicleModKit(myveh,0)--vs.modkit)
-                            local mod
-                            for i=0,200 do
-                                mod=vs.mods[i]
-                                if mod~=nil then
-                                    SetVehicleMod(myveh,i,math.tointeger(mod),false)
-                                else
-                                    SetVehicleMod(myveh,i,-1,false)
+                            local myveh=CreateVehicle(vs.model, mypos.x, mypos.y, mypos.z, zone.garagepos.angle, true, false)
+                            if myveh~=0 then
+                                DecorSetBool(myveh,"zm_looted",true)                
+                                DecorSetBool(myveh,"post_apoc_car",true)
+                                DecorSetFloat(myveh,"zm_fuel",vs.fuellevel)
+                                SetPedIntoVehicle(myped,myveh,-1)
+                                
+                                SetVehicleEngineHealth(myveh,vs.enginehp)
+                                SetVehicleFuelLevel(myveh,vs.fuellevel)
+                                
+                                flags=vs.doors
+                                for i=0,7 do
+                                    if (flags&(1<<i))~=0 then SetVehicleDoorBroken(myveh,i,true) end
                                 end
+                                
+                                SetVehicleColours(myveh,vs.colors[1],vs.colors[2])
+                                SetVehicleExtraColours(myveh,vs.colors[3],vs.colors[4])
+                                SetVehicleModKit(myveh,0)--vs.modkit)
+                                local mod
+                                for i=0,200 do
+                                    mod=vs.mods[i]
+                                    if mod~=nil then
+                                        SetVehicleMod(myveh,i,math.tointeger(mod),false)
+                                    else
+                                        SetVehicleMod(myveh,i,-1,false)
+                                    end
+                                end
+                                flags=vs.tyres
+                                if (flags&1)~=0 then SetVehicleTyreBurst(myveh, 0, false, 1000.1-.1) end
+                                if (flags&2)~=0 then SetVehicleTyreBurst(myveh, 1, false, 1000.1-.1) end
+                                if (flags&4)~=0 then SetVehicleTyreBurst(myveh, 2, false, 1000.1-.1) end
+                                if (flags&8)~=0 then SetVehicleTyreBurst(myveh, 3, false, 1000.1-.1) end
+                                if (flags&16)~=0 then SetVehicleTyreBurst(myveh, 4, false, 1000.1-.1) end
+                                if (flags&32)~=0 then SetVehicleTyreBurst(myveh, 5, false, 1000.1-.1) end
+                                if (flags&64)~=0 then SetVehicleTyreBurst(myveh, 6, false, 1000.1-.1) end
+                                if (flags&128)~=0 then SetVehicleTyreBurst(myveh, 7, false, 1000.1-.1) end
+                                if (flags&256)~=0 then SetVehicleTyreBurst(myveh, 45, false, 1000.1-.1) end
+                                if (flags&512)~=0 then SetVehicleTyreBurst(myveh, 47, false, 1000.1-.1) end
+                                WriteNotification("You took ~g~"..GetDisplayNameFromVehicleModel(vs.model).." ~s~from your garage.")
+                                vehiclesave=nil
+                                DeleteResourceKvp("garage_1_model")
+                            else
+                                WriteNotification("Can't spawn vehicle, try again.")
                             end
-                            flags=vs.tyres
-                            if (flags&1)~=0 then SetVehicleTyreBurst(myveh, 0, false, 1000.1-.1) end
-                            if (flags&2)~=0 then SetVehicleTyreBurst(myveh, 1, false, 1000.1-.1) end
-                            if (flags&4)~=0 then SetVehicleTyreBurst(myveh, 2, false, 1000.1-.1) end
-                            if (flags&8)~=0 then SetVehicleTyreBurst(myveh, 3, false, 1000.1-.1) end
-                            if (flags&16)~=0 then SetVehicleTyreBurst(myveh, 4, false, 1000.1-.1) end
-                            if (flags&32)~=0 then SetVehicleTyreBurst(myveh, 5, false, 1000.1-.1) end
-                            if (flags&64)~=0 then SetVehicleTyreBurst(myveh, 6, false, 1000.1-.1) end
-                            if (flags&128)~=0 then SetVehicleTyreBurst(myveh, 7, false, 1000.1-.1) end
-                            if (flags&256)~=0 then SetVehicleTyreBurst(myveh, 45, false, 1000.1-.1) end
-                            if (flags&512)~=0 then SetVehicleTyreBurst(myveh, 47, false, 1000.1-.1) end
-                            WriteNotification("You took ~g~"..GetDisplayNameFromVehicleModel(vs.model).." ~s~from your garage.")
-                            vehiclesave=nil
-                            DeleteResourceKvp("garage_1_model")
                         else
                             WriteNotification("You don't have anything in your garage.")
                         end
@@ -5222,7 +5219,7 @@ Citizen.CreateThread(function()
                 end
             elseif zone~=nil and not zone.raided and zone.tradepos~=nil and in_radius(mypos,zone.tradepos,5) then
                 --trade
-                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=3) then
+                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                     --print("trade open")
                     inventory.highlight=0
                     local current_trade=1
@@ -6500,6 +6497,13 @@ Citizen.CreateThread(function()
     _,neutral_hash=AddRelationshipGroup("NEUTRAL")
     _,dawn_hash=AddRelationshipGroup("DAWN")
     
+    -- 5 shoot on sight
+    -- 4 shoot when shoulder them or aim or shoot
+    -- 3 shoot when shoulder them or aim or shoot
+    -- 2 shoot when shoulder them or aim or shoot
+    -- 1 nothing
+    -- 0 nothing
+    
     -------------------
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -6530,7 +6534,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("MERC"))
-    SetRelationshipBetweenGroups(3, GetHashKey("GOVERNMENT"), GetHashKey("NEUTRAL"))
+    SetRelationshipBetweenGroups(4, GetHashKey("GOVERNMENT"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(3, GetHashKey("GOVERNMENT"), GetHashKey("DAWN"))
     
     
@@ -6560,9 +6564,9 @@ Citizen.CreateThread(function()
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
-    SetRelationshipBetweenGroups(2, GetHashKey("NEUTRAL"), GetHashKey("NEUTRAL"))
+    SetRelationshipBetweenGroups(1, GetHashKey("NEUTRAL"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("BANDIT"))
-    SetRelationshipBetweenGroups(3, GetHashKey("NEUTRAL"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(4, GetHashKey("NEUTRAL"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(3, GetHashKey("NEUTRAL"), GetHashKey("SURVIVOR"))
@@ -6958,19 +6962,28 @@ Citizen.CreateThread(function()
                                             if DecorExistOn(ped,"zm_armor") then
                                                 armordif=DecorGetInt(ped,"zm_armor")-armor
                                             end
-                                            ApplyDamageToPed(ped, healthdif, false);
-                                            ApplyDamageToPed(ped, armordif, true);
+                                            ApplyDamageToPed(ped, healthdif*5, false);
+                                            ApplyDamageToPed(ped, armordif*5, true);
                                             --print("damage dealt: "..healthdif.." "..armordif)
                                             local hp=GetEntityHealth(ped)
                                             DecorSetInt(ped,"zm_health",hp)
                                             DecorSetInt(ped,"zm_armor",GetPedArmour(ped))
                                             SetHighFallTask(ped, 100, -1, -1)
+                                            -- local dict="melee@knife@streamed_variations" 
+                                            -- local anim="victim_knife_front_takedown_variation_b"
+                                            -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                                                -- RequestAnimDict(dict)
+                                                -- while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                -- TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
+                                            -- else
+                                                -- SetHighFallTask(ped, 5000, -1, -1)
+                                            -- end
                                             if hp<100 then
                                                DecorSetBool(ped,"headshotted")
-                                               SetPedComponentVariation(ped, 0, -1, 0, 0);
-                                               SetPedComponentVariation(ped, 1, -1, 0, 0);
-                                               SetPedComponentVariation(ped, 2, -1, 0, 0);
-                                               KnockOffPedProp(ped, true, true, true, true);
+                                               -- SetPedComponentVariation(ped, 0, -1, 0, 0);
+                                               -- SetPedComponentVariation(ped, 1, -1, 0, 0);
+                                               -- SetPedComponentVariation(ped, 2, -1, 0, 0);
+                                               -- KnockOffPedProp(ped, true, true, true, true);
                                                local libname="core"
                                                local effectname="blood_entry_sniper"
                                                local effectname2="blood_headshot"
@@ -7033,6 +7046,22 @@ Citizen.CreateThread(function()
                                             DecorSetInt(ped,"zm_armor",armor)
                                         end
                                     else
+                                        if DecorGetInt(ped,"zm_lastbone")~=bone then
+                                            local dict="melee@small_wpn@streamed_core" 
+                                            local anim="non_melee_damage_front"
+                                            if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                                                RequestAnimDict(dict)
+                                                while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
+                                            else
+                                                SetHighFallTask(ped, 100, -1, -1)
+                                                --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
+                                            end
+                                            DecorSetInt(ped,"zm_lastbone",bone)
+                                            
+                                            DecorSetInt(ped,"zm_health",health)
+                                            DecorSetInt(ped,"zm_armor",armor)
+                                        end
                                         DecorSetInt(ped,"zm_health",health)
                                         DecorSetInt(ped,"zm_armor",armor)
                                     end
@@ -8885,6 +8914,130 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+local relationship_names={
+[0]="This is your faction. All members are friendly to you.",
+[1]="Friends. This faction is friendly to you, you can use your weapons freely.",
+[2]="Constrained neutral. Do not use your weapons and behave unnoticed.",
+[3]="Tense neutral. Do not use your weapons and behave unnoticed.",
+[4]="Edge neutral. Do not use your weapons and behave unnoticed.",
+[5]="This faction is aggresive against you.",
+[GetHashKey("SURVIVOR")]="Survivors",
+[GetHashKey("NEUTRAL")]="Scavengers",
+[GetHashKey("DAWN")]="Dawn",
+[GetHashKey("GOVERNMENT")]="Government",
+}
+
+
+
+Citizen.CreateThread(function()
+    local xxxxxxx=0.0
+    
+    local neutral={}
+    neutral.r=255
+    neutral.g=235
+    neutral.b=100
+    local friends={}
+    friends.r=50
+    friends.g=200
+    friends.b=75
+    local enemy={}
+    enemy.r=200
+    enemy.g=50
+    enemy.b=50
+    
+    local r,g,b
+    
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local mypos=GetEntityCoords(myped)
+        local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
+        if zone and zone.relationship then
+            local myrel=GetPedRelationshipGroupHash(myped)
+            
+            local relnumber=GetRelationshipBetweenGroups(myrel,zone.relationship)
+            
+            local chunk_x=0.049
+            local chunk_y=0.008
+        
+        
+            SetTextCentre(true)
+            DrawRect(0.5,0.05,0.301,0.012,0,0,0,255) -- -0.00025 --black bar
+            
+            DrawRect(0.5-.125,0.05,chunk_x,chunk_y,50,50,50,255) --grey
+            DrawRect(0.5-.075,0.05,chunk_x,chunk_y,50,50,50,255)
+            DrawRect(0.5-.025,0.05,chunk_x,chunk_y,50,50,50,255)
+            DrawRect(0.5+.025,0.05,chunk_x,chunk_y,50,50,50,255)
+            DrawRect(0.5+.075,0.05,chunk_x,chunk_y,50,50,50,255)
+            DrawRect(0.5+.125,0.05,chunk_x,chunk_y,50,50,50,255)
+            
+            if relnumber==0 then
+                r=friends.r
+                g=friends.g
+                b=friends.b
+                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5+.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5+.125,0.05,chunk_x,chunk_y,r,g,b,255)
+            elseif relnumber==1 then
+                r=friends.r
+                g=friends.g
+                b=friends.b
+                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5+.075,0.05,chunk_x,chunk_y,r,g,b,255)
+            elseif relnumber==2 then
+                r=neutral.r
+                g=neutral.g
+                b=neutral.b
+                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
+            elseif relnumber==3 then
+                r=neutral.r
+                g=neutral.g
+                b=neutral.b
+                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+            elseif relnumber==4 then
+                r=enemy.r
+                g=enemy.g
+                b=enemy.b
+                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+            elseif relnumber==5 then
+                r=enemy.r
+                g=enemy.g
+                b=enemy.b
+                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+            end
+            
+            if zone.name then
+                local newname=zone.name
+                local firstchar=string.sub(newname,1,1)
+                if firstchar=="~" then
+                    newname=string.sub(newname,4)
+                end
+                WriteText(4,newname,0.5,r,g,b,255,0.5,0.008) --base name
+            end
+            
+            SetTextRightJustify(true)
+            SetTextWrap(0.0,0.34)
+            WriteText(4,relationship_names[myrel],0.4,r,g,b,255,xxxxxxx,0.035) --My faction
+            WriteText(4,relationship_names[zone.relationship],0.4,r,g,b,255,0.66,0.035) --Their faction
+            SetTextCentre(true)
+            WriteText(4,relationship_names[relnumber],0.3,r,g,b,255,0.5,0.062) --status
+        end
+    end
+end)
+
+
 
 --custom dispatch
 -- Citizen.CreateThread(function()
