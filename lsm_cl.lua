@@ -8930,6 +8930,23 @@ local relationship_names={
 [GetHashKey("RAIDER")]="Raiders",
 }
 
+local relationship_good_bad={
+[GetHashKey("SURVIVOR")]="good",
+[GetHashKey("NEUTRAL")]="neutral",
+[GetHashKey("BANDIT")]="bad",
+[GetHashKey("GOVERNMENT")]="good",
+[GetHashKey("DAWN")]="good",
+[GetHashKey("RAIDER")]="neutral",
+}
+
+local relationship_requirements={
+[GetHashKey("SURVIVOR")]={moreorless="more",howmuch=30},
+[GetHashKey("NEUTRAL")]={moreorless="more",howmuch=0},
+[GetHashKey("BANDIT")]={moreorless="less",howmuch=-20},
+[GetHashKey("GOVERNMENT")]={moreorless="more",howmuch=300},
+[GetHashKey("DAWN")]={moreorless="more",howmuch=50},
+}
+
 
 
 Citizen.CreateThread(function()
@@ -9039,6 +9056,39 @@ Citizen.CreateThread(function()
     end
 end)
 
+local function change_reputation(howmuch)
+    SetResourceKvpInt("reputation",player.reputation+howmuch)
+    player.reputation=player.reputation+howmuch
+end
+
+Citizen.CreateThread(function()
+    local checkeddeadbodies={}
+    local loop,handle,npc
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        handle,npc=FindFirstPed()
+        loop=(handle~=-1)
+        while loop do
+            if IsPedDeadOrDying(npc) and DecorExistOn(npc,"raider") and GetPedSourceOfDeath(npc)==myped then
+                if not checkeddeadbodies[npc] then
+                    local gametimer=GetGameTimer()
+                    checkeddeadbodies[npc]=gametimer
+                    local theirfaction=GetPedRelationshipGroupHash(npc)
+                    local myfaction=GetPedRelationshipGroupHash(myped)
+                    if relationship_good_bad[theirfaction]=="bad" then
+                        change_reputation(howmuch,1)
+                    elseif relationship_good_bad[theirfaction]=="neutral" then
+                        WriteNotification("You don't gain ~y~reputation ~s~for killing ~y~"..relationship_names[theirfaction])
+                    elseif relationship_good_bad[theirfaction]=="good" then
+                        change_reputation(howmuch,-1)
+                    end
+                end
+            end
+            loop,npc=FindNextPed(handle)
+        end
+        EndFindPed(handle)
+    end
+end)
 
 
 --custom dispatch
