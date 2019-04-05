@@ -393,7 +393,7 @@ quest_box=400,
 quest_keys=300,
 }
 
-local survivor_hash,bandit_hash,government_hash,raider_hash,neutral_hash,dawn_hash
+local survivor_hash,bandit_hash,government_hash,raider_hash,neutral_hash,dawn_hash,marauder_hash
 
 local weapons={
 switchblade=1,
@@ -3391,6 +3391,8 @@ Citizen.CreateThread(function()
             WriteText(4,GetPlayerName(PlayerId()),0.7,255,255,255,255,pos_x-((scale_x/2)-0.045),pos_y-0.08-(scale_y*.5))
             if GetPedRelationshipGroupHash(myped)==GetHashKey("NEUTRAL") then
                 WriteText(4,"Scavenger",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
+            elseif GetPedRelationshipGroupHash(myped)==GetHashKey("MARAUDER") then
+                WriteText(4,"Marauder",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
             elseif GetPedRelationshipGroupHash(myped)==GetHashKey("SURVIVOR") then
                 WriteText(4,"Survivor",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
             elseif GetPedRelationshipGroupHash(myped)==GetHashKey("BANDIT") then
@@ -6496,6 +6498,7 @@ Citizen.CreateThread(function()
     _,raider_hash=AddRelationshipGroup("RAIDER")
     _,neutral_hash=AddRelationshipGroup("NEUTRAL")
     _,dawn_hash=AddRelationshipGroup("DAWN")
+    _,marauder_hash=AddRelationshipGroup("MARAUDER")
     
     -- 5 shoot on sight
     -- 4 shoot when shoulder them or aim or shoot
@@ -6514,6 +6517,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(3, GetHashKey("SURVIVOR"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(3, GetHashKey("SURVIVOR"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("MARAUDER"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -6524,6 +6528,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("MARAUDER"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -6536,6 +6541,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(4, GetHashKey("GOVERNMENT"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(3, GetHashKey("GOVERNMENT"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("MARAUDER"))
     
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
@@ -6549,6 +6555,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("MARAUDER"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -6561,6 +6568,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("MARAUDER"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -6571,6 +6579,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(3, GetHashKey("NEUTRAL"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(3, GetHashKey("NEUTRAL"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("MARAUDER"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -6581,6 +6590,19 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(3, GetHashKey("DAWN"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(0, GetHashKey("DAWN"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("MARAUDER"))
+    
+    SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("MARAUDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
+    SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("MARAUDER"))
+    SetRelationshipBetweenGroups(3, GetHashKey("MARAUDER"), GetHashKey("BANDIT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("MERC"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("SURVIVOR"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("NEUTRAL"))
+   
     -------------------
     
     
@@ -8941,12 +8963,35 @@ local relationship_good_bad={
 
 local relationship_requirements={
 [GetHashKey("SURVIVOR")]={moreorless="more",howmuch=30},
-[GetHashKey("NEUTRAL")]={moreorless="more",howmuch=0},
 [GetHashKey("BANDIT")]={moreorless="less",howmuch=-20},
 [GetHashKey("GOVERNMENT")]={moreorless="more",howmuch=300},
 [GetHashKey("DAWN")]={moreorless="more",howmuch=50},
 }
 
+
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local myfaction=GetPedRelationshipGroupHash(myped)
+        if player.reputation>-1 then
+            if myfaction~=GetHashKey("NEUTRAL") then
+                if myfaction==GetHashKey("MARAUDER") then
+                    SetPedRelationshipGroupHash(myped,GetHashKey("NEUTRAL"))
+                    FlashMinimapDisplay()
+                    WriteText("You've become ~y~Scavenger~s~.")
+                end
+            end
+        else
+            if myfaction~=GetHashKey("MARAUDER") then
+                if myfaction==GetHashKey("NEUTRAL") then
+                    SetPedRelationshipGroupHash(myped,GetHashKey("MARAUDER"))
+                    FlashMinimapDisplay()
+                    WriteText("You've become ~o~Marauder~s~.")
+                end
+            end
+        end
+    end
+end)
 
 
 Citizen.CreateThread(function()
