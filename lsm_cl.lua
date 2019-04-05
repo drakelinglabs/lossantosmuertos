@@ -8950,6 +8950,7 @@ local relationship_names={
 [GetHashKey("GOVERNMENT")]="Government",
 [GetHashKey("BANDIT")]="Bandits",
 [GetHashKey("RAIDER")]="Raiders",
+[GetHashKey("MARAUDER")]="Marauders",
 }
 
 local relationship_good_bad={
@@ -9121,11 +9122,11 @@ Citizen.CreateThread(function()
                     local theirfaction=GetPedRelationshipGroupHash(npc)
                     local myfaction=GetPedRelationshipGroupHash(myped)
                     if relationship_good_bad[theirfaction]=="bad" then
-                        change_reputation(howmuch,1)
+                        change_reputation(1)
                     elseif relationship_good_bad[theirfaction]=="neutral" then
                         WriteNotification("You don't gain ~y~reputation ~s~for killing ~y~"..relationship_names[theirfaction])
                     elseif relationship_good_bad[theirfaction]=="good" then
-                        change_reputation(howmuch,-1)
+                        change_reputation(-1)
                     end
                 end
             end
