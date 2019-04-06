@@ -6704,7 +6704,7 @@ Citizen.CreateThread(function()
         elseif IsPedHuman(ped) then
             zone=is_in_safe_zone(zpos.x,zpos.y,zpos.z)
             if zone==nil or zone.relationship==nil then
-                if IsPedInAnyHeli(ped) or IsPedInAnyPlane(ped) or math.random(1,20)==1 then --loners
+                if IsPedInAnyHeli(ped) or IsPedInAnyPlane(ped) or math.random(1,20)==1 and false then --loners
                     DecorSetBool(ped,"raider",true)
                     if IsPedUsingAnyScenario(ped) then ClearPedTasksImmediately(ped) end
                     SetPedRelationshipGroupHash(ped,GetHashKey("RAIDER"))
