@@ -22,7 +22,7 @@ local function range(a,b,except)
     return ret
 end
 
-local suits={ --need to substract 1 from var and tex --done
+local suits={ --need to substract 1 from var and tex --done654675473675637
 standard={
 [0]={var=1-1,tex=1-1}, --head
 [1]={var=1-1,tex=1-1}, --"beard" masks
