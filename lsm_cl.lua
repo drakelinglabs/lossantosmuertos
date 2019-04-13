@@ -757,7 +757,7 @@ Citizen.CreateThread(function()
                         local dx,dy=pos.x-v.x,pos.y-v.y
                         if dx*dx+dy*dy<v.r*v.r then
                             local currenttime=GetGameTimer()
-                            WriteHint("~c~You're in ~r~toxic zone~c~, use gasmask.")
+                            WriteHint("You have encountered ~r~RADIOACTIVE FALLOUT~s~! Equip a gasmask!")
                             if ((currenttime~prevtime)&-2048)~=0 then
                                 prevtime=currenttime
                                 SetEntityHealth(ped,GetEntityHealth(ped)-1)
@@ -8343,19 +8343,19 @@ Citizen.CreateThread(function()
             if zone.name~=nil then
                 local rel=GetRelationshipBetweenGroups(GetPedRelationshipGroupHash(myped),zone.relationship)
                 if rel==0 then
-                    WriteHint("You're on ~g~your faction base~s~.")
+                    WriteHint("You're in ~g~FRIENDLY TERRITORY~s~.")
                 elseif rel==5 then
-                    WriteHint("You're on ~r~enemy territory ~s~and can raid it.")
+                    WriteHint("You are in ~r~ENEMY TERRITORY~s~! Defend yourself!")
                 else
-                    WriteHint("You're on ~y~neutral territory~s~, be careful.")
+                    WriteHint("You are in ~y~NEUTRAL TERRITORY~s~! Holster your weapons.")
                 end
             end
         end
         if player.hydration<=0.1 then
-            WriteHint("~s~You are dying from ~r~dehydration")
+            WriteHint("~s~You are dying of ~r~DEHYDRATION~s~! Drink something!")
         end
         if player.saturation<=0.1 then
-            WriteHint("~s~You are ~r~starving ~s~to death")
+            WriteHint("~s~You are dying of ~r~STARVATION~s~! Eat something!")
         end
         if havetrailer then
             local trailermodel=GetEntityModel(trailer)
@@ -8378,9 +8378,9 @@ Citizen.CreateThread(function()
         end
         if player.bleeding>0 then
             if player.bleeding==1 then
-                WriteHint("You have ~r~1 bleeding wound~s~! Treat it using bandages")
+                WriteHint("You have ~r~1 BLEEDING WOUND~s~! Stop the bleeding with bandages, rags, or a medical kit!")
             else
-                WriteHint("You have ~r~"..player.bleeding.." bleeding wounds~s~! Treat them using bandages")
+                WriteHint("You have ~r~"..player.bleeding.." BLEEDING WOUNDS~s~! Stop the bleeding with bandages, rags, or a medical kit!")
             end
         end
         if player.blood<100.0 then
@@ -8911,11 +8911,11 @@ Citizen.CreateThread(function()
                 if math.abs(dy)<v.r then
                     if dx*dx+dy*dy<v.r*v.r then
                         if v.relationship==GetHashKey("BANDIT") then
-                            WriteHint("~c~You're in ~r~bandits zone~c~.")
+                            WriteHint("You have encountered a ~r~BANDIT ~s~patrol.")
                         elseif v.relationship==GetHashKey("SURVIVOR") then
-                            WriteHint("~c~You're in ~y~survivors zone~c~.")
+                            WriteHint("You have encountered a ~y~SURVIVOR ~s~patrol.")
                         elseif v.relationship==GetHashKey("MERC") then
-                            WriteHint("~c~You're in ~g~mercs zone~c~.")
+                            WriteHint("You have encountered a ~g~MERCENARY ~s~patrol.")
                         end
                         if not check_for_people_in_raid(v,v.relationship) then
                             local possible_bases={}
@@ -8927,7 +8927,7 @@ Citizen.CreateThread(function()
                             if 0<#possible_bases then
                                 local base=possible_bases[math.random(1,#possible_bases)]
                                 TriggerServerEvent("raid_killed",k,base.x,base.y,base.z)
-                                SimpleNotification("Raiding group is ~r~eliminated~s~.")
+                                SimpleNotification("Patrol has been ~r~eliminated~s~.")
                             end
                         end
                     end
@@ -8938,12 +8938,12 @@ Citizen.CreateThread(function()
 end)
 
 local relationship_names={
-[0]="This is your faction. All members are friendly to you.",
-[1]="Friends. This faction is friendly to you, you can use your weapons freely.",
-[2]="Constrained neutral. Do not use your weapons and behave unnoticed.",
-[3]="Tense neutral. Do not use your weapons and behave unnoticed.",
-[4]="Edge neutral. Do not use your weapons and behave unnoticed.",
-[5]="This faction is aggresive against you.",
+[0]="You are allied with this faction. You may use your weapons freely.",
+[1]="You have a friendly relationship with this faction. You may use your weapons freely.",
+[2]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
+[3]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
+[4]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
+[5]="Your relationship with this faction is hostile. You will be attacked on sight.",
 [GetHashKey("SURVIVOR")]="Survivors",
 [GetHashKey("NEUTRAL")]="Scavengers",
 [GetHashKey("DAWN")]="Dawn",
