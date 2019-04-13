@@ -2924,7 +2924,13 @@ Citizen.CreateThread(function()
                                     local not_on_screen,x,y=N_0xf9904d11f1acbec3(vpos.x,vpos.y,vpos.z)
                                     if not not_on_screen then
                                         SetTextCentre(true)
-                                        WriteText(font,"~g~E ~s~to search for items",size,255,255,255,alpha,x,y)
+                                        if DecorExistOn(veh,"item") then
+                                            local name=item_index_to_name[DecorGetInt(veh,"item")]
+                                            name=item_names[name] or localization[name] or name
+                                            WriteText(font,{"~g~E ~s~to take ~b~~a~",name},size,255,255,255,alpha,x,y)
+                                        else
+                                            WriteText(font,"~g~E ~s~to search for items",size,255,255,255,alpha,x,y)
+                                        end
                                     end
                                 end
                             else
@@ -7296,8 +7302,19 @@ Citizen.CreateThread(function()
                 local reward=chosentier[math.random(1,#chosentier)] 
                 if reward[2]<0 then reward[2]=math.random(1,-reward[2]) end
                 
-                if give_item_to_inventory(reward[1],reward[2]) then
-                    DecorSetBool(veh,"zm_looted",true)
+                if not DecorExistOn(veh,"item") then
+                    DecorSetInt(veh,"item",GetHashKey(reward[1]))
+                    DecorSetInt(veh,"count",reward[2])
+                else
+                    for k,v in pairs(item_names) do
+                        if GetHashKey(v)==DecorGetInt(veh,"item") then
+                            reward[1]=v
+                        end
+                    end
+                    reward[2]=DecorGetInt(veh,"count")
+                    if give_item_to_inventory(reward[1],reward[2]) then
+                        DecorSetBool(veh,"zm_looted",true)
+                    end
                 end
             else
                 WriteNotification("Nothing useful.")
