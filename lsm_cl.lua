@@ -2710,7 +2710,9 @@ local function change_clothes(ped,s)
 end
 
 AddEventHandler("playerSpawned",function()
+    NetworkSetFriendlyFireOption(true)
     local ped=PlayerPedId()
+    SetCanAttackFriendly(ped,true,false)
     check_clothes(ped)
     SetMaxWantedLevel(0)
     --SetMaxWantedLevel(5)
