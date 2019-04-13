@@ -1741,6 +1741,11 @@ for k,v in pairs(item_names) do
     item_index_to_name[hash]=k
     item_name_to_index[k]=hash
 end
+for k,v in pairs(weapons) do
+    local hash=(GetHashKey(k)&0x7FFFFFFF)
+    item_index_to_name[hash]=k
+    item_name_to_index[k]=hash
+end
 
 local inventory={}
 inventory.rows=3
@@ -2883,6 +2888,12 @@ Citizen.CreateThread(function()
         while not showhints do Wait(300) end
         local pped=PlayerPedId()
         if not IsPedInAnyVehicle(pped) then
+            local brightness
+            if IsPedClimbing(pped) then
+                brightness=100
+            else
+                brightness=255
+            end
             mypos=GetEntityCoords(pped)
             handle,veh=FindFirstVehicle()
             loop=(handle~=-1)
@@ -2906,7 +2917,7 @@ Citizen.CreateThread(function()
                             local not_on_screen,x,y=N_0xf9904d11f1acbec3(vpos.x,vpos.y,vpos.z)
                             if not not_on_screen then
                                 SetTextCentre(true)
-                                WriteText(font,"~g~E ~s~to take fuel",size,255,255,255,alpha,x,y)
+                                WriteText(font,"~g~E ~s~to take fuel",size,brightness,brightness,brightness,alpha,x,y)
                             end
                         end
                         if engine or loot then
@@ -2916,7 +2927,7 @@ Citizen.CreateThread(function()
                                     local not_on_screen,x,y=N_0xf9904d11f1acbec3(vpos.x,vpos.y,vpos.z)
                                     if not not_on_screen then
                                         SetTextCentre(true)
-                                        WriteText(font,"~g~E ~s~to take engine parts",size,255,255,255,alpha,x,y)
+                                        WriteText(font,"~g~E ~s~to take engine parts",size,brightness,brightness,brightness,alpha,x,y)
                                     end
                                 end
                                 if loot then
@@ -2926,10 +2937,15 @@ Citizen.CreateThread(function()
                                         SetTextCentre(true)
                                         if DecorExistOn(veh,"item") then
                                             local name=item_index_to_name[DecorGetInt(veh,"item")]
-                                            name=item_names[name] or localization[name] or name
-                                            WriteText(font,{"~g~E ~s~to take ~b~~a~",name},size,255,255,255,alpha,x,y)
+                                            name=(item_names[name] or localization[name] or name)
+                                            local count=DecorGetInt(veh,"count")
+                                            if count~=1 then
+                                                WriteText(font,{"~g~E ~s~to take ~b~~1~ ~a~",count,name},size,brightness,brightness,brightness,alpha,x,y)
+                                            else
+                                                WriteText(font,{"~g~E ~s~to take ~b~~a~",name},size,brightness,brightness,brightness,alpha,x,y)
+                                            end
                                         else
-                                            WriteText(font,"~g~E ~s~to search for items",size,255,255,255,alpha,x,y)
+                                            WriteText(font,"~g~E ~s~to search for items",size,brightness,brightness,brightness,alpha,x,y)
                                         end
                                     end
                                 end
@@ -2939,7 +2955,7 @@ Citizen.CreateThread(function()
                                     local not_on_screen,x,y=N_0xf9904d11f1acbec3(vpos.x,vpos.y,vpos.z)
                                     if not not_on_screen then
                                         SetTextCentre(true)
-                                        WriteText(font,"~g~E ~s~to take engine parts",size,255,255,255,alpha,x,y)
+                                        WriteText(font,"~g~E ~s~to take engine parts",size,brightness,brightness,brightness,alpha,x,y)
                                     end
                                 end
                                 if loot then
@@ -2947,7 +2963,7 @@ Citizen.CreateThread(function()
                                     local not_on_screen,x,y=N_0xf9904d11f1acbec3(vpos.x,vpos.y,vpos.z)
                                     if not not_on_screen then
                                         SetTextCentre(true)
-                                        WriteText(font,"~g~E ~s~to search for items",size,255,255,255,alpha,x,y)
+                                        WriteText(font,"~g~E ~s~to search for items",size,brightness,brightness,brightness,alpha,x,y)
                                     end
                                 end
                             end
@@ -6733,7 +6749,7 @@ Citizen.CreateThread(function()
                     local randomweapon=math.random(1,#weaponsarray)
                     GiveWeaponToPed(ped, weaponsarray[randomweapon], math.random(1,5000), false, true)
                 else --zombie
-                    SetPedRagdollBlockingFlags(ped,1)
+                    --SetPedRagdollBlockingFlags(ped,1)
                     SetPedCanRagdollFromPlayerImpact(ped,false)
                     SetPedSuffersCriticalHits(ped,false)
                     SetPedMaxHealth(ped,200)
@@ -6996,7 +7012,7 @@ Citizen.CreateThread(function()
                                             local hp=GetEntityHealth(ped)
                                             DecorSetInt(ped,"zm_health",hp)
                                             DecorSetInt(ped,"zm_armor",GetPedArmour(ped))
-                                            SetHighFallTask(ped, 100, -1, -1)
+                                            --- SetHighFallTask(ped, 100, -1, -1)
                                             -- local dict="melee@knife@streamed_variations" 
                                             -- local anim="victim_knife_front_takedown_variation_b"
                                             -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
@@ -7056,42 +7072,42 @@ Citizen.CreateThread(function()
                                         -- 19, 0.05, false, 
                                         -- true, 0.0);
                                         -- ApplyDamageToPed(ped, 5, false);
-                                    elseif bone==36864 or bone==51826 or bone==63931 or bone==58271 then
-                                        if DecorGetInt(ped,"zm_lastbone")~=bone then
-                                            local dict="nm@recover@normal@" 
-                                            local anim="nm_kneedown_recovery"
-                                            if not IsEntityPlayingAnim(ped,dict,anim,3) then
-                                                RequestAnimDict(dict)
-                                                while not HasAnimDictLoaded(dict) do Wait(0) end
-                                                TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
-                                            else
-                                                SetHighFallTask(ped, 5000, -1, -1)
-                                                --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
-                                            end
-                                            DecorSetInt(ped,"zm_lastbone",bone)
+                                    -- elseif bone==36864 or bone==51826 or bone==63931 or bone==58271 then
+                                        -- if DecorGetInt(ped,"zm_lastbone")~=bone then
+                                            -- local dict="nm@recover@normal@" 
+                                            -- local anim="nm_kneedown_recovery"
+                                            -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                                                -- RequestAnimDict(dict)
+                                                -- while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                -- TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
+                                            -- else
+                                                -- --- SetHighFallTask(ped, 5000, -1, -1)
+                                                -- --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
+                                            -- end
+                                            -- DecorSetInt(ped,"zm_lastbone",bone)
                                             
-                                            DecorSetInt(ped,"zm_health",health)
-                                            DecorSetInt(ped,"zm_armor",armor)
-                                        end
-                                    else
-                                        if DecorGetInt(ped,"zm_lastbone")~=bone then
-                                            local dict="melee@small_wpn@streamed_core" 
-                                            local anim="non_melee_damage_front"
-                                            if not IsEntityPlayingAnim(ped,dict,anim,3) then
-                                                RequestAnimDict(dict)
-                                                while not HasAnimDictLoaded(dict) do Wait(0) end
-                                                TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
-                                            else
-                                                SetHighFallTask(ped, 100, -1, -1)
-                                                --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
-                                            end
-                                            DecorSetInt(ped,"zm_lastbone",bone)
+                                            -- DecorSetInt(ped,"zm_health",health)
+                                            -- DecorSetInt(ped,"zm_armor",armor)
+                                        -- end
+                                    -- else
+                                        -- if DecorGetInt(ped,"zm_lastbone")~=bone then
+                                            -- local dict="melee@small_wpn@streamed_core" 
+                                            -- local anim="non_melee_damage_front"
+                                            -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                                                -- RequestAnimDict(dict)
+                                                -- while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                -- TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
+                                            -- else
+                                                -- --- SetHighFallTask(ped, 100, -1, -1)
+                                                -- --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
+                                            -- end
+                                            -- DecorSetInt(ped,"zm_lastbone",bone)
                                             
-                                            DecorSetInt(ped,"zm_health",health)
-                                            DecorSetInt(ped,"zm_armor",armor)
-                                        end
-                                        DecorSetInt(ped,"zm_health",health)
-                                        DecorSetInt(ped,"zm_armor",armor)
+                                            -- DecorSetInt(ped,"zm_health",health)
+                                            -- DecorSetInt(ped,"zm_armor",armor)
+                                        -- end
+                                        -- DecorSetInt(ped,"zm_health",health)
+                                        -- DecorSetInt(ped,"zm_armor",armor)
                                     end
                                 end
                                 SetPedMute(ped)
@@ -7303,14 +7319,10 @@ Citizen.CreateThread(function()
                 if reward[2]<0 then reward[2]=math.random(1,-reward[2]) end
                 
                 if not DecorExistOn(veh,"item") then
-                    DecorSetInt(veh,"item",GetHashKey(reward[1]))
+                    DecorSetInt(veh,"item",item_name_to_index[reward[1]])
                     DecorSetInt(veh,"count",reward[2])
                 else
-                    for k,v in pairs(item_names) do
-                        if GetHashKey(v)==DecorGetInt(veh,"item") then
-                            reward[1]=v
-                        end
-                    end
+                    reward[1]=item_index_to_name[DecorGetInt(veh,"item")]
                     reward[2]=DecorGetInt(veh,"count")
                     if give_item_to_inventory(reward[1],reward[2]) then
                         DecorSetBool(veh,"zm_looted",true)
@@ -7349,7 +7361,7 @@ Citizen.CreateThread(function()
         while not HasAnimDictLoaded(dict) do Wait(0) end
         if IsControlJustPressed(0,86) then
             local pped=PlayerPedId()
-            if not IsPedInAnyVehicle(pped) then
+            if not IsPedInAnyVehicle(pped) and not IsPedClimbing(pped) then
                 local mypos=GetEntityCoords(pped)
                 local loop,handle,ped,veh
                 handle,ped=FindFirstPed()
@@ -9152,6 +9164,17 @@ Citizen.CreateThread(function()
         EndFindPed(handle)
     end
 end)
+
+-- Citizen.CreateThread(function()
+    -- while true do Wait(0)
+        -- local myped=PlayerPedId()
+        -- local myplayer=PlayerId()
+        -- local jumping=IsPedJumping(myped)
+        -- local climbing=IsPedClimbing(myped)
+        -- WriteHint("jumpimh: "..(jumping and "true" or "false"))
+        -- WriteHint("climbing: "..(climbing and "true" or "false"))
+    -- end
+-- end)
 
 
 --custom dispatch
