@@ -1761,29 +1761,29 @@ advanced_scope="Advanced scope",
 
 local weapon_upgrades={
     flashlight_small={   
-        [GetHashKey("weapon_pistol")]=0x359B7AAE﻿,
-        [GetHashKey("weapon_combatpistol")]=0x359B7AAE﻿,
-        [GetHashKey("weapon_appistol")]=0x359B7AAE﻿,
-        [GetHashKey("weapon_heavypistol")]=0x359B7AAE﻿,
-        [GetHashKey("weapon_pistol50")]=0x359B7AAE﻿,
-        [GetHashKey("weapon_microsmg")]=0x359B7AAE﻿,
-    }
+        [GetHashKey("weapon_pistol")]=0x359B7AAE,
+        [GetHashKey("weapon_combatpistol")]=0x359B7AAE,
+        [GetHashKey("weapon_appistol")]=0x359B7AAE,
+        [GetHashKey("weapon_heavypistol")]=0x359B7AAE,
+        [GetHashKey("weapon_pistol50")]=0x359B7AAE,
+        [GetHashKey("weapon_microsmg")]=0x359B7AAE,
+    },
     flashlight_large={   
-        [GetHashKey("weapon_smg")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_assaultsmg")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_combatpdw")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_assaultrifle")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_carbinerifle")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_advancedrifle")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_specialcarbine")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_bullpuprifle")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_pumpshotgun")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_assaultshotgun")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_bullpupshotgun")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_heavyshotgun")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_marksmanrifle")]=0x7BC4CDDC﻿,
-        [GetHashKey("weapon_grenadelauncher")]=0x7BC4CDDC﻿,
-    }
+        [GetHashKey("weapon_smg")]=0x7BC4CDDC,
+        [GetHashKey("weapon_assaultsmg")]=0x7BC4CDDC,
+        [GetHashKey("weapon_combatpdw")]=0x7BC4CDDC,
+        [GetHashKey("weapon_assaultrifle")]=0x7BC4CDDC,
+        [GetHashKey("weapon_carbinerifle")]=0x7BC4CDDC,
+        [GetHashKey("weapon_advancedrifle")]=0x7BC4CDDC,
+        [GetHashKey("weapon_specialcarbine")]=0x7BC4CDDC,
+        [GetHashKey("weapon_bullpuprifle")]=0x7BC4CDDC,
+        [GetHashKey("weapon_pumpshotgun")]=0x7BC4CDDC,
+        [GetHashKey("weapon_assaultshotgun")]=0x7BC4CDDC,
+        [GetHashKey("weapon_bullpupshotgun")]=0x7BC4CDDC,
+        [GetHashKey("weapon_heavyshotgun")]=0x7BC4CDDC,
+        [GetHashKey("weapon_marksmanrifle")]=0x7BC4CDDC,
+        [GetHashKey("weapon_grenadelauncher")]=0x7BC4CDDC,
+    },
     grip={
         [GetHashKey("weapon_combatpdw")]=0xFFFFFFFFC164F53,
         [GetHashKey("weapon_assaultrifle")]=0xFFFFFFFFC164F53,
@@ -1796,7 +1796,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_heavyshotgun")]=0xFFFFFFFFC164F53,
         [GetHashKey("weapon_marksmanrifle")]=0xFFFFFFFFC164F53,
         [GetHashKey("weapon_grenadelauncher")]=0xFFFFFFFFC164F53,
-    }
+    },
     suppressor_1={
         [GetHashKey("weapon_pistol")]=0x65EA7EBB,
         [GetHashKey("weapon_vintagepistol")]=0xFFFFFFFFC304849A,
@@ -1804,7 +1804,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_appistol")]=0xFFFFFFFFC304849A,
         [GetHashKey("weapon_heavypistol")]=0xFFFFFFFFC304849A,
         [GetHashKey("weapon_smg")]=0xFFFFFFFFC304849A,
-    }
+    },
     suppressor_2={
         [GetHashKey("weapon_pistol50")]=0xFFFFFFFFA73D4664,
         [GetHashKey("weapon_microsmg")]=0xFFFFFFFFA73D4664,
@@ -1813,40 +1813,40 @@ local weapon_upgrades={
         [GetHashKey("weapon_specialcarbine")]=0xFFFFFFFFA73D4664,
         [GetHashKey("weapon_heavyshotgun")]=0xFFFFFFFFA73D4664,
         [GetHashKey("weapon_sniperrifle")]=0xFFFFFFFFA73D4664,
-    }
+    },
     suppressor_3={
         [GetHashKey("weapon_carbinerifle")]=0xFFFFFFFF837445AA,
         [GetHashKey("weapon_advancedrifle")]=0xFFFFFFFF837445AA,
         [GetHashKey("weapon_bullpuprifle")]=0xFFFFFFFF837445AA,
         [GetHashKey("weapon_assaultshotgun")]=0xFFFFFFFF837445AA,
         [GetHashKey("weapon_marksmanriflerifle")]=0xFFFFFFFF837445AA,
-    }
+    },
     suppressor_4={
         [GetHashKey("weapon_pumpshotgun")]=0xE608B35E,
-    }
+    },
     suppressor_5={
         [GetHashKey("weapon_heavysniper_mk2")]=0xFFFFFFFFAC42DF71,
-    }
+    },
     scope_1={
         [GetHashKey("weapon_microsmg")]=0xFFFFFFFF9D2FBF29,
         [GetHashKey("weapon_assaultsmg")]=0xFFFFFFFF9D2FBF29,
         [GetHashKey("weapon_assaultrifle")]=0xFFFFFFFF9D2FBF29,
-    }
+    },
     scope_2={   
         [GetHashKey("weapon_combatpdw")]=0xFFFFFFFFAA2C45B4,
         [GetHashKey("weapon_advancedrifle")]=0xFFFFFFFFAA2C45B4,
         [GetHashKey("weapon_bullpuprifle")]=0xFFFFFFFFAA2C45B4,
         [GetHashKey("weapon_grenadelauncher")]=0xFFFFFFFFAA2C45B4,
-    }
+    },
     scope_3={   
         [GetHashKey("weapon_carbinerifle")]=0xFFFFFFFFA0D89C42,
         [GetHashKey("weapon_specialcarbine")]=0xFFFFFFFFA0D89C42,
         [GetHashKey("weapon_combatmg")]=0xFFFFFFFFA0D89C42,
-    }
+    },
     advanced_scope={   
         [GetHashKey("weapon_heavysniper")]=0xFFFFFFFFBC54DA77,
         [GetHashKey("weapon_sniperrifle")]=0xFFFFFFFFBC54DA77,
-    }
+    },
 }
 
 
