@@ -1655,6 +1655,18 @@ clothes_scavenger="Scavenger clothes",
 clothes_banditauthority="Bandit authority",
 clothes_dawn="Dawn clothes",
 dawntokens="Dawn token",
+grip="Angular grip",
+flashlight_small="Small flashlight",
+flashlight_large="Large flashlight",
+suppressor_1="Suppressor",
+suppressor_2="Suppressor",
+suppressor_3="Suppressor",
+suppressor_4="Suppressor",
+suppressor_5="Suppressor",
+scope_1="Small scope",
+scope_2="Scope",
+scope_3="Scope",
+advanced_scope="Advanced scope",
 }
 local item_descriptions={
 water="Bottle filled with fresh water.",
@@ -1733,7 +1745,132 @@ clothes_scavenger="Neutral scavenger clothes. Warm, offers decent protection aga
 clothes_banditauthority="Bandit authority clothes. Highly respected amongst bandits.",
 clothes_dawn="Dawn faction member clothes. Offers great 50% resistance to melee damage.",
 dawntokens="Dawn tokens. Made before apocalypse. Each token has unique identifier scratched by hand.",
+grip="Angular grip",
+flashlight_small="Small flashlight, used on pistols and very compact SMGs.",
+flashlight_large="Large flashlight, can be attached to almost any primary firearm.",
+suppressor_1="Pistol caliber suppressor, mostly used for pistols.",
+suppressor_2="Universal suppressor, can be attached to high caliber pistols, some SMGs, assault and hunting rifles.",
+suppressor_3="Rifle suppressor, can be attached to assault and semi-auto rifles.",
+suppressor_4="Shotgun suppressor.",
+suppressor_5="Special .50 suppressor.",
+scope_1="Small scope",
+scope_2="Scope with rare mount. Used on bullpup rifles and SMGs with modern mounts.",
+scope_3="Battle scope, used on common military firearms.",
+advanced_scope="Advanced scope",
 }
+
+local weapon_upgrades={
+    flashlight_small={   
+        [GetHashKey("weapon_pistol")]=0x359B7AAE﻿,
+        [GetHashKey("weapon_combatpistol")]=0x359B7AAE﻿,
+        [GetHashKey("weapon_appistol")]=0x359B7AAE﻿,
+        [GetHashKey("weapon_heavypistol")]=0x359B7AAE﻿,
+        [GetHashKey("weapon_pistol50")]=0x359B7AAE﻿,
+        [GetHashKey("weapon_microsmg")]=0x359B7AAE﻿,
+    }
+    flashlight_large={   
+        [GetHashKey("weapon_smg")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_assaultsmg")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_combatpdw")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_assaultrifle")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_carbinerifle")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_advancedrifle")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_specialcarbine")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_bullpuprifle")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_pumpshotgun")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_assaultshotgun")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_bullpupshotgun")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_heavyshotgun")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_marksmanrifle")]=0x7BC4CDDC﻿,
+        [GetHashKey("weapon_grenadelauncher")]=0x7BC4CDDC﻿,
+    }
+    grip={
+        [GetHashKey("weapon_combatpdw")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_assaultrifle")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_carbinerifle")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_specialcarbine")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_bullpuprifle")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_combatmg")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_assaultshotgun")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_bullpupshotgun")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_heavyshotgun")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_marksmanrifle")]=0xFFFFFFFFC164F53,
+        [GetHashKey("weapon_grenadelauncher")]=0xFFFFFFFFC164F53,
+    }
+    suppressor_1={
+        [GetHashKey("weapon_pistol")]=0x65EA7EBB,
+        [GetHashKey("weapon_vintagepistol")]=0xFFFFFFFFC304849A,
+        [GetHashKey("weapon_combatpistol")]=0xFFFFFFFFC304849A,
+        [GetHashKey("weapon_appistol")]=0xFFFFFFFFC304849A,
+        [GetHashKey("weapon_heavypistol")]=0xFFFFFFFFC304849A,
+        [GetHashKey("weapon_smg")]=0xFFFFFFFFC304849A,
+    }
+    suppressor_2={
+        [GetHashKey("weapon_pistol50")]=0xFFFFFFFFA73D4664,
+        [GetHashKey("weapon_microsmg")]=0xFFFFFFFFA73D4664,
+        [GetHashKey("weapon_assaultsmg")]=0xFFFFFFFFA73D4664,
+        [GetHashKey("weapon_assaultrifle")]=0xFFFFFFFFA73D4664,
+        [GetHashKey("weapon_specialcarbine")]=0xFFFFFFFFA73D4664,
+        [GetHashKey("weapon_heavyshotgun")]=0xFFFFFFFFA73D4664,
+        [GetHashKey("weapon_sniperrifle")]=0xFFFFFFFFA73D4664,
+    }
+    suppressor_3={
+        [GetHashKey("weapon_carbinerifle")]=0xFFFFFFFF837445AA,
+        [GetHashKey("weapon_advancedrifle")]=0xFFFFFFFF837445AA,
+        [GetHashKey("weapon_bullpuprifle")]=0xFFFFFFFF837445AA,
+        [GetHashKey("weapon_assaultshotgun")]=0xFFFFFFFF837445AA,
+        [GetHashKey("weapon_marksmanriflerifle")]=0xFFFFFFFF837445AA,
+    }
+    suppressor_4={
+        [GetHashKey("weapon_pumpshotgun")]=0xE608B35E,
+    }
+    suppressor_5={
+        [GetHashKey("weapon_heavysniper_mk2")]=0xFFFFFFFFAC42DF71,
+    }
+    scope_1={
+        [GetHashKey("weapon_microsmg")]=0xFFFFFFFF9D2FBF29,
+        [GetHashKey("weapon_assaultsmg")]=0xFFFFFFFF9D2FBF29,
+        [GetHashKey("weapon_assaultrifle")]=0xFFFFFFFF9D2FBF29,
+    }
+    scope_2={   
+        [GetHashKey("weapon_combatpdw")]=0xFFFFFFFFAA2C45B4,
+        [GetHashKey("weapon_advancedrifle")]=0xFFFFFFFFAA2C45B4,
+        [GetHashKey("weapon_bullpuprifle")]=0xFFFFFFFFAA2C45B4,
+        [GetHashKey("weapon_grenadelauncher")]=0xFFFFFFFFAA2C45B4,
+    }
+    scope_3={   
+        [GetHashKey("weapon_carbinerifle")]=0xFFFFFFFFA0D89C42,
+        [GetHashKey("weapon_specialcarbine")]=0xFFFFFFFFA0D89C42,
+        [GetHashKey("weapon_combatmg")]=0xFFFFFFFFA0D89C42,
+    }
+    advanced_scope={   
+        [GetHashKey("weapon_heavysniper")]=0xFFFFFFFFBC54DA77,
+        [GetHashKey("weapon_sniperrifle")]=0xFFFFFFFFBC54DA77,
+    }
+}
+
+
+local function use_weapon_upgrade(upgradename)
+    local myped=PlayerPedId()
+    local myweapon=GetSelectedPedWeapon(myped)
+    local upgrade=weapon_upgrades[upgradename]
+    if upgrade~=nil then
+        local hash=upgrade[myweapon]
+        if hash~=nil then
+            if HasPedGotWeaponComponent(myped, myweapon, hash) then
+                WriteNotification("You already have this upgrade attached to weapon.")
+                return false
+            else
+                GiveWeaponComponentToPed(myped,myweapon, hash)
+                return true
+            end
+        else
+            WriteNotification("Cannot attach this upgrade to selected weapon.")
+            return false
+        end
+    end
+end
+
 local item_index_to_name={}
 local item_name_to_index={}
 for k,v in pairs(item_names) do
@@ -1864,6 +2001,18 @@ local deadbodiesrewards_tier6={
 {"armorplate",-2},
 {"gasmask",1},
 {"brasscatcher",1},
+{"grip",1},
+{"flashlight_small",1},
+{"flashlight_large",1},
+{"suppressor_1",1},
+{"suppressor_2",1},
+{"suppressor_3",1},
+{"suppressor_4",1},
+{"suppressor_5",1},
+{"scope_1",1},
+{"scope_2",1},
+{"scope_3",1},
+{"advanced_scope",1},
 }
 
 local trunkrewards_tier1={
@@ -1891,7 +2040,7 @@ local trunkrewards_tier2={
 {"molotov",1},
 {"pipebomb",1},
 {"flaregun",1},
-{"ball",-5},
+{"ball",1},
 {"flaregunammo",-10},
 -- {"casings",-20},
 -- {"riflecasing",-20},
@@ -1995,6 +2144,18 @@ local trunkrewards_tier6={
 {"armorplate",-5},
 {"gasmask",1},
 {"brasscatcher",1},
+{"grip",1},
+{"flashlight_small",1},
+{"flashlight_large",1},
+{"suppressor_1",1},
+{"suppressor_2",1},
+{"suppressor_3",1},
+{"suppressor_4",1},
+{"suppressor_5",1},
+{"scope_1",1},
+{"scope_2",1},
+{"scope_3",1},
+{"advanced_scope",1},
 }
 
 local deadbodiesrewards={
@@ -6229,6 +6390,11 @@ Citizen.CreateThread(function()
                             player.suit="banditmercenary"
                         end
                         check_clothes(pped)
+                    elseif inventory[inventory.current].item=="suppressor_1" then
+                        if use_weapon_upgrade("suppressor_1") then
+                            inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                            check_inv_slot_for_zero_amount()
+                        end
                     end
                 end
                 inventory.highlight=500
@@ -6751,7 +6917,7 @@ Citizen.CreateThread(function()
                     local randomweapon=math.random(1,#weaponsarray)
                     GiveWeaponToPed(ped, weaponsarray[randomweapon], math.random(1,5000), false, true)
                 else --zombie
-                    --SetPedRagdollBlockingFlags(ped,1)
+                    SetPedRagdollBlockingFlags(ped,1)
                     SetPedCanRagdollFromPlayerImpact(ped,false)
                     SetPedSuffersCriticalHits(ped,false)
                     SetPedMaxHealth(ped,200)
@@ -7014,7 +7180,7 @@ Citizen.CreateThread(function()
                                             local hp=GetEntityHealth(ped)
                                             DecorSetInt(ped,"zm_health",hp)
                                             DecorSetInt(ped,"zm_armor",GetPedArmour(ped))
-                                            --- SetHighFallTask(ped, 100, -1, -1)
+                                            SetHighFallTask(ped, 100, -1, -1)
                                             -- local dict="melee@knife@streamed_variations" 
                                             -- local anim="victim_knife_front_takedown_variation_b"
                                             -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
@@ -7024,32 +7190,32 @@ Citizen.CreateThread(function()
                                             -- else
                                                 -- SetHighFallTask(ped, 5000, -1, -1)
                                             -- end
-                                            if hp<100 then
-                                               DecorSetBool(ped,"headshotted")
-                                               -- SetPedComponentVariation(ped, 0, -1, 0, 0);
-                                               -- SetPedComponentVariation(ped, 1, -1, 0, 0);
-                                               -- SetPedComponentVariation(ped, 2, -1, 0, 0);
-                                               -- KnockOffPedProp(ped, true, true, true, true);
-                                               local libname="core"
-                                               local effectname="blood_entry_sniper"
-                                               local effectname2="blood_headshot"
-                                               local effectname3="blood_mist"
-                                               if not HasNamedPtfxAssetLoaded(libname) then
-                                                RequestNamedPtfxAsset(libname)
-                                               end
-                                               while not HasNamedPtfxAssetLoaded(libname) do Wait(0) WriteHint("Trying to load effect") end
-                                               UseParticleFxAssetNextCall(libname)
-                                               StartParticleFxNonLoopedOnPedBone(effectname, ped, 
-                                               0.0, 0.0, 0.0, --offset
-                                               0.0, 90.0, 0.0, --rot
-                                               31086, 1.5,  --bone index, scale
-                                               false, false, false);
-                                               StartParticleFxNonLoopedOnPedBone(effectname2, ped, 
-                                               0.0, 0.0, 0.0, --offset
-                                               0.0, 90.0, 0.0, --rot
-                                               31086, 1.0,  --bone index, scale
-                                               false, false, false);
-                                            end
+                                            -- if hp<100 then
+                                               -- DecorSetBool(ped,"headshotted")
+                                               -- -- SetPedComponentVariation(ped, 0, -1, 0, 0);
+                                               -- -- SetPedComponentVariation(ped, 1, -1, 0, 0);
+                                               -- -- SetPedComponentVariation(ped, 2, -1, 0, 0);
+                                               -- -- KnockOffPedProp(ped, true, true, true, true);
+                                               -- local libname="core"
+                                               -- local effectname="blood_entry_sniper"
+                                               -- local effectname2="blood_headshot"
+                                               -- local effectname3="blood_mist"
+                                               -- if not HasNamedPtfxAssetLoaded(libname) then
+                                                -- RequestNamedPtfxAsset(libname)
+                                               -- end
+                                               -- while not HasNamedPtfxAssetLoaded(libname) do Wait(0) WriteHint("Trying to load effect") end
+                                               -- UseParticleFxAssetNextCall(libname)
+                                               -- StartParticleFxNonLoopedOnPedBone(effectname, ped, 
+                                               -- 0.0, 0.0, 0.0, --offset
+                                               -- 0.0, 90.0, 0.0, --rot
+                                               -- 31086, 1.5,  --bone index, scale
+                                               -- false, false, false);
+                                               -- StartParticleFxNonLoopedOnPedBone(effectname2, ped, 
+                                               -- 0.0, 0.0, 0.0, --offset
+                                               -- 0.0, 90.0, 0.0, --rot
+                                               -- 31086, 1.0,  --bone index, scale
+                                               -- false, false, false);
+                                            -- end
                                         end
                                             --SetPedToRagdoll(ped, 1000, 1000, 2, false, false, false);
                                             -- SetPedToRagdollWithFall(
@@ -7074,42 +7240,42 @@ Citizen.CreateThread(function()
                                         -- 19, 0.05, false, 
                                         -- true, 0.0);
                                         -- ApplyDamageToPed(ped, 5, false);
-                                    -- elseif bone==36864 or bone==51826 or bone==63931 or bone==58271 then
-                                        -- if DecorGetInt(ped,"zm_lastbone")~=bone then
-                                            -- local dict="nm@recover@normal@" 
-                                            -- local anim="nm_kneedown_recovery"
-                                            -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
-                                                -- RequestAnimDict(dict)
-                                                -- while not HasAnimDictLoaded(dict) do Wait(0) end
-                                                -- TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
-                                            -- else
-                                                -- --- SetHighFallTask(ped, 5000, -1, -1)
-                                                -- --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
-                                            -- end
-                                            -- DecorSetInt(ped,"zm_lastbone",bone)
+                                    elseif bone==36864 or bone==51826 or bone==63931 or bone==58271 then
+                                        if DecorGetInt(ped,"zm_lastbone")~=bone then
+                                            local dict="nm@recover@normal@" 
+                                            local anim="nm_kneedown_recovery"
+                                            if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                                                RequestAnimDict(dict)
+                                                while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
+                                            else
+                                                 SetHighFallTask(ped, 5000, -1, -1)
+                                                --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
+                                            end
+                                            DecorSetInt(ped,"zm_lastbone",bone)
                                             
-                                            -- DecorSetInt(ped,"zm_health",health)
-                                            -- DecorSetInt(ped,"zm_armor",armor)
-                                        -- end
-                                    -- else
-                                        -- if DecorGetInt(ped,"zm_lastbone")~=bone then
-                                            -- local dict="melee@small_wpn@streamed_core" 
-                                            -- local anim="non_melee_damage_front"
-                                            -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
-                                                -- RequestAnimDict(dict)
-                                                -- while not HasAnimDictLoaded(dict) do Wait(0) end
-                                                -- TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
-                                            -- else
-                                                -- --- SetHighFallTask(ped, 100, -1, -1)
-                                                -- --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
-                                            -- end
-                                            -- DecorSetInt(ped,"zm_lastbone",bone)
+                                            DecorSetInt(ped,"zm_health",health)
+                                            DecorSetInt(ped,"zm_armor",armor)
+                                        end
+                                    else
+                                        if DecorGetInt(ped,"zm_lastbone")~=bone then
+                                            local dict="melee@small_wpn@streamed_core" 
+                                            local anim="non_melee_damage_front"
+                                            if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                                                RequestAnimDict(dict)
+                                                while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
+                                            else
+                                                 SetHighFallTask(ped, 100, -1, -1)
+                                                --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
+                                            end
+                                            DecorSetInt(ped,"zm_lastbone",bone)
                                             
-                                            -- DecorSetInt(ped,"zm_health",health)
-                                            -- DecorSetInt(ped,"zm_armor",armor)
-                                        -- end
-                                        -- DecorSetInt(ped,"zm_health",health)
-                                        -- DecorSetInt(ped,"zm_armor",armor)
+                                            DecorSetInt(ped,"zm_health",health)
+                                            DecorSetInt(ped,"zm_armor",armor)
+                                        end
+                                        DecorSetInt(ped,"zm_health",health)
+                                        DecorSetInt(ped,"zm_armor",armor)
                                     end
                                 end
                                 SetPedMute(ped)
@@ -7305,10 +7471,14 @@ Citizen.CreateThread(function()
         if not DecorExistOn(veh,"zm_looted") then
             --GiveWeaponToPed(PlayerPedId(), 883325847, 21, false, true)
             local randomitem
-            local platenumber=GetVehicleNumberPlateText(veh)
-            if (GetHashKey(platenumber)&3)~=0 then
+            local platenumber=GetHashKey(GetVehicleNumberPlateText(veh))
+            if (platenumber&3)~=0 then
             
-                local tier=math.random(1,100)
+                local vehpos=GetEntityCoords(veh)
+                local time=GetGameTimer()
+                local random_number=math.abs(math.floor((vehpos.x+vehpos.y+vehpos.z)*10)+time+(platenumber>>2))
+                local tier=(random_number%100)
+                random_number=math.floor(random_number/100)
                 local chosentier
                 if      tier>98 then    chosentier=trunkrewards_tier6
                 elseif  tier>93 then    chosentier=trunkrewards_tier5
@@ -7317,16 +7487,18 @@ Citizen.CreateThread(function()
                 elseif  tier>43 then    chosentier=trunkrewards_tier2
                 else                    chosentier=trunkrewards_tier1 end
                 
-                local reward=chosentier[math.random(1,#chosentier)] 
-                if reward[2]<0 then reward[2]=math.random(1,-reward[2]) end
+                local reward=chosentier[random_number%#chosentier+1]
+                local item=reward[1]
+                local count=reward[2]
+                if count<0 then count=math.random(1,-count) end
                 
                 if not DecorExistOn(veh,"item") then
-                    DecorSetInt(veh,"item",item_name_to_index[reward[1]])
-                    DecorSetInt(veh,"count",reward[2])
+                    DecorSetInt(veh,"item",item_name_to_index[item])
+                    DecorSetInt(veh,"count",count)
                 else
-                    reward[1]=item_index_to_name[DecorGetInt(veh,"item")]
-                    reward[2]=DecorGetInt(veh,"count")
-                    if give_item_to_inventory(reward[1],reward[2]) then
+                    item=item_index_to_name[DecorGetInt(veh,"item")]
+                    count=DecorGetInt(veh,"count")
+                    if give_item_to_inventory(item,count) then
                         DecorSetBool(veh,"zm_looted",true)
                     end
                 end
@@ -7394,9 +7566,9 @@ Citizen.CreateThread(function()
                         else --zombie loot
                             local tier=math.random(1,100)
                             local chosentier
-                            if      tier>95 then        chosentier=deadbodiesrewards_tier4
-                            elseif  tier>80 then        chosentier=deadbodiesrewards_tier3
-                            elseif  tier>60 then        chosentier=deadbodiesrewards_tier2
+                            if      tier>99 then        chosentier=deadbodiesrewards_tier4
+                            elseif  tier>98 then        chosentier=deadbodiesrewards_tier3
+                            elseif  tier>97 then        chosentier=deadbodiesrewards_tier2
                             else                    chosentier=deadbodiesrewards_tier1 end
                             reward=chosentier[math.random(1,#chosentier)] 
                             if debug_mode then
@@ -7415,8 +7587,9 @@ Citizen.CreateThread(function()
                                         TaskPlayAnim(pped, dict, anim, 1.0, 1.0, -1, 0, .0, false, false, false)
                                         --if type(reward[1])=='string' then
                                             if math.random(0,5)~=0 then
-                                                if reward[2]<0 then reward[2]=math.random(1,-reward[2]) end
-                                                if give_item_to_inventory(reward[1],reward[2]) then DecorSetBool(ped,"zm_looted",true) end
+                                                local count=reward[2]
+                                                if count<0 then count=math.random(1,-count) end
+                                                if give_item_to_inventory(reward[1],count) then DecorSetBool(ped,"zm_looted",true) end
                                             else
                                                 WriteNotification("Nothing useful.")
                                                 DecorSetBool(ped,"zm_looted",true)

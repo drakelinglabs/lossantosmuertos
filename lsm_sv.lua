@@ -104,6 +104,18 @@ smgammo=400,
 mgammo=200,
 launchergrenade=10,
 armorplate=20,
+grip=5,
+flashlight_small=5,
+flashlight_large=5,
+suppressor_1=2,
+suppressor_2=2,
+suppressor_3=2,
+suppressor_4=2,
+suppressor_5=2,
+scope_1=4,
+scope_2=4,
+scope_3=4,
+advanced_scope=2,
 }
 
 local safezones={}
