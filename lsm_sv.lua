@@ -411,14 +411,14 @@ AddEventHandler("zoneraided",function(x,y,z,name,trades,relationship)
         for k,v in pairs(trades) do
             if v[1]~=nil and v[2]~=nil and v[3]~=nil and v[4]~=nil then
                 if loot[v[1]]==nil then
-                    loot[v[1]]=v[2]*10
+                    loot[v[1]]=v[2]
                 else
-                    loot[v[1]]=loot[v[1]]+v[2]*10
+                    loot[v[1]]=loot[v[1]]+v[2]
                 end
                 if loot[v[3]]==nil then
-                    loot[v[3]]=v[4]*7
+                    loot[v[3]]=v[4]
                 else
-                    loot[v[3]]=loot[v[3]]+v[4]*7
+                    loot[v[3]]=loot[v[3]]+v[4]
                 end
             end
         end
@@ -427,7 +427,7 @@ AddEventHandler("zoneraided",function(x,y,z,name,trades,relationship)
         end
         safezones[name].raided=GetGameTimer()
         TriggerClientEvent("zonestatus",-1,name,true)
-        create_loot_crate(x,y,z,loot,200,nil,nil,40,"raiders")
+        create_loot_crate(x,y,z,loot,40,nil,nil,150,"raiders")
     end
 end)
 

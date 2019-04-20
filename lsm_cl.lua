@@ -346,6 +346,47 @@ local masks={
 }
 
 
+local relationship_name={
+[GetHashKey("SURVIVOR")]="Survivor",
+[GetHashKey("NEUTRAL")]="Scavenger",
+[GetHashKey("DAWN")]="Dawn",
+[GetHashKey("GOVERNMENT")]="Government",
+[GetHashKey("BANDIT")]="Bandit",
+[GetHashKey("RAIDER")]="Raider",
+[GetHashKey("MARAUDER")]="Marauder",
+}
+local relationship_names={
+[0]="You are allied with this faction. You may use your weapons freely.",
+[1]="You have a friendly relationship with this faction. You may use your weapons freely.",
+[2]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
+[3]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
+[4]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
+[5]="Your relationship with this faction is hostile. You will be attacked on sight.",
+[GetHashKey("SURVIVOR")]="Survivors",
+[GetHashKey("NEUTRAL")]="Scavengers",
+[GetHashKey("DAWN")]="Dawn",
+[GetHashKey("GOVERNMENT")]="Government",
+[GetHashKey("BANDIT")]="Bandits",
+[GetHashKey("RAIDER")]="Raiders",
+[GetHashKey("MARAUDER")]="Marauders",
+}
+
+local relationship_good_bad={
+[GetHashKey("SURVIVOR")]="good",
+[GetHashKey("NEUTRAL")]="neutral",
+[GetHashKey("BANDIT")]="bad",
+[GetHashKey("GOVERNMENT")]="good",
+[GetHashKey("DAWN")]="good",
+[GetHashKey("RAIDER")]="neutral",
+}
+
+local relationship_requirements={
+[GetHashKey("SURVIVOR")]={moreorless="more",howmuch=50},
+[GetHashKey("BANDIT")]={moreorless="less",howmuch=-50},
+[GetHashKey("GOVERNMENT")]={moreorless="more",howmuch=300},
+[GetHashKey("DAWN")]={moreorless="more",howmuch=150},
+}
+
 
 -- for suitname,suit in pairs(suits) do
     -- for comp,params in pairs(suit) do
@@ -1033,6 +1074,61 @@ local safezones={
     craftpos={x=-1123.6444091797,y=4894.5190429688,z=218.47256469727},
     crafts=normal_crafts,
     spawnpos={x=-1112.9624023438,y=4903.9765625,z=218.59544372559,angle=323.06338500977},
+    ransack={x=-1111.5389404297,y=4936.8647460938,z=218.38740539551,angle=151.02191162109},
+    ransack_list={
+        {"water",20,"gasoline",10},
+        {"gasoline",10,"bandage",15},
+        {"canfood",15,"cigarettes",10},
+        {"gunpowder",10,"cash",650},
+        {"soda",10,"juice",10},
+        {"alcohol",5,"cash",100},
+    },
+    join_faction={x=-1146.4794921875,y=4940.9321289063,z=222.2685546875,
+        rep_moreorless="more",rep_amount=50,
+
+    },
+    quests={
+        textnoquest="I have nothing for you at the moment.",
+        join_name="Admission to the Survivors",
+        join_text="So, want to join us, huh? Well, you know, I can't just accept some random scavenger. You need to prove that you really worth it. ",
+        novice="You're now one of us. Here's your task. ",
+    
+        {items_required={"bandits_records",2},
+        items_reward={"cash",2000,"mre",3,"water",3},
+        questname="Prison checkpoint records",
+        text="Sneak to prison and steal bandits records with names who enter or exit prison.",
+        rep_bonus=10,
+        },
+        
+        {items_required={"cues",1},
+        items_reward={"cash",1500,"mre",3,"water",3},
+        questname="Named cues",
+        text="Marauder bosses keep their named billiard cues somewhere in bar near prison, bring them to me.",
+        rep_bonus=10,
+        },
+        
+        {items_required={"mre",30,"water",30},
+        items_reward={"cash",3000},
+        questname="Provision for week",
+        text="We need provision for a next week, bring us MREs and water. Almost every building has water cooler inside, check in there. We've looted most of the military base, but there still should be some provision crates.",
+        rep_bonus=10,
+        },
+        
+        {items_required={"engineparts",100},
+        items_reward={"cash",2000,"mre",3,"water",3},
+        questname="Tools and parts",
+        text="We need tools are parts for our vehicles. Search at workshops, should be lots of things there.",
+        rep_bonus=10,
+        },
+        
+        {items_required={"ammo",300,"pistolammo",600,"shotgunammo",100,"heavyrifleammo",50},
+        items_reward={"cash",3000,"mre",3,"water",3},
+        questname="Ammunition",
+        text="We need ammo now, here's list of what exactly we need.",
+        rep_bonus=10,
+        },
+        
+    },
     relationship="SURVIVOR"},--Altruists camp
     
     
@@ -1303,6 +1399,16 @@ local safezones={
             "engineparts",5,
             "scrapmetal",500},
         },
+    },
+    ransack={x=1661.6795654297,y=2566.5334472656,z=45.564865112305,angle=229.75936889648},
+    ransack_list={
+        {"cash",4000,"gasoline",80},
+        {"bandage",10,"canfood",10},
+        {"gunpowder",20,"cigarettes",30},
+        {"soda",10,"juice",10},
+        {"alcohol",15,"mre",5},
+        {"armorplate",10,"medkit",3},
+        {"ammo",300,"shotgunammo",30},
     },
     relationship="BANDIT"},--Prison
     
@@ -1667,6 +1773,8 @@ scope_1="Small scope",
 scope_2="Scope",
 scope_3="Scope",
 advanced_scope="Advanced scope",
+bandits_records="Bandits records",
+cues="Cues",
 }
 local item_descriptions={
 water="Bottle filled with fresh water.",
@@ -1757,6 +1865,8 @@ scope_1="Small scope",
 scope_2="Scope with rare mount. Used on bullpup rifles and SMGs with modern mounts.",
 scope_3="Battle scope, used on common military firearms.",
 advanced_scope="Advanced scope",
+bandits_records="Bandits records.",
+cues="Named cues.",
 }
 
 local weapon_upgrades={
@@ -1822,7 +1932,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_marksmanriflerifle")]=0xFFFFFFFF837445AA,
     },
     suppressor_4={
-        [GetHashKey("weapon_pumpshotgun")]=0xE608B35E,
+        [GetHashKey("weapon_pumpshotgun")]=0xFFFFFFFFE608B35E,
     },
     suppressor_5={
         [GetHashKey("weapon_heavysniper_mk2")]=0xFFFFFFFFAC42DF71,
@@ -1868,6 +1978,9 @@ local function use_weapon_upgrade(upgradename)
             WriteNotification("Cannot attach this upgrade to selected weapon.")
             return false
         end
+    else
+        WriteNotification("~r~ERROR! ~s~No such upgrade.")
+        return false
     end
 end
 
@@ -2189,7 +2302,7 @@ bodyarmor={chance=50,text="This bodyarmor is ~r~not suitable for use ~s~anymore.
 }
 local pickups_objects={
 [-509973344]={"medkit",1,"bandage",2,solid=true},--wall medkit
-[-742198632]={"water",5,solid=true}, --water cooler
+[-742198632]={"water",10,solid=true}, --water cooler
 [1541274880]={"soda",1}, -- cola 2 liters
 [-1982036471]={"soda",4}, --soda 4 in pack
 [-942878619]={"alcohol",4}, --shop thing red 4 in pack
@@ -2277,8 +2390,8 @@ local pickups_objects={
 [-1422265815]={"grenade",5,"gunpowder",5}, --15green closed rifle thing
 [1824078756]={"grenade",3,"gunpowder",5}, --10white closed rifle thing
 
-[1158698200]={"engineparts",50}, --car battery
-[-2124552702]={"engineparts",20}, --car black fix box
+[1158698200]={"engineparts",10}, --car battery
+[-2124552702]={"engineparts",1}, --car black fix box
 [-1532806025]={"gasoline",5}, --beige diesel
 [-449200111]={"cash",100}, --100$ bill
 
@@ -2316,6 +2429,19 @@ local pickups_objects={
 [-2031321722]={"revolver",1}, --sheriff station box handle with care
 [-445408901]={"policedocs",1}, --sheriff PAPERS docs
 [-1929385697]={"clothes_offdutysheriff",1,"cowboyhat",1}, --sheriff hat and clothes
+
+[-1922399062]={"food",3}, --burger shot packet
+[2127253708]={"juice",1}, --burger shot can
+
+[-1130190827]={"bandits_records",1}, --plastic thing with lists
+[1299967108]={"cues",1}, --wall cues
+
+[-1326111298]={"engineparts",10}, --red big open tools
+[-1674314660]={"engineparts",5}, --red closed tools
+[1871266393]={"engineparts",5}, --black closed tools
+[-738161850]={"engineparts",2}, --dark red closed
+
+[1165008631]={"mre",10}, --military crate blue eagle mre
 }
 
 --local zombie={
@@ -2524,6 +2650,12 @@ local function give_item_to_inventory(add_name,add_amount)
     WriteNotification("You got ~g~"..add_amount.." "..(item_names[add_name] or add_name).."~s~.")
     --inventory.highlight=500
     return true
+end
+
+local function give_all_to_inventory(data)
+    for i=1,#data,2 do
+        give_item_to_inventory(data[i],data[i+1])
+    end
 end
 
 local function can_fit_into_inventory(add_name,add_amount)
@@ -2897,6 +3029,7 @@ AddEventHandler("playerSpawned",function()
     SetPedRelationshipGroupHash(ped,GetHashKey("NEUTRAL"))
     StopAudioScenes()
     StartAudioScene("CHARACTER_CHANGE_IN_SKY_SCENE")
+    SetPedRelationshipGroupHash(ped,GetHashKey("NEUTRAL"))
     if lsm_random_spawn==1 then
         
         --SetPedRandomComponentVariation(ped)
@@ -3987,19 +4120,23 @@ local function pick_random(t)
 end
 local function change_lines(talkingstate,npc)
     local decorrand=DecorGetInt(npc,"questnpc") print("decorrand="..decorrand)
-    if decorrand==0 then
-        npc_lines={"Thanks.",}
+    if talking_state=="Main" then --main dialogue
+        if decorrand==0 then
+            npc_lines={"Need something?",}
         
-        my_lines={
-        "[Exit]",}
-    elseif talking_state=="Main" then --main dialogue
-        npc_lines={"Hey, stranger, could you help me?",}
+            my_lines={"Where can I buy...",
+            "Where can I sell...",
+            "Where can I get...",
+            "[Exit]",}
+        else
+            npc_lines={"Hey, stranger, could you help me?",}
         
-        my_lines={"What do you need?",
-        "Where can I buy...",
-        "Where can I sell...",
-        "Where can I get...",
-        "[Exit]",}
+            my_lines={"What do you need?",
+            "Where can I buy...",
+            "Where can I sell...",
+            "Where can I get...",
+            "[Exit]",}
+        end
     elseif talking_state=="What do you need?" then 
         quest_type=decorrand%3
         custom_ramdom_number=math.floor(decorrand/3)
@@ -4237,7 +4374,8 @@ Citizen.CreateThread(function()
                                         0.305,0.155,0.035,0.065,
                                         0.0, 255, 255, 255, 255)
                                 end
-                                WriteText(4,"Survivor",0.7,255,255,255,255,0.33,0.145)
+                                local npc_rel_hash=GetPedRelationshipGroupHash(npc)
+                                WriteText(4,relationship_name[npc_rel_hash],0.7,255,255,255,255,0.33,0.145)
                                 
                                 if #npc_lines>0 then
                                     for i=1,#npc_lines do
@@ -4740,8 +4878,108 @@ Citizen.CreateThread(function()
             while loop do
                 if (not IsPedAPlayer(npc)) 
                 and GetPedType(npc)~=28 --animal
-                and GetPedRelationshipGroupHash(npc)==myfaction
+                and DecorExistOn(npc,"raider")
+                and GetRelationshipBetweenGroups(GetPedRelationshipGroupHash(PlayerPedId()),GetPedRelationshipGroupHash(npc))~=5
                 then
+                    local can_talk_now=GetIsTaskActive(npc,15) --donothing
+                          and (not GetIsTaskActive(npc,35)) --complexmovement
+                          --and GetPedRelationshipGroupHash(npc)==myfaction
+                    local npcpos=GetEntityCoords(npc)
+                    local dist=#(mypos-npcpos)
+                    if dist<3 then
+                        local talking=false
+                        local headshot
+                        WriteHint("~c~Press ~g~E ~c~to talk")
+                        local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
+                        if not not_on_screen then
+                            SetTextCentre(true)
+                            WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
+                        end
+                        if IsControlJustPressed(0,86) then
+                            talking=true
+                            talking_state="Main"
+                            change_lines(talkingstate,npc)
+                            curline=1
+                            quest_zone=get_closest_friendly_zone_with_questpos(mypos.x,mypos.y,myfaction)
+                            headshot=RegisterPedheadshot(npc)
+                        end
+                        while talking do Wait(0) --dialogue
+                            pped=PlayerPedId()
+                            mypos=GetEntityCoords(pped)
+                            npcpos=GetEntityCoords(npc)
+                            dist=#(mypos-npcpos)
+                            if dist>3 then
+                                talking=false
+                            end
+                            inventory.highlight=0
+                            DrawRect(0.5,0.3,0.45,0.4,0,0,0,200)
+                            if headshot==nil then
+                                headshot=RegisterPedheadshot(npc)
+                                DrawRect(0.305,0.155,0.035,0.065,0,0,255,255)
+                            elseif not IsPedheadshotValid(headshot) then
+                                UnregisterPedheadshot(headshot)
+                                headshot=nil
+                                DrawRect(0.305,0.155,0.035,0.065,255,0,0,255)
+                            elseif IsPedheadshotReady(headshot) then
+                                local txd=GetPedheadshotTxdString(headshot)
+                                DrawSprite(txd,txd,
+                                    0.305,0.155,0.035,0.065,
+                                    0.0, 255, 255, 255, 255)
+                            end
+                            local npc_rel_hash=GetPedRelationshipGroupHash(npc)
+                            WriteText(4,relationship_name[npc_rel_hash],0.7,255,255,255,255,0.33,0.145)
+                            
+                            if #npc_lines>0 then
+                                for i=1,#npc_lines do
+                                    SetTextWrap(0.5-(0.45/2)+0.015,0.5+(0.45/2)-0.015)
+                                    WriteText(4,npc_lines[i],0.4,255,255,255,255,0.29,0.18+i*0.025)
+                                end
+                            end
+                            if #my_lines>0 then
+                                for i=1,#my_lines do
+                                    pos=pos+1
+                                    WriteText(4,my_lines[i],0.4,255,255,255,255,0.28,0.47+i*0.025)
+                                    local col=0
+                                    local alpha=200
+                                    if curline==i then col=255 alpha=255 end
+                                    DrawRect(0.5,0.485+i*0.025,0.45,0.025,col,col,col,alpha)
+                                end
+                            end
+                            if IsControlJustPressed(0,172) then if curline==1 then curline=#my_lines else curline=curline-1 end end
+                            if IsControlJustPressed(0,173) then if curline>=#my_lines then curline=1 else curline=curline+1 end end
+                            if IsControlJustPressed(0,191) then
+                                talking_state=my_lines[curline]
+                                change_lines(talkingstate,npc)
+                                curline=1
+                            end
+                            if talking_state=="[Back]" then 
+                                talking_state="Main"
+                                change_lines(talkingstate,npc)
+                                curline=1
+                            elseif talking_state=="Thanks" then 
+                                talking_state="Main"
+                                change_lines(talkingstate,npc)
+                                curline=1
+                            elseif talking_state=="Sorry, but no" then 
+                                talking_state="Main"
+                                change_lines(talkingstate,npc)
+                                curline=1
+                            elseif talking_state=="No" then 
+                                talking_state="Main"
+                                change_lines(talkingstate,npc)
+                                curline=1
+                            elseif talking_state=="[Exit]" then 
+                                talking=false
+                                curline=1
+                            end
+                        end
+                        if headshot~=nil then
+                            if IsPedheadshotValid(headshot) then
+                                UnregisterPedheadshot(headshot)
+                            end
+                            headshot=nil
+                        end
+                    end
                     if DecorExistOn(npc,"questnpc") and not IsPedDeadOrDying(npc) then
                         if GetBlipFromEntity(npc)==0
                         then
@@ -4751,102 +4989,6 @@ Citizen.CreateThread(function()
                                 --print("Adding blip to "..npc)
                                 --npcblips[npc]=
                                 SetBlipSprite(AddBlipForEntity(npc),133)
-                            end
-                        else
-                            local npcpos=GetEntityCoords(npc)
-                            local dist=#(mypos-npcpos)
-                            if dist<3 then
-                                local talking=false
-                                local headshot
-                                WriteHint("~c~Press ~g~E ~c~to talk")
-                                local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
-                                if not not_on_screen then
-                                    SetTextCentre(true)
-                                    WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
-                                end
-                                if IsControlJustPressed(0,86) then
-                                    talking=true
-                                    talking_state="Main"
-                                    change_lines(talkingstate,npc)
-                                    curline=1
-                                    quest_zone=get_closest_friendly_zone_with_questpos(mypos.x,mypos.y,myfaction)
-                                    headshot=RegisterPedheadshot(npc)
-                                end
-                                while talking do Wait(0) --dialogue
-                                    pped=PlayerPedId()
-                                    mypos=GetEntityCoords(pped)
-                                    npcpos=GetEntityCoords(npc)
-                                    dist=#(mypos-npcpos)
-                                    if dist>3 then
-                                        talking=false
-                                    end
-                                    inventory.highlight=0
-                                    DrawRect(0.5,0.3,0.45,0.4,0,0,0,200)
-                                    if headshot==nil then
-                                        headshot=RegisterPedheadshot(npc)
-                                        DrawRect(0.305,0.155,0.035,0.065,0,0,255,255)
-                                    elseif not IsPedheadshotValid(headshot) then
-                                        UnregisterPedheadshot(headshot)
-                                        headshot=nil
-                                        DrawRect(0.305,0.155,0.035,0.065,255,0,0,255)
-                                    elseif IsPedheadshotReady(headshot) then
-                                        local txd=GetPedheadshotTxdString(headshot)
-                                        DrawSprite(txd,txd,
-                                            0.305,0.155,0.035,0.065,
-                                            0.0, 255, 255, 255, 255)
-                                    end
-                                    WriteText(4,"Survivor",0.7,255,255,255,255,0.33,0.145)
-                                    
-                                    if #npc_lines>0 then
-                                        for i=1,#npc_lines do
-                                            SetTextWrap(0.5-(0.45/2)+0.015,0.5+(0.45/2)-0.015)
-                                            WriteText(4,npc_lines[i],0.4,255,255,255,255,0.29,0.18+i*0.025)
-                                        end
-                                    end
-                                    if #my_lines>0 then
-                                        for i=1,#my_lines do
-                                            pos=pos+1
-                                            WriteText(4,my_lines[i],0.4,255,255,255,255,0.28,0.47+i*0.025)
-                                            local col=0
-                                            local alpha=200
-                                            if curline==i then col=255 alpha=255 end
-                                            DrawRect(0.5,0.485+i*0.025,0.45,0.025,col,col,col,alpha)
-                                        end
-                                    end
-                                    if IsControlJustPressed(0,172) then if curline==1 then curline=#my_lines else curline=curline-1 end end
-                                    if IsControlJustPressed(0,173) then if curline>=#my_lines then curline=1 else curline=curline+1 end end
-                                    if IsControlJustPressed(0,191) then
-                                        talking_state=my_lines[curline]
-                                        change_lines(talkingstate,npc)
-                                        curline=1
-                                    end
-                                    if talking_state=="[Back]" then 
-                                        talking_state="Main"
-                                        change_lines(talkingstate,npc)
-                                        curline=1
-                                    elseif talking_state=="Thanks" then 
-                                        talking_state="Main"
-                                        change_lines(talkingstate,npc)
-                                        curline=1
-                                    elseif talking_state=="Sorry, but no" then 
-                                        talking_state="Main"
-                                        change_lines(talkingstate,npc)
-                                        curline=1
-                                    elseif talking_state=="No" then 
-                                        talking_state="Main"
-                                        change_lines(talkingstate,npc)
-                                        curline=1
-                                    elseif talking_state=="[Exit]" then 
-                                        talking=false
-                                        curline=1
-                                    end
-                                end
-                                if headshot~=nil then
-                                    if IsPedheadshotValid(headshot) then
-                                        UnregisterPedheadshot(headshot)
-                                    end
-                                    headshot=nil
-                                end
                             end
                         end
                     else
@@ -5491,8 +5633,104 @@ Citizen.CreateThread(function()
                     WriteNotification("You need to be in this faction in order to trade.")
                 elseif GetRelationshipBetweenGroups(myfaction,zone.relationship)==5 then
                     --zone.raided=true
-                    TriggerServerEvent("zoneraided",zone.tradepos.x,zone.tradepos.y,zone.tradepos.z,zone.name,zone.trade,zone.relationship)
+                    --TriggerServerEvent("zoneraided",zone.tradepos.x,zone.tradepos.y,zone.tradepos.z,zone.name,zone.trade,zone.relationship)
+                    WriteNotification("You need to be in this faction in order to trade.")
+                    
                     Wait(300)
+                end
+            elseif zone~=nil and not zone.raided and zone.ransack~=nil and in_radius(mypos,zone.ransack,1) then 
+                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
+                    WriteNotification("This is base warehouse. Become enemy with faction to start raid.")
+                else
+                    WriteNotification("You started safezone raid.")
+                    TriggerServerEvent("zoneraided",zone.ransack.x,zone.ransack.y,zone.ransack.z,zone.name,zone.ransack_list,zone.relationship)
+                    Wait(300)
+                end
+            elseif zone~=nil and not zone.raided and zone.join_faction~=nil and in_radius(mypos,zone.join_faction,1) then 
+                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
+                    local myped=PlayerPedId()
+                    local mypos=GetEntityCoords(myped)
+                    local myfaction=GetPedRelationshipGroupHash(myped)
+                    local openjoinmenu=false
+                    local questid=math.random(1,#zone.quests)
+                    openjoinmenu=in_radius(mypos,zone.join_faction,1)
+                    while openjoinmenu do Wait(0)
+                        mypos=GetEntityCoords(myped)
+                        openjoinmenu=in_radius(mypos,zone.join_faction,1)
+                        DrawRect(0.5,0.5,0.5,0.6,0,0,0,175)
+                        SetTextCentre(true)
+                        
+                        if zone.join_faction.rep_moreorless=="more" then
+                            if player.reputation>=zone.join_faction.rep_amount then
+                                if zone.quests[questid] then
+                                    if myfaction==zone.relationship then
+                                        WriteText(4,zone.quests[questid].questname,0.55,255,255,255,255,0.5,0.225)
+                                    else
+                                        WriteText(4,zone.quests.join_name,0.55,255,255,255,255,0.5,0.225)
+                                    end
+                                    SetTextWrap(0.27,0.73)  
+                                    if myfaction==zone.relationship then
+                                        WriteText(4,zone.quests.novice..zone.quests[questid].text,0.4,255,255,255,255,0.27,0.35)
+                                    else
+                                        WriteText(4,zone.quests.join_text..zone.quests[questid].text,0.4,255,255,255,255,0.27,0.35)
+                                    end
+                                    WriteText(4,"Required items:",0.4,255,255,255,255,0.27,0.6)
+                                    SetTextWrap(0.27,0.73)  
+                                    SetTextRightJustify(true)
+                                    WriteText(4,"Reward:",0.4,255,255,255,255,0.73,0.6)
+                                    for i=1,#zone.quests[questid].items_reward,2 do
+                                        SetTextWrap(0.27,0.73)  
+                                        SetTextRightJustify(true)
+                                        WriteText(2,"~g~"..zone.quests[questid].items_reward[i].." ~s~x"..zone.quests[questid].items_reward[i+1],0.3,255,255,255,255,0.73,0.62+(i*0.01))
+                                    end
+                                    if do_we_have_all_that(zone.quests[questid].items_required) then
+                                        WriteText(4,"Press ~g~E ~s~to give required items.",0.4,255,255,255,255,0.27,0.8)
+                                        if IsControlJustPressed(0,86) then
+                                            remove_all_that(zone.quests[questid].items_required)
+                                            Wait(0)
+                                            WriteNotification("~g~You've finished quest.")
+                                            player.reputation=player.reputation+zone.quests[questid].rep_bonus
+                                            WriteNotification("Reputation ~g~+"..zone.quests[questid].rep_bonus)
+                                            if can_fit_all_into_inventory(zone.quests[questid].items_reward) then
+                                                give_all_to_inventory(zone.quests[questid].items_reward)
+                                            end
+                                            if myfaction~=zone.relationship then
+                                                SetPedRelationshipGroupHash(myped,zone.relationship)
+                                                myfaction=GetPedRelationshipGroupHash(myped)
+                                                WriteNotification("~g~You've joined "..relationship_names[zone.relationship])
+                                            end
+                                            questid=math.random(1,#zone.quests)
+                                        end
+                                    else
+                                        WriteText(4,"You don't have required items.",0.4,255,255,255,255,0.27,0.8)
+                                    end
+                                    for i=1,#zone.quests[questid].items_required,2 do
+                                        local item
+                                        item=zone.quests[questid].items_required[i]
+                                        if HasStreamedTextureDictLoaded("lsm") then
+                                            DrawSprite("lsm",item,.27+i*0.04,.7,inv_big_x,inv_big_y,0.0, 255, 255, 255, 255)
+                                            SetTextCentre(true)
+                                            local color=125
+                                            if get_inventroy_item_amount(item)>=zone.quests[questid].items_required[i+1] then
+                                                color=255
+                                            end
+                                            WriteText(4,item_names[item].." x"..zone.quests[questid].items_required[i+1],0.4,color,color,color,255,.27+i*0.04,.75)
+                                        else
+                                            RequestStreamedTextureDict("lsm")
+                                        end
+                                    end
+                                else
+                                    SetTextWrap(0.27,0.73)  
+                                    WriteText(4,zone.quests.textnoquest,0.4,255,255,255,255,0.27,0.35)
+                                end
+                            else
+                                SetTextWrap(0.27,0.73)  
+                                WriteText(4,"You need to have "..zone.join_faction.rep_amount-player.reputation.." more reputation.",0.4,255,255,255,255,0.35,0.35)
+                            end
+                        elseif zone.join_faction.rep_moreorless=="less" then
+                        
+                        end
+                    end
                 end
             elseif zone~=nil and not zone.raided and zone.changingroompos~=nil and in_radius(mypos,zone.changingroompos,1) then 
                 -- changing clothes 
@@ -6390,11 +6628,9 @@ Citizen.CreateThread(function()
                             player.suit="banditmercenary"
                         end
                         check_clothes(pped)
-                    elseif inventory[inventory.current].item=="suppressor_1" then
-                        if use_weapon_upgrade("suppressor_1") then
-                            inventory[inventory.current].amount=inventory[inventory.current].amount-1
-                            check_inv_slot_for_zero_amount()
-                        end
+                    elseif use_weapon_upgrade(inventory[inventory.current].item) then
+                        inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                        check_inv_slot_for_zero_amount()
                     end
                 end
                 inventory.highlight=500
@@ -6491,6 +6727,8 @@ end)
 Citizen.CreateThread(function()
     local oldzone
     local traderblip
+    local ransackblip
+    local joinfactionblip
     local vehblip
     local garageblip
     local clothesblip
@@ -6509,6 +6747,16 @@ Citizen.CreateThread(function()
                 FlashMinimapDisplay()
             end
             if zone~=nil then
+                local enemybase
+                local myfaction=GetPedRelationshipGroupHash(myped)
+                
+                if GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4 then
+                    enemybase=false
+                else
+                    enemybase=true
+                end
+                
+                
                 if zone.tradepos~=nil and not zone.raided then
                     if traderblip~=nil then
                         SetBlipCoords(traderblip,zone.tradepos.x,zone.tradepos.y,zone.tradepos.z)
@@ -6516,6 +6764,27 @@ Citizen.CreateThread(function()
                         traderblip=AddBlipForCoord(zone.tradepos.x,zone.tradepos.y,zone.tradepos.z)
                         SetBlipSprite(traderblip,108)
                         SetBlipColour(traderblip,2)
+                        if enemybase then SetBlipColour(traderblip,55) end
+                    end
+                end
+                if zone.ransack~=nil and not zone.raided then
+                    if ransackblip~=nil then
+                        SetBlipCoords(ransackblip,zone.ransack.x,zone.ransack.y,zone.ransack.z)
+                    else
+                        ransackblip=AddBlipForCoord(zone.ransack.x,zone.ransack.y,zone.ransack.z)
+                        SetBlipSprite(ransackblip,478)
+                        SetBlipColour(ransackblip,5)
+                        if enemybase then SetBlipColour(ransackblip,75) end
+                    end
+                end
+                if zone.join_faction~=nil and not zone.raided then
+                    if joinfactionblip~=nil then
+                        SetBlipCoords(joinfactionblip,zone.join_faction.x,zone.join_faction.y,zone.join_faction.z)
+                    else
+                        joinfactionblip=AddBlipForCoord(zone.join_faction.x,zone.join_faction.y,zone.join_faction.z)
+                        SetBlipSprite(joinfactionblip,498)
+                        SetBlipColour(joinfactionblip,67)
+                        if enemybase then SetBlipColour(joinfactionblip,55) end
                     end
                 end
                 if zone.vehpos~=nil and not zone.raided then
@@ -6525,6 +6794,7 @@ Citizen.CreateThread(function()
                         vehblip=AddBlipForCoord(zone.vehpos.x,zone.vehpos.y,zone.vehpos.z)
                         SetBlipSprite(vehblip,225)
                         SetBlipColour(vehblip,3)
+                        if enemybase then SetBlipColour(vehblip,55) end
                     end
                 end
                 if zone.garagepos~=nil and not zone.raided then
@@ -6534,6 +6804,7 @@ Citizen.CreateThread(function()
                         garageblip=AddBlipForCoord(zone.garagepos.x,zone.garagepos.y,zone.garagepos.z)
                         SetBlipSprite(garageblip,357)
                         SetBlipColour(garageblip,4)
+                        if enemybase then SetBlipColour(garageblip,55) end
                     end
                 end
                 if zone.craftpos~=nil then
@@ -6543,6 +6814,7 @@ Citizen.CreateThread(function()
                         craftblip=AddBlipForCoord(zone.craftpos.x,zone.craftpos.y,zone.craftpos.z)
                         SetBlipSprite(craftblip,402)
                         SetBlipColour(craftblip,44)
+                        --if enemybase then SetBlipColour(craftblip,55) end
                     end
                 end
                 if zone.clothespos~=nil and not zone.raided then
@@ -6552,6 +6824,7 @@ Citizen.CreateThread(function()
                         clothesblip=AddBlipForCoord(zone.clothespos.x,zone.clothespos.y,zone.clothespos.z)
                         SetBlipSprite(clothesblip,366)
                         SetBlipColour(clothesblip,4)
+                        if enemybase then SetBlipColour(clothesblip,55) end
                     end
                 end
                 if zone.changingroompos~=nil and not zone.raided then
@@ -6561,6 +6834,7 @@ Citizen.CreateThread(function()
                         changingroomblip=AddBlipForCoord(zone.changingroompos.x,zone.changingroompos.y,zone.changingroompos.z)
                         SetBlipSprite(changingroomblip,73)
                         SetBlipColour(changingroomblip,4)
+                        if enemybase then SetBlipColour(changingroomblip,55) end
                     end
                 end
                 if zone.provisionpos~=nil and not zone.raided then
@@ -6570,6 +6844,7 @@ Citizen.CreateThread(function()
                         provisionblip=AddBlipForCoord(zone.provisionpos.x,zone.provisionpos.y,zone.provisionpos.z)
                         SetBlipSprite(provisionblip,52)
                         SetBlipColour(provisionblip,5)
+                        if enemybase then SetBlipColour(provisionblip,55) end
                     end
                 end
                 if zone.name~=nil then
@@ -6589,6 +6864,14 @@ Citizen.CreateThread(function()
                 if traderblip~=nil then
                     RemoveBlip(traderblip)
                     traderblip=nil
+                end
+                if ransackblip~=nil then
+                    RemoveBlip(ransackblip)
+                    ransackblip=nil
+                end
+                if joinfactionblip~=nil then
+                    RemoveBlip(joinfactionblip)
+                    joinfactionblip=nil
                 end
                 if vehblip~=nil then
                     RemoveBlip(vehblip)
@@ -6617,7 +6900,15 @@ Citizen.CreateThread(function()
             end
         else
             if zone~=nil then
-                if zone.vehpos~=nil and not zone.raided then
+                local enemybase
+                local myfaction=GetPedRelationshipGroupHash(myped)
+                
+                if GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4 then
+                    enemybase=false
+                else
+                    enemybase=true
+                end
+                if zone.vehpos~=nil and not zone.raided and not enemybase then
                     DrawMarker(20, zone.vehpos.x, zone.vehpos.y, zone.vehpos.z, 
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
@@ -6625,7 +6916,7 @@ Citizen.CreateThread(function()
                     100, 150, 255, 200, 
                     true, false, 2, true, 0, 0, false);
                 end
-                if zone.garagepos~=nil and not zone.raided then
+                if zone.garagepos~=nil and not zone.raided and not enemybase then
                     DrawMarker(20, zone.garagepos.x, zone.garagepos.y, zone.garagepos.z, 
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
@@ -6641,7 +6932,7 @@ Citizen.CreateThread(function()
                     255, 200, 50, 200, 
                     true, false, 2, true, 0, 0, false);
                 end
-                if zone.tradepos~=nil and not zone.raided then
+                if zone.tradepos~=nil and not zone.raided and not enemybase then
                     DrawMarker(29, zone.tradepos.x, zone.tradepos.y, zone.tradepos.z, 
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
@@ -6649,7 +6940,23 @@ Citizen.CreateThread(function()
                     100, 255, 100, 200, 
                     true, false, 2, true, 0, 0, false);
                 end
-                if zone.clothespos~=nil and not zone.raided then
+                if zone.ransack~=nil and not zone.raided and enemybase then
+                    DrawMarker(20, zone.ransack.x, zone.ransack.y, zone.ransack.z, 
+                    0.0, 0.0, 0.0, --dir
+                    0.0, 0.0, 0.0, --rot
+                    1.0, 1.0, -1.0, --scl
+                    255, 100, 100, 200, 
+                    true, false, 2, true, 0, 0, false);
+                end
+                if zone.join_faction~=nil and not zone.raided and not enemybase then
+                    DrawMarker(20, zone.join_faction.x, zone.join_faction.y, zone.join_faction.z, 
+                    0.0, 0.0, 0.0, --dir
+                    0.0, 0.0, 0.0, --rot
+                    1.0, 1.0, -1.0, --scl
+                    100, 100, 255, 200, 
+                    true, false, 2, true, 0, 0, false);
+                end
+                if zone.clothespos~=nil and not zone.raided and not enemybase then
                     DrawMarker(20, zone.clothespos.x, zone.clothespos.y, zone.clothespos.z, 
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
@@ -6657,7 +6964,7 @@ Citizen.CreateThread(function()
                     255, 255, 255, 200, 
                     true, false, 2, true, 0, 0, false);
                 end
-                if zone.changingroompos~=nil and not zone.raided then
+                if zone.changingroompos~=nil and not zone.raided and not enemybase then
                     DrawMarker(20, zone.changingroompos.x, zone.changingroompos.y, zone.changingroompos.z, 
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
@@ -6665,7 +6972,7 @@ Citizen.CreateThread(function()
                     255, 255, 255, 200, 
                     true, false, 2, true, 0, 0, false);
                 end
-                if zone.provisionpos~=nil and not zone.raided then
+                if zone.provisionpos~=nil and not zone.raided and not enemybase then
                     DrawMarker(20, zone.provisionpos.x, zone.provisionpos.y, zone.provisionpos.z, 
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
@@ -9141,37 +9448,6 @@ Citizen.CreateThread(function()
     end
 end)
 
-local relationship_names={
-[0]="You are allied with this faction. You may use your weapons freely.",
-[1]="You have a friendly relationship with this faction. You may use your weapons freely.",
-[2]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
-[3]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
-[4]="You have a neutral relationship with this faction. Keep your weapons holstered or be fired upon.",
-[5]="Your relationship with this faction is hostile. You will be attacked on sight.",
-[GetHashKey("SURVIVOR")]="Survivors",
-[GetHashKey("NEUTRAL")]="Scavengers",
-[GetHashKey("DAWN")]="Dawn",
-[GetHashKey("GOVERNMENT")]="Government",
-[GetHashKey("BANDIT")]="Bandits",
-[GetHashKey("RAIDER")]="Raiders",
-[GetHashKey("MARAUDER")]="Marauders",
-}
-
-local relationship_good_bad={
-[GetHashKey("SURVIVOR")]="good",
-[GetHashKey("NEUTRAL")]="neutral",
-[GetHashKey("BANDIT")]="bad",
-[GetHashKey("GOVERNMENT")]="good",
-[GetHashKey("DAWN")]="good",
-[GetHashKey("RAIDER")]="neutral",
-}
-
-local relationship_requirements={
-[GetHashKey("SURVIVOR")]={moreorless="more",howmuch=30},
-[GetHashKey("BANDIT")]={moreorless="less",howmuch=-20},
-[GetHashKey("GOVERNMENT")]={moreorless="more",howmuch=300},
-[GetHashKey("DAWN")]={moreorless="more",howmuch=50},
-}
 
 
 Citizen.CreateThread(function()
@@ -9293,13 +9569,15 @@ Citizen.CreateThread(function()
                 if firstchar=="~" then
                     newname=string.sub(newname,4)
                 end
-                WriteText(4,newname,0.5,r,g,b,255,0.5,0.008) --base name
+                WriteText(4,newname.." - "..relationship_names[zone.relationship],0.5,r,g,b,255,0.5,0.008) --base name
             end
             
             SetTextRightJustify(true)
-            SetTextWrap(0.0,0.34)
-            WriteText(4,relationship_names[myrel],0.4,r,g,b,255,xxxxxxx,0.035) --My faction
-            WriteText(4,relationship_names[zone.relationship],0.4,r,g,b,255,0.66,0.035) --Their faction
+            SetTextWrap(0.0,0.34)            
+            WriteText(4,"Hostile",0.4,r,g,b,255,xxxxxxx,0.035) --My faction
+            WriteText(4,"Friendly",0.4,r,g,b,255,0.66,0.035) --Their faction
+            -- WriteText(4,relationship_names[myrel],0.4,r,g,b,255,xxxxxxx,0.035) --My faction
+            -- WriteText(4,relationship_names[zone.relationship],0.4,r,g,b,255,0.66,0.035) --Their faction
             SetTextCentre(true)
             WriteText(4,relationship_names[relnumber],0.3,r,g,b,255,0.5,0.062) --status
         end
