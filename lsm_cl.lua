@@ -819,6 +819,10 @@ local inv_big_x=0.072 local inv_big_y=0.1279999
 local inv_sml_x=0.0333333334 local inv_sml_y=0.0592592592
 local inv_size_x=0.0576 local inv_size_y=0.1023999
 
+local inv_new={}
+      inv_new.item_scl_x=0.036
+      inv_new.item_scl_y=0.063
+
             
 local current_date=GetResourceKvpInt("date")
 local lastprovisiontime=GetResourceKvpInt("provisiontaken")
@@ -1772,101 +1776,101 @@ suppressor_5="Suppressor",
 scope_1="Small scope",
 scope_2="Scope",
 scope_3="Scope",
-advanced_scope="Advanced scope",
+scope_advanced="Advanced scope",
 bandits_records="Bandits records",
 cues="Cues",
 }
 local item_descriptions={
-water="Bottle filled with fresh water.",
-canfood="Great quality canned food.",
+water="Bottle filled with fresh water",
+canfood="Great quality canned food",
 fish="Fish",
-gasoline="Fuel for cars.",
-mre="Military food ration. Contains food and water.",
-meat="Edible meat.",
-chemicals="Variety of chemicals, very useful for crafting.",
-ammo="Rifle ammo, used in assault rifles.",
-engineparts="Repair kit with all needed details to repair vehicle engine.",
-soda="Closed metal soda can.",
-juice="Closed long storage pack of juice.",
-bandage="Bandage. Used to stop bleeding and restore small amount of health by fixing damaged muscles.",
-medkit="Big medkit is used to stop bleeding and fully restore health.",
-alcohol="Bottle of alcohol, does not hydrate one.",
+gasoline="Fuel for cars",
+mre="Military food ration Contains food and water",
+meat="Edible meat",
+chemicals="Variety of chemicals very useful for crafting",
+ammo="Rifle ammo used in assault rifles",
+engineparts="Repair kit with all needed details to repair vehicle engine",
+soda="Closed metal soda can",
+juice="Closed long storage pack of juice",
+bandage="Use to stop bleeding and restore small amount of health by fixing damaged muscles",
+medkit="Big medkit is used to stop bleeding and fully restore health",
+alcohol="Alcohol does not hydrate one",
 weed="Weed",
-pistolammo="Common pistol ammo, used in pistols.",
-heavyrifleammo="Heavy rifle ammo, used in sniper and battle rifles.",
-shotgunammo="Common shotgun ammo, used in shotguns.",
-food="Food package. Contains edible food.",
-cash="Cash, most common currency for trading.",
-cigarettes="Pack of cigarettes, quite useful for trading.",
-scrapmetal="Bolts, metal parts, broken tools, most common material to use in crafting.",
-scrapplastic="Empty bottles, broken plastic parts, etc. Used in crafting.",
-rags="Ragged cloth, used to stop bleeding and in crafting.",
-gasmask="Gasmask, used to breathe in intoxicated areas.",
-tattookey="Tattoo shop key, used to open some doors.",
-barberkey="Barbershop key, used to open some doors.",
-provisionkey="Provision shop key, used to open some doors.",
-gunstorekey="Gun store key, used to open some doors.",
-flaregunammo="Flare gun ammo, used in flaregun.",
-bodyarmor="Plate carrier, offers no protection without armor plates.",
-brasscatcher="Brass catcher, used to catch bullet casings, which could be reused to craft ammunition in special workshop.",
-casings="Pistol caliber casings, can be used to craft pistol or SMG ammunition in special workshop.",
-gunpowder="Gunpowder, quite good for trading, or one can use it to craft ammunition.",
-riflecasings="Rifle caliber casings, can be used to craft rifle, sniper or machinegun ammunition in special workshop.",
-radio="Radio, used to communicate with people on very large distances.",
-aircraftfuel="Aircraft fuel, used as a fuel for aircraft.",
-sheriffkey="Sheriff key, used to open some doors.",
-policedocs="Police documents, containing information about criminals.",
-painkillers="Painkillers, used to restore medium amount of health.",
-quest_bag="Quest item.",
-quest_pouch="Quest item.",
-quest_ring="Quest item.",
-quest_id="Quest item.",
-quest_usb="Quest item.",
-quest_harddrive="Quest item.",
-quest_laptop="Quest item.",
-quest_cellphone="Quest item.",
-quest_docs="Quest item.",
-quest_disc="Quest item.",
-quest_gameconsole="Quest item.",
-quest_medicalrecords="Quest item.",
-quest_box="Quest item.",
-quest_keys="Quest item.",
-smgammo="SMG ammo, used in submachine guns.",
-mgammo="Machinegun ammo, used in belt-fed machineguns.",
-launchergrenade="40mm grenade, used in grenade launchers.",
-clothes_marauder="Standard marauder outfit. Warm, offers decent protection against minor scratches. Light weight allows one to be mobile, while offering good base for tactical gear.",
-clothes_camouflage="Camouflage clothes. Forest camouflage allows one to hide in forest areas better.",
-armorplate="Armor plate, used in plate carriers, cannot be used by itself.",
-clothes_offdutysheriff="Off duty sheriff clothes, thick clothes offers decent protection against minor injuries. Camouflaged raincoat allows one to hide body armor.",
-cowboyhat="Sheriff hat.",
-halfmask="High quality half mask, offers no protection, but disguise one's identity.",
-balaclava="Balaclava, used for stealth or to disguise one's identity.",
-tshirtmask="Self made balaclava from T-shirt.",
-camocap="Camouflage military cap.",
-clothes_explorer="Excellent quality clothes, made out of very lasting materials. Extremily comfortable, allows one to slowly regenerate health if injured.",
-clothes_mercenary="Self made heavy armor. Stiff materials gives 20% damage resistance to bullets, but heavy weight makes it harder to run and lowers mobility, making one recieve 30% more damage in melee combat.",
-clothes_banditgoon="Low rank bandit clothes. Thick material gives 15% resistance to melee damage. There are many bandits, use these clothes to disguise yourself as bandit.",
-clothes_police="Standard uniform of LSPD, nothing special, police wear it to distinguish themselves from other survivors.",
-lowcap="Beanie, quite popular among local bandits.",
-clothes_banditmercenary="Modified mercenary armor. Lighter materals were used, now one does not recieve more melee damage because of lower mobility. However it's still too heavy to sprint. Wearer recieves 20% less bullet damage. Distinct bandit decals makes one appear as bandit.",
-clothes_scavenger="Neutral scavenger clothes. Warm, offers decent protection against minor scratches. Great quality boots are not gonna get wet.",
-clothes_banditauthority="Bandit authority clothes. Highly respected amongst bandits.",
-clothes_dawn="Dawn faction member clothes. Offers great 50% resistance to melee damage.",
-dawntokens="Dawn tokens. Made before apocalypse. Each token has unique identifier scratched by hand.",
+pistolammo="Common pistol ammo used in pistols",
+heavyrifleammo="Heavy rifle ammo used in sniper and battle rifles",
+shotgunammo="Common shotgun ammo used in shotguns",
+food="Food package Contains edible food",
+cash="Most common currency for trading",
+cigarettes="Pack of cigarettes quite useful for trading",
+scrapmetal="Most common material to use in crafting",
+scrapplastic="Broken plastic parts are used in crafting",
+rags="Usable to stop bleeding or in crafting.",
+gasmask="Used to breathe in intoxicated areas",
+tattookey="Used to open some doors",
+barberkey="Used to open some doors",
+provisionkey="Used to open some doors",
+gunstorekey="Used to open some doors",
+flaregunammo="Used in flaregun",
+bodyarmor="Offers no protection without armor plates",
+brasscatcher="Used to catch bullet casings which could be reused to craft ammunition in special workshop",
+casings="Pistol caliber casings can be used to craft pistol or SMG ammunition in special workshop",
+gunpowder="Gunpowder is used to craft ammunition",
+riflecasings="Rifle caliber casings can be used to craft rifle ammunition in special workshop",
+radio="Used to communicate with people on very large distances",
+aircraftfuel="Fuel for aircraft",
+sheriffkey="Used to open some doors",
+policedocs="Contains information about criminals",
+painkillers="Used to restore medium amount of health",
+quest_bag="Quest item",
+quest_pouch="Quest item",
+quest_ring="Quest item",
+quest_id="Quest item",
+quest_usb="Quest item",
+quest_harddrive="Quest item",
+quest_laptop="Quest item",
+quest_cellphone="Quest item",
+quest_docs="Quest item",
+quest_disc="Quest item",
+quest_gameconsole="Quest item",
+quest_medicalrecords="Quest item",
+quest_box="Quest item",
+quest_keys="Quest item",
+smgammo="Ammo used in submachine guns",
+mgammo="Ammo used in belt-fed machineguns",
+launchergrenade="Used in grenade launchers",
+clothes_marauder="Light weight allows one to be mobile while offering good base for tactical gear",
+clothes_camouflage="Forest camouflage allows one to hide in forest areas better",
+armorplate="Used in plate carriers and cannot be used by itself",
+clothes_offdutysheriff="Camouflaged raincoat allows one to hide body armor",
+cowboyhat="Sheriff hat",
+halfmask="High quality half mask offers no protection but disguise identity",
+balaclava="Used for stealth or to disguise identity",
+tshirtmask="Self made balaclava from Tshirt",
+camocap="Camouflage military cap",
+clothes_explorer="Makes one slowly regenerate health if injured",
+clothes_mercenary="Stiff materials gives damage resistance to bullets but heavy weight makes it harder to run and lowers mobility making one recieve more damage in melee combat",
+clothes_banditgoon="Thick material gives resistance to melee damage",
+clothes_police="Police wear this uniform to distinguish themselves from other survivors",
+lowcap="Quite popular among local bandits",
+clothes_banditmercenary="Too heavy to sprint in but wearer recieves less bullet damage",
+clothes_scavenger="Average scavenger outfit",
+clothes_banditauthority="Highly respected amongst bandits",
+clothes_dawn="Offers great resistance to melee damage",
+dawntokens="Each token has unique identifier scratched by hand",
 grip="Angular grip",
-flashlight_small="Small flashlight, used on pistols and very compact SMGs.",
-flashlight_large="Large flashlight, can be attached to almost any primary firearm.",
-suppressor_1="Pistol caliber suppressor, mostly used for pistols.",
-suppressor_2="Universal suppressor, can be attached to high caliber pistols, some SMGs, assault and hunting rifles.",
-suppressor_3="Rifle suppressor, can be attached to assault and semi-auto rifles.",
-suppressor_4="Shotgun suppressor.",
-suppressor_5="Special .50 suppressor.",
+flashlight_small="Used on pistols and very compact SMGs",
+flashlight_large="Can be attached to almost any primary firearm",
+suppressor_1="Mostly used on pistols",
+suppressor_2="Universal suppressor that can be attached to variety of weaons",
+suppressor_3="Can be attached to assault and semi-auto rifles",
+suppressor_4="Shotgun suppressor",
+suppressor_5="Special .50 suppressor",
 scope_1="Small scope",
-scope_2="Scope with rare mount. Used on bullpup rifles and SMGs with modern mounts.",
-scope_3="Battle scope, used on common military firearms.",
-advanced_scope="Advanced scope",
-bandits_records="Bandits records.",
-cues="Named cues.",
+scope_2="Scope with rare mount",
+scope_3="Used on common military firearms",
+scope_advanced="Advanced scope",
+bandits_records="Bandits records",
+cues="Named cues",
 }
 
 local weapon_upgrades={
@@ -1953,7 +1957,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_specialcarbine")]=0xFFFFFFFFA0D89C42,
         [GetHashKey("weapon_combatmg")]=0xFFFFFFFFA0D89C42,
     },
-    advanced_scope={   
+    scope_advanced={   
         [GetHashKey("weapon_heavysniper")]=0xFFFFFFFFBC54DA77,
         [GetHashKey("weapon_sniperrifle")]=0xFFFFFFFFBC54DA77,
     },
@@ -1998,7 +2002,7 @@ for k,v in pairs(weapons) do
 end
 
 local inventory={}
-inventory.rows=3
+inventory.rows=4
 inventory.lines=5
 inventory.max=9000 --15
 inventory.total=GetResourceKvpInt("inventory_total")
@@ -2125,7 +2129,7 @@ local deadbodiesrewards_tier6={
 {"scope_1",1},
 {"scope_2",1},
 {"scope_3",1},
-{"advanced_scope",1},
+{"scope_advanced",1},
 }
 
 local trunkrewards_tier1={
@@ -2268,7 +2272,7 @@ local trunkrewards_tier6={
 {"scope_1",1},
 {"scope_2",1},
 {"scope_3",1},
-{"advanced_scope",1},
+{"scope_advanced",1},
 }
 
 local deadbodiesrewards={
@@ -3669,175 +3673,314 @@ Citizen.CreateThread(function()
             end
         elseif inventory.highlight>0 then
             --DrawRect(0.5,0.5,0.5,0.6,0,0,0,255) -- black header
-            local scale_x=0.2
-            local scale_y=0.6
-            local pos_x=0.875
-            local pos_y=0.5
-            local h_line_width=.001 --horisontal line width
-            local v_line_width=.001 --vertical line width
-            DrawRect(pos_x,pos_y-0.04-(scale_y*.5),scale_x,0.08,0,0,0,255) -- up header
-            local myped=PlayerPedId()
-            if player.headshot==nil then
-                player.headshotped=myped
-                player.headshotclothes=clothes_hash(myped)
-                player.headshot=RegisterPedheadshot(player.headshotped)
-                --print("headshut is nil, registering")
-            elseif myped~=player.headshotped or clothes_hash(myped)~=player.headshotclothes then
-                --print("ped updated")
-                if player.headshot~=nil then
-                    if IsPedheadshotValid(player.headshot) then
-                        UnregisterPedheadshot(player.headshot)
-                        --print("unregistering")
-                    end
-                    player.headshot=nil
+            
+            --new inv block
+                local inventory_up_y=0.28
+                local inventory_up_x_left=0.57
+                local inventory_up_x_right=0.731
+                local inventory_font_size=0.3
+                
+                local inventory_down_y_name=0.69
+                local inventory_down_y_desc=0.715
+                local inventory_down_x_left=0.57
+                local inventory_down_x_right=0.69
+                
+                local inventory_grid_left=inventory_up_x_left
+                local inventory_grid_right=inventory_up_x_right
+                local inventory_grid_up=0.35
+                local inventory_grid_down=0.7
+                local inventory_grid_dist_x=0.042
+                local inventory_grid_dist_y=0.070
+                
+                
+                local inventory_grid_desc_pos_x=0.715
+                local inventory_grid_desc_pos_y=0.745
+                
+                local inventory_scroll_bkg_x=0.5625
+                local inventory_scroll_bkg_y=0.475
+                local inventory_scroll_bkg_size_x=0.004
+                local inventory_scroll_bkg_size_y=0.31
+                local inventory_scroll_y=0.475
+                local inventory_scrollsize_x=0.003
+                
+            -----
+            if true then
+                if HasStreamedTextureDictLoaded("lsm") then
+                    DrawSprite("lsm","backpack",.65,.5,0.25,0.7,0.0, 255, 255, 255, 255)
+                else
+                    RequestStreamedTextureDict("lsm")
                 end
-                player.headshotped=myped
-                player.headshotclothes=clothes_hash(myped)
-                player.headshot=RegisterPedheadshot(player.headshotped)
-                --print("registering")
-            elseif not IsPedheadshotValid(player.headshot) then
-                UnregisterPedheadshot(player.headshot)
-                player.headshot=nil
-                --print("headshot invalid, unregistered")
-            elseif IsPedheadshotReady(player.headshot) then
-                local txd=GetPedheadshotTxdString(player.headshot)
-                DrawSprite(txd,txd,
-                    pos_x-((scale_x/2)-0.0225),pos_y-0.04-(scale_y*.5),0.04,0.065,
-                    0.0, 255, 255, 255, 255)
-            end
-            --DrawRect(pos_x-((scale_x/2)-0.0225),pos_y-0.04-(scale_y*.5),0.04,0.07,0,255,255,255) -- headshot
-            WriteText(4,GetPlayerName(PlayerId()),0.7,255,255,255,255,pos_x-((scale_x/2)-0.045),pos_y-0.08-(scale_y*.5))
-            if GetPedRelationshipGroupHash(myped)==GetHashKey("NEUTRAL") then
-                WriteText(4,"Scavenger",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
-            elseif GetPedRelationshipGroupHash(myped)==GetHashKey("MARAUDER") then
-                WriteText(4,"Marauder",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
-            elseif GetPedRelationshipGroupHash(myped)==GetHashKey("SURVIVOR") then
-                WriteText(4,"Survivor",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
-            elseif GetPedRelationshipGroupHash(myped)==GetHashKey("BANDIT") then
-                WriteText(4,"Bandit",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
-            elseif GetPedRelationshipGroupHash(myped)==GetHashKey("GOVERNMENT") then
-                WriteText(4,"Government",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
-            end
-            WriteText(4,tostring(player.reputation),0.5,155,155,155,255,pos_x-((scale_x/2)-0.125),pos_y-0.04-(scale_y*.5))
-            
-            
-            DrawRect(pos_x,pos_y,scale_x,scale_y,0,0,0,175) -- transparent inv background
-            
-            if inventory.total>inventory.rows*inventory.lines or inventory.scroll~=0 then
-                local scroll_scale_x=(scale_x/40.0)
-                local scroll_pos_x=pos_x+(scale_x/2.0)+(scroll_scale_x/2)
-                DrawRect(scroll_pos_x,pos_y,scroll_scale_x,scale_y,0,0,0,175) -- inv scroll bkg
                 
+                --WriteHint("invscrl: "..inventory.scroll)
+                local totalscrolls=math.max(0,math.ceil((inventory.total-(inventory.rows*inventory.lines))/inventory.rows))
+                WriteHint("invscrlmax: "..totalscrolls)
+                if totalscrolls>0 then
+                    DrawRect(inventory_scroll_bkg_x,inventory_scroll_bkg_y,inventory_scroll_bkg_size_x,inventory_scroll_bkg_size_y,0,0,0,255)
+                    
+                    local newscrollsizey=inventory_scroll_bkg_size_y/(totalscrolls+1)
+                    local uppos=inventory_scroll_bkg_y-inventory_scroll_bkg_size_y/2+newscrollsizey/2
+                    local lowpos=inventory_scroll_bkg_y+inventory_scroll_bkg_size_y/2-newscrollsizey/2
+                    local step=(lowpos-uppos)/totalscrolls
+                    local newscrollposy=uppos+(step*inventory.scroll)
+                    if inventory.scroll==0 then
+                        newscrollposy=uppos
+                    elseif inventory.scroll==totalscrolls then
+                        newscrollposy=lowpos
+                    end
+                    DrawRect(inventory_scroll_bkg_x,newscrollposy,inventory_scrollsize_x,newscrollsizey,255,255,255,255)
+                end
                 
-                local scroll_bar_scale_x=scroll_scale_x*0.5 --inventory.scroll inventory.total
-                local scroll_bar_scale_y=scale_y*0.99
+                WriteText(2,"Reputation",inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
+                SetTextRightJustify(true)
+                SetTextWrap(inventory_up_x_left,inventory_up_x_right)
+                WriteText(2,tostring(player.reputation),inventory_font_size,155,155,155,255,inventory_up_x_right,inventory_up_y)
                 
+                local curitem=inventory.current
                 
-                local used_lines=math.max(math.ceil(inventory.total/inventory.rows),inventory.scroll+inventory.lines)
-                local viewable_percentage=inventory.lines/used_lines
-                --local free_space=1-viewable_percentage
+                DrawSprite("lsm", "selected_item", inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
+                if inventory[curitem] then
+                    WriteText(2,item_names[inventory[curitem].item],inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                    SetTextWrap(inventory_down_x_left,inventory_down_x_right)
+                    WriteText(2,item_descriptions[inventory[curitem].item],inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
+                    DrawSprite("lsm", inventory[curitem].item, inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
+                else
+                    WriteText(2,"Empty",inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                    SetTextWrap(inventory_down_x_left,inventory_down_x_right)
+                    WriteText(2,"You have nothing in your inventory also for now this is length test hah drake is gay si gay omg how is ithis even legal",inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
+                end
                 
-                local scroll_pos_y=pos_y-(scroll_bar_scale_y*(inventory.scroll/used_lines+(viewable_percentage-1)*.5))
-                scroll_bar_scale_y=scroll_bar_scale_y*viewable_percentage
-                
-                
-                -- inventory.total
-                -- inventory.scroll*inventory.rows
-                -- inventory.lines*inventory.rows
-                
-                DrawRect(scroll_pos_x,scroll_pos_y,scroll_bar_scale_x,scroll_bar_scale_y,75,75,75,255) -- inv scroll bar
-                
-            end
-            for i=0,inventory.rows do
-                DrawRect(pos_x-(scale_x*.5)+i*(scale_x/inventory.rows),pos_y,v_line_width,scale_y,75,75,75,255)
-            end
-            for i=0,inventory.lines do
-                DrawRect(pos_x,pos_y-(scale_y*.5)+i*(scale_y/inventory.lines),scale_x,h_line_width,75,75,75,255)
-            end
-            if HasStreamedTextureDictLoaded("lsm") and inventory.total~=0 then
-                for i=inventory.scroll*inventory.rows+1,math.min(inventory.total,(inventory.scroll+inventory.lines)*inventory.rows) do
-                    if inventory.current~=i and inventory[i] then
-                        name=inventory[i].item
-                        if name~=nil then
-                            local r_color=255
-                            local g_color=255
-                            
-                            if masks[inventory[i].item] then
-                                if player.mask==inventory[i].item then 
-                                    r_color=50 g_color=150 
-                                end
+                local number
+                local total=(inventory.lines*inventory.rows)-1
+                if inventory.scroll>0 then
+                    number=(inventory.scroll*inventory.rows)+1
+                else
+                    number=1
+                end
+                -- number=math.floor(number)
+                -- if number>inventory.total then
+                    -- number=inventory.total
+                -- end
+                -- if number<1 then
+                    -- number=1
+                -- end
+                for i=math.max(1,number),math.min(number+total,inventory.total) do
+                    local sprite
+                    if i==inventory.current then 
+                        sprite="selected_item" 
+                        if player.hat==inventory[i].item 
+                        or player.mask==inventory[i].item 
+                        or inventory[i].item=="brasscatcher" and player.brasscatcher
+                        or inventory[i].item=="radio" and player.radio
+                        or inventory[i].item=="bodyarmor" and player.bodyarmor
+                        then 
+                            sprite="selected_equipped_item" 
+                        end
+                        local s=player.suit
+                        if s then
+                            if inventory[i].item=="clothes_"..s and player.suit==s then 
+                                sprite="selected_equipped_item"
                             end
-                            if hats[inventory[i].item] then
-                                if player.hat==inventory[i].item then 
-                                    r_color=50 g_color=150 
-                                end
+                        end
+                    else 
+                        sprite="item" 
+                        if player.hat==inventory[i].item 
+                        or player.mask==inventory[i].item 
+                        or inventory[i].item=="brasscatcher" and player.brasscatcher
+                        or inventory[i].item=="radio" and player.radio
+                        or inventory[i].item=="bodyarmor" and player.bodyarmor
+                        then 
+                            sprite="equipped_item" 
+                        end
+                        local s=player.suit
+                        if s then
+                            if inventory[i].item=="clothes_"..s and player.suit==s then 
+                                sprite="equipped_item"
                             end
-                            if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
-                            if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
-                            if inventory[i].item=="bodyarmor" and player.bodyarmor then r_color=50 g_color=150 end
-                            local s=player.suit
-                            if s then
-                            if inventory[i].item=="clothes_"..s and player.suit==s then r_color=50 g_color=150 end
-                            end
-                            
-                            local x=pos_x+scale_x*.5-((math.floor((i-1)%inventory.rows)+.5)*(scale_x/inventory.rows))
-                            local y=pos_y+scale_y*.5-((math.floor((i-1)/inventory.rows)-inventory.scroll+.5)*(scale_y/inventory.lines))
-                            DrawSprite("lsm", inventory[i].item, x,y,
-                            inv_sml_x,
-                            inv_sml_y,
-                            0.0, 
-                            r_color, 
-                            g_color, 
-                            255, 
-                            255)
-                            
-                            SetTextCentre(true)
-                            WriteText(4,inventory[i].amount,0.5,100,100,100,255,x,y+0.025)
-                        
-                            SetTextCentre(true)
-                            WriteText(4,(item_names[name] or name),0.4,100,100,100,255,x,y-0.06)
                         end
                     end
+                    local inv_i=i-(inventory.scroll*inventory.rows)
+                    local x=(inventory_grid_left+(inv_new.item_scl_x/2))+(((inv_i-1)%inventory.rows)*inventory_grid_dist_x)
+                    local y=inventory_grid_up+(math.floor((inv_i-1)/inventory.rows)*inventory_grid_dist_y)
+                    DrawSprite("lsm", sprite, 
+                    x,
+                    y,
+                    inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
+                    
+                    DrawSprite("lsm", inventory[i].item, 
+                    x,
+                    y,
+                    inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
+                    
+                    SetTextRightJustify(true)
+                    SetTextWrap(
+                    x-(inv_new.item_scl_x/2),
+                    x+(inv_new.item_scl_x/2)-0.001)
+                    WriteText(2,inventory[i].amount,inventory_font_size,255,255,255,255,
+                    (inventory_grid_left+(inv_new.item_scl_x/2))+(((inv_i-1)%inventory.rows)*inventory_grid_dist_x),
+                    inventory_grid_up+(math.floor((inv_i-1)/inventory.rows)*inventory_grid_dist_y)+0.01
+                    )
                 end
-                if inventory.current~=0 then
-                    --print("current="..inventory.current)
-                    local i=inventory.current
-                    if inventory[i] then
-                        name=inventory[i].item
-                        if name~=nil then
-                            local r_color=255
-                            local g_color=255
-                            if masks[inventory[i].item] then
-                                if player.mask==inventory[i].item then 
-                                    r_color=50 g_color=150 
+            end
+            if oldinventory then
+                local scale_x=0.2
+                local scale_y=0.6
+                local pos_x=0.875
+                local pos_y=0.5
+                local h_line_width=.001 --horisontal line width
+                local v_line_width=.001 --vertical line width
+                DrawRect(pos_x,pos_y-0.04-(scale_y*.5),scale_x,0.08,0,0,0,255) -- up header
+                local myped=PlayerPedId()
+                if player.headshot==nil then
+                    player.headshotped=myped
+                    player.headshotclothes=clothes_hash(myped)
+                    player.headshot=RegisterPedheadshot(player.headshotped)
+                    --print("headshut is nil, registering")
+                elseif myped~=player.headshotped or clothes_hash(myped)~=player.headshotclothes then
+                    --print("ped updated")
+                    if player.headshot~=nil then
+                        if IsPedheadshotValid(player.headshot) then
+                            UnregisterPedheadshot(player.headshot)
+                            --print("unregistering")
+                        end
+                        player.headshot=nil
+                    end
+                    player.headshotped=myped
+                    player.headshotclothes=clothes_hash(myped)
+                    player.headshot=RegisterPedheadshot(player.headshotped)
+                    --print("registering")
+                elseif not IsPedheadshotValid(player.headshot) then
+                    UnregisterPedheadshot(player.headshot)
+                    player.headshot=nil
+                    --print("headshot invalid, unregistered")
+                elseif IsPedheadshotReady(player.headshot) then
+                    local txd=GetPedheadshotTxdString(player.headshot)
+                    DrawSprite(txd,txd,
+                        pos_x-((scale_x/2)-0.0225),pos_y-0.04-(scale_y*.5),0.04,0.065,
+                        0.0, 255, 255, 255, 255)
+                end
+                --DrawRect(pos_x-((scale_x/2)-0.0225),pos_y-0.04-(scale_y*.5),0.04,0.07,0,255,255,255) -- headshot
+                WriteText(4,GetPlayerName(PlayerId()),0.7,255,255,255,255,pos_x-((scale_x/2)-0.045),pos_y-0.08-(scale_y*.5))
+                if GetPedRelationshipGroupHash(myped)==GetHashKey("NEUTRAL") then
+                    WriteText(4,"Scavenger",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
+                elseif GetPedRelationshipGroupHash(myped)==GetHashKey("MARAUDER") then
+                    WriteText(4,"Marauder",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
+                elseif GetPedRelationshipGroupHash(myped)==GetHashKey("SURVIVOR") then
+                    WriteText(4,"Survivor",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
+                elseif GetPedRelationshipGroupHash(myped)==GetHashKey("BANDIT") then
+                    WriteText(4,"Bandit",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
+                elseif GetPedRelationshipGroupHash(myped)==GetHashKey("GOVERNMENT") then
+                    WriteText(4,"Government",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
+                end
+                WriteText(4,tostring(player.reputation),0.5,155,155,155,255,pos_x-((scale_x/2)-0.125),pos_y-0.04-(scale_y*.5))
+                
+                
+                DrawRect(pos_x,pos_y,scale_x,scale_y,0,0,0,175) -- transparent inv background
+                
+                if inventory.total>inventory.rows*inventory.lines or inventory.scroll~=0 then
+                    local scroll_scale_x=(scale_x/40.0)
+                    local scroll_pos_x=pos_x+(scale_x/2.0)+(scroll_scale_x/2)
+                    DrawRect(scroll_pos_x,pos_y,scroll_scale_x,scale_y,0,0,0,175) -- inv scroll bkg
+                    
+                    
+                    local scroll_bar_scale_x=scroll_scale_x*0.5 --inventory.scroll inventory.total
+                    local scroll_bar_scale_y=scale_y*0.99
+                    
+                    
+                    local used_lines=math.max(math.ceil(inventory.total/inventory.rows),inventory.scroll+inventory.lines)
+                    local viewable_percentage=inventory.lines/used_lines
+                    --local free_space=1-viewable_percentage
+                    
+                    local scroll_pos_y=pos_y-(scroll_bar_scale_y*(inventory.scroll/used_lines+(viewable_percentage-1)*.5))
+                    scroll_bar_scale_y=scroll_bar_scale_y*viewable_percentage
+                    
+                    
+                    -- inventory.total
+                    -- inventory.scroll*inventory.rows
+                    -- inventory.lines*inventory.rows
+                    
+                    DrawRect(scroll_pos_x,scroll_pos_y,scroll_bar_scale_x,scroll_bar_scale_y,75,75,75,255) -- inv scroll bar
+                    
+                end
+                for i=0,inventory.rows do
+                    DrawRect(pos_x-(scale_x*.5)+i*(scale_x/inventory.rows),pos_y,v_line_width,scale_y,75,75,75,255)
+                end
+                for i=0,inventory.lines do
+                    DrawRect(pos_x,pos_y-(scale_y*.5)+i*(scale_y/inventory.lines),scale_x,h_line_width,75,75,75,255)
+                end
+                if HasStreamedTextureDictLoaded("lsm") and inventory.total~=0 then
+                    DrawSprite("lsm","backpack",.65,.5,0.25,0.7,0.0, 255, 255, 255, 255)
+                    for i=inventory.scroll*inventory.rows+1,math.min(inventory.total,(inventory.scroll+inventory.lines)*inventory.rows) do
+                        if inventory.current~=i and inventory[i] then
+                            name=inventory[i].item
+                            if name~=nil then
+                                local r_color=255
+                                local g_color=255
+                                
+                                if masks[inventory[i].item] then
+                                    if player.mask==inventory[i].item then 
+                                        r_color=50 g_color=150 
+                                    end
                                 end
-                            end
-                            if hats[inventory[i].item] then
-                                if player.hat==inventory[i].item then 
-                                    r_color=50 g_color=150 
+                                if hats[inventory[i].item] then
+                                    if player.hat==inventory[i].item then 
+                                        r_color=50 g_color=150 
+                                    end
                                 end
+                                if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
+                                if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
+                                if inventory[i].item=="bodyarmor" and player.bodyarmor then r_color=50 g_color=150 end
+                                local s=player.suit
+                                if s then
+                                if inventory[i].item=="clothes_"..s and player.suit==s then r_color=50 g_color=150 end
+                                end
+                                
+                                local x=pos_x+scale_x*.5-((math.floor((i-1)%inventory.rows)+.5)*(scale_x/inventory.rows))
+                                local y=pos_y+scale_y*.5-((math.floor((i-1)/inventory.rows)-inventory.scroll+.5)*(scale_y/inventory.lines))
+                                DrawSprite("lsm", inventory[i].item, x,y,
+                                inv_sml_x,
+                                inv_sml_y,
+                                0.0, 
+                                r_color, 
+                                g_color, 
+                                255, 
+                                255)
+                                
+                                SetTextCentre(true)
+                                WriteText(4,inventory[i].amount,0.5,100,100,100,255,x,y+0.025)
+                            
+                                SetTextCentre(true)
+                                WriteText(4,(item_names[name] or name),0.4,100,100,100,255,x,y-0.06)
                             end
-                            if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
-                            if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
-                            if inventory[i].item=="bodyarmor" and player.bodyarmor then r_color=50 g_color=150 end
-                            local s=player.suit
-                            if s then
-                            if inventory[i].item=="clothes_"..s and player.suit==s then r_color=50 g_color=150 end
-                            end
-                            local x=pos_x+scale_x*.5-((math.floor((i-1)%inventory.rows)+.5)*(scale_x/inventory.rows))
-                            local y=pos_y+scale_y*.5-((math.floor((i-1)/inventory.rows)-inventory.scroll+.5)*(scale_y/inventory.lines))
-                            DrawSprite("lsm", inventory[i].item, x,y,
-                            inv_big_x,
-                            inv_big_y,
-                            0.0, 
-                            r_color,
-                            g_color, 
-                            255, 
-                            255)
-                            if item_descriptions[inventory[i].item] then
-                                local desc_tex_x=0.73
-                                local desc_tex_y=0.185
-                                DrawSprite("lsm", inventory[i].item, desc_tex_x,desc_tex_y,
+                        end
+                    end
+                    if inventory.current~=0 then
+                        --print("current="..inventory.current)
+                        local i=inventory.current
+                        if inventory[i] then
+                            name=inventory[i].item
+                            if name~=nil then
+                                local r_color=255
+                                local g_color=255
+                                if masks[inventory[i].item] then
+                                    if player.mask==inventory[i].item then 
+                                        r_color=50 g_color=150 
+                                    end
+                                end
+                                if hats[inventory[i].item] then
+                                    if player.hat==inventory[i].item then 
+                                        r_color=50 g_color=150 
+                                    end
+                                end
+                                if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
+                                if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
+                                if inventory[i].item=="bodyarmor" and player.bodyarmor then r_color=50 g_color=150 end
+                                local s=player.suit
+                                if s then
+                                if inventory[i].item=="clothes_"..s and player.suit==s then r_color=50 g_color=150 end
+                                end
+                                local x=pos_x+scale_x*.5-((math.floor((i-1)%inventory.rows)+.5)*(scale_x/inventory.rows))
+                                local y=pos_y+scale_y*.5-((math.floor((i-1)/inventory.rows)-inventory.scroll+.5)*(scale_y/inventory.lines))
+                                DrawSprite("lsm", inventory[i].item, x,y,
                                 inv_big_x,
                                 inv_big_y,
                                 0.0, 
@@ -3845,16 +3988,28 @@ Citizen.CreateThread(function()
                                 g_color, 
                                 255, 
                                 255)
-                                SetTextRightJustify(true)
-                                SetTextWrap(desc_tex_x-inv_big_x/2,desc_tex_x+inv_big_x/2)
-                                WriteText(4,item_descriptions[inventory[i].item],0.4,150,150,150,255,desc_tex_x,desc_tex_y+0.075)
-                            end
+                                if item_descriptions[inventory[i].item] then
+                                    local desc_tex_x=0.73
+                                    local desc_tex_y=0.185
+                                    DrawSprite("lsm", inventory[i].item, desc_tex_x,desc_tex_y,
+                                    inv_big_x,
+                                    inv_big_y,
+                                    0.0, 
+                                    r_color,
+                                    g_color, 
+                                    255, 
+                                    255)
+                                    SetTextRightJustify(true)
+                                    SetTextWrap(desc_tex_x-inv_big_x/2,desc_tex_x+inv_big_x/2)
+                                    WriteText(4,item_descriptions[inventory[i].item],0.4,150,150,150,255,desc_tex_x,desc_tex_y+0.075)
+                                end
+                                
+                                SetTextCentre(true)
+                                WriteText(4,inventory[i].amount,0.5,255,255,255,255,x,y+0.025)
                             
-                            SetTextCentre(true)
-                            WriteText(4,inventory[i].amount,0.5,255,255,255,255,x,y+0.025)
-                        
-                            SetTextCentre(true)
-                            WriteText(4,(item_names[name] or name),0.4,255,255,255,255,x,y-0.06)
+                                SetTextCentre(true)
+                                WriteText(4,(item_names[name] or name),0.4,255,255,255,255,x,y-0.06)
+                            end
                         end
                     end
                 end
@@ -5690,6 +5845,7 @@ Citizen.CreateThread(function()
                                             Wait(0)
                                             WriteNotification("~g~You've finished quest.")
                                             player.reputation=player.reputation+zone.quests[questid].rep_bonus
+                                            SetResourceKvpInt("reputation",player.reputation)
                                             WriteNotification("Reputation ~g~+"..zone.quests[questid].rep_bonus)
                                             if can_fit_all_into_inventory(zone.quests[questid].items_reward) then
                                                 give_all_to_inventory(zone.quests[questid].items_reward)
@@ -6186,7 +6342,7 @@ Citizen.CreateThread(function()
                 end
             end
         elseif inventory.total~=0 then
-            if IsControlJustPressed(0,174) then --left
+            if IsControlJustPressed(0,175) then --left
                 if not inventory.mode and (inventory.current%inventory.rows)==0 then
                     inventory.current=inventory.current-(inventory.rows-1)
                     if inventory.current<1 then inventory.current=1 end
@@ -6197,7 +6353,7 @@ Citizen.CreateThread(function()
                     inventory.scroll=0
                 end
                 inventory.highlight=500
-            elseif IsControlJustPressed(0,175) then --right
+            elseif IsControlJustPressed(0,174) then --right
                 if not inventory.mode and (inventory.current%inventory.rows)==1 then
                     inventory.current=inventory.current+(inventory.rows-1)
                     if inventory.current>inventory.total then inventory.current=inventory.total end
@@ -6207,7 +6363,7 @@ Citizen.CreateThread(function()
                     inventory.current=inventory.total
                 end
                 inventory.highlight=500
-            elseif IsControlJustPressed(0,172) then --up
+            elseif IsControlJustPressed(0,173) then --up
                 if not inventory.mode then
                     if inventory.current>=inventory.total then
                         inventory.current=1
@@ -6227,7 +6383,7 @@ Citizen.CreateThread(function()
                     print("scroll="..inventory.scroll)
                     end
                 end
-            elseif IsControlJustPressed(0,173) then --down
+            elseif IsControlJustPressed(0,172) then --down
                 if not inventory.mode then
                     if inventory.current>inventory.rows then
                         inventory.current=inventory.current-inventory.rows
