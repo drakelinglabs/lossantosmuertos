@@ -1978,6 +1978,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_specialcarbine_mk2")]=0x49B2945,
         [GetHashKey("weapon_assaultrifle_mk2")]=0x49B2945,
         [GetHashKey("weapon_carbinerifle_mk2")]=0x49B2945,
+        [GetHashKey("weapon_smg")]=0x3CC6BA57,
     },
     scope_2={   
         [GetHashKey("weapon_combatpdw")]=0xFFFFFFFFAA2C45B4,
@@ -2017,7 +2018,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_carbinerifle_mk2")]=0x420FD713,
         [GetHashKey("weapon_combatmg_mk2")]=0x420FD713,
         [GetHashKey("weapon_marksmanrifle_mk2")]=0x420FD713,
-    }
+    },
     muzzlebrake_1={
         [GetHashKey("weapon_heavyrevolver_mk2")]=0x27077CCB,
         [GetHashKey("weapon_snspistol_mk2")]=0xFFFFFFFFAA8283BF,
@@ -2031,7 +2032,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_carbinerifle_mk2")]=0xFFFFFFFFC867A07B,
         [GetHashKey("weapon_combatmg_mk2")]=0xFFFFFFFFC867A07B,
         [GetHashKey("weapon_marksmanrifle_mk2")]=0xFFFFFFFFC867A07B,
-    }
+    },
     heavybarrel={
         [GetHashKey("weapon_heavysniper_mk2")]=0x108AB09E,
         [GetHashKey("weapon_bullpuprifle_mk2")]=0x3BF26DC7,
@@ -2040,13 +2041,13 @@ local weapon_upgrades={
         [GetHashKey("weapon_carbinerifle_mk2")]=0xFFFFFFFF8B3C480B,
         [GetHashKey("weapon_combatmg_mk2")]=0xFFFFFFFFB5E2575B,
         [GetHashKey("weapon_marksmanrifle_mk2")]=0x68373DDC,
-    }
+    },
     scope_nightvision={
         [GetHashKey("weapon_heavysniper_mk2")]=0xFFFFFFFFB68010B0,
-    }
+    },
     scope_thermal={
         [GetHashKey("weapon_heavysniper_mk2")]=0x2E43DA41,
-    }
+    },
     livery_digicamo={
         [GetHashKey("weapon_heavyrevolver_mk2")]=0xFFFFFFFFC03FED9F,
         [GetHashKey("weapon_snspistol_mk2")]=0xFFFFFFFFE7EE68EA,
@@ -2060,7 +2061,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_marksmanrifle_mk2")]=0xFFFFFFFF9094FBA0,
         [GetHashKey("weapon_heavysniper_mk2")]=0xFFFFFFFFF8337D02,
         [GetHashKey("weapon_bullpuprifle_mk2")]=0xFFFFFFFFAE4055B7,
-    }
+    },
 }
 
 
