@@ -945,6 +945,7 @@ end
 
 local safezones={
 
+--[[
     {x=1986.5546875,y=3049.6391601563,z=47.215106964111,r=100.0,blip=93,color=1,
     models={1885233650},
     name="~r~Yellow Jack~s~",
@@ -964,7 +965,8 @@ local safezones={
     tradepos={x=1985.3439941406,y=3048.78125,z=47.215045928955},
     weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     relationship="BANDIT"},--yellow jack
-    
+
+
     {x=913.80059814453,y=-1699.5369873047,z=51.125102996826,r=15.0,blip=140,color=36,
     models={1885233650},--{275618457},
     name="~y~Polak's hideout~s~",
@@ -1028,11 +1030,11 @@ local safezones={
     weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},    
     garagepos={x=2196.2426757813,y=5607.2358398438,z=53.513969421387,angle=349.04583740234},
     relationship="BANDIT"},--weed farm
-
+]]
     --Altruists camp
     {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=181,color=36,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
-    name="~y~Old Cult Camp~s~",
+    name="~y~Survivor Camp~s~",
     friends=true,
     tradespace=5,
     trade={
@@ -1157,7 +1159,7 @@ local safezones={
     {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=60,color=3,
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
-    name="~b~LSPD Station~s~",
+    name="~b~Government Checkpoint~s~",
     friends=true,
     tradespace=4,
     trade={
@@ -1222,7 +1224,7 @@ local safezones={
     spawnpos={x=459.48818969727,y=-994.87622070313,z=24.914867401123,angle=92.499603271484},
     relationship="GOVERNMENT"},--LSPD station
     
-    
+    --[[
     -----------------------------------------------------
     {x=60.990127563477,y=3706.8579101563,z=39.750030517578,r=100.0,blip=495,color=1,
     --models={275618457},
@@ -1381,12 +1383,12 @@ local safezones={
     spawnpos={x=1664.0472412109,y=4739.5366210938,z=42.010166168213,angle=288.13848876953},
     relationship="SURVIVOR"},--North Trading Post
     
-    
+    ]]
     
 ----------------------------------------------------
     {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=84,color=1,
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
-    name="~r~Prison~s~",
+    name="~r~Marauder Fortress~s~",
     tradespace=4,
     trade={
         {"gasoline",1,"cash",30},
@@ -1433,6 +1435,8 @@ local safezones={
     },
     relationship="BANDIT"},--Prison
     
+--[[
+
     ----------------------------------------------------
     {x=941.28851318359,y=-1497.9661865234,z=35.3410987854,r=100.0,blip=119,color=51,
     models={1885233650},--{-163714847,-1422914553},--,1939545845
@@ -1463,7 +1467,13 @@ local safezones={
     crafts=dawn_crafts,
     spawnpos={x=939.69671630859,y=-1490.0218505859,z=30.226753234863,angle=288.13848876953},
     relationship="DAWN"},--Dawn base
+
+]]
+
 }
+
+
+
 for _,z in pairs(safezones) do
     if z.relationship and type(z.relationship)~="number" then
         z.relationship=GetHashKey(z.relationship)
@@ -3975,8 +3985,9 @@ Citizen.CreateThread(function()
                     end
                     DrawRect(inventory_scroll_bkg_x,newscrollposy,inventory_scrollsize_x,newscrollsizey,255,255,255,255)
                 end
-                
-                WriteText(2,"~c~Alignment ~s~"..relationship_name[GetPedRelationshipGroupHash(myped)],inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
+                if relationship_name[GetPedRelationshipGroupHash(myped)] then
+                    WriteText(2,"~c~Alignment ~s~"..relationship_name[GetPedRelationshipGroupHash(myped)],inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
+                end
                 SetTextRightJustify(true)
                 SetTextWrap(inventory_up_x_left,inventory_up_x_right)
                 local g_b=255
@@ -9387,7 +9398,10 @@ Citizen.CreateThread(function()
     end
 end)
 
+
+--[[
 local gasstations={
+    
     {
         trader={x=162.09725952148,y=6636.5678710938,z=31.556589126587,blip=361},
         tank={x=172.08010864258,y=6622.7368164063,z=31.832139968872,blip=431},
@@ -9403,9 +9417,12 @@ local gasstations={
         tank={x=1192.6104736328,y=2662.490234375,z=37.822631835938,blip=431},
         gasoline=0,
     },
+    
 }
 local gasoline_generators={
+    
     {x=1527.603515625,y=-2113.7202148438,z=76.686614990234,blip=648,color=51},
+    
 }
 
 RegisterNetEvent("gasstation_update")
@@ -9590,7 +9607,7 @@ Citizen.CreateThread(function()
             end
         end
     end
-end)
+end)]]
 
 -- Citizen.CreateThread(function()
     -- while true do Wait(0)
