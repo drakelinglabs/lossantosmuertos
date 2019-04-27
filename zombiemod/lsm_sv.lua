@@ -116,6 +116,11 @@ scope_1=4,
 scope_2=4,
 scope_3=4,
 advanced_scope=2,
+scope_compactholo=4,
+muzzlebrake_1=4,
+heavybarrel=4,
+scope_nightvision=1,
+scope_thermal=1,
 }
 
 local safezones={}

@@ -1,3 +1,16 @@
+local disablehud=false
+local disableradar=false
+RegisterCommand("hud",function()
+    disablehud=not disablehud
+end,false)
+RegisterCommand("radar",function()
+    disableradar=not disableradar
+    while disableradar do
+        HideHudAndRadarThisFrame()
+        Wait(0)
+    end
+end,false)
+
 local function range(a,b,except)
     local ret={}
     if except~=nil then
@@ -637,7 +650,9 @@ Citizen.CreateThread(function()
     while true do hint_y=0.32 Wait(0) end
 end)
 local function WriteHint(text)
-    WriteText(4,text,0.4,255,255,255,255,0.005,hint_y) hint_y=hint_y+0.025
+    if not disablehud then
+        WriteText(4,text,0.4,255,255,255,255,0.005,hint_y) hint_y=hint_y+0.025
+    end
 end
 
 local signals={}
@@ -679,6 +694,8 @@ player.brasscatcher=false
 player.radio=false
 player.bleeding=0
 player.reputation=GetResourceKvpInt("reputation") or 10
+player.maxweight=35.0
+player.weight=0.0
 
 
 local weaponsarray={
@@ -1495,6 +1512,7 @@ local function is_in_safe_zone(x,y,z)
             if math.abs(dy)<v.r then
                 if dx*dx+dy*dy<v.r*v.r then
                     --WriteNotification("raid:"..v.."/r:"..v.r.."xyz:"..x..y..z)
+                        v.name="Patrol"
                     return v
                 end
             end
@@ -1507,6 +1525,7 @@ local function is_in_safe_zone(x,y,z)
                 dy=v.y-y
                 if math.abs(dy)<v.r then
                     if dx*dx+dy*dy<v.r*v.r then
+                        v.name="Cache"
                         return v
                     end
                 end
@@ -1688,6 +1707,103 @@ local quest_items_corpses={
 "quest_disc",
 "quest_keys",
 }
+local item_weight={
+water=1.0,
+canfood=0.6,
+fish=0.7,
+gasoline=0.75,
+mre=1.2,
+meat=1.3,
+chemicals=2.8,
+ammo=0.05,
+engineparts=5.0,
+soda=0.5,
+juice=1.0,
+bandage=0.3,
+medkit=1.5,
+alcohol=0.8,
+weed=0.1,
+pistolammo=0.02,
+heavyrifleammo=0.1,
+shotgunammo=0.1,
+food=0.65,
+cash=0.001,
+cigarettes=0.1,
+scrapmetal=0.5,
+scrapplastic=0.1,
+rags=0.3,
+gasmask=1.0,
+tattookey=0.05,
+barberkey=0.05,
+provisionkey=0.05,
+gunstorekey=0.05,
+flaregunammo=0.15,
+bodyarmor=4.5,
+brasscatcher=0.4,
+casings=0.01,
+gunpowder=0.25,
+riflecasings=0.02,
+radio=0.7,
+aircraftfuel=0.5,
+sheriffkey=0.05,
+policedocs=0.2,
+painkillers=0.1,
+quest_bag=4.0,
+quest_pouch=0.3,
+quest_ring=0.05,
+quest_id=0.1,
+quest_usb=0.05,
+quest_harddrive=0.4,
+quest_laptop=1.3,
+quest_cellphone=0.4,
+quest_docs=0.5,
+quest_disc=0.15,
+quest_gameconsole=2.0,
+quest_medicalrecords=0.5,
+quest_box=6.5,
+quest_keys=0.2,
+smgammo=0.02,
+mgammo=0.1,
+launchergrenade=0.7,
+clothes_marauder=5.5,
+clothes_camouflage=7.8,
+armorplate=2.0,
+clothes_offdutysheriff=9.2,
+cowboyhat=0.7,
+halfmask=0.2,
+balaclava=0.3,
+tshirtmask=0.5,
+camocap=0.3,
+clothes_explorer=11.2,
+clothes_mercenary=26.2,
+clothes_banditgoon=6.8,
+clothes_police=8.7,
+lowcap=0.3,
+clothes_banditmercenary=18.0,
+clothes_scavenger=4.3,
+clothes_banditauthority=6.5,
+clothes_dawn=8.5,
+dawntokens=0.1,
+grip=0.1,
+flashlight_small=0.3,
+flashlight_large=0.5,
+suppressor_1=0.8,
+suppressor_2=0.9,
+suppressor_3=1.0,
+suppressor_4=1.4,
+suppressor_5=1.6,
+scope_1=0.1,
+scope_2=0.2,
+scope_3=0.3,
+scope_advanced=0.4,
+bandits_records=0.15,
+cues=3.5,
+scope_compactholo=0.1,
+muzzlebrake_1=0.1,
+heavybarrel=1.4,
+scope_nightvision=1.8,
+scope_thermal=2.2,
+}
 local item_names={
 water="Water",
 canfood="Canned food",
@@ -1779,6 +1895,11 @@ scope_3="Tactical Holographic Sight",
 scope_advanced="Advanced Scope",
 bandits_records="Bandit Records",
 cues="Cues",
+scope_compactholo="Compact Holographic Sight",
+muzzlebrake_1="Tactical Muzzle Brake",
+heavybarrel="Reinforced Rifle Barrel",
+scope_nightvision="Night Vision Scope",
+scope_thermal="Thermal Vision Scope",
 }
 local item_descriptions={
 water="A plastic bottle filled with fresh water.",
@@ -1871,6 +1992,11 @@ scope_3="A tactical rail mounted holographic sight.",
 scope_advanced="An advanced high powered rail mounted rifle scope with variable magnification.",
 bandits_records="A collection of documents containing detailed plans for heists and building schematics.",
 cues="Cues that are named.",
+scope_compactholo="Compact Holographic Sight",
+muzzlebrake_1="Tactical Muzzle Brake",
+heavybarrel="Reinforced Rifle Barrel",
+scope_nightvision="Night Vision Scope",
+scope_thermal="Thermal Vision Scope",
 }
 
 local weapon_upgrades={
@@ -2231,6 +2357,11 @@ local deadbodiesrewards_tier6={
 {"scope_2",1},
 {"scope_3",1},
 {"scope_advanced",1},
+{"scope_compactholo",1},
+{"muzzlebrake_1",1},
+{"heavybarrel",1},
+{"scope_nightvision",1},
+{"scope_thermal",1},
 }
 
 local trunkrewards_tier1={
@@ -2374,6 +2505,11 @@ local trunkrewards_tier6={
 {"scope_2",1},
 {"scope_3",1},
 {"scope_advanced",1},
+{"scope_compactholo",1},
+{"muzzlebrake_1",1},
+{"heavybarrel",1},
+{"scope_nightvision",1},
+{"scope_thermal",1},
 }
 
 local deadbodiesrewards={
@@ -3163,7 +3299,13 @@ AddEventHandler("playerSpawned",function()
         if x and y and z then SetEntityCoords(ped,x,y,z) end
         local pedmodel=GetResourceKvpInt("pedmodel")
         if pedmodel then
-            RequestModel(pedmodel) while not HasModelLoaded(pedmodel) do Wait(0) WriteText(4,"Loading model "..pedmodel,0.4,255,255,255,255,0.2,0.7) end
+            RequestModel(pedmodel)
+            while not HasModelLoaded(pedmodel) do
+                Wait(0)
+                if not disablehud then
+                    WriteText(4,"Loading model "..pedmodel,0.4,255,255,255,255,0.2,0.7)
+                end
+            end
             SetPlayerModel(PlayerId(),pedmodel)
             ped=PlayerPedId()
             SetPedRandomComponentVariation(ped,false)
@@ -3286,7 +3428,7 @@ Citizen.CreateThread(function()
     end,false)
     Wait(100)
     while true do Wait(0)
-        while not showhints do Wait(300) end
+        while disablehud or not showhints do Wait(300) end
         local pped=PlayerPedId()
         if not IsPedInAnyVehicle(pped) then
             local brightness
@@ -3641,37 +3783,40 @@ Citizen.CreateThread(function()
         -- DrawRect(0.9,0.9+0.000975*0.5*(100-player.health),0.004,0.000975*player.health,color.bar,color.bar,color.bar,200) -- health bar
         -- --DrawRect(0.902,0.9,0.0005,0.0975,color.barlight,color.barlight,color.barlight,200) -- health light
         -- --DrawRect(0.898,0.9,0.0005,0.0975,color.bardark,color.bardark,color.bardark,200) -- health dark
-        local fuel
-        if IsPedInAnyVehicle(myped) then
-            DrawRect(0.925,0.9,0.005,0.1,color.bkg,color.bkg,color.bkg,200)
-            local veh=GetVehiclePedIsUsing(myped)
-            if DecorExistOn(veh,"zm_fuel") then
-                fuel=DecorGetFloat(veh,"zm_fuel")
+        if not disablehud then
+            local fuel
+            if IsPedInAnyVehicle(myped) then
+                DrawRect(0.925,0.9,0.005,0.1,color.bkg,color.bkg,color.bkg,200)
+                local veh=GetVehiclePedIsUsing(myped)
+                if DecorExistOn(veh,"zm_fuel") then
+                    fuel=DecorGetFloat(veh,"zm_fuel")
+                else
+                    fuel=GetVehicleFuelLevel(veh)
+                end
+                --WriteHint("fuel is "..fuel)
+                if fuel>5 then fuel=fuel-5 end
+                fuel=fuel*1.333333333
+                DrawRect(0.925,0.9+0.000975*0.5*(100-fuel),0.004,0.000975*fuel,color.bar,color.bar,color.bar,200) --
+            end
+            -- --DrawRect(0.927,0.9,0.0005,0.0975,color.barlight,color.barlight,color.barlight,200)
+            -- --DrawRect(0.923,0.9,0.0005,0.0975,color.bardark,color.bardark,color.bardark,200)
+        
+            DrawRect(0.95,0.9,0.005,0.1,color.bkg,color.bkg,color.bkg,200) -- hydration bkg
+            DrawRect(0.95,0.9+0.000975*0.5*(100-player.hydration),0.004,0.000975*player.hydration,color.bar,color.bar,color.bar,200) -- hydration bar
+            
+            DrawRect(0.975,0.9,0.005,0.1,color.bkg,color.bkg,color.bkg,200) -- saturation bkg
+            DrawRect(0.975,0.9+0.000975*0.5*(100-player.saturation),0.004,0.000975*player.saturation,color.bar,color.bar,color.bar,200) -- saturation bar
+        
+            if HasStreamedTextureDictLoaded("lsm") then
+                -- DrawSprite("lsm", "heart", 0.9,0.975,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
+                if fuel~=nil then
+                    DrawSprite("lsm", "fuelmeter", 0.925,0.975,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
+                end
+                DrawSprite("lsm", "hydration", 0.950,0.975,0.0166666667,0.025,0.0, 255, 255, 255, 255)
+                DrawSprite("lsm", "saturation", 0.975,0.975,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
             else
-                fuel=GetVehicleFuelLevel(veh)
+                RequestStreamedTextureDict("lsm")
             end
-            --WriteHint("fuel is "..fuel)
-            if fuel>5 then fuel=fuel-5 end
-            fuel=fuel*1.333333333
-            DrawRect(0.925,0.9+0.000975*0.5*(100-fuel),0.004,0.000975*fuel,color.bar,color.bar,color.bar,200) --
-        end
-        -- --DrawRect(0.927,0.9,0.0005,0.0975,color.barlight,color.barlight,color.barlight,200)
-        -- --DrawRect(0.923,0.9,0.0005,0.0975,color.bardark,color.bardark,color.bardark,200)
-        
-        DrawRect(0.95,0.9,0.005,0.1,color.bkg,color.bkg,color.bkg,200) -- hydration bkg
-        DrawRect(0.95,0.9+0.000975*0.5*(100-player.hydration),0.004,0.000975*player.hydration,color.bar,color.bar,color.bar,200) -- hydration bar
-        
-        DrawRect(0.975,0.9,0.005,0.1,color.bkg,color.bkg,color.bkg,200) -- saturation bkg
-        DrawRect(0.975,0.9+0.000975*0.5*(100-player.saturation),0.004,0.000975*player.saturation,color.bar,color.bar,color.bar,200) -- saturation bar
-        if HasStreamedTextureDictLoaded("lsm") then
-            -- DrawSprite("lsm", "heart", 0.9,0.975,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
-            if fuel~=nil then
-                DrawSprite("lsm", "fuelmeter", 0.925,0.975,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
-            end
-            DrawSprite("lsm", "hydration", 0.950,0.975,0.0166666667,0.025,0.0, 255, 255, 255, 255)
-            DrawSprite("lsm", "saturation", 0.975,0.975,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
-        else
-            RequestStreamedTextureDict("lsm")
         end
         if inventory.mode then
             local highlight=inventory.highlight
@@ -3797,11 +3942,11 @@ Citizen.CreateThread(function()
                 local inventory_grid_desc_pos_x=0.715
                 local inventory_grid_desc_pos_y=0.745
                 
-                local inventory_scroll_bkg_x=0.5625
-                local inventory_scroll_bkg_y=0.475
+                local inventory_scroll_bkg_x=0.5627
+                local inventory_scroll_bkg_y=0.49
                 local inventory_scroll_bkg_size_x=0.004
-                local inventory_scroll_bkg_size_y=0.31
-                local inventory_scroll_y=0.475
+                local inventory_scroll_bkg_size_y=0.342
+                local inventory_scroll_y=inventory_scroll_bkg_y
                 local inventory_scrollsize_x=0.003
                 
             -----
@@ -3831,10 +3976,12 @@ Citizen.CreateThread(function()
                     DrawRect(inventory_scroll_bkg_x,newscrollposy,inventory_scrollsize_x,newscrollsizey,255,255,255,255)
                 end
                 
-                WriteText(2,"Reputation",inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
+                WriteText(2,"~c~Alignment ~s~"..relationship_name[GetPedRelationshipGroupHash(myped)],inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
                 SetTextRightJustify(true)
                 SetTextWrap(inventory_up_x_left,inventory_up_x_right)
-                WriteText(2,tostring(player.reputation),inventory_font_size,155,155,155,255,inventory_up_x_right,inventory_up_y)
+                local g_b=255
+                if (player.weight>player.maxweight) then g_b=100 end
+                WriteText(4,"~c~WEIGHT ~s~"..tostring(player.weight).."~c~/"..tostring(player.maxweight).." KG",inventory_font_size,255,g_b,g_b,255,inventory_up_x_right,inventory_up_y)
                 
                 local curitem=inventory.current
                 
@@ -4181,6 +4328,24 @@ end)
     -- end
 -- end)
 
+--weight management
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        local sumweight=0.0
+        if inventory.total>0 then
+            for i=1,inventory.total do
+                local item_weight=item_weight[inventory[i].item]
+                if item_weight then
+                    sumweight=sumweight+(item_weight*inventory[i].amount)
+                end
+            end
+            player.weight=sumweight
+        else
+            player.weight=0.0
+        end
+    end
+end)
+
 --stats management
 Citizen.CreateThread(function()
     local oldhealth=0
@@ -4190,6 +4355,9 @@ Citizen.CreateThread(function()
         --WriteText(7,tonumber(GetPlayerSprintStaminaRemaining(PlayerId())),0.4,255,255,255,255,0.5,0.5) 
         if player.hydration>=0.01 then
             player.hydration=player.hydration-0.105
+            if (player.weight>player.maxweight) then
+                player.hydration=player.hydration-0.210
+            end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
             -- SetPlayerSprint(PlayerId(),true)
@@ -4202,6 +4370,9 @@ Citizen.CreateThread(function()
         end
         if player.saturation>=0.01 then
             player.saturation=player.saturation-0.06
+            if (player.weight>player.maxweight) then
+                player.saturation=player.saturation-0.12
+            end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
         end
@@ -4593,11 +4764,13 @@ Citizen.CreateThread(function()
                         if dist<3 then
                             local talking=false
                             local headshot
-                            WriteHint("~c~Press ~g~E ~c~to talk")
-                            local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
-                            if not not_on_screen then
-                                SetTextCentre(true)
-                                WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
+                            if not disablehud then
+                                WriteHint("~c~Press ~g~E ~c~to talk")
+                                local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
+                                if not not_on_screen then
+                                    SetTextCentre(true)
+                                    WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
+                                end
                             end
                             if IsControlJustPressed(0,86) then
                                 talking=true
@@ -4790,13 +4963,13 @@ Citizen.CreateThread(function()
                                                 dx=vehpos.x-mypos.x
                                                 d=dx*dx+dy*dy
                                                 if d<100 then
-                                                
-                                                    local not_on_screen,x,y=N_0xf9904d11f1acbec3(vehpos.x,vehpos.y,vehpos.z+0.5)
-                                                    if not not_on_screen then
-                                                        SetTextCentre(true)
-                                                        WriteText(2,"~g~E ~s~to search for ~b~"..item_names[v.i],0.3,255,255,255,200,x,y)
+                                                    if not disablehud then
+                                                        local not_on_screen,x,y=N_0xf9904d11f1acbec3(vehpos.x,vehpos.y,vehpos.z+0.5)
+                                                        if not not_on_screen then
+                                                            SetTextCentre(true)
+                                                            WriteText(2,"~g~E ~s~to search for ~b~"..item_names[v.i],0.3,255,255,255,200,x,y)
+                                                        end
                                                     end
-                                                    
                                                     if IsControlJustPressed(0,86) then
                                                         if d<16 then 
                                                             if give_item_to_inventory(v.i,1) then
@@ -4808,7 +4981,9 @@ Citizen.CreateThread(function()
                                                                     RemoveBlip(v.blip)
                                                                 end
                                                                 if v.zone and v.zone.questpos then
-                                                                    WriteNotification("Return ~y~"..(item_names[v.i] or v.i).." ~s~to ~g~"..(v.zone and v.zone.name or "base"))
+                                                                    if not disablehud then
+                                                                        WriteNotification("Return ~y~"..(item_names[v.i] or v.i).." ~s~to ~g~"..(v.zone and v.zone.name or "base"))
+                                                                    end
                                                                     if v.blip then RemoveBlip(v.blip) v.blip=nil end
                                                                     v.blip=AddBlipForCoord(
                                                                     v.zone.questpos.x,
@@ -5135,6 +5310,7 @@ Citizen.CreateThread(function()
                 if (not IsPedAPlayer(npc)) 
                 and GetPedType(npc)~=28 --animal
                 and DecorExistOn(npc,"raider")
+                and not IsPedDeadOrDying(npc)
                 and GetRelationshipBetweenGroups(GetPedRelationshipGroupHash(PlayerPedId()),GetPedRelationshipGroupHash(npc))~=5
                 then
                     local can_talk_now=GetIsTaskActive(npc,15) --donothing
@@ -5145,11 +5321,13 @@ Citizen.CreateThread(function()
                     if dist<3 then
                         local talking=false
                         local headshot
-                        WriteHint("~c~Press ~g~E ~c~to talk")
-                        local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
-                        if not not_on_screen then
-                            SetTextCentre(true)
-                            WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
+                        if not disablehud then
+                            WriteHint("~c~Press ~g~E ~c~to talk")
+                            local not_on_screen,x,y=N_0xf9904d11f1acbec3(npcpos.x,npcpos.y,npcpos.z+1.0)
+                            if not not_on_screen then
+                                SetTextCentre(true)
+                                WriteText(2,"~g~E ~s~to talk",0.3,255,255,255,200,x,y)
+                            end
                         end
                         if IsControlJustPressed(0,86) then
                             talking=true
@@ -5634,7 +5812,12 @@ Citizen.CreateThread(function()
                         local myheading=GetEntityHeading(myped)
                         if vs.model then
                             RequestModel(vs.model)
-                            while not HasModelLoaded(vs.model) do Wait(0) WriteText(2,"Loading vehicle",1.0,255,255,255,255,0.5,0.5) end
+                            while not HasModelLoaded(vs.model) do
+                                Wait(0)
+                                if not disablehud then
+                                    WriteText(2,"Loading vehicle",1.0,255,255,255,255,0.5,0.5)
+                                end
+                            end
                             local myveh=CreateVehicle(vs.model, mypos.x, mypos.y, mypos.z, zone.garagepos.angle, true, false)
                             if myveh~=0 then
                                 DecorSetBool(myveh,"zm_looted",true)                
@@ -5806,13 +5989,23 @@ Citizen.CreateThread(function()
                 --trade
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                     --print("trade open")
-                    inventory.highlight=0
+                    inventory.highlight=255
                     local current_trade=1
+                    local scroll=1
                     while true do Wait(0)
                         local inv_index_price=0
                         local inv_index_goods=0
                         local youhaveamount_price=0
                         local youhaveamount_goods=0
+                        local maxtradesinmenu=7
+                        
+                        local trade_scroll_bkg_x=0.277
+                        local trade_scroll_bkg_y=0.54
+                        local trade_scroll_bkg_size_x=0.004
+                        local trade_scroll_bkg_size_y=0.55
+                        local trade_scroll_y=trade_scroll_bkg_y
+                        local trade_scrollsize_x=0.003
+                        
                         for j=1,inventory.total do
                             if inventory[j].item==zone.trade[current_trade][3] then
                                 youhaveamount_price=inventory[j].amount
@@ -5825,17 +6018,25 @@ Citizen.CreateThread(function()
                         mypos=GetEntityCoords(PlayerPedId())
                         if IsControlJustPressed(0,177) or not in_radius(mypos,zone.tradepos,3) then
                             break
-                        elseif IsControlJustPressed(0,175) then --right
+                        elseif IsControlJustPressed(0,173) then --down
                             if current_trade<#zone.trade then
                                 current_trade=current_trade+1
+                                if (current_trade-scroll)>=maxtradesinmenu then
+                                    scroll=scroll+1
+                                end
                             else
                                 current_trade=1
+                                scroll=1
                             end
-                        elseif IsControlJustPressed(0,174) then --left
+                        elseif IsControlJustPressed(0,172) then --up
                             if current_trade>1 then
                                 current_trade=current_trade-1
+                                if (current_trade<scroll) then
+                                    scroll=scroll-1
+                                end
                             else
                                 current_trade=#zone.trade
+                                scroll=current_trade-maxtradesinmenu+1
                             end
                         elseif IsControlJustPressed(0,86) then --e veh horn
                             --print(zone.trade[current_trade][4].." you have:"..youhaveamount_price)
@@ -5857,33 +6058,57 @@ Citizen.CreateThread(function()
                                 WriteNotification("Not enough ~g~"..zone.trade[current_trade][3].."~s~!")
                             end
                         end
-                        for i=1,#zone.trade do
-                            local x=(i+i-#zone.trade-1)*.03+0.5
-                            if current_trade~=i then
-                                SetTextCentre(true)
-                                WriteText(7,zone.trade[i][1].." ~g~x"..zone.trade[i][2],0.2,255,255,255,255,x,0.3)
-                                DrawSprite("lsm", zone.trade[i][1],x,0.35,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-                                DrawSprite("lsm", "arrowdown",x,0.40,inv_sml_x,inv_sml_y,180.0, 255, 255, 255, 255)
-                                DrawSprite("lsm", zone.trade[i][3],x,0.45,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-                                SetTextCentre(true)
-                                WriteText(7,zone.trade[i][3].." ~g~x"..zone.trade[i][4],0.2,255,255,255,255,x,0.4875)
-                            end
+                        DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
+                        DrawSprite("lsm","trading_icon",0.296,0.1945,0.017,0.03,0.0, 255, 255, 255, 255)
+                        WriteTextNoOutline(2,"Trading post",0.4,0,0,0,255,0.307,0.18)
+                        WriteTextNoOutline(2,"Item",0.3,0,0,0,255,0.290,0.24)
+                        WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
+                        
+                        local price_items_x=0.410
+                        local trade_button_x=0.445
+                        local trade_arrow_x=trade_button_x-0.06
+                        
+                        DrawRect(trade_scroll_bkg_x,trade_scroll_bkg_y,trade_scroll_bkg_size_x,trade_scroll_bkg_size_y,0,0,0,175)
+                        
+                        local totalscrolls=#zone.trade-maxtradesinmenu
+                        if totalscrolls>0 then
+                            local newscrollsizey=trade_scroll_bkg_size_y/(totalscrolls+1)
+                            local uppos=trade_scroll_bkg_y-trade_scroll_bkg_size_y/2+newscrollsizey/2
+                            local lowpos=trade_scroll_bkg_y+trade_scroll_bkg_size_y/2-newscrollsizey/2
+                            local step=(lowpos-uppos)/totalscrolls
+                            local newscrollposy=uppos+(step*(scroll-1))
+                            -- if scroll==1 then
+                                -- newscrollposy=uppos
+                            -- elseif scroll==totalscrolls+1 then
+                                -- newscrollposy=lowpos
+                            -- end
+                            DrawRect(trade_scroll_bkg_x,newscrollposy,trade_scrollsize_x,newscrollsizey,255,255,255,255)
                         end
-                            local i=current_trade
-                            local x=(i+i-#zone.trade-1)*.03+0.5
+                        
+                        -- WriteHint("tradescroll="..scroll)
+                        -- WriteHint("totalscroll="..totalscrolls)
+                        
+                        for i=scroll,math.min(scroll+(maxtradesinmenu-1),#zone.trade) do
+                            local y=(i+i-#zone.trade-scroll-scroll)*.04+0.70
+                                DrawSprite("lsm", zone.trade[i][1],0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
+                                SetTextWrap(0.325,trade_arrow_x-0.005)
+                                WriteTextNoOutline(2,item_names[zone.trade[i][1]],0.3,0,0,0,255,0.325,y-0.01)
                                 SetTextCentre(true)
-                                WriteText(7,zone.trade[i][1].." ~g~x"..zone.trade[i][2],0.4,255,255,255,255,x,0.275)
-                                DrawSprite("lsm", zone.trade[i][1],x,0.35,inv_big_x,inv_big_y,0.0, 255, 255, 255, 255)
-                                DrawSprite("lsm", "arrowdown",x,0.40,inv_big_x,inv_big_y,180.0, 255, 255, 255, 255)
-                                DrawSprite("lsm", zone.trade[i][3],x,0.45,inv_big_x,inv_big_y,0.0, 255, 255, 255, 255)
+                                WriteTextNoOutline(2,"x "..zone.trade[i][2],0.25,0,0,0,255,0.305,y+0.02)
+                                
+                                DrawSprite("lsm", zone.trade[i][3],price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
-                                WriteText(7,zone.trade[i][3].." ~g~x"..zone.trade[i][4],0.4,255,255,255,255,x,0.5)
-
+                                WriteTextNoOutline(2,"x "..zone.trade[i][4],0.25,0,0,0,255,price_items_x,y+0.02)
+                                DrawSprite("lsm", "Trade Button",trade_button_x,y,0.0255,0.0205,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
-                                WriteText(7,"~c~You have\n"..zone.trade[i][3]..((zone.trade[current_trade][4]<=youhaveamount_price) and " ~g~x" or " ~r~x")..youhaveamount_price.."\n~c~"..zone.trade[i][1].." ~g~x"..youhaveamount_goods,0.3,255,255,255,255,x,0.55)
-                        WriteText(7,"~g~E ~c~to make deal",0.35,255,255,255,255,0.53,0.86)
-                        WriteText(7,"~g~left ~c~and ~g~right ~c~to select trade",0.35,255,255,255,255,0.53,0.89)
-                        WriteText(7,"~g~backspace ~c~ or ~g~ RMB ~c~to cancel",0.35,255,255,255,255,0.53,0.92)
+                                local color=255
+                                if current_trade==i then
+                                    color=0
+                                    DrawSprite("lsm", "Trade Selected",trade_button_x,y,0.0255,0.0205,0.0, 255, 255, 255, 255)
+                                    DrawSprite("lsm", "arrow_left",trade_arrow_x,y,0.0075,0.015,0.0, 255, 255, 255, 255)
+                                end
+                                WriteTextNoOutline(2,"Trade",0.25,color,color,color,255,trade_button_x,y-0.009)
+                        end
                     end
                 elseif GetRelationshipBetweenGroups(myfaction,zone.relationship)~=5 then
                     WriteNotification("You need to be in this faction in order to trade.")
@@ -6885,9 +7110,11 @@ Citizen.CreateThread(function()
                             player.suit="banditmercenary"
                         end
                         check_clothes(pped)
-                    elseif use_weapon_upgrade(inventory[inventory.current].item) then
-                        inventory[inventory.current].amount=inventory[inventory.current].amount-1
-                        check_inv_slot_for_zero_amount()
+                    elseif weapon_upgrades[inventory[inventory.current].item] then
+                        if use_weapon_upgrade(inventory[inventory.current].item) then
+                            inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                            check_inv_slot_for_zero_amount()
+                        end
                     end
                 end
                 inventory.highlight=500
@@ -9125,6 +9352,9 @@ Citizen.CreateThread(function()
         if player.saturation<=0.1 then
             WriteHint("~s~You are dying of ~r~STARVATION~s~! Eat something!")
         end
+        if player.weight>player.maxweight then
+            WriteHint("~s~You are ~r~OVER ENCUMBERED~s~! Your HYDRATION and NOURISHMENT is now draining faster!")
+        end
         if havetrailer then
             local trailermodel=GetEntityModel(trailer)
             if trailermodel==-730904777 or trailermodel==1956216962 or trailermodel==-1207431159 then
@@ -9754,7 +9984,7 @@ Citizen.CreateThread(function()
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
         local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
-        if zone and zone.relationship then
+        if zone and zone.relationship and not disablehud then
             local myrel=GetPedRelationshipGroupHash(myped)
             
             local relnumber=GetRelationshipBetweenGroups(myrel,zone.relationship)
