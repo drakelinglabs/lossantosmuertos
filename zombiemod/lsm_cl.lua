@@ -50,7 +50,8 @@ standard={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=1-1,tex=range(2-1,12-1,{7-1,10-1,11-1})}, --additional parts for torso
 bodyarmor={[9]={var=2-1,tex=2-1}},
-backpack={[5]={var=39-1,tex=1-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
 },
 marauder={
 [0]={var=1-1,tex=1-1}, --head
@@ -66,7 +67,8 @@ marauder={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=51-1,tex=range(1-1,5-1)}, --additional parts for torso
 bodyarmor={[9]={var=2-1,tex=2-1}},
-backpack={[5]={var=39-1,tex=1-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
 },
 marauder_npc={
 [0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
@@ -82,7 +84,8 @@ marauder_npc={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=51-1,tex=range(1-1,5-1)}, --additional parts for torso
 bodyarmor={[9]={var=2-1,tex=2-1}},
-backpack={[5]={var=39-1,tex=1-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},--
 },
 camouflage={
 [0]={var=1-1,tex=1-1}, --head
@@ -98,7 +101,8 @@ camouflage={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=54-1,tex=4-1}, --additional parts for torso
 bodyarmor={[9]={var=8-1,tex=2-1}},
-backpack={[5]={var=39-1,tex=1-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
 },
 camouflage_npc={
 [0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
@@ -114,7 +118,8 @@ camouflage_npc={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=54-1,tex=4-1}, --additional parts for torso
 bodyarmor={[9]={var=8-1,tex=2-1}},
-backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
 },
 offdutysheriff={
 [0]={var=1-1,tex=1-1}, --head
@@ -130,7 +135,8 @@ offdutysheriff={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=218-1,tex=12-1}, --additional parts for torso
 bodyarmor={[9]={var=14-1,tex=1-1}},
-backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
 },
 offdutysheriff_npc={
 [0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
@@ -162,7 +168,8 @@ explorer={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=254-1,tex=range(1-1,5-1)}, --additional parts for torso
 bodyarmor={[9]={var=13-1,tex=2-1}},
-backpack={[5]={var=33-1,tex=5-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=33-1,tex=5-1}},
 hat={[11]={var=252-1,tex=range(1-1,5-1)}},
 same_texvar={4,6,11},
 },
@@ -180,7 +187,8 @@ scavenger={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=69-1,tex=range(1-1,6-1)}, --additional parts for torso
 bodyarmor={[9]={var=10-1,tex=2-1}},
-backpack={[5]={var=67-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=67-1,tex=1-1}},
 hat={[11]={var=70-1,tex=range(1-1,6-1)}},
 },
 scavenger_npc={
@@ -197,7 +205,8 @@ scavenger_npc={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=69-1,tex=range(1-1,6-1)}, --additional parts for torso
 bodyarmor={[9]={var=10-1,tex=2-1}},
-backpack={[5]={var=10-1,tex=2-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=10-1,tex=2-1}},
 hat={[11]={var=70-1,tex=range(1-1,6-1)}},
 },
 mercenary={
@@ -214,7 +223,8 @@ mercenary={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=290-1,tex=11-1}, --additional parts for torso
 bodyarmor={[9]={var=14-1,tex=1-1}},
-backpack={[5]={var=70-1,tex=7-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=70-1,tex=7-1}},
 },
 banditgoon={
 [0]={var=1-1,tex=1-1}, --head
@@ -230,7 +240,8 @@ banditgoon={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=169-1,tex={1-1,2-1}}, --additional parts for torso
 bodyarmor={[9]={var=13-1,tex=2-1}},
-backpack={[5]={var=52-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=52-1,tex=1-1}},
 },
 banditgoon_npc={
 [0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
@@ -246,7 +257,8 @@ banditgoon_npc={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=169-1,tex={1-1,2-1}}, --additional parts for torso
 bodyarmor={[9]={var=13-1,tex=2-1}},
-backpack={[5]={var=52-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=52-1,tex=1-1}},
 },
 banditauthority={
 [0]={var=1-1,tex=1-1}, --head
@@ -262,7 +274,8 @@ banditauthority={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=265-1,tex=1-1}, --additional parts for torso
 bodyarmor={[9]={var=9-1,tex=2-1}},
-backpack={[5]={var=67-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=67-1,tex=1-1}},
 },
 dawn={
 [0]={var=1-1,tex=1-1}, --head
@@ -278,7 +291,8 @@ dawn={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=249-1,tex=16-1}, --additional parts for torso
 bodyarmor={[9]={var=13-1,tex=2-1}},
-backpack={[5]={var=58-1,tex=10-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=58-1,tex=10-1}},
 },
 dawn_npc={
 [0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
@@ -294,7 +308,8 @@ dawn_npc={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=249-1,tex=16-1}, --additional parts for torso
 bodyarmor={[9]={var=13-1,tex=2-1}},
-backpack={[5]={var=58-1,tex=10-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=58-1,tex=10-1}},
 },
 banditauthority_npc={
 [0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
@@ -310,7 +325,8 @@ banditauthority_npc={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=265-1,tex=1-1}, --additional parts for torso
 bodyarmor={[9]={var=9-1,tex=2-1}},
-backpack={[5]={var=67-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=67-1,tex=1-1}},
 },
 police={
 [0]={var=1-1,tex=1-1}, --head
@@ -326,7 +342,8 @@ police={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=56-1,tex=1-1}, --additional parts for torso
 bodyarmor={[9]={var=11-1,tex=2-1}},
-backpack={[5]={var=67-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=67-1,tex=1-1}},
 },
 banditmercenary={
 [0]={var=1-1,tex=1-1}, --head
@@ -342,7 +359,8 @@ banditmercenary={
 [10]={var=0-1,tex=1-1}, --decals
 [11]={var=290-1,tex=12-1}, --additional parts for torso
 bodyarmor={[9]={var=14-1,tex=1-1}},
-backpack={[5]={var=70-1,tex=7-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+--backpack={[5]={var=70-1,tex=7-1}},
 },
 }
 
@@ -532,12 +550,15 @@ s_m_y_cop_01="Male Cop",
 s_f_y_cop_01="Female Cop",
 dbshotgun="Double Barrel Shotgun",
 GBurrito2="Dawn van",
+pistol="Pistol",
+pumpshotgun="Pump shotgun",
 }
 
 local string_registered_labels={}
 local string_workarounds=0
 if true then --disabled
     local function cache_format_string(formatstring)
+        if formatstring==nil then formatstring="nil" end
         local index=string_registered_labels[formatstring]
         if index==nil then
             local label=string.format("WRND%X",string_workarounds)
@@ -694,6 +715,7 @@ player.brasscatcher=false
 player.radio=false
 player.bleeding=0
 player.reputation=GetResourceKvpInt("reputation") or 10
+player.standardweight=35.0
 player.maxweight=35.0
 player.weight=0.0
 
@@ -1043,6 +1065,7 @@ local safezones={
         {"bandage",1,"cash",20},
         {"canfood",1,"cash",25},
         {"clothes_explorer",1,"cash",4000},
+        {"duffelbag",1,"cash",1000},
         
         {"cash",30,"cigarettes",1},
         {"cash",40,"gunpowder",1},
@@ -1813,6 +1836,8 @@ muzzlebrake_1=0.1,
 heavybarrel=1.4,
 scope_nightvision=1.8,
 scope_thermal=2.2,
+backpack=1.3,
+duffelbag=2.0,
 }
 local item_names={
 water="Water",
@@ -1910,6 +1935,8 @@ muzzlebrake_1="Tactical Muzzle Brake",
 heavybarrel="Reinforced Rifle Barrel",
 scope_nightvision="Night Vision Scope",
 scope_thermal="Thermal Vision Scope",
+backpack="Backpack",
+duffelbag="Bag",
 }
 local item_descriptions={
 water="A plastic bottle filled with fresh water.",
@@ -2007,6 +2034,8 @@ muzzlebrake_1="Tactical Muzzle Brake",
 heavybarrel="Reinforced Rifle Barrel",
 scope_nightvision="Night Vision Scope",
 scope_thermal="Thermal Vision Scope",
+backpack="Standard backpack",
+duffelbag="Duffel bag",
 }
 
 local weapon_upgrades={
@@ -2372,6 +2401,7 @@ local deadbodiesrewards_tier6={
 {"heavybarrel",1},
 {"scope_nightvision",1},
 {"scope_thermal",1},
+{"duffelbag",1},
 }
 
 local trunkrewards_tier1={
@@ -2520,6 +2550,7 @@ local trunkrewards_tier6={
 {"heavybarrel",1},
 {"scope_nightvision",1},
 {"scope_thermal",1},
+{"duffelbag",1},
 }
 
 local deadbodiesrewards={
@@ -3863,6 +3894,9 @@ Citizen.CreateThread(function()
                                     r_color=50 g_color=150 
                                 end
                             end
+                            if player.backpack and inventory[i].item=="backpack" then 
+                                r_color=50 g_color=150 
+                            end
                             if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
                             if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
                             if inventory[i].item=="bodyarmor" and player.bodyarmor then r_color=50 g_color=150 end
@@ -3900,6 +3934,9 @@ Citizen.CreateThread(function()
                                 if player.hat==inventory[i].item then 
                                     r_color=50 g_color=150 
                                 end
+                            end
+                            if player.backpack and inventory[i].item=="backpack" then 
+                                r_color=50 g_color=150 
                             end
                             if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
                             if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
@@ -3962,7 +3999,7 @@ Citizen.CreateThread(function()
             -----
             if true then
                 if HasStreamedTextureDictLoaded("lsm") then
-                    DrawSprite("lsm","backpack",.65,.5,0.25,0.7,0.0, 255, 255, 255, 255)
+                    DrawSprite("lsm","inventory_background",.65,.5,0.25,0.7,0.0, 255, 255, 255, 255)
                 else
                     RequestStreamedTextureDict("lsm")
                 end
@@ -4002,6 +4039,8 @@ Citizen.CreateThread(function()
                     SetTextWrap(inventory_down_x_left,inventory_down_x_right)
                     WriteText(4,item_descriptions[inventory[curitem].item],inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
                     DrawSprite("lsm", inventory[curitem].item, inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
+                    
+                    WriteText(4,item_weight[inventory[curitem].item].." KG",inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc+0.07)
                 else
                     WriteText(2,"Empty",inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
                     SetTextWrap(inventory_down_x_left,inventory_down_x_right)
@@ -4031,6 +4070,7 @@ Citizen.CreateThread(function()
                         or inventory[i].item=="brasscatcher" and player.brasscatcher
                         or inventory[i].item=="radio" and player.radio
                         or inventory[i].item=="bodyarmor" and player.bodyarmor
+                        or inventory[i].item=="duffelbag" and player.backpack
                         then 
                             sprite="selected_equipped_item" 
                         end
@@ -4047,6 +4087,7 @@ Citizen.CreateThread(function()
                         or inventory[i].item=="brasscatcher" and player.brasscatcher
                         or inventory[i].item=="radio" and player.radio
                         or inventory[i].item=="bodyarmor" and player.bodyarmor
+                        or inventory[i].item=="duffelbag" and player.backpack
                         then 
                             sprite="equipped_item" 
                         end
@@ -4167,7 +4208,7 @@ Citizen.CreateThread(function()
                     DrawRect(pos_x,pos_y-(scale_y*.5)+i*(scale_y/inventory.lines),scale_x,h_line_width,75,75,75,255)
                 end
                 if HasStreamedTextureDictLoaded("lsm") and inventory.total~=0 then
-                    DrawSprite("lsm","backpack",.65,.5,0.25,0.7,0.0, 255, 255, 255, 255)
+                    DrawSprite("lsm","inventory_background",.65,.5,0.25,0.7,0.0, 255, 255, 255, 255)
                     for i=inventory.scroll*inventory.rows+1,math.min(inventory.total,(inventory.scroll+inventory.lines)*inventory.rows) do
                         if inventory.current~=i and inventory[i] then
                             name=inventory[i].item
@@ -4363,7 +4404,6 @@ Citizen.CreateThread(function()
     while true do Wait(1500)
         
         local pped=PlayerPedId()
-        --WriteText(7,tonumber(GetPlayerSprintStaminaRemaining(PlayerId())),0.4,255,255,255,255,0.5,0.5) 
         if player.hydration>=0.01 then
             player.hydration=player.hydration-0.105
             if (player.weight>player.maxweight) then
@@ -4371,13 +4411,6 @@ Citizen.CreateThread(function()
             end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
-            -- SetPlayerSprint(PlayerId(),true)
-            -- if GetPlayerSprintStaminaRemaining(PlayerId())>0.01 then
-                -- RestorePlayerStamina(PlayerId(),1.0)
-                -- player.hydration=player.hydration-0.2
-            -- end
-        -- else
-            -- SetPlayerSprint(PlayerId(),false)
         end
         if player.saturation>=0.01 then
             player.saturation=player.saturation-0.06
@@ -4390,15 +4423,6 @@ Citizen.CreateThread(function()
         local health=GetEntityHealth(pped)-100
         if health<=0 then player.health=0 else player.health=health end
         
-        -- if player.health>0 then
-            -- if GetEntityHealth(pped)<GetEntityMaxHealth(pped) then
-                -- SetEntityHealth(pped,GetEntityHealth(pped)+1)
-                -- player.health=player.health-1.0
-                -- if player.health<0.0 then player.health=0.0 end
-            -- end
-        -- else
-            -- SetEntityHealth(pped,GetEntityHealth(pped)-1)
-        -- end
         if player.drunk>0 then
             player.drunk=player.drunk-0.03
             SetGameplayCamShakeAmplitude(player.drunk)
@@ -4407,33 +4431,19 @@ Citizen.CreateThread(function()
             SetEntityHealth(pped,GetEntityHealth(pped)-player.bleeding)
             RequestClipSet("move_injured_generic")
             SetPedMovementClipset(pped,"move_injured_generic" ,1.0)
-            --SetPedStrafeClipset(pped,"move_injured_generic")
         else
             ResetPedMovementClipset(pped,1.0)
-            --ResetPedStrafeClipset(pped)
         end
         if oldhealth-health>5 then
             player.bleeding=player.bleeding+1
         end
         oldhealth=health
-        -- if player.bleeding>0 then
-            -- if player.hydration>0.01 then
-                -- player.hydration=player.hydration-0.1
-            -- end
-            -- if player.blood>0.01 then
-                -- player.blood=player.blood-player.bleeding*0.15
-            -- end
-        -- elseif player.hydration>0.0001 then
-            -- if player.hydration>0.01 then
-                -- player.hydration=player.hydration-0.1
-            -- end
-            -- if player.blood<100.01 then
-                -- player.blood=player.blood+0.1
-            -- end
-        -- end
-        -- if player.blood<=0.01 then
-            -- SetEntityHealth(pped,GetEntityHealth(pped)-5)
-        -- end
+        
+        if player.backpack then
+            player.maxweight=65.0
+        else
+            player.maxweight=player.standardweight
+        end
         
         check_clothes(pped)
     end
@@ -6056,7 +6066,7 @@ Citizen.CreateThread(function()
                                     inventory[inv_index_price].amount=youhaveamount_price-zone.trade[current_trade][4]
                                     inventory.current=inv_index_price --important for check_inv_slot_for_zero_amount()
                                     check_inv_slot_for_zero_amount() --to save
-                                    inventory.highlight=0
+                                    inventory.highlight=255
                                     --WriteNotification("Bought ~g~"..zone.trade[current_trade][1].."~s~.")
                                 end
                             elseif zone.trade[current_trade][4]==youhaveamount_price then
@@ -6064,7 +6074,7 @@ Citizen.CreateThread(function()
                                 inventory.current=inv_index_price --important for check_inv_slot_for_zero_amount()
                                 check_inv_slot_for_zero_amount()
                                 give_item_to_inventory(zone.trade[current_trade][1],zone.trade[current_trade][2])
-                                inventory.highlight=0
+                                inventory.highlight=255
                             else
                                 WriteNotification("Not enough ~g~"..zone.trade[current_trade][3].."~s~!")
                             end
@@ -6100,10 +6110,11 @@ Citizen.CreateThread(function()
                         -- WriteHint("totalscroll="..totalscrolls)
                         
                         for i=scroll,math.min(scroll+(maxtradesinmenu-1),#zone.trade) do
-                            local y=(i+i-#zone.trade-scroll-scroll)*.04+0.70
+                            local y=(i-scroll)*.08+.3
                                 DrawSprite("lsm", zone.trade[i][1],0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextWrap(0.325,trade_arrow_x-0.005)
-                                WriteTextNoOutline(2,item_names[zone.trade[i][1]],0.3,0,0,0,255,0.325,y-0.01)
+                                local name=zone.trade[i][1]
+                                WriteTextNoOutline(2,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
                                 SetTextCentre(true)
                                 WriteTextNoOutline(2,"x "..zone.trade[i][2],0.25,0,0,0,255,0.305,y+0.02)
                                 
@@ -7126,6 +7137,9 @@ Citizen.CreateThread(function()
                             inventory[inventory.current].amount=inventory[inventory.current].amount-1
                             check_inv_slot_for_zero_amount()
                         end
+                    elseif inventory[inventory.current].item=="duffelbag" then
+                        player.backpack=not player.backpack
+                        check_clothes(pped)
                     end
                 end
                 inventory.highlight=500
@@ -7236,7 +7250,9 @@ Citizen.CreateThread(function()
         local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
         if zone~=oldzone then
             if oldzone~=nil and oldzone.name~=nil then
-                WriteNotification("You left "..oldzone.name..".")
+                if not disablehud then
+                    WriteNotification("You left "..oldzone.name..".")
+                end
                 --print("you exited zone")
                 --DisplayRadar(true)
                 FlashMinimapDisplay()
@@ -7343,7 +7359,9 @@ Citizen.CreateThread(function()
                     end
                 end
                 if zone.name~=nil then
-                    WriteNotification("You entered "..zone.name..".")
+                    if not disablehud then
+                        WriteNotification("You entered "..zone.name..".")
+                    end
                     --print("you entered zone")
                     FlashMinimapDisplay()
                     if lsm_random_spawn==0 and zone.spawnpos.x and zone.spawnpos.y and zone.spawnpos.z then
