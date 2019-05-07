@@ -7911,7 +7911,7 @@ Citizen.CreateThread(function()
         --target,distance=closest_point(player_peds,zpos)
         target,distance=closest_point(survivors,zpos)
         --distance is squared
-        if distance>4.0 then
+        if distance>400.0 then --20m
             -- if IsPedInAnyVehicle(ped,false) then
                 -- SetEntityHealth(ped,0)
             -- end
@@ -7923,7 +7923,20 @@ Citizen.CreateThread(function()
                 SetPedMovementClipset(ped,clipset.anim,clipset.speed)
             end
             TaskGoToEntity(ped, target, -1, 0.1, clipset.speed, 1073741824, 0)
+        elseif distance>4.0 then--2*2
+            -- if IsPedInAnyVehicle(ped,false) then
+                -- SetEntityHealth(ped,0)
+            -- end
+            zombie_type=DecorGetInt(ped,"zombie_type")
+            clipset=randomclipsets[zombie_type]
+            --clipset=movementclipsets.limper        
+            RequestAnimSet(clipset.anim)
+            if HasAnimSetLoaded(clipset.anim) then
+                SetPedMovementClipset(ped,clipset.anim,2.0)
+            end
+            TaskGoToEntity(ped, target, -1, 0.1, 2.0, 1073741824, 0)
         else
+            
             --ClearPedSecondaryTask(ped)
             --ClearPedTasksImmediately(ped)
             --SetBlockingOfNonTemporaryEvents(ped, 1)
