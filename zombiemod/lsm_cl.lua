@@ -1,3 +1,80 @@
+
+local saving_enabled=true --don't touch, it means that hooks are not applied by default, that IS initialy true
+local saving_buffer={}
+local saving_kvp_read_fucntions={
+    GetResourceKvpString=GetResourceKvpString,
+    GetResourceKvpInt=GetResourceKvpInt,
+    GetResourceKvpFloat=GetResourceKvpFloat,
+}
+local saving_kvp_mode={
+    SetResourceKvp=SetResourceKvp,
+    SetResourceKvpInt=SetResourceKvpInt,
+    SetResourceKvpFloat=SetResourceKvpFloat,
+    DeleteResourceKvp=DeleteResourceKvp,
+}
+local saving_things_to_remove={--cheap way to "delete" things from kvp
+    inventory_total={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_fucntions.GetResourceKvpInt},
+    inventory_current={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_fucntions.GetResourceKvpInt},
+    garage_1_model={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_fucntions.GetResourceKvpInt},
+}
+local saving_buf_mode={
+    SetResourceKvp=function(key,value)
+        saving_buffer[key]={v=value,f=saving_kvp_mode.SetResourceKvp}
+    end,
+    SetResourceKvpInt=function(key,value)
+        saving_buffer[key]={v=value,f=saving_kvp_mode.SetResourceKvpInt}
+    end,
+    SetResourceKvpFloat=function(key,value)
+        saving_buffer[key]={v=value,f=saving_kvp_mode.SetResourceKvpFloat}
+    end,
+    DeleteResourceKvp=function(key)
+        saving_buffer[key]={f=saving_kvp_mode.DeleteResourceKvp}
+    end,
+    GetResourceKvpString=function(key)
+        if saving_buffer[key]~=nil then
+            return saving_buffer[key].v
+        end
+        return saving_kvp_read_fucntions.GetResourceKvpString(key)
+    end,
+    GetResourceKvpInt=function(key)
+        if saving_buffer[key]~=nil then
+            return saving_buffer[key].v or 0
+        end
+        return saving_kvp_read_fucntions.GetResourceKvpInt(key)
+    end,
+    GetResourceKvpFloat=function(key,value)
+        if saving_buffer[key]~=nil then
+            return saving_buffer[key].v or (.5-.5)
+        end
+        return saving_kvp_read_fucntions.GetResourceKvpFloat(key)
+    end,
+}
+local function disable_kvp_saving()
+    if saving_enabled then
+        for key,t in pairs(saving_things_to_remove) do
+            saving_buffer[key]={v=t.g(key),f=t.f}
+            t.f(key,t.v)
+        end
+        for k,v in pairs(saving_buf_mode) do
+            _G[k]=v
+        end
+        saving_enabled=false
+    end
+end
+local function enable_kvp_saving()
+    if not saving_enabled then
+        for key,t in pairs(saving_buffer) do
+            t.f(key,t.v)
+            saving_buffer[key]=nil--not sure what is better way
+        end
+        --saving_buffer={}--not sure what is better way
+        for k,v in pairs(saving_kvp_mode) do
+            _G[k]=v
+        end
+        saving_enabled=true
+    end
+end
+
 local disablehud=false
 local disableradar=false
 RegisterCommand("hud",function()
@@ -1094,33 +1171,37 @@ local safezones={
     --provisionpos={ x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
     questpos={x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
     weapons={"pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
-    garagepos={x=-1095.7849121094,y=4945.1254882813,z=218.58392333984,angle=205.9517364502},
-    vehpos={x=-1069.4080810547,y=4937.5786132813,z=212.07720947266,angle=342.98559570313},
+    --garagepos={x=-1095.7849121094,y=4945.1254882813,z=218.58392333984,angle=205.9517364502},
+    --vehpos={x=-1069.4080810547,y=4937.5786132813,z=212.07720947266,angle=342.98559570313},
     vehshop={
-        {"cruiser",
-            {"scrapmetal",15,
-            "cash",50},
+        {vehname="kuruma",
+         requirements={
+         "scrapmetal",15,
+                "cash",50},
+         mods={
+         [0]=3,
+         },
         },
-        {"scorcher",
-            {"cash",300},
-        },
-        {"cerberus",
-            {"cash",5000,
-            "engineparts",1000,
-            "gasoline",150,
-            "scrapmetal",1500},
-        },
-        {"scarab",
-            {"cash",10000,
-            "engineparts",2000,
-            "gasoline",250,
-            "scrapmetal",2000},
-        },
+        -- {"scorcher",
+            -- {"cash",300},
+        -- },
+        -- {"cerberus",
+            -- {"cash",5000,
+            -- "engineparts",1000,
+            -- "gasoline",150,
+            -- "scrapmetal",1500},
+        -- },
+        -- {"scarab",
+            -- {"cash",10000,
+            -- "engineparts",2000,
+            -- "gasoline",250,
+            -- "scrapmetal",2000},
+        -- },
     },
-    craftpos={x=-1123.6444091797,y=4894.5190429688,z=218.47256469727},
+    --craftpos={x=-1123.6444091797,y=4894.5190429688,z=218.47256469727},
     crafts=normal_crafts,
     spawnpos={x=-1112.9624023438,y=4903.9765625,z=218.59544372559,angle=323.06338500977},
-    ransack={x=-1111.5389404297,y=4936.8647460938,z=218.38740539551,angle=151.02191162109},
+    --ransack={x=-1111.5389404297,y=4936.8647460938,z=218.38740539551,angle=151.02191162109},
     ransack_list={
         {"water",20,"gasoline",10},
         {"gasoline",10,"bandage",15},
@@ -1219,8 +1300,8 @@ local safezones={
     --provisionpos={x=447.22109985352,y=-975.54309082031,z=30.689596176147},
     questpos={x=447.22109985352,y=-975.54309082031,z=30.689596176147},
     weapons={"pistol","pumpshotgun"},
-    garagepos={x=449.07763671875,y=-1018.770324707,z=28.532030105591,angle=78.808685302734},
-    vehpos={x=449.46347045898,y=-1012.5942382813,z=28.496547698975,angle=94.81258392334},
+    --garagepos={x=449.07763671875,y=-1018.770324707,z=28.532030105591,angle=78.808685302734},
+    --vehpos={x=449.46347045898,y=-1012.5942382813,z=28.496547698975,angle=94.81258392334},
     vehshop={
         {"cruiser",
             {"scrapmetal",15,
@@ -1242,9 +1323,10 @@ local safezones={
             "scrapmetal",2000},
         },
     },
-    craftpos={x=441.29440307617,y=-975.71667480469,z=30.689594268799},
+    --craftpos={x=441.29440307617,y=-975.71667480469,z=30.689594268799},
     crafts=normal_crafts,
     spawnpos={x=459.48818969727,y=-994.87622070313,z=24.914867401123,angle=92.499603271484},
+
     relationship="GOVERNMENT"},--LSPD station
     
     --[[
@@ -1434,11 +1516,11 @@ local safezones={
     },
     questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
     tradepos={x=1682.52734375,y=2476.2099609375,z=45.823303222656},
-    craftpos={x=1689.4483642578,y=2552.2507324219,z=45.56485748291},
+    --craftpos={x=1689.4483642578,y=2552.2507324219,z=45.56485748291},
     crafts=normal_crafts,
     weapons={"carbinerifle","pumpshotgun","sniperrifle"},    
-    garagepos={x=1655.3520507813,y=2665.0593261719,z=45.465591430664,angle=229.13996887207},
-    vehpos={x=1710.98828125,y=2691.3481445313,z=45.472282409668,angle=180.61428833008},
+    --garagepos={x=1655.3520507813,y=2665.0593261719,z=45.465591430664,angle=229.13996887207},
+    --vehpos={x=1710.98828125,y=2691.3481445313,z=45.472282409668,angle=180.61428833008},
     vehshop={
         {"placeholder",
             {"cash",1000,
@@ -1446,7 +1528,7 @@ local safezones={
             "scrapmetal",500},
         },
     },
-    ransack={x=1661.6795654297,y=2566.5334472656,z=45.564865112305,angle=229.75936889648},
+    --ransack={x=1661.6795654297,y=2566.5334472656,z=45.564865112305,angle=229.75936889648},
     ransack_list={
         {"cash",4000,"gasoline",80},
         {"bandage",10,"canfood",10},
@@ -1456,6 +1538,7 @@ local safezones={
         {"armorplate",10,"medkit",3},
         {"ammo",300,"shotgunammo",30},
     },
+
     relationship="BANDIT"},--Prison
     
 --[[
@@ -3312,6 +3395,9 @@ AddEventHandler("playerSpawned",function()
     StopAudioScenes()
     StartAudioScene("CHARACTER_CHANGE_IN_SKY_SCENE")
     SetPedRelationshipGroupHash(ped,GetHashKey("NEUTRAL"))
+    
+    disable_kvp_saving()
+    
     if lsm_random_spawn==1 then
         
         --SetPedRandomComponentVariation(ped)
@@ -4717,7 +4803,7 @@ end
 --missionsfavkis
 Citizen.CreateThread(function()
     --SetResourceKvpInt("quests",0)--debug
-    if true then --load quests
+    if false then --load quests
         local n=GetResourceKvpInt("quests")
         if n~=nil and n>0 then
             for i=1,n do
@@ -5161,6 +5247,10 @@ pistolammo=1950175060,
 shotgunammo=-1878508229,
 heavyrifleammo=1285032059,
 flaregunammo=1173416293,
+smgammo=1820140472,
+mgammo=1788949567,
+launchergrenade=1003267566,
+grenade=1003688881,
 }
 Citizen.CreateThread(function()
     local function give_ammo(pped,ammo_type)
@@ -5322,7 +5412,7 @@ Citizen.CreateThread(function()
         end
     
         --dialogs start
-        if true then
+        if false then
         --if zone~=nil and zone.relationship~=nil and zone.relationship==myfaction then
             --WriteHint(zone.relationship)
             local handle,npc=FindFirstPed()
@@ -5914,17 +6004,17 @@ Citizen.CreateThread(function()
                             current_trade=#zone.vehshop
                         end
                     elseif IsControlJustPressed(0,86) then --e veh horn
-                        local enough=do_we_have_all_that(zone.vehshop[current_trade][2])
+                        local enough=do_we_have_all_that(zone.vehshop[current_trade].requirements)
                         if enough then
-                            local model=GetHashKey(zone.vehshop[current_trade][1])
+                            local model=GetHashKey(zone.vehshop[current_trade].vehname)
                             if not HasModelLoaded(model) then
                                 RequestModel(model)
                                 Wait(0)
                                 while not HasModelLoaded(model) do Wait(0) end
-                                enough=do_we_have_all_that(zone.vehshop[current_trade][2])
+                                enough=do_we_have_all_that(zone.vehshop[current_trade].requirements)
                             end
                             if enough then
-                                remove_all_that(zone.vehshop[current_trade][2])
+                                remove_all_that(zone.vehshop[current_trade].requirements)
                                 local veh=CreateVehicle(model,zone.vehpos.x,zone.vehpos.y,zone.vehpos.z,zone.vehpos.angle,true,false)
                                 DecorSetBool(veh,"zm_looted",true)
                                 DecorSetBool(veh,"post_apoc_car",true)
@@ -5932,6 +6022,12 @@ Citizen.CreateThread(function()
                                 SetPedIntoVehicle(pped,veh,-1)
                                 SetVehicleAsNoLongerNeeded(veh)
                                 SetModelAsNoLongerNeeded(model)
+                                if zone.vehshop[current_trade].mods then
+                                    print("max="..#(zone.vehshop[current_trade].mods))
+                                    for k,v in pairs(zone.vehshop[current_trade].mods) do
+                                        SetVehicleMod(veh,k,v)
+                                    end
+                                end
                                 Wait(0)
                                 break
                             else
@@ -5946,16 +6042,16 @@ Citizen.CreateThread(function()
                     DrawRect(0.25,0.44+current_trade*.025,0.2,0.025,255,255,255,255) --chosenline
                     for i=1,#zone.vehshop do
                         if i==current_trade then
-                            WriteTextNoOutline(2,zone.vehshop[i][1],0.35,0,0,0,255,0.16,0.428+i*.025) --chosen line text
+                            WriteTextNoOutline(2,zone.vehshop[i].vehname,0.35,0,0,0,255,0.16,0.428+i*.025) --chosen line text
                         else
-                            WriteTextNoOutline(2,zone.vehshop[i][1],0.35,255,255,255,255,0.16,0.428+i*.025) --not chosen line text
+                            WriteTextNoOutline(2,zone.vehshop[i].vehname,0.35,255,255,255,255,0.16,0.428+i*.025) --not chosen line text
                         end
                     end
                     local item,have,need
-                    for i=1,#zone.vehshop[current_trade][2],2 do
-                        item=zone.vehshop[current_trade][2][i]
+                    for i=1,#zone.vehshop[current_trade].requirements,2 do
+                        item=zone.vehshop[current_trade].requirements[i]
                         have=get_inventroy_item_amount(item)
-                        need=zone.vehshop[current_trade][2][i+1]
+                        need=zone.vehshop[current_trade].requirements[i+1]
                         DrawSprite("lsm",item,.39,.435+i*.05,inv_big_x,inv_big_y,0.0, 255, 255, 255, 255)
                         if have<need then
                             WriteText(2,item.."\n"..have.." of "..need,0.35,255,0,0,255,.42,.428+i*.05)
@@ -7148,10 +7244,16 @@ Citizen.CreateThread(function()
                     if inventory.mode then inventory.highlight=0 end
                     local amounttodrop=inventory[inventory.current].amount
                     while true do Wait(0)
-                        if IsControlPressed(0,174) then
+                        if IsControlJustPressed(0,174) then
                             amounttodrop=amounttodrop-1
                             if amounttodrop<1 then amounttodrop=1 end
-                        elseif IsControlPressed(0,175) then
+                        elseif IsControlJustPressed(0,175) then
+                            amounttodrop=amounttodrop+1
+                            if amounttodrop>inventory[inventory.current].amount then amounttodrop=inventory[inventory.current].amount end
+                        elseif IsControlPressed(0,172) then
+                            amounttodrop=amounttodrop-1
+                            if amounttodrop<1 then amounttodrop=1 end
+                        elseif IsControlPressed(0,173) then
                             amounttodrop=amounttodrop+1
                             if amounttodrop>inventory[inventory.current].amount then amounttodrop=inventory[inventory.current].amount end
                         end
@@ -7251,7 +7353,7 @@ Citizen.CreateThread(function()
         if zone~=oldzone then
             if oldzone~=nil and oldzone.name~=nil then
                 if not disablehud then
-                    WriteNotification("You left "..oldzone.name..".")
+                    --WriteNotification("You left "..oldzone.name..".")
                 end
                 --print("you exited zone")
                 --DisplayRadar(true)
@@ -7360,7 +7462,7 @@ Citizen.CreateThread(function()
                 end
                 if zone.name~=nil then
                     if not disablehud then
-                        WriteNotification("You entered "..zone.name..".")
+                        --WriteNotification("You entered "..zone.name..".")
                     end
                     --print("you entered zone")
                     FlashMinimapDisplay()
@@ -7907,10 +8009,29 @@ Citizen.CreateThread(function()
             -- end
         end
     end
+    local damageticks=0
+    -- Citizen.CreateThread(function()
+        -- while true do
+            -- if damageticks>0 then
+                -- damageticks=damageticks-1
+                -- WriteHint("YOU ARE TAKING DAMAGE FROM ZOMBIE")
+            -- end
+            -- Wait(0)
+        -- end
+    -- end)
     local function zombie_attack()--needs ped, zpos, player_peds
         --target,distance=closest_point(player_peds,zpos)
         target,distance=closest_point(survivors,zpos)
         --distance is squared
+        -- if distance<9.0 then
+            -- damageticks=300
+            -- --damageticks=damageticks+1
+            -- --if damageticks%50==0 then
+                -- local myped=PlayerPedId()
+                -- local myhealth=GetEntityHealth(myped)
+                -- SetEntityHealth(myped,myhealth-1)
+            -- --end
+        -- end
         if distance>400.0 then --20m
             -- if IsPedInAnyVehicle(ped,false) then
                 -- SetEntityHealth(ped,0)
@@ -7936,7 +8057,6 @@ Citizen.CreateThread(function()
             end
             TaskGoToEntity(ped, target, -1, 0.1, 2.0, 1073741824, 0)
         else
-            
             --ClearPedSecondaryTask(ped)
             --ClearPedTasksImmediately(ped)
             --SetBlockingOfNonTemporaryEvents(ped, 1)
@@ -9072,6 +9192,12 @@ RegisterCommand('kvp',function(source,args,raw)
         print("/kvp del key")
         print("/kvp add type key data")
         print("/kvp list")
+    elseif args[1]=="GetResourceKvpString" then
+        print(GetResourceKvpString(args[2]))
+    elseif args[1]=="GetResourceKvpInt" then
+        print(GetResourceKvpInt(args[2]))
+    elseif args[1]=="GetResourceKvpFloat" then
+        print(GetResourceKvpFloat(args[2]))
     elseif args[1]=="ls" or args[1]=="list" or args[1]=="find" then
         local loop,key,handle
         if args[2]==nil then
@@ -10155,6 +10281,48 @@ Citizen.CreateThread(function()
     end
 end)
 
+
+extraction={
+{x=-1075.7725830078,y=4897.6552734375,z=214.27157592773,r=1.0},
+{x=470.79769897461,y=-984.92553710938,z=30.689607620239,r=1.0},
+{x=1753.1240234375,y=2623.8425292969,z=45.564979553223,r=1.0},
+}
+
+Citizen.CreateThread(function()
+    for k,v in pairs(extraction) do
+        if not v.blip then
+            v.blip=AddBlipForCoord(v.x,v.y,v.z)
+            SetBlipSprite(v.blip,126)
+            SetBlipColour(v.blip,2)
+            SetBlipAsShortRange(v.blip,true)
+            SetBlipName(v.blip,"Extraction")
+        end
+        v.r=v.r*v.r
+    end
+    disable_kvp_saving()
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local mypos=GetEntityCoords(myped)
+        local d,dx,dy,dz
+        for k,v in pairs(extraction) do
+            dx,dy,dz=mypos.x-v.x,mypos.y-v.y,mypos.z-v.z
+            if dx*dx+dy*dy+dz*dz<v.r then
+                WriteHint("~g~Press E to save and quit")
+                if IsControlJustPressed(0,86) then
+                    enable_kvp_saving()
+                    repeat Wait(0)
+                        WriteHint("~g~You can leave server now")
+                        mypos=GetEntityCoords(myped)
+                        dx,dy,dz=mypos.x-v.x,mypos.y-v.y,mypos.z-v.z
+                    until dx*dx+dy*dy+dz*dz>v.r
+                    disable_kvp_saving()
+                    SimpleNotification("Saving aborted.")
+                end
+            end
+        end
+    end
+end)
+    
 -- Citizen.CreateThread(function()
     -- while true do Wait(0)
         -- local myped=PlayerPedId()

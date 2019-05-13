@@ -323,14 +323,14 @@ Citizen.CreateThread(function()
                     TriggerClientEvent("updatesignal",-1,k)
                 end
             else
-                if v.abandoned==nil then
-                    v.abandoned=0
-                elseif v.abandoned<20 then
-                    v.abandoned=v.abandoned+1
-                else
-                    signals[k]=nil
-                    TriggerClientEvent("updatesignal",-1,k)
-                end
+                -- if v.abandoned==nil then
+                    -- v.abandoned=0
+                -- elseif v.abandoned<20 then
+                    -- v.abandoned=v.abandoned+1
+                -- else
+                    -- signals[k]=nil
+                    -- TriggerClientEvent("updatesignal",-1,k)
+                -- end
             end
         end
         if active<3 then
@@ -398,7 +398,7 @@ end)
 
 RegisterServerEvent("imdead")
 AddEventHandler("imdead",function(x,y,z,loot)
-    create_loot_crate(x,y,z,loot,20,310,GetHashKey("prop_big_bag_01"),20,"raiders")
+    create_loot_crate(x,y,z,loot,20,310,GetHashKey("prop_big_bag_01"),0,"raiders")
 end)
 
 
