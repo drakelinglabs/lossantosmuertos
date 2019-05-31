@@ -1,3 +1,6 @@
+local players_inventory={}
+local players_pos={}
+
 local raid_content={
 scrapplastic=150,
 scrapmetal=120,
@@ -315,7 +318,7 @@ Citizen.CreateThread(function()
                 if v.abandoned==nil then
                     active=active+1
                     v.abandoned=0
-                elseif v.abandoned<25 then
+                elseif v.abandoned<2500 then
                     active=active+1
                     v.abandoned=v.abandoned+1
                 else
@@ -399,6 +402,7 @@ end)
 RegisterServerEvent("imdead")
 AddEventHandler("imdead",function(x,y,z,loot)
     create_loot_crate(x,y,z,loot,20,310,GetHashKey("prop_big_bag_01"),0,"raiders")
+    players_inventory[source]=nil
 end)
 
 
@@ -452,8 +456,42 @@ AddEventHandler("raid_killed",function(k,x,y,z)
         raid.x,raid.y,raid.z=x,y,z
     end
 end)
-    
-    
+
+RegisterServerEvent("updateplayerloot")
+AddEventHandler("updateplayerloot",function(loot)
+    if loot==nil then loot={} end
+    players_inventory[source]=loot
+end)
+RegisterServerEvent("updateplayeritem")
+AddEventHandler("updateplayeritem",function(item,amount)
+    if players_inventory[source]==nil and amount~=nil then
+        players_inventory[source]={[item]=amount}
+    else
+        players_inventory[source][item]=amount
+    end
+end)
+RegisterServerEvent("updateplayerpos")
+AddEventHandler("updateplayerpos",function(x,y,z)
+    local p=players_pos[source]
+    if p==nil then
+        players_pos[source]={x=x,y=y,z=z}
+    else
+        p.x,p.y,p.z=x,y,z
+    end
+end)
+AddEventHandler('playerDropped', function()
+    local p=players_pos[source]
+    local loot=players_inventory[source]
+    if p~=nil and loot~=nil then
+        for k,v in pairs(loot) do
+            create_loot_crate(p.x,p.y,p.z,loot,20,310,GetHashKey("prop_big_bag_01"),0,"raiders")
+            print("player "..source.." dropped from server and dropped items")
+            break
+        end
+    end
+    players_pos[source]=nil
+    players_inventory[source]=nil
+end)
     
 -- RegisterServerEvent("place")
 -- AddEventHandler("place",function(model,x,y,z,yaw)

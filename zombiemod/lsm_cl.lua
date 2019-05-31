@@ -1169,7 +1169,7 @@ local safezones={
         "canfood",2,
     },
     --provisionpos={ x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
-    questpos={x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
+    --questpos={x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
     weapons={"pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     --garagepos={x=-1095.7849121094,y=4945.1254882813,z=218.58392333984,angle=205.9517364502},
     --vehpos={x=-1069.4080810547,y=4937.5786132813,z=212.07720947266,angle=342.98559570313},
@@ -1210,10 +1210,10 @@ local safezones={
         {"soda",10,"juice",10},
         {"alcohol",5,"cash",100},
     },
-    join_faction={x=-1146.4794921875,y=4940.9321289063,z=222.2685546875,
-        rep_moreorless="more",rep_amount=50,
+    -- join_faction={x=-1146.4794921875,y=4940.9321289063,z=222.2685546875,
+        -- rep_moreorless="more",rep_amount=50,
 
-    },
+    -- },
     quests={
         textnoquest="I have nothing for you at the moment.",
         join_name="Admission to the Survivors",
@@ -1298,7 +1298,7 @@ local safezones={
         "pistolammo",20,
     },
     --provisionpos={x=447.22109985352,y=-975.54309082031,z=30.689596176147},
-    questpos={x=447.22109985352,y=-975.54309082031,z=30.689596176147},
+    --questpos={x=447.22109985352,y=-975.54309082031,z=30.689596176147},
     weapons={"pistol","pumpshotgun"},
     --garagepos={x=449.07763671875,y=-1018.770324707,z=28.532030105591,angle=78.808685302734},
     --vehpos={x=449.46347045898,y=-1012.5942382813,z=28.496547698975,angle=94.81258392334},
@@ -1514,7 +1514,7 @@ local safezones={
         {"cash",330,"medkit",1},
         {"cash",400,"ammo",30},
     },
-    questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
+    --questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
     tradepos={x=1682.52734375,y=2476.2099609375,z=45.823303222656},
     --craftpos={x=1689.4483642578,y=2552.2507324219,z=45.56485748291},
     crafts=normal_crafts,
@@ -2838,6 +2838,7 @@ DecorRegister("zm_health",3)
 DecorRegister("zm_armor",3)
 DecorRegister("zm_lastbone",3)
 
+DecorRegister("zombie_random",3)
 DecorRegister("zm_looted",2)
 DecorRegister("post_apoc_car",2)
 DecorRegister("zombie_type",3)
@@ -2888,6 +2889,7 @@ end
 
 local function check_inv_slot_for_zero_amount()
     if inventory[inventory.current].amount<1 then
+        TriggerServerEvent("updateplayeritem",inventory[inventory.current].item,nil)
         for i=inventory.current,inventory.total do
             inventory[i]=inventory[i+1]
             if inventory[i]==nil then
@@ -2910,6 +2912,7 @@ local function check_inv_slot_for_zero_amount()
         end
     else
         SetResourceKvpInt("inventory_amount_"..inventory.current,inventory[inventory.current].amount)
+        TriggerServerEvent("updateplayeritem",inventory[inventory.current].item,inventory[inventory.current].amount)
     end
     SetResourceKvpInt("inventory_current",inventory.current)
     --print(inventory.current.."- current / "..inventory.total.."- total")
@@ -2933,6 +2936,7 @@ local function give_item_to_inventory(add_name,add_amount)
         --print("add_to_slot _ true")
         inventory[add_to_slot].amount=inventory[add_to_slot].amount+add_amount
         SetResourceKvpInt("inventory_amount_"..add_to_slot,inventory[add_to_slot].amount)
+        TriggerServerEvent("updateplayeritem",add_name,inventory[add_to_slot].amount)
         --print("set kvp int")
     else
         --print("add_to_slot _ false")
@@ -3007,6 +3011,7 @@ local function give_item_to_inventory(add_name,add_amount)
             SetResourceKvpInt("inventory_amount_"..inventory.total,inventory[inventory.total].amount)
             SetResourceKvpInt("inventory_total",inventory.total)
             SetResourceKvpInt("inventory_current",inventory.current)
+            TriggerServerEvent("updateplayeritem",add_name,add_amount)
         else
             WriteNotification("You ~r~don't have ~s~inventory slots for that item!")
             return false
@@ -3367,6 +3372,17 @@ local function change_clothes(ped,s)
         end
 end
 
+local function send_player_loot()
+    local loot={}
+    for i=1,inventory.total do
+        local v=inventory[i]
+        loot[v.item]=v.amount
+    end
+    
+    TriggerServerEvent("updateplayerloot",loot)
+end
+
+
 AddEventHandler("playerSpawned",function()
     NetworkSetFriendlyFireOption(true)
     local ped=PlayerPedId()
@@ -3397,6 +3413,8 @@ AddEventHandler("playerSpawned",function()
     SetPedRelationshipGroupHash(ped,GetHashKey("NEUTRAL"))
     
     disable_kvp_saving()
+    
+    send_player_loot()
     
     if lsm_random_spawn==1 then
         
@@ -4125,8 +4143,8 @@ Citizen.CreateThread(function()
                     SetTextWrap(inventory_down_x_left,inventory_down_x_right)
                     WriteText(4,item_descriptions[inventory[curitem].item],inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
                     DrawSprite("lsm", inventory[curitem].item, inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
-                    
-                    WriteText(4,item_weight[inventory[curitem].item].." KG",inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc+0.07)
+                    local weight=item_weight[inventory[curitem].item]
+                    if weight then WriteText(4,weight.." KG",inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc+0.07) end
                 else
                     WriteText(2,"Empty",inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
                     SetTextWrap(inventory_down_x_left,inventory_down_x_right)
@@ -4493,7 +4511,7 @@ Citizen.CreateThread(function()
         if player.hydration>=0.01 then
             player.hydration=player.hydration-0.105
             if (player.weight>player.maxweight) then
-                player.hydration=player.hydration-0.210
+                player.hydration=player.hydration-3.315
             end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
@@ -4501,7 +4519,7 @@ Citizen.CreateThread(function()
         if player.saturation>=0.01 then
             player.saturation=player.saturation-0.06
             if (player.weight>player.maxweight) then
-                player.saturation=player.saturation-0.12
+                player.saturation=player.saturation-1.18
             end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
@@ -7258,7 +7276,9 @@ Citizen.CreateThread(function()
                             if amounttodrop>inventory[inventory.current].amount then amounttodrop=inventory[inventory.current].amount end
                         end
                         DrawSprite("lsm", "hand", 0.5025,0.85,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
-                        DrawSprite("lsm", inventory[inventory.current].item, 0.5,0.875,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
+                        
+                        local sprite=inventory[inventory.current].item
+                        if sprite then DrawSprite("lsm", sprite, 0.5,0.875,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255) end
                         DrawSprite("lsm", "arrowdown", 0.5,0.950,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
                         WriteText(7,"~g~E ~c~to drop".." ~w~"..amounttodrop.."~c~/"..inventory[inventory.current].amount.." "..inventory[inventory.current].item,0.45,255,255,255,255,0.53,0.85)
                         WriteText(7,"~g~left ~c~and ~g~right ~c~to change amount to drop",0.35,255,255,255,255,0.53,0.89)
@@ -7754,7 +7774,7 @@ Citizen.CreateThread(function()
     local last_timestamp=0
     local filter_mode=true
     local filter=0
-    local maxfilter=0x7F00
+    local maxfilter=0x1F00
     local function zombie_refresh()--needs ped, must be zombie and not dead
         SetPedCombatRange(ped,2)
         SetPedSeeingRange(ped, 100.0)
@@ -7849,6 +7869,7 @@ Citizen.CreateThread(function()
                     DecorSetInt(ped,"zm_armor",GetPedArmour(ped))
                     zombie_type=math.abs(math.floor(zpos.x+zpos.y*5+zpos.z*7))%#randomclipsets+1
                     DecorSetInt(ped,"zombie_type",zombie_type)
+                    DecorSetInt(ped,"zombie_random",math.abs(math.floor(zpos.x+zpos.y*5+zpos.z*7))%100)
                     clipset=randomclipsets[zombie_type]
                     SetPedEnableWeaponBlocking(ped, true)
                     DisablePedPainAudio(ped, true)
@@ -8032,7 +8053,7 @@ Citizen.CreateThread(function()
                 -- SetEntityHealth(myped,myhealth-1)
             -- --end
         -- end
-        if distance>400.0 then --20m
+        if distance>500.0 then --25m
             -- if IsPedInAnyVehicle(ped,false) then
                 -- SetEntityHealth(ped,0)
             -- end
@@ -8043,8 +8064,8 @@ Citizen.CreateThread(function()
             if HasAnimSetLoaded(clipset.anim) then
                 SetPedMovementClipset(ped,clipset.anim,clipset.speed)
             end
-            TaskGoToEntity(ped, target, -1, 0.1, clipset.speed, 1073741824, 0)
-        elseif distance>4.0 then--2*2
+            TaskGoToEntity(ped, target, -1, 1.0, clipset.speed, 1073741824, 0)
+        elseif distance>1.5 then 
             -- if IsPedInAnyVehicle(ped,false) then
                 -- SetEntityHealth(ped,0)
             -- end
@@ -8052,16 +8073,39 @@ Citizen.CreateThread(function()
             clipset=randomclipsets[zombie_type]
             --clipset=movementclipsets.limper        
             RequestAnimSet(clipset.anim)
-            if HasAnimSetLoaded(clipset.anim) then
-                SetPedMovementClipset(ped,clipset.anim,2.0)
+            --WriteHint("~g~ZOMBIE CLOSE ZOMBIE CLOSE ZOMBIE CLOSE ZOMBIE CLOSE ")
+            if (DecorGetInt(ped,"zombie_random")<5) then
+                if HasAnimSetLoaded(clipset.anim) then
+                    SetPedMovementClipset(ped,clipset.anim,2.0)
+                end
+                TaskGoToEntity(ped, target, -1, 1.0, 2.0, 1073741824, 0)
+            else
+                if HasAnimSetLoaded(clipset.anim) then
+                    SetPedMovementClipset(ped,clipset.anim,clipset.speed)
+                end
+                TaskGoToEntity(ped, target, -1, 1.0, clipset.speed, 1073741824, 0)
             end
-            TaskGoToEntity(ped, target, -1, 0.1, 2.0, 1073741824, 0)
         else
             --ClearPedSecondaryTask(ped)
             --ClearPedTasksImmediately(ped)
             --SetBlockingOfNonTemporaryEvents(ped, 1)
             TaskSetBlockingOfNonTemporaryEvents(ped, 1)
-            TaskCombatPed(ped, target, 0, 16);
+            --TaskCombatPed(ped, target, 0, 16);
+            if not IsPedRagdoll(ped) and not IsPedGettingUp(ped) then
+            
+                local dict="melee@unarmed@streamed_core_fps" 
+                local anim="running_shove"
+                if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                    RequestAnimDict(dict)
+                    while not HasAnimDictLoaded(dict) do Wait(0) end
+                    ClearPedTasksImmediately(ped)
+                    TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 48, 0.001, false, false, false)
+                    ApplyDamageToPed(target, 20, false);
+                else
+                    --SetHighFallTask(ped, 5000, -1, -1)
+                end
+            end
+            
             TaskGetOffBoat(ped,nil)
             zombie_type=DecorGetInt(ped,"zombie_type")
             clipset=randomclipsets[zombie_type]
@@ -9509,7 +9553,7 @@ Citizen.CreateThread(function()
                     WriteHint("You're in ~g~FRIENDLY TERRITORY~s~.")
                 elseif rel==5 then
                     WriteHint("You are in ~r~ENEMY TERRITORY~s~! Defend yourself!")
-                else
+                elseif not zone.t~=72 then
                     WriteHint("You are in ~y~NEUTRAL TERRITORY~s~! Holster your weapons.")
                 end
             end
@@ -10283,9 +10327,9 @@ end)
 
 
 extraction={
-{x=-1075.7725830078,y=4897.6552734375,z=214.27157592773,r=1.0},
-{x=470.79769897461,y=-984.92553710938,z=30.689607620239,r=1.0},
-{x=1753.1240234375,y=2623.8425292969,z=45.564979553223,r=1.0},
+{x=-1609.5236816406,y=5258.9194335938,z=3.9741017818451,r=1.0},
+{x=2824.3920898438,y=-748.71466064453,z=1.5879430770874,r=1.0},
+{x=-1803.7950439453,y=-1229.6433105469,z=1.5942938327789,r=1.0},
 }
 
 Citizen.CreateThread(function()
@@ -10309,6 +10353,7 @@ Citizen.CreateThread(function()
             if dx*dx+dy*dy+dz*dz<v.r then
                 WriteHint("~g~Press E to save and quit")
                 if IsControlJustPressed(0,86) then
+                    TriggerServerEvent("updateplayerloot",nil)
                     enable_kvp_saving()
                     repeat Wait(0)
                         WriteHint("~g~You can leave server now")
@@ -10316,10 +10361,27 @@ Citizen.CreateThread(function()
                         dx,dy,dz=mypos.x-v.x,mypos.y-v.y,mypos.z-v.z
                     until dx*dx+dy*dy+dz*dz>v.r
                     disable_kvp_saving()
+                    send_player_loot()
                     SimpleNotification("Saving aborted.")
                 end
             end
         end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        WriteTextNoOutline(4,"Drakeling Labs",0.4,200,200,200,255,0.025,0.007) 
+        DrawSprite("lsm", "dlabs", 0.012,0.02   ,0.0165,0.025,   0.0, 58, 112, 160, 255)
+    end
+end)
+
+
+Citizen.CreateThread(function()
+    while true do Wait(1000)
+        local myped=PlayerPedId()
+        local mypos=GetEntityCoords(myped)
+        TriggerServerEvent("updateplayerpos",mypos.x,mypos.y,mypos.z)
     end
 end)
     
