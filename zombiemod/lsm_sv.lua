@@ -54,10 +54,10 @@ revolver_mk2=1,
 pistol_mk2=1,
 dbshotgun=1,
 musket=1,
-provisionkey=4,
-barberkey=4,
-tattookey=4,
-gunstorekey=4,
+-- provisionkey=4,
+-- barberkey=4,
+-- tattookey=4,
+-- gunstorekey=4,
 medkit=5,
 assaultshotgun=1,
 bullpupshotgun=1,
@@ -100,7 +100,7 @@ brasscatcher=2,
 gunpowder=40,
 radio=10,
 aircraftfuel=30,
-sheriffkey=4,
+--sheriffkey=4,
 policedocs=10,
 painkillers=10,
 smgammo=400,
@@ -118,7 +118,7 @@ suppressor_5=2,
 scope_1=4,
 scope_2=4,
 scope_3=4,
-advanced_scope=2,
+scope_advanced=2,
 scope_compactholo=4,
 muzzlebrake_1=4,
 heavybarrel=4,
@@ -129,14 +129,14 @@ scope_thermal=1,
 local safezones={}
 
 local raids={
-{x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
-{x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
-{x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
-{x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=125.0,t=5},
-{x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=125.0,t=5},
-{x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=125.0,t=5},
-{x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=125.0,t=2},
-{x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=125.0,t=4},
+-- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
+-- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
+-- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
+-- {x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=125.0,t=5},
+-- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=125.0,t=5},
+-- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=125.0,t=5},
+-- {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=125.0,t=2},
+-- {x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=125.0,t=4},
 {x=0.786067962646,y=0.458984375,z=0.234939575195,r=750.0,t=72},
 }
 
@@ -207,7 +207,7 @@ local heists={
 {x=445.91668701172,y=5572.1088867188,z=781.18475341797,r=150,health=30,t="raiders"}, --mountain top
 {x=3536.2355957031,y=3665.2844238281,z=28.121892929077,r=150,health=30,t="raiders"}, --research labs
 {x=2746.4077148438,y=1487.2686767578,z=30.791791915894,r=150,health=30,t="raiders"}, --power plant
-{x=2790.9555664063,y=-707.29125976563,z=4.7133226394653,r=150,health=30,t="raiders"}, --beach
+--{x=2790.9555664063,y=-707.29125976563,z=4.7133226394653,r=150,health=30,t="raiders"}, --beach
 {x=1238.3894042969,y=-2951.0502929688,z=9.3192529678345,r=150,health=30,t="raiders"}, --container ship
 {x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150,health=30,t="raiders"}, --mercenary warehouse
 {x=236.56707763672,y=-3262.6123046875,z=40.538223266602,r=150,health=30,t="raiders"}, --container building
@@ -240,7 +240,7 @@ RegisterServerEvent("signalfound")
 AddEventHandler("signalfound",function(id)
     local signal=signals[id]
     if signal~=nil then
-        signal.abandoned=nil
+        if signal.abandoned~=nil then signal.abandoned=0 end
         if signal.health then
             signal.health=signal.health-1
             if signal.health<0 then signal.health=nil end
@@ -257,7 +257,7 @@ RegisterServerEvent("loot")
 AddEventHandler("loot",function(id,thing)
     local signal=signals[id]
     if signal~=nil then
-        signal.abandoned=nil
+        if signal.abandoned~=nil then signal.abandoned=0 end
         local loot=signal.loot
         if loot~=nil and thing~=nil and loot[thing]~=nil then
             TriggerClientEvent("loot_crate_give",source,thing,loot[thing])
@@ -314,11 +314,11 @@ Citizen.CreateThread(function()
     while true do Wait(60000)
         local active=0
         for k,v in pairs(signals) do
-            if v.b==nil or v.b~=310 then
+            if v.b==nil or (v.b~=310 and v.b~=408) then
                 if v.abandoned==nil then
                     active=active+1
-                    v.abandoned=0
-                elseif v.abandoned<2500 then
+                    -- v.abandoned=0
+                elseif v.abandoned<15 then
                     active=active+1
                     v.abandoned=v.abandoned+1
                 else
@@ -326,14 +326,14 @@ Citizen.CreateThread(function()
                     TriggerClientEvent("updatesignal",-1,k)
                 end
             else
-                -- if v.abandoned==nil then
-                    -- v.abandoned=0
-                -- elseif v.abandoned<20 then
-                    -- v.abandoned=v.abandoned+1
-                -- else
-                    -- signals[k]=nil
-                    -- TriggerClientEvent("updatesignal",-1,k)
-                -- end
+                if v.abandoned==nil then
+                    v.abandoned=0
+                elseif v.abandoned<15 then
+                    v.abandoned=v.abandoned+1
+                else
+                    signals[k]=nil
+                    TriggerClientEvent("updatesignal",-1,k)
+                end
             end
         end
         if active<3 then
@@ -464,10 +464,14 @@ AddEventHandler("updateplayerloot",function(loot)
 end)
 RegisterServerEvent("updateplayeritem")
 AddEventHandler("updateplayeritem",function(item,amount)
-    if players_inventory[source]==nil and amount~=nil then
-        players_inventory[source]={[item]=amount}
-    else
-        players_inventory[source][item]=amount
+    if item then
+        if players_inventory[source]==nil then
+            if amount~=nil then
+                players_inventory[source]={[item]=amount}
+            end
+        else
+            players_inventory[source][item]=amount
+        end
     end
 end)
 RegisterServerEvent("updateplayerpos")
@@ -491,6 +495,14 @@ AddEventHandler('playerDropped', function()
     end
     players_pos[source]=nil
     players_inventory[source]=nil
+end)
+
+
+RegisterServerEvent("itemdrop")
+AddEventHandler("itemdrop",function(x,y,z,item,amount)
+    local loot={}
+    loot[item]=amount
+    create_loot_crate(x,y,z,loot,5,408,GetHashKey("prop_big_bag_01"),0,"weapon")
 end)
     
 -- RegisterServerEvent("place")

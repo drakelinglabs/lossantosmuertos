@@ -1,7 +1,93 @@
 
+local weapons={
+switchblade=1,
+knife=1,
+dagger=1,
+bat=1,
+battleaxe=1,
+crowbar=1,
+flashlight=1,
+knuckle=1,
+machete=1,
+wrench=1,
+poolcue=1,
+molotov=1,
+pipebomb=1,
+flaregun=1,
+ball=5,
+snspistol=1,
+vintagepistol=1,
+pistol=1,
+combatpistol=1,
+doubleaction=1,
+revolver=1,
+appistol=1,
+heavypistol=1,
+marksmanpistol=1,
+pistol50=1,
+pistol_mk2=1,
+revolver_mk2=1,
+pistol_mk2=1,
+dbshotgun=1,
+musket=1,
+assaultshotgun=1,
+bullpupshotgun=1,
+heavyshotgun=1,
+pumpshotgun=1,
+pumpshotgun_mk2=1,
+sawnoffshotgun=1,
+autoshotgun=1,
+assaultsmg=1,
+combatmg=1,
+combatmg_mk2=1,
+combatpdw=1,
+gusenberg=1,
+machinepistol=1,
+mg=1,
+microsmg=1,
+minismg=1,
+smg=1,
+smg_mk2=1,
+advancedrifle=1,
+assaultrifle=1,
+assaultrifle_mk2=1,
+bullpuprifle=1,
+bullpuprifle_mk2=1,
+carbinerifle=1,
+carbinerifle_mk2=1,
+compactrifle=1,
+specialcarbine=1,
+specialcarbine_mk2=1,
+heavysniper=1,
+sniperrifle=1,
+marksmanrifle=1,
+marksmanrifle_mk2=1,
+heavysniper_mk2=1,
+compactlauncher=1,
+grenadelauncher=1,
+assaultshotgun=1,
+}
+
+local ammo_types={
+ammo=218444191,
+pistolammo=1950175060,
+shotgunammo=-1878508229,
+heavyrifleammo=1285032059,
+flaregunammo=1173416293,
+smgammo=1820140472,
+mgammo=1788949567,
+launchergrenade=1003267566,
+grenade=1003688881,
+}
+
+
+local amounttodrop
+local droppingitem=false
+local droppingtext="Press E to drop the selected item. Use arrow keys to adjust the amount you want to drop. Press backspace or right mouse button to cancel."
+
 local saving_enabled=true --don't touch, it means that hooks are not applied by default, that IS initialy true
 local saving_buffer={}
-local saving_kvp_read_fucntions={
+local saving_kvp_read_functions={
     GetResourceKvpString=GetResourceKvpString,
     GetResourceKvpInt=GetResourceKvpInt,
     GetResourceKvpFloat=GetResourceKvpFloat,
@@ -13,10 +99,16 @@ local saving_kvp_mode={
     DeleteResourceKvp=DeleteResourceKvp,
 }
 local saving_things_to_remove={--cheap way to "delete" things from kvp
-    inventory_total={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_fucntions.GetResourceKvpInt},
-    inventory_current={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_fucntions.GetResourceKvpInt},
-    garage_1_model={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_fucntions.GetResourceKvpInt},
+    inventory_total={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_functions.GetResourceKvpInt},
+    inventory_current={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_functions.GetResourceKvpInt},
+    garage_1_model={v=0,f=saving_kvp_mode.SetResourceKvpInt,g=saving_kvp_read_functions.GetResourceKvpInt},
 }
+for k,v in pairs(weapons) do
+    saving_things_to_remove[k]={f=saving_kvp_mode.DeleteResourceKvp,g=saving_kvp_read_functions.GetResourceKvpInt}
+end
+for k,v in pairs(ammo_types) do
+    saving_things_to_remove[k]={f=saving_kvp_mode.DeleteResourceKvp,g=saving_kvp_read_functions.GetResourceKvpInt}
+end
 local saving_buf_mode={
     SetResourceKvp=function(key,value)
         saving_buffer[key]={v=value,f=saving_kvp_mode.SetResourceKvp}
@@ -34,19 +126,19 @@ local saving_buf_mode={
         if saving_buffer[key]~=nil then
             return saving_buffer[key].v
         end
-        return saving_kvp_read_fucntions.GetResourceKvpString(key)
+        return saving_kvp_read_functions.GetResourceKvpString(key)
     end,
     GetResourceKvpInt=function(key)
         if saving_buffer[key]~=nil then
             return saving_buffer[key].v or 0
         end
-        return saving_kvp_read_fucntions.GetResourceKvpInt(key)
+        return saving_kvp_read_functions.GetResourceKvpInt(key)
     end,
     GetResourceKvpFloat=function(key,value)
         if saving_buffer[key]~=nil then
             return saving_buffer[key].v or (.5-.5)
         end
-        return saving_kvp_read_fucntions.GetResourceKvpFloat(key)
+        return saving_kvp_read_functions.GetResourceKvpFloat(key)
     end,
 }
 local function disable_kvp_saving()
@@ -459,9 +551,9 @@ local relationship_name={
 [GetHashKey("NEUTRAL")]="Scavenger",
 [GetHashKey("DAWN")]="Dawn",
 [GetHashKey("GOVERNMENT")]="Government",
-[GetHashKey("BANDIT")]="Bandit",
+[GetHashKey("BANDIT")]="Marauder",
 [GetHashKey("RAIDER")]="Raider",
-[GetHashKey("MARAUDER")]="Marauder",
+[GetHashKey("MARAUDER")]="Bandit",
 }
 local relationship_names={
 [0]="You are allied with this faction. You may use your weapons freely.",
@@ -474,9 +566,9 @@ local relationship_names={
 [GetHashKey("NEUTRAL")]="Scavengers",
 [GetHashKey("DAWN")]="Dawn",
 [GetHashKey("GOVERNMENT")]="Government",
-[GetHashKey("BANDIT")]="Bandits",
+[GetHashKey("BANDIT")]="Marauders",
 [GetHashKey("RAIDER")]="Raiders",
-[GetHashKey("MARAUDER")]="Marauders",
+[GetHashKey("MARAUDER")]="Bandits",
 }
 
 local relationship_good_bad={
@@ -485,7 +577,7 @@ local relationship_good_bad={
 [GetHashKey("BANDIT")]="bad",
 [GetHashKey("GOVERNMENT")]="good",
 [GetHashKey("DAWN")]="good",
-[GetHashKey("RAIDER")]="neutral",
+[GetHashKey("RAIDER")]="bad", --"neutral"
 }
 
 local relationship_requirements={
@@ -544,74 +636,6 @@ quest_keys=300,
 
 local survivor_hash,bandit_hash,government_hash,raider_hash,neutral_hash,dawn_hash,marauder_hash
 
-local weapons={
-switchblade=1,
-knife=1,
-dagger=1,
-bat=1,
-battleaxe=1,
-crowbar=1,
-flashlight=1,
-knuckle=1,
-machete=1,
-wrench=1,
-poolcue=1,
-molotov=1,
-pipebomb=1,
-flaregun=1,
-ball=5,
-snspistol=1,
-vintagepistol=1,
-pistol=1,
-combatpistol=1,
-doubleaction=1,
-revolver=1,
-appistol=1,
-heavypistol=1,
-marksmanpistol=1,
-pistol50=1,
-pistol_mk2=1,
-revolver_mk2=1,
-pistol_mk2=1,
-dbshotgun=1,
-musket=1,
-assaultshotgun=1,
-bullpupshotgun=1,
-heavyshotgun=1,
-pumpshotgun=1,
-pumpshotgun_mk2=1,
-sawnoffshotgun=1,
-autoshotgun=1,
-assaultsmg=1,
-combatmg=1,
-combatmg_mk2=1,
-combatpdw=1,
-gusenberg=1,
-machinepistol=1,
-mg=1,
-microsmg=1,
-minismg=1,
-smg=1,
-smg_mk2=1,
-advancedrifle=1,
-assaultrifle=1,
-assaultrifle_mk2=1,
-bullpuprifle=1,
-bullpuprifle_mk2=1,
-carbinerifle=1,
-carbinerifle_mk2=1,
-compactrifle=1,
-specialcarbine=1,
-specialcarbine_mk2=1,
-heavysniper=1,
-sniperrifle=1,
-marksmanrifle=1,
-marksmanrifle_mk2=1,
-heavysniper_mk2=1,
-compactlauncher=1,
-grenadelauncher=1,
-assaultshotgun=1,
-}
 
 local localization={
 cruiser="Cruiser Bicycle",
@@ -889,11 +913,22 @@ Citizen.CreateThread(function()
                 v.y=y
                 v.r=r
                 if v.blip==nil then 
+                    if v.t==72 then
+                        if v.blipadditional==nil then
+                            v.blipadditional=AddBlipForCoord(x,y,0)
+                            SetBlipSprite(v.blipadditional,80)
+                            SetBlipName(v.blipadditional,"Radiation Zone")
+                            SetBlipScale(v.blipadditional,1.5)
+                        end
+                    end
                     v.blip=AddBlipForRadius(x,y,0,r)
                     SetBlipAlpha(v.blip,100)
                     SetBlipColour(v.blip,t)
                 else
                     SetBlipCoords(v.blip,x,y,0)
+                    if v.blipadditional~=nil then
+                        SetBlipCoords(v.blipadditional,x,y,0)
+                    end
                 end
             else
                 if v.blip~=nil then
@@ -1131,9 +1166,9 @@ local safezones={
     relationship="BANDIT"},--weed farm
 ]]
     --Altruists camp
-    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=181,color=36,
+    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=77,color=2,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
-    name="~y~Survivor Camp~s~",
+    name="~g~Survivor Settlement~s~",
     friends=true,
     tradespace=5,
     trade={
@@ -1149,6 +1184,9 @@ local safezones={
         {"cash",15,"soda",1},
         {"cash",10,"juice",1},
         {"cash",25,"alcohol",1},
+        {"cash",25,"scrapplastic",25},
+        {"cash",25,"scrapmetal",25},
+        {"cash",25,"rags",15},
     },
     tradepos={x=-1144.1071777344,y=4908.369140625,z=220.96875},
     clothes={
@@ -1260,7 +1298,7 @@ local safezones={
     
     
     --LSPD station
-    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=60,color=3,
+    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=76,color=3,
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
     name="~b~Government Checkpoint~s~",
@@ -1281,6 +1319,7 @@ local safezones={
         {"cash",30,"canfood",1},
         {"cash",50,"mre",1},
         {"cash",400,"policedocs",1},
+        {"cash",75,"dawntokens",1},
     },
     tradepos={x=452.37100219727,y=-980.07110595703,z=30.689582824707},
     clothes={
@@ -1491,17 +1530,17 @@ local safezones={
     ]]
     
 ----------------------------------------------------
-    {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=84,color=1,
+    {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=78,color=5,
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
-    name="~r~Marauder Fortress~s~",
+    name="~o~Marauder Fortress~s~",
     tradespace=4,
     trade={
         {"gasoline",1,"cash",30},
         {"bandage",1,"cash",20},
         {"canfood",1,"cash",25},
-        {"clothes_banditgoon",1,"cash",300},
-        {"clothes_police",1,"cash",1500},
-        {"clothes_banditauthority",1,"cash",5000},
+        --{"clothes_banditgoon",1,"cash",300},
+        --{"clothes_police",1,"cash",1500},
+        --{"clothes_banditauthority",1,"cash",5000},
         {"clothes_banditmercenary",1,"cash",8000},
         
         {"cash",40,"cigarettes",1},
@@ -1513,6 +1552,7 @@ local safezones={
         {"cash",220,"armorplate",1},
         {"cash",330,"medkit",1},
         {"cash",400,"ammo",30},
+        {"cash",25,"scrapmetal",50},
     },
     --questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
     tradepos={x=1682.52734375,y=2476.2099609375,z=45.823303222656},
@@ -1626,7 +1666,7 @@ local function is_in_safe_zone(x,y,z)
         if math.abs(dx)<v.r then
             dy=v.y-y
             if math.abs(dy)<v.r then
-                if dx*dx+dy*dy<v.r*v.r then
+                if dx*dx+dy*dy<v.r*v.r and not v.t==72 then
                     --WriteNotification("raid:"..v.."/r:"..v.r.."xyz:"..x..y..z)
                         v.name="Patrol"
                     return v
@@ -1641,7 +1681,7 @@ local function is_in_safe_zone(x,y,z)
                 dy=v.y-y
                 if math.abs(dy)<v.r then
                     if dx*dx+dy*dy<v.r*v.r then
-                        v.name="Cache"
+                        v.name="Raider Encampment"
                         return v
                     end
                 end
@@ -1769,17 +1809,31 @@ end)
 
 
 -- Citizen.CreateThread(function()
-    -- while true do
-        -- Wait(10000)
-        -- SetResourceKvpFloat("health",player.health)
-        -- SetResourceKvpFloat("blood",player.blood)
-        -- SetResourceKvpFloat("hydration",player.hydration)
-        -- SetResourceKvpFloat("saturation",player.saturation)
-        -- local pos=GetEntityCoords(PlayerPedId())
-        -- SetResourceKvpFloat("x",pos.x)
-        -- SetResourceKvpFloat("y",pos.y)
-        -- SetResourceKvpFloat("z",pos.z)
+    -- while not NetworkIsPlayerActive(-1) do Wait(0) end
+    -- local x=GetResourceKvpFloat("x")
+    -- local y=GetResourceKvpFloat("y")
+    -- local z=GetResourceKvpFloat("z")
+    -- DeleteResourceKvp("x")
+    -- DeleteResourceKvp("y")
+    -- DeleteResourceKvp("z")
+    -- if math.abs(x)>.1 and math.abs(y)>.1 and math.abs(z)>.1 then
+        -- local ped=PlayerPedId()
+        -- SetEntityCoords(ped,x,y,z)
+        -- if z>999 then
+            -- GiveWeaponToPed(ped,GetHashKey("gadget_parachute"),1,false,false)
+        -- end
     -- end
+    -- -- while true do
+        -- -- Wait(10000)
+        -- -- SetResourceKvpFloat("health",player.health)
+        -- -- SetResourceKvpFloat("blood",player.blood)
+        -- -- SetResourceKvpFloat("hydration",player.hydration)
+        -- -- SetResourceKvpFloat("saturation",player.saturation)
+        -- -- local pos=GetEntityCoords(PlayerPedId())
+        -- -- SetResourceKvpFloat("x",pos.x)
+        -- -- SetResourceKvpFloat("y",pos.y)
+        -- -- SetResourceKvpFloat("z",pos.z)
+    -- -- end
 -- end)
 local quest_description={
 ["quest_bag"]="My personal belongings are in that bag, and I could still have some use for them. There isn't anything valuable to sell, just my ID, driver license, my smartphone, all these things, you know. ",
@@ -1921,6 +1975,7 @@ scope_nightvision=1.8,
 scope_thermal=2.2,
 backpack=1.3,
 duffelbag=2.0,
+tirerepair=1.0,
 }
 local item_names={
 water="Water",
@@ -2020,6 +2075,7 @@ scope_nightvision="Night Vision Scope",
 scope_thermal="Thermal Vision Scope",
 backpack="Backpack",
 duffelbag="Bag",
+tirerepair="Tire Repair Kit",
 }
 local item_descriptions={
 water="A plastic bottle filled with fresh water.",
@@ -2119,6 +2175,7 @@ scope_nightvision="Night Vision Scope",
 scope_thermal="Thermal Vision Scope",
 backpack="Standard backpack",
 duffelbag="Duffel bag",
+tirerepair="Repairs all tiers",
 }
 
 local weapon_upgrades={
@@ -2348,6 +2405,10 @@ for k,v in pairs(weapons) do
     local hash=(GetHashKey(k)&0x7FFFFFFF)
     item_index_to_name[hash]=k
     item_name_to_index[k]=hash
+    hash=GetHashKey("weapon_"..k)
+    if IsWeaponValid(hash) then item_index_to_name[hash]=k end
+    hash=GetHashKey("gadget_"..k)
+    if IsWeaponValid(hash) then item_index_to_name[hash]=k end
 end
 
 local inventory={}
@@ -2432,11 +2493,11 @@ local deadbodiesrewards_tier4={
 {"ammo",-10},
 {"heavyrifleammo",-10},
 {"weed",-2},
-{"provisionkey",1},
-{"barberkey",1},
-{"tattookey",1},
-{"gunstorekey",1},
-{"sheriffkey",1},
+-- {"provisionkey",1},
+-- {"barberkey",1},
+-- {"tattookey",1},
+-- {"gunstorekey",1},
+-- {"sheriffkey",1},
 {"radio",1},
 {"clothes_marauder",1},
 {"clothes_camouflage",1},
@@ -2498,6 +2559,7 @@ local trunkrewards_tier2={
 {"chemicals",-3},
 {"bandage",-2},
 {"engineparts",-5},
+{"tirerepair",-1},
 {"switchblade",1},
 {"knife",1},
 {"dagger",1},
@@ -2566,11 +2628,11 @@ local trunkrewards_tier5={
 --{"pistol_mk2",1},
 {"dbshotgun",1},
 {"musket",1},
-{"provisionkey",1},
-{"barberkey",1},
-{"tattookey",1},
-{"gunstorekey",1},
-{"sheriffkey",1},
+-- {"provisionkey",1},
+-- {"barberkey",1},
+-- {"tattookey",1},
+-- {"gunstorekey",1},
+-- {"sheriffkey",1},
 {"grenade",-3},
 {"launchergrenade",-4},
 }
@@ -3101,6 +3163,34 @@ local function can_fit_all_into_inventory(data)
     end
 end
 
+local function strip_weapon_upgrades(weaponhash)
+    local myped=PlayerPedId()
+    for upgrade_name,v in pairs(weapon_upgrades) do
+        local upgrade_hash=v[weaponhash]
+        if upgrade_hash~=nil then
+            if HasPedGotWeaponComponent(myped, weaponhash, upgrade_hash) then
+                if give_item_to_inventory(upgrade_name,1) then
+                    RemoveWeaponComponentFromPed(myped, weaponhash, upgrade_hash);
+                end
+            end
+        end
+    end
+end
+
+local function unload_weapon(weaponhash)
+    local myped=PlayerPedId()
+    local totalammo=GetAmmoInPedWeapon(myped,weaponhash)
+    local ammohash=GetPedAmmoTypeFromWeapon(myped,weaponhash)
+    for ammoname,v in pairs(ammo_types) do
+        if v==ammohash then
+            if give_item_to_inventory(ammoname,totalammo) then
+                SetPedAmmoByType(myped,ammohash,0)
+            end
+            break
+        end
+    end
+end
+
 local function check_clothes(pped) --if true then return true end
     --if player.suit=="standard" then
         --ClearAllPedProps(pped)
@@ -3412,6 +3502,21 @@ AddEventHandler("playerSpawned",function()
     StartAudioScene("CHARACTER_CHANGE_IN_SKY_SCENE")
     SetPedRelationshipGroupHash(ped,GetHashKey("NEUTRAL"))
     
+
+    local x=GetResourceKvpFloat("x")
+    local y=GetResourceKvpFloat("y")
+    local z=GetResourceKvpFloat("z")
+    DeleteResourceKvp("x")
+    DeleteResourceKvp("y")
+    DeleteResourceKvp("z")
+    if math.abs(x)>.1 and math.abs(y)>.1 and math.abs(z)>.1 then
+        local ped=PlayerPedId()
+        SetEntityCoords(ped,x,y,z)
+        if z>999 then
+            GiveWeaponToPed(ped,GetHashKey("gadget_parachute"),1,false,false)
+        end
+    end
+    
     disable_kvp_saving()
     
     send_player_loot()
@@ -3501,6 +3606,14 @@ Citizen.CreateThread(function()
         --DisableRadarThisFrame()
 
         DisablePoliceReports()
+        
+        local density=0.01
+        SetPedDensityMultiplierThisFrame(density)
+        SetScenarioPedDensityMultiplierThisFrame(density,density)
+        SetParkedVehicleDensityMultiplierThisFrame(density)
+        SetRandomVehicleDensityMultiplierThisFrame(density)
+        --SetSomeVehicleDensityMultiplierThisFrame(density)
+        SetVehicleDensityMultiplierThisFrame(density)
         Wait(0)
     end
 end)
@@ -3534,30 +3647,30 @@ end
 
 
 local doormodels={
-[-1212951353]="tattookey",
-[543652229]="tattookey",
+-- [-1212951353]="tattookey",
+-- [543652229]="tattookey",
 
-[-1844444717]="barberkey",
-[-1663512092]="barberkey",
-[145369505]="barberkey",
+-- [-1844444717]="barberkey",
+-- [-1663512092]="barberkey",
+-- [145369505]="barberkey",
 
-[1196685123]="provisionkey",
-[997554217]="provisionkey",
-[-1212951353]="provisionkey",
-[-868672903]="provisionkey",
-[2065277225]="provisionkey",
+-- [1196685123]="provisionkey",
+-- [997554217]="provisionkey",
+-- [-1212951353]="provisionkey",
+-- [-868672903]="provisionkey",
+-- [2065277225]="provisionkey",
 
-[97297972]="gunstorekey",
-[-8873588]="gunstorekey",
+-- [97297972]="gunstorekey",
+-- [-8873588]="gunstorekey",
 
-[-1501157055]="sheriffkey",
-[-1765048490]="sheriffkey", --sandy
+-- [-1501157055]="sheriffkey",
+-- [-1765048490]="sheriffkey", --sandy
 
--- [320433149]="lspdkey",
--- [-1215222675]="lspdkey",
--- [-2023754432]="lspdkey",
+-- -- [320433149]="lspdkey",
+-- -- [-1215222675]="lspdkey",
+-- -- [-2023754432]="lspdkey",
 
--- [749848321]=, --security door
+-- -- [749848321]=, --security door
 }
 
 -- press e hints
@@ -3661,6 +3774,21 @@ Citizen.CreateThread(function()
                 loop,veh=FindNextVehicle(handle)
             end
             EndFindVehicle(handle)
+            
+            handle,ped=FindFirstPed()
+            loop=(handle~=-1)
+            while loop do
+                local pedpos=GetEntityCoords(ped)
+                if IsPedDeadOrDying(ped) then
+                    local distance=#(mypos-pedpos)
+                    if distance<1.5 and not DecorExistOn(ped,"zm_looted") then
+                        WriteHint("~c~Press ~s~E ~c~to search body")
+                        break;
+                    end
+                end
+                loop,ped=FindNextPed(handle)
+            end
+            EndFindPed(handle)
             
             handle,obj=FindFirstObject()
             loop=(handle~=-1)
@@ -3812,6 +3940,9 @@ Citizen.CreateThread(function()
                         if (rand&(1<<i))~=0 then
                             IsVehicleTyreBurst(veh, i, true)
                         end
+                    end
+                    if (rand%100)<=70 then
+                        DecorSetBool(veh,"zm_looted",true) 
                     end
                     if (rand&800)~=0 then
                         SetEntityRenderScorched(veh,true)
@@ -4139,9 +4270,21 @@ Citizen.CreateThread(function()
                 
                 DrawSprite("lsm", "selected_item", inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
                 if inventory[curitem] then
-                    WriteText(2,item_names[inventory[curitem].item],inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                    if droppingitem then
+                        if item_names[inventory[curitem].item]~=nil then
+                            WriteText(2,"drop "..amounttodrop.." "..item_names[inventory[curitem].item],inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                        else 
+                            WriteText(2,"drop "..amounttodrop.." ".."ERROR Wrong item name",inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                        end
+                    else
+                        WriteText(2,item_names[inventory[curitem].item],inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                    end
                     SetTextWrap(inventory_down_x_left,inventory_down_x_right)
-                    WriteText(4,item_descriptions[inventory[curitem].item],inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
+                    if droppingitem then
+                        WriteText(4,droppingtext,inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
+                    else
+                        WriteText(4,item_descriptions[inventory[curitem].item],inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
+                    end
                     DrawSprite("lsm", inventory[curitem].item, inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
                     local weight=item_weight[inventory[curitem].item]
                     if weight then WriteText(4,weight.." KG",inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc+0.07) end
@@ -4533,10 +4676,10 @@ Citizen.CreateThread(function()
         end
         if player.bleeding>0 then
             SetEntityHealth(pped,GetEntityHealth(pped)-player.bleeding)
-            RequestClipSet("move_injured_generic")
-            SetPedMovementClipset(pped,"move_injured_generic" ,1.0)
-        else
-            ResetPedMovementClipset(pped,1.0)
+            --RequestClipSet("move_injured_generic")
+            --SetPedMovementClipset(pped,"move_injured_generic" ,1.0)
+        --else
+            --ResetPedMovementClipset(pped,1.0)
         end
         if oldhealth-health>5 then
             player.bleeding=player.bleeding+1
@@ -5259,23 +5402,13 @@ end)
 
 
 local prop_mb_crate_01a=GetHashKey("prop_mb_crate_01a")
-local ammo_types={
-ammo=218444191,
-pistolammo=1950175060,
-shotgunammo=-1878508229,
-heavyrifleammo=1285032059,
-flaregunammo=1173416293,
-smgammo=1820140472,
-mgammo=1788949567,
-launchergrenade=1003267566,
-grenade=1003688881,
-}
 Citizen.CreateThread(function()
     local function give_ammo(pped,ammo_type)
-        local current_ammo=GetPedAmmoByType(pped,ammo_type)
-        SetPedAmmoByType(pped,ammo_type,current_ammo+1)
-        if GetPedAmmoByType(pped,ammo_type)~=current_ammo then
-            inventory[inventory.current].amount=inventory[inventory.current].amount-1
+        local old_ammo=GetPedAmmoByType(pped,ammo_type)
+        SetPedAmmoByType(pped,ammo_type,old_ammo+inventory[inventory.current].amount)
+        local new_ammo=GetPedAmmoByType(pped,ammo_type)
+        if new_ammo>old_ammo then
+            inventory[inventory.current].amount=inventory[inventory.current].amount-(new_ammo-old_ammo)
             check_inv_slot_for_zero_amount()
         end
     end
@@ -5415,6 +5548,7 @@ Citizen.CreateThread(function()
         end
     end
     while true do Wait(0)
+        droppingitem=false
         local pped=PlayerPedId()
         local mypos=GetEntityCoords(pped)
         local myfaction=GetPedRelationshipGroupHash(pped)
@@ -5625,9 +5759,9 @@ Citizen.CreateThread(function()
                                 if menu_index==i then
                                     selected_thing=thing
                                     selected_amount=amount
-                                    WriteText(7,thing.." x"..amount,.2,255,255,255,255,x,y)
+                                    WriteText(7,item_names[thing].." x"..amount,.2,255,255,255,255,x,y)
                                 else
-                                    WriteText(7,thing.." x"..amount,.2,128,128,128,255,x,y)
+                                    WriteText(7,item_names[thing].." x"..amount,.2,128,128,128,255,x,y)
                                 end
                                 y=y+.013
                             end
@@ -7254,13 +7388,28 @@ Citizen.CreateThread(function()
                     elseif inventory[inventory.current].item=="duffelbag" then
                         player.backpack=not player.backpack
                         check_clothes(pped)
+                    elseif inventory[inventory.current].item=="tirerepair" then
+                        if IsPedInAnyVehicle(pped) then
+                            local pveh=GetVehiclePedIsIn(pped)
+                            SetVehicleTyreFixed(pveh,0)
+                            SetVehicleTyreFixed(pveh,1)
+                            SetVehicleTyreFixed(pveh,2)
+                            SetVehicleTyreFixed(pveh,3)
+                            SetVehicleTyreFixed(pveh,4)
+                            SetVehicleTyreFixed(pveh,5)
+                            SetVehicleTyreFixed(pveh,45)
+                            SetVehicleTyreFixed(pveh,47)
+                            inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                            check_inv_slot_for_zero_amount()
+                        end
                     end
                 end
                 inventory.highlight=500
             elseif IsControlJustPressed(0,214) then --INPUT_FRONTEND_DELETE
                 if not IsPedInAnyVehicle(pped) and inventory.highlight>0 and inventory[inventory.current]~=nil and inventory[inventory.current].amount>0 then
                     if inventory.mode then inventory.highlight=0 end
-                    local amounttodrop=inventory[inventory.current].amount
+                    amounttodrop=inventory[inventory.current].amount
+                    droppingitem=true
                     while true do Wait(0)
                         if IsControlJustPressed(0,174) then
                             amounttodrop=amounttodrop-1
@@ -7268,21 +7417,24 @@ Citizen.CreateThread(function()
                         elseif IsControlJustPressed(0,175) then
                             amounttodrop=amounttodrop+1
                             if amounttodrop>inventory[inventory.current].amount then amounttodrop=inventory[inventory.current].amount end
-                        elseif IsControlPressed(0,172) then
+                        elseif IsControlPressed(0,173) then
                             amounttodrop=amounttodrop-1
                             if amounttodrop<1 then amounttodrop=1 end
-                        elseif IsControlPressed(0,173) then
+                        elseif IsControlPressed(0,172) then
                             amounttodrop=amounttodrop+1
                             if amounttodrop>inventory[inventory.current].amount then amounttodrop=inventory[inventory.current].amount end
                         end
-                        DrawSprite("lsm", "hand", 0.5025,0.85,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
                         
-                        local sprite=inventory[inventory.current].item
-                        if sprite then DrawSprite("lsm", sprite, 0.5,0.875,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255) end
-                        DrawSprite("lsm", "arrowdown", 0.5,0.950,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
-                        WriteText(7,"~g~E ~c~to drop".." ~w~"..amounttodrop.."~c~/"..inventory[inventory.current].amount.." "..inventory[inventory.current].item,0.45,255,255,255,255,0.53,0.85)
-                        WriteText(7,"~g~left ~c~and ~g~right ~c~to change amount to drop",0.35,255,255,255,255,0.53,0.89)
-                        WriteText(7,"~g~backspace ~c~ or ~g~ RMB ~c~to cancel",0.35,255,255,255,255,0.53,0.92)
+                        -- DrawSprite("lsm", "hand", 0.5025,0.85,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
+                        
+                        -- local sprite=inventory[inventory.current].item
+                        -- if sprite then DrawSprite("lsm", sprite, 0.5,0.875,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255) end
+                        -- DrawSprite("lsm", "arrowdown", 0.5,0.950,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
+                        -- WriteText(7,"~g~E ~c~to drop".." ~w~"..amounttodrop.."~c~/"..inventory[inventory.current].amount.." "..inventory[inventory.current].item,0.45,255,255,255,255,0.53,0.85)
+                        -- WriteText(7,"~g~left ~c~and ~g~right ~c~to change amount to drop",0.35,255,255,255,255,0.53,0.89)
+                        -- WriteText(7,"~g~backspace ~c~ or ~g~ RMB ~c~to cancel",0.35,255,255,255,255,0.53,0.92)
+                        
+                        
                         -- for i=1,45 do
                             -- WriteText(7,i.."~g~ "..string.char(i),0.25,255,255,255,255,0.3,0.0+i*0.02)
                         -- end
@@ -7300,12 +7452,14 @@ Citizen.CreateThread(function()
                             if HasModelLoaded(model) then
                                 if amounttodrop<1 or amounttodrop>inventory[inventory.current].amount then amounttodrop=inventory[inventory.current].amount end
                                 local mypos=GetEntityCoords(PlayerPedId())
-                                local obj=CreateObject(model,mypos.x,mypos.y,mypos.z-.99,true,false,false)
-                                SetEntityCollision(obj,false,false)
-                                FreezeEntityPosition(obj,true)
-                                DecorSetInt(obj,"item",item_name_to_index[inventory[inventory.current].item])
-                                DecorSetInt(obj,"count",amounttodrop)
-                                --SetObjectAsNoLongerNeeded(obj)
+                                local h=GetEntityHeightAboveGround(PlayerPedId())
+                                -- local obj=CreateObject(model,mypos.x,mypos.y,mypos.z-.99,true,false,false)
+                                -- SetEntityCollision(obj,false,false)
+                                -- FreezeEntityPosition(obj,true)
+                                -- DecorSetInt(obj,"item",item_name_to_index[inventory[inventory.current].item])
+                                -- DecorSetInt(obj,"count",amounttodrop)
+                                -- --SetObjectAsNoLongerNeeded(obj)
+                                TriggerServerEvent("itemdrop",mypos.x,mypos.y,mypos.z+1-h,inventory[inventory.current].item,amounttodrop)
                                 inventory[inventory.current].amount=inventory[inventory.current].amount-amounttodrop
                                 check_inv_slot_for_zero_amount()
                                 break
@@ -7774,7 +7928,7 @@ Citizen.CreateThread(function()
     local last_timestamp=0
     local filter_mode=true
     local filter=0
-    local maxfilter=0x1F00
+    local maxfilter=0x3F00
     local function zombie_refresh()--needs ped, must be zombie and not dead
         SetPedCombatRange(ped,2)
         SetPedSeeingRange(ped, 100.0)
@@ -8093,14 +8247,31 @@ Citizen.CreateThread(function()
             --TaskCombatPed(ped, target, 0, 16);
             if not IsPedRagdoll(ped) and not IsPedGettingUp(ped) then
             
-                local dict="melee@unarmed@streamed_core_fps" 
-                local anim="running_shove"
-                if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                local dict="melee@unarmed@streamed_core_fps"--"melee@thrown@streamed_core" 
+                local anim="running_shove"--"plyr_takedown_rear"
+                
+                local dictlow="melee@unarmed@streamed_core_fps"
+                local animlow="ground_attack_0_psycho"
+                
+                if not IsEntityPlayingAnim(ped,dict,anim,3) and not IsEntityPlayingAnim(ped,dictlow,animlow,3) then
                     RequestAnimDict(dict)
                     while not HasAnimDictLoaded(dict) do Wait(0) end
+                    RequestAnimDict(dictlow)
+                    while not HasAnimDictLoaded(dictlow) do Wait(0) end
                     ClearPedTasksImmediately(ped)
-                    TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 48, 0.001, false, false, false)
-                    ApplyDamageToPed(target, 20, false);
+                    --TaskLookAtEntity(ped, target, 1000, 2048, 3);
+                    --SetPedPrimaryLookat(ped,target)
+                    --if not IsPedRagdoll(target) and not IsPedGettingUp(target) then
+                        TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 48, 0.001, false, false, false)
+                        ApplyDamageToPed(target, 20, false);
+                        --SetHighFallTask(target, 3000, -1, -1)
+                    -- else
+                        -- ResetPedRagdollTimer(target)
+                        -- ApplyDamageToPed(target, 5, false);
+                        -- TaskPlayAnim(ped, dictlow, animlow, 8.0, 1.0, -1, 1, 0.001, false, false, false)
+                        -- SetPedToRagdoll(target, 3000, 3000, 0, false, false, false);
+                    -- end
+                    --SetPedToRagdoll(target, 1000, 1000, 2, false, false, false);
                 else
                     --SetHighFallTask(ped, 5000, -1, -1)
                 end
@@ -8493,8 +8664,26 @@ Citizen.CreateThread(function()
                     DecorSetInt(veh,"item",item_name_to_index[item])
                     DecorSetInt(veh,"count",count)
                 else
-                    item=item_index_to_name[DecorGetInt(veh,"item")]
-                    count=DecorGetInt(veh,"count")
+                    local item_decor=DecorGetInt(veh,"item")
+                    local count_decor=DecorGetInt(veh,"count")
+                    if item_decor==nil or item_decor==0 then
+                        WriteNotification("~r~ERROR Item from decor is nil or 0!")
+                        print("ERROR Item from decor is nil or 0")
+                    else
+                        local item_name=item_index_to_name[item_decor]
+                        if item_name==nil then
+                            SimpleNotification("~r~ERROR Name from item_decor ~1~ is nil!",item_decor)
+                            print("ERROR Item from item_decor "..item_decor.." is nil")
+                        else
+                            item=item_name
+                        end
+                    end
+                    if count_decor==nil or count_decor==0 then
+                        SimpleNotification("~r~ERROR Count from decor is nil or 0!",item_decor)
+                        print("ERROR Count from decor is nil or 0")
+                    else
+                        count=count_decor
+                    end
                     if give_item_to_inventory(item,count) then
                         DecorSetBool(veh,"zm_looted",true)
                     end
@@ -9231,83 +9420,83 @@ RegisterCommand('invmode',function(source,args,raw)
         inventory.mode=true
     end
 end,false)
-RegisterCommand('kvp',function(source,args,raw)
-    if args[1]==nil or args[1]=="help" or args[1]=="?" then
-        print("/kvp del key")
-        print("/kvp add type key data")
-        print("/kvp list")
-    elseif args[1]=="GetResourceKvpString" then
-        print(GetResourceKvpString(args[2]))
-    elseif args[1]=="GetResourceKvpInt" then
-        print(GetResourceKvpInt(args[2]))
-    elseif args[1]=="GetResourceKvpFloat" then
-        print(GetResourceKvpFloat(args[2]))
-    elseif args[1]=="ls" or args[1]=="list" or args[1]=="find" then
-        local loop,key,handle
-        if args[2]==nil then
-            handle=StartFindKvp("")
-        else
-            handle=StartFindKvp(args[2])
-        end
-        loop=(handle~=-1)
-        while loop do
-            key=FindKvp(handle)
-            if key==nil then
-                print("nil")
-                loop=false
-            elseif key==0 then
-                print("null")
-                loop=false
-            else
-                if pcall(GetResourceKvpString,key) then
-                    print(key.."=\""..GetResourceKvpString(key).."\"--(string)")
-                end
-                if pcall(GetResourceKvpInt,key) then
-                    print(key.."="..GetResourceKvpInt(key).."--(int)")
-                end
-                if pcall(GetResourceKvpFloat,key) then
-                    print(key.."="..GetResourceKvpFloat(key).."--(float)")
-                end
-            end
-        end
-        EndFindKvp(handle)
-    elseif args[1]=="del" or args[1]=="delete" or args[1]=="remove" then
-        if args[2]~=nil then
-            DeleteResourceKvp(args[2])
-        else
-            print("not enough arguments")
-        end
-    elseif args[1]=="add" or args[1]=="edit" then
-        if args[2]~=nil and args[3]~=nil and args[4]~=nil then
-            if args[2]=="float" then
-                SetResourceKvpFloat(args[3],tonumber(args[4]))
-            elseif args[2]=="int" then
-                SetResourceKvpInt(args[3],math.floor(tonumber(args[4])))
-            elseif args[2]=="string" then
-                SetResourceKvp(args[3],args[4])
-            else
-                print("/kvp add type key data")
-                print("unknown type: "..args[3])
-                print("known types: int, float, string")
-            end
-        else
-            print("not enough arguments")
-            print("/kvp add type key data")
-        end
-    elseif args[1]=="give" and args[2]~=nil then
-        if args[2]=="all" then
-            for k,v in pairs(item_names) do
-                if not give_item_to_inventory(k,1) then
-                    print("Can't give "..v)
-                end
-            end
-        else
-            print(give_item_to_inventory(args[2],math.tointeger(args[3]) or 1))
-        end
-    else
-        print("unknown command")
-    end
-end,false)
+-- RegisterCommand('kvp',function(source,args,raw)
+    -- if args[1]==nil or args[1]=="help" or args[1]=="?" then
+        -- print("/kvp del key")
+        -- print("/kvp add type key data")
+        -- print("/kvp list")
+    -- elseif args[1]=="GetResourceKvpString" then
+        -- print(GetResourceKvpString(args[2]))
+    -- elseif args[1]=="GetResourceKvpInt" then
+        -- print(GetResourceKvpInt(args[2]))
+    -- elseif args[1]=="GetResourceKvpFloat" then
+        -- print(GetResourceKvpFloat(args[2]))
+    -- elseif args[1]=="ls" or args[1]=="list" or args[1]=="find" then
+        -- local loop,key,handle
+        -- if args[2]==nil then
+            -- handle=StartFindKvp("")
+        -- else
+            -- handle=StartFindKvp(args[2])
+        -- end
+        -- loop=(handle~=-1)
+        -- while loop do
+            -- key=FindKvp(handle)
+            -- if key==nil then
+                -- print("nil")
+                -- loop=false
+            -- elseif key==0 then
+                -- print("null")
+                -- loop=false
+            -- else
+                -- if pcall(GetResourceKvpString,key) then
+                    -- print(key.."=\""..GetResourceKvpString(key).."\"--(string)")
+                -- end
+                -- if pcall(GetResourceKvpInt,key) then
+                    -- print(key.."="..GetResourceKvpInt(key).."--(int)")
+                -- end
+                -- if pcall(GetResourceKvpFloat,key) then
+                    -- print(key.."="..GetResourceKvpFloat(key).."--(float)")
+                -- end
+            -- end
+        -- end
+        -- EndFindKvp(handle)
+    -- elseif args[1]=="del" or args[1]=="delete" or args[1]=="remove" then
+        -- if args[2]~=nil then
+            -- DeleteResourceKvp(args[2])
+        -- else
+            -- print("not enough arguments")
+        -- end
+    -- elseif args[1]=="add" or args[1]=="edit" then
+        -- if args[2]~=nil and args[3]~=nil and args[4]~=nil then
+            -- if args[2]=="float" then
+                -- SetResourceKvpFloat(args[3],tonumber(args[4]))
+            -- elseif args[2]=="int" then
+                -- SetResourceKvpInt(args[3],math.floor(tonumber(args[4])))
+            -- elseif args[2]=="string" then
+                -- SetResourceKvp(args[3],args[4])
+            -- else
+                -- print("/kvp add type key data")
+                -- print("unknown type: "..args[3])
+                -- print("known types: int, float, string")
+            -- end
+        -- else
+            -- print("not enough arguments")
+            -- print("/kvp add type key data")
+        -- end
+    -- elseif args[1]=="give" and args[2]~=nil then
+        -- if args[2]=="all" then
+            -- for k,v in pairs(item_names) do
+                -- if not give_item_to_inventory(k,1) then
+                    -- print("Can't give "..v)
+                -- end
+            -- end
+        -- else
+            -- print(give_item_to_inventory(args[2],math.tointeger(args[3]) or 1))
+        -- end
+    -- else
+        -- print("unknown command")
+    -- end
+-- end,false)
 
 --Citizen.CreateThread(function()
     -- local x,y,angle
@@ -9444,9 +9633,18 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t)
         end
         if signal.blip==nil then
             signal.blip=AddBlipForCoord(x,y,0)
-            SetBlipSprite(signal.blip,b or 161)
-            SetBlipColour(signal.blip,b and 4 or 2)
-            SetBlipScale(signal.blip,0.65)
+            SetBlipSprite(signal.blip,b or 84)
+            SetBlipColour(signal.blip,b and 4 or 1)
+            SetBlipScale(signal.blip,1.0)
+            if b==nil or b==84 then
+                SetBlipName(signal.blip, "Raider Encampment")
+            elseif b==408 then
+                SetBlipName(signal.blip, "Dropped Loot")
+                SetBlipDisplay(signal.blip,5)
+            elseif b==310 then
+                SetBlipName(signal.blip, "Survivor Loot")
+            end
+                
             SetBlipAsShortRange(signal.blip,true)
         else
             SetBlipCoords(signal.blip,x,y,0)
@@ -9532,6 +9730,9 @@ Citizen.CreateThread(function()
             WriteHint("~c~Press ~s~ENTER ~c~to open inventory")
         else
             WriteHint("~c~Press ~s~BACKSPACE ~c~to close inventory")
+            WriteHint("~c~Press ~s~F9 ~c~to drop weapon")
+            WriteHint("~c~Press ~s~F10 ~c~to unload weapon")
+            WriteHint("~c~Press ~s~F11 ~c~to deattach weapon upgrades")
             if inventory.total>0 then
                 WriteHint("~c~Press ~s~ENTER ~c~to use item")
                 WriteHint("~c~Press ~s~DELETE ~c~to drop item")
@@ -9882,6 +10083,7 @@ Citizen.CreateThread(function()
     for k,v in ipairs(safezones) do        
         v.bliphandler=AddBlipForCoord(v.x,v.y,v.z)
         SetBlipSprite(v.bliphandler, v.blip)
+        SetBlipScale(v.bliphandler, 1.5)
         SetBlipAsShortRange(v.bliphandler,true)
         if v.raided then
             SetBlipColour(v.bliphandler, 39)
@@ -9908,6 +10110,9 @@ Citizen.CreateThread(function()
                loot[inventory[i].item]=inventory[i].amount
             end
         end
+        inventory.total=0
+        inventory.current=0
+        inventory.scroll=0
         for k,v in pairs(weapons) do
             local weapon_hash=GetHashKey("weapon_"..k)
             if not IsWeaponValid(weapon_hash) then
@@ -9920,6 +10125,7 @@ Citizen.CreateThread(function()
                 end
             end
             if weapon_hash~=nil and HasPedGotWeapon(ped,weapon_hash) then
+                strip_weapon_upgrades(weapon_hash)
                 total=total+1
                 loot[k]=(loot[k] or 0)+1
                 -- local found,clip=GetAmmoInClip(ped,weapon_hash)
@@ -9941,6 +10147,12 @@ Citizen.CreateThread(function()
             if ammo>0 then
                 total=total+1
                 loot[k]=(loot[k] or 0)+ammo
+            end
+        end
+        if inventory.total>0 then
+            total=total+inventory.total
+            for i=1,inventory.total do
+               loot[inventory[i].item]=inventory[i].amount
             end
         end
         if total>0 then
@@ -10001,6 +10213,7 @@ Citizen.CreateThread(function()
             if GetResourceKvpInt(name)~=0 then
                 GiveWeaponToPed(myped,hash,0,false,true)
                 oldweapons=oldweapons~hash
+                --DeleteResourceKvp(name)
                 --totalweapons=totalweapons+1
             end
         end
@@ -10009,6 +10222,7 @@ Citizen.CreateThread(function()
         ammo=GetResourceKvpInt(name)
         SetPedAmmoByType(myped,hash,ammo)
         oldammo=oldammo+ammo
+        --DeleteResourceKvp(name)
     end
     while true do
         Wait(0)
@@ -10310,12 +10524,12 @@ Citizen.CreateThread(function()
                     local myfaction=GetPedRelationshipGroupHash(myped)
                     if relationship_good_bad[theirfaction]=="bad" then
                         change_reputation(1)
-                        WriteNotification("Reputation ~g~+1")
+                        WriteNotification("You have ~g~GAINED REPUTATION ~s~for killing a ~r~"..relationship_name[theirfaction])
                     elseif relationship_good_bad[theirfaction]=="neutral" then
                         WriteNotification("You don't gain ~y~reputation ~s~for killing ~y~"..relationship_names[theirfaction])
                     elseif relationship_good_bad[theirfaction]=="good" then
                         change_reputation(-1)
-                        WriteNotification("Reputation ~r~-1")
+                        WriteNotification("You have ~r~LOST REPUTATION ~s~for killing a ~g~"..relationship_name[theirfaction])
                     end
                 end
             end
@@ -10327,10 +10541,35 @@ end)
 
 
 extraction={
-{x=-1609.5236816406,y=5258.9194335938,z=3.9741017818451,r=1.0},
-{x=2824.3920898438,y=-748.71466064453,z=1.5879430770874,r=1.0},
-{x=-1803.7950439453,y=-1229.6433105469,z=1.5942938327789,r=1.0},
+{x=-1609.5236816406,y=5258.9194335938,z=3.9741017818451,r=2.0},
+{x=2824.3920898438,y=-748.71466064453,z=1.5879430770874,r=2.0},
+{x=-1803.7950439453,y=-1229.6433105469,z=1.5942938327789,r=2.0},
 }
+
+extraction_spawns={
+{x=1303.2777099609,y=4358.4536132813,z=-193.69143676758},
+{x=980.90032958984,y=2330.0258789063,z=-195.55923461914},
+}
+
+
+Citizen.CreateThread(function()
+    while true do Wait(0)
+        local myped=PlayerPedId()
+        local mypos=GetEntityCoords(myped)
+        for k,v in ipairs(extraction) do
+            local dist=#(vector3(mypos.x,mypos.y,mypos.z)-vector3(v.x,v.y,v.z))
+            if dist<1000.0 then
+                DrawMarker(20, v.x, v.y, v.z, 
+                0.0, 0.0, 0.0, --dir
+                0.0, 0.0, 0.0, --rot
+                0.6, 0.6, -0.6, --scl
+                150, 255, 175, 200, 
+                true, false, 2, true, 0, 0, false)
+            end
+        end
+    end
+end)
+
 
 Citizen.CreateThread(function()
     for k,v in pairs(extraction) do
@@ -10343,7 +10582,7 @@ Citizen.CreateThread(function()
         end
         v.r=v.r*v.r
     end
-    disable_kvp_saving()
+    --disable_kvp_saving()
     while true do Wait(0)
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
@@ -10353,8 +10592,16 @@ Citizen.CreateThread(function()
             if dx*dx+dy*dy+dz*dz<v.r then
                 WriteHint("~g~Press E to save and quit")
                 if IsControlJustPressed(0,86) then
+                    local myweapon=GetSelectedPedWeapon(myped)
+                    strip_weapon_upgrades(myweapon)
+                    --unload_weapon(myweapon)
                     TriggerServerEvent("updateplayerloot",nil)
                     enable_kvp_saving()
+                    local rnd=math.random(1,#extraction_spawns)
+                    
+                    SetResourceKvpFloat("x",extraction_spawns[rnd].x)
+                    SetResourceKvpFloat("y",extraction_spawns[rnd].y)
+                    SetResourceKvpFloat("z",1500.1)
                     repeat Wait(0)
                         WriteHint("~g~You can leave server now")
                         mypos=GetEntityCoords(myped)
@@ -10371,8 +10618,8 @@ end)
 
 Citizen.CreateThread(function()
     while true do Wait(0)
-        WriteTextNoOutline(4,"Drakeling Labs",0.4,200,200,200,255,0.025,0.007) 
-        DrawSprite("lsm", "dlabs", 0.012,0.02   ,0.0165,0.025,   0.0, 58, 112, 160, 255)
+        --WriteTextNoOutline(4,"Drakeling Labs",0.4,200,200,200,255,0.025,0.007) 
+        DrawSprite("lsm", "dlabs", 0.045,0.02   ,0.065*1.3,0.025*1.05,   0.0, 255, 255, 255, 255)
     end
 end)
 
@@ -10382,6 +10629,32 @@ Citizen.CreateThread(function()
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
         TriggerServerEvent("updateplayerpos",mypos.x,mypos.y,mypos.z)
+    end
+end)
+
+
+Citizen.CreateThread(function()
+    while true do Wait(0)
+    local ped=PlayerPedId()
+    local h=GetEntityHeightAboveGround(ped)
+    local pos=GetEntityCoords(ped)
+        if IsControlJustPressed(0,344) then
+            local weaponhash=GetSelectedPedWeapon(ped)
+            strip_weapon_upgrades(weaponhash)
+        elseif IsControlJustPressed(0,57) then
+            local weaponhash=GetSelectedPedWeapon(ped)
+            unload_weapon(weaponhash)
+        elseif IsControlJustPressed(0,56) then
+            local weaponhash=GetSelectedPedWeapon(ped)
+            local weapon=item_index_to_name[weaponhash]
+            if weapon~=nil then
+                local weaponhash=GetSelectedPedWeapon(ped)
+                strip_weapon_upgrades(weaponhash)
+                unload_weapon(weaponhash)
+                TriggerServerEvent("itemdrop",pos.x,pos.y,pos.z+1-h,weapon,1)
+                RemoveWeaponFromPed(ped,weaponhash)
+            end
+        end
     end
 end)
     
