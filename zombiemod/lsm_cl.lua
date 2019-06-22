@@ -1,3 +1,17 @@
+local npcslimiter={}
+npcslimiter.max=80
+npcslimiter.current=0
+npcslimiter.enablelimit=false
+
+local vehslimiter={}
+vehslimiter.max=5
+vehslimiter.current=0
+vehslimiter.enablelimit=true
+
+
+local persistence={}
+persistence.distance=90000.0
+
 
 local weapons={
 switchblade=1,
@@ -916,6 +930,7 @@ Citizen.CreateThread(function()
                     if v.t==72 then
                         if v.blipadditional==nil then
                             v.blipadditional=AddBlipForCoord(x,y,0)
+                            SetBlipDisplay(v.blipadditional,3)
                             SetBlipSprite(v.blipadditional,80)
                             SetBlipName(v.blipadditional,"Radiation Zone")
                             SetBlipScale(v.blipadditional,1.5)
@@ -950,7 +965,9 @@ Citizen.CreateThread(function()
                         if dx*dx+dy*dy<v.r*v.r then
                             local currenttime=GetGameTimer()
                             WriteHint("You have encountered ~r~RADIOACTIVE FALLOUT~s~! Equip a gasmask!")
-                            if ((currenttime~prevtime)&-2048)~=0 then
+                            local currenttimeprevtime=currenttime~prevtime
+                            currenttimeprevtime=currenttimeprevtime&-2048
+                            if currenttimeprevtime~=0 then
                                 prevtime=currenttime
                                 SetEntityHealth(ped,GetEntityHealth(ped)-1)
                             end
@@ -1187,6 +1204,7 @@ local safezones={
         {"cash",25,"scrapplastic",25},
         {"cash",25,"scrapmetal",25},
         {"cash",25,"rags",15},
+        {"cash",25,"chemicals",5},
     },
     tradepos={x=-1144.1071777344,y=4908.369140625,z=220.96875},
     clothes={
@@ -1692,10 +1710,11 @@ local function is_in_safe_zone(x,y,z)
 end
 
 local function coords_to_dword(x,y,z)
-    return (0xFFFFFFFF&(
+    local t=(
     math.floor(x*20)+
     math.floor(y*20)*19+
-    math.floor(z*20)*41))
+    math.floor(z*20)*41)
+    return (0xFFFFFFFF&t)
 end
 
 --for i=0,400 do
@@ -1779,7 +1798,14 @@ end
 local function save_data()
     local data=""
     for k,v in pairs(looted_array) do
-        data=data..(string.char(k&255)..string.char((k>>8)&255)..string.char((k>>16)&255)..string.char((k>>24)&255)..string.char(v&255)..string.char((v>>8)&255)..string.char((v>>16)&255)..string.char((v>>24)&255))
+        local k8=(k>>8)
+        local k16=(k>>16)
+        local k24=(k>>24)
+        local v8=(v>>8)
+        local v16=(v>>16)
+        local v24=(v>>24)
+        
+        data=data..(string.char(k&255)..string.char(k8&255)..string.char(k16&255)..string.char(k24&255)..string.char(v&255)..string.char(v8&255)..string.char(v16&255)..string.char(v24&255))
     end
     SetResourceKvp("looted_props",data)
 end
@@ -2378,18 +2404,18 @@ local function use_weapon_upgrade(upgradename)
         local hash=upgrade[myweapon]
         if hash~=nil then
             if HasPedGotWeaponComponent(myped, myweapon, hash) then
-                WriteNotification("You already have this upgrade attached to weapon.")
+                SimpleNotification("You already have this upgrade attached to weapon.")
                 return false
             else
                 GiveWeaponComponentToPed(myped,myweapon, hash)
                 return true
             end
         else
-            WriteNotification("Cannot attach this upgrade to selected weapon.")
+            SimpleNotification("Cannot attach this upgrade to selected weapon.")
             return false
         end
     else
-        WriteNotification("~r~ERROR! ~s~No such upgrade.")
+        SimpleNotification("~r~ERROR! ~s~No such upgrade.")
         return false
     end
 end
@@ -2397,12 +2423,12 @@ end
 local item_index_to_name={}
 local item_name_to_index={}
 for k,v in pairs(item_names) do
-    local hash=(GetHashKey(k)&0x7FFFFFFF)
+    local hash=GetHashKey(k) hash=hash&0x7FFFFFFF
     item_index_to_name[hash]=k
     item_name_to_index[k]=hash
 end
 for k,v in pairs(weapons) do
-    local hash=(GetHashKey(k)&0x7FFFFFFF)
+    local hash=GetHashKey(k) hash=hash&0x7FFFFFFF
     item_index_to_name[hash]=k
     item_name_to_index[k]=hash
     hash=GetHashKey("weapon_"..k)
@@ -2559,7 +2585,7 @@ local trunkrewards_tier2={
 {"chemicals",-3},
 {"bandage",-2},
 {"engineparts",-5},
-{"tirerepair",-1},
+{"tirerepair",1},
 {"switchblade",1},
 {"knife",1},
 {"dagger",1},
@@ -2725,30 +2751,33 @@ cash={chance=30,text="There is ~r~nothing inside~s~."},
 gasmask={chance=20,text="This ~r~gasmask is broken~s~."},
 grenade={chance=20,text="These grenades are ~r~not suitable for use ~s~anymore."},
 weed={chance=50,text="This weed is ~r~not suitable for use ~s~."},
-bodyarmor={chance=50,text="This bodyarmor is ~r~not suitable for use ~s~anymore."},
+bodyarmor={chance=20,text="This bodyarmor is ~r~not suitable for use ~s~anymore."},
+armorplate={chance=20,text="This armor plate is ~r~not suitable for use ~s~anymore."},
+flashlight_small={chance=25,text="This flashlight is ~r~broken~s~."},
+flashlight_large={chance=25,text="This flashlight is ~r~broken~s~."},
 }
 local pickups_objects={
 [-509973344]={"medkit",1,"bandage",2,solid=true},--wall medkit
-[-742198632]={"water",10,solid=true}, --water cooler
+[-742198632]={"water",5,solid=true}, --water cooler
 [1541274880]={"soda",1}, -- cola 2 liters
 [-1982036471]={"soda",4}, --soda 4 in pack
 [-942878619]={"alcohol",4}, --shop thing red 4 in pack
 [-1914723336]={"alcohol",4}, --shop thing yellow pride 4 in pack
 [1793329478]={"alcohol",4}, --shop thing brown  in pack
 [-53650680]={"alcohol",4}, --chinese alcohol pack
-[2085005315]={"alcohol",12}, --piswasser 12 bottles dull white
-[1661171057]={"alcohol",12}, --piswasser 12 bottles dull white 2
-[-259124142]={"alcohol",12}, --biarn... black green 12
-[898161667]={"alcohol",12}, --jackey's box dark blue 12 
-[-1902841705]={"alcohol",12}, --logger 12
-[-1699929937]={"alcohol",12}, --benedict
-[-1551002089]={"alcohol",16}, --16 alcohol bottles
-[-715967502]={"alcohol",17}, --17 alcohol bottles
-[-1574447115]={"alcohol",22}, --22 alcohol bottles
+[2085005315]={"alcohol",3}, --piswasser 12 bottles dull white
+[1661171057]={"alcohol",3}, --piswasser 12 bottles dull white 2
+[-259124142]={"alcohol",3}, --biarn... black green 12
+[898161667]={"alcohol",3}, --jackey's box dark blue 12 
+[-1902841705]={"alcohol",3}, --logger 12
+[-1699929937]={"alcohol",3}, --benedict
+[-1551002089]={"alcohol",4}, --16 alcohol bottles
+[-715967502]={"alcohol",4}, --17 alcohol bottles
+[-1574447115]={"alcohol",5}, --22 alcohol bottles
 [1350970027]={"alcohol",1}, --1 alcohol bottl
-[674110876]={"alcohol",14}, --14 alcohol bottl
-[-1720513558]={"alcohol",12}, --12 alcohol bottl
-[1550641188]={"alcohol",12}, --12 patriot
+[674110876]={"alcohol",3}, --14 alcohol bottl
+[-1720513558]={"alcohol",3}, --12 alcohol bottl
+[1550641188]={"alcohol",3}, --12 patriot
 [2009246193]={"alcohol",5}, --5 in container
 [-2081577774]={"food",1}, -- ego chaser gum
 [-319761937]={"food",1}, -- sweet nothings
@@ -2765,25 +2794,25 @@ local pickups_objects={
 [-1839065906]={"food",1}, -- big cheese
 [-1816283392]={"food",1}, -- 14 in glass candies
 [1228376703]={"food",1}, -- meteorite
-[-54719154]={"food",10,"canfood",30,exp=true}, -- shop 30 canned and fod on low
-[-220235377]={"soda",40,exp=true}, -- shop 40 soda
-[643522702]={"alcohol",40,exp=true}, -- shop 40 alcohol
-[1437777724]={"food",40,exp=true}, -- shop bread 
-[-532065181]={"food",20,"chemicals",20,exp=true}, -- food and chem
-[756199591]={"food",15}, -- shop gums
-[2067313593]={"food",25}, -- shop long gums
+[-54719154]={"food",10,"canfood",7,exp=true}, -- shop 30 canned and fod on low
+[-220235377]={"soda",7,exp=true}, -- shop 40 soda
+[643522702]={"alcohol",7,exp=true}, -- shop 40 alcohol
+[1437777724]={"food",7,exp=true}, -- shop bread 
+[-532065181]={"food",6,"chemicals",6,exp=true}, -- food and chem
+[756199591]={"food",3}, -- shop gums
+[2067313593]={"food",4}, -- shop long gums
 [1404018125]={"alcohol",1}, -- green liquor
 [-1461673141]={"alcohol",1}, -- orange blocky
 [-169049173]={"alcohol",1}, -- black big alcohol
-[1421582485]={"food",10,exp=true}, -- shop ponchiks
-[-802238381]={"food",10}, -- fruits
-[663958207]={"food",10}, -- shop guns shop type 3
-[1238061242]={"alcohol",25,exp=true}, -- spoiled alcohol
-[511490507]={"alcohol",100,exp=true}, -- spoiled alcohol
-[-1766954369]={"alcohol",40,exp=true}, -- spoiled shelf
+[1421582485]={"food",3,exp=true}, -- shop ponchiks
+[-802238381]={"food",3}, -- fruits
+[663958207]={"food",3}, -- shop guns shop type 3
+[1238061242]={"alcohol",4,exp=true}, -- spoiled alcohol
+[511490507]={"alcohol",15,exp=true}, -- spoiled alcohol
+[-1766954369]={"alcohol",10,exp=true}, -- spoiled shelf
 [-1243177429]={"alcohol",1}, -- 1 alcohol green
-[-1317590321]={"food",25}, -- shop long gums meth shop
-[2085590335]={"alcohol",6}, -- 6 triangle yellow bottles
+[-1317590321]={"food",4}, -- shop long gums meth shop
+[2085590335]={"alcohol",3}, -- 6 triangle yellow bottles
 [1925761914]={"alcohol",2}, -- big grey vodka
 [1295017223]={"alcohol",1}, -- 1 big green bottle
 [-23214081]={"alcohol",1}, -- 1 orange red rum bottle
@@ -2794,18 +2823,18 @@ local pickups_objects={
 [218661250]={"alcohol",1}, -- 1 cherenkov purple
 [-77406713]={"alcohol",1}, -- 1 cherenkov red
 [516891919]={"alcohol",1}, -- 1 cherenkov greyish
-[-1406045366]={"cigarettes",30}, -- 3 lines of cigs
+[-1406045366]={"cigarettes",10}, -- 3 lines of cigs
 [759654580]={"cash",100,solid=true}, -- cash register
 [303280717]={"cash",200,solid=true}, -- cash register
 
 [1093460780]={"ammo",10}, --green open rifle thing
 -- [2084498973]={"machete",1}, -- camo machete
 -- [1179681321]={"machete",1}, -- black machete
-[-1920611843]={"pistolammo",50}, --blue case
-[1430410579]={"pistolammo",50}, --white case
-[27391672]={"shotgunammo",40}, -- box
-[-278834633]={"heavyrifleammo",50}, -- box
-[1580014892]={"ammo",50}, --green closed rifle thing
+[-1920611843]={"flashlight_small",1}, --blue case
+[1430410579]={"flashlight_large",1}, --white case
+[27391672]={"shotgunammo",20}, -- box
+[-278834633]={"heavyrifleammo",30}, -- box
+[1580014892]={"ammo",40}, --green closed rifle thing
 [1936480843]={"pistolammo",50}, --green closed rifle thing
 [-868490170]={"gasmask",1}, --green closed rifle thing
 [701173564]={"bodyarmor",1,"armorplate",2}, --light cool black
@@ -2991,6 +3020,12 @@ local function remove_all_that(array)
 end
 
 local function give_item_to_inventory(add_name,add_amount)
+    if add_name==nil then
+        SimpleNotification("~r~ERROR! ~s~Tried to give item to inventory but name is nil")
+    end
+    if add_amount==nil then
+        SimpleNotification("~r~ERROR! ~s~Tried to give item to inventory but amount is nil")
+    end
     local add_to_slot=get_inventory_item_slot(add_name)
     --print("add_to_slot is")
     --print(add_to_slot)
@@ -3030,7 +3065,7 @@ local function give_item_to_inventory(add_name,add_amount)
                 end
                 GiveWeaponToPed(ped, hash, add_amount, false, false)
                 if HasPedGotWeapon(ped,hash) and GetAmmoInPedWeapon(ped,hash)==oldammo+add_amount then
-                    WriteNotification("You got ~g~"..(item_names[add_name] or localization[add_name] or add_name).."~s~.")
+                    SimpleNotification("You got ~g~~a~~s~.",(item_names[add_name] or localization[add_name] or add_name))
                     return true
                 else
                     SetPedAmmo(ped,hash,oldammo)
@@ -3042,7 +3077,7 @@ local function give_item_to_inventory(add_name,add_amount)
             else
                 if add_amount<=1 and not HasPedGotWeapon(ped,hash) then
                     GiveWeaponToPed(ped, hash, 0, false, false)
-                    WriteNotification("You got ~g~"..(item_names[add_name] or localization[add_name] or add_name).."~s~.")
+                    SimpleNotification("You got ~g~~a~~s~.",(item_names[add_name] or localization[add_name] or add_name))
                     return true
                 else
                     return false
@@ -3055,7 +3090,7 @@ local function give_item_to_inventory(add_name,add_amount)
                     -- else print("failed to give weapon")
                         -- GiveWeaponToPed(ped, hash, 1, false, true)
                         -- if HasPedGotWeapon(ped,hash) then
-                            -- WriteNotification("You got ~g~"..(item_names[add_name] or localization[add_name] or add_name).."~s~.")
+                            -- SimpleNotification("You got ~g~"..(item_names[add_name] or localization[add_name] or add_name).."~s~.")
                             -- return true
                         -- else
                             -- return false
@@ -3075,11 +3110,11 @@ local function give_item_to_inventory(add_name,add_amount)
             SetResourceKvpInt("inventory_current",inventory.current)
             TriggerServerEvent("updateplayeritem",add_name,add_amount)
         else
-            WriteNotification("You ~r~don't have ~s~inventory slots for that item!")
+            SimpleNotification("You ~r~don't have ~s~inventory slots for that item!")
             return false
         end
     end
-    WriteNotification("You got ~g~"..add_amount.." "..(item_names[add_name] or add_name).."~s~.")
+    SimpleNotification("You got ~g~~1~ ~a~~s~.",add_amount,(item_names[add_name] or add_name))
     --inventory.highlight=500
     return true
 end
@@ -3180,13 +3215,15 @@ end
 local function unload_weapon(weaponhash)
     local myped=PlayerPedId()
     local totalammo=GetAmmoInPedWeapon(myped,weaponhash)
-    local ammohash=GetPedAmmoTypeFromWeapon(myped,weaponhash)
-    for ammoname,v in pairs(ammo_types) do
-        if v==ammohash then
-            if give_item_to_inventory(ammoname,totalammo) then
-                SetPedAmmoByType(myped,ammohash,0)
+    if totalammo>0 then
+        local ammohash=GetPedAmmoTypeFromWeapon(myped,weaponhash)
+        for ammoname,v in pairs(ammo_types) do
+            if v==ammohash then
+                if give_item_to_inventory(ammoname,totalammo) then
+                    SetPedAmmoByType(myped,ammohash,0)
+                end
+                break
             end
-            break
         end
     end
 end
@@ -3506,14 +3543,25 @@ AddEventHandler("playerSpawned",function()
     local x=GetResourceKvpFloat("x")
     local y=GetResourceKvpFloat("y")
     local z=GetResourceKvpFloat("z")
+    local vehmodel=GetResourceKvpInt("spawnvehmodel")
+    local angle=GetResourceKvpFloat("angle")
     DeleteResourceKvp("x")
     DeleteResourceKvp("y")
     DeleteResourceKvp("z")
+    DeleteResourceKvp("angle")
+    DeleteResourceKvp("spawnvehmodel")
     if math.abs(x)>.1 and math.abs(y)>.1 and math.abs(z)>.1 then
         local ped=PlayerPedId()
         SetEntityCoords(ped,x,y,z)
-        if z>999 then
-            GiveWeaponToPed(ped,GetHashKey("gadget_parachute"),1,false,false)
+        if vehmodel~=nil or vehmodel~=0 then
+            while not HasModelLoaded(vehmodel) do RequestModel(vehmodel) Wait(0) end
+            local veh=CreateVehicle(vehmodel, x,y,z, angle, true, false)
+            DecorSetBool(veh,"zm_looted",true)
+            DecorSetBool(veh,"post_apoc_car",true)
+            DecorSetFloat(veh,"zm_fuel",10.0)
+            SetPedIntoVehicle(ped,veh,-1)
+            SetVehicleAsNoLongerNeeded(veh)
+            SetModelAsNoLongerNeeded(vehmodel)
         end
     end
     
@@ -3530,7 +3578,7 @@ AddEventHandler("playerSpawned",function()
         RequestAnimDict(animdict)
         while not HasAnimDictLoaded(animdict) do Wait(0) end
         local duration=math.floor(GetAnimDuration(animdict, anim)*1000+.5)
-        TaskPlayAnim(PlayerPedId(), animdict, anim, 1.0, 1.0, duration, 0, .0, false, false, false);
+        --TaskPlayAnim(PlayerPedId(), animdict, anim, 1.0, 1.0, duration, 0, .0, false, false, false);
         -- missarmenian2lamar_idles idle_look_behind_left
         
         
@@ -3553,7 +3601,7 @@ AddEventHandler("playerSpawned",function()
             while not HasModelLoaded(pedmodel) do
                 Wait(0)
                 if not disablehud then
-                    WriteText(4,"Loading model "..pedmodel,0.4,255,255,255,255,0.2,0.7)
+                    WriteText(4,{"Loading model ~1~",pedmodel},0.4,255,255,255,255,0.2,0.7)
                 end
             end
             SetPlayerModel(PlayerId(),pedmodel)
@@ -3805,11 +3853,11 @@ Citizen.CreateThread(function()
                                 if not IsEntityAPed(attached) or IsPedDeadOrDying(attached) then
                                     SetTextCentre(true)
                                     if prop[3] then
-                                        WriteText(font,"~g~E ~s~to pick up ~g~"..prop[1].."~s~ and ~g~"..prop[3],size,255,255,255,alpha,x,y)
-                                        WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..prop[1].."~c~ and ~g~"..prop[3])
+                                        WriteText(font,{"~g~E ~s~to pick up ~g~~a~~s~ and ~g~~a~",prop[1],prop[3]},size,255,255,255,alpha,x,y)
+                                        WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~~c~ and ~g~~a~",prop[1],prop[3]})
                                     else
-                                        WriteText(font,"~g~E ~s~to pick up ~g~"..prop[1],size,255,255,255,alpha,x,y)
-                                        WriteHint("~c~Press ~s~E ~c~to pick up ~g~"..prop[1])
+                                        WriteText(font,{"~g~E ~s~to pick up ~g~~a~",prop[1]},size,255,255,255,alpha,x,y)
+                                        WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~",prop[1]})
                                     end
                                 end
                             end
@@ -3824,7 +3872,7 @@ Citizen.CreateThread(function()
                         if #(doorpos-mypos)<2.0 then
                             local not_on_screen,x,y=N_0xf9904d11f1acbec3(doorpos.x,doorpos.y,doorpos.z)
                             if not not_on_screen then
-                                WriteText(font,"You need ~g~"..item_names[doorkey].." ~s~to unlock this door",0.3,255,255,255,200,x,y)
+                                WriteText(font,{"You need ~g~~a~ ~s~to unlock this door",item_names[doorkey]},0.3,255,255,255,200,x,y)
                             end
                         end
                     else
@@ -3930,14 +3978,17 @@ Citizen.CreateThread(function()
                     end
                     for i=0,5 do
                         local i2=(i<<1)
-                        if (rand&(2048<<i2))~=0 then
+                        local i2048i2=(2048<<i2)
+                        local i4096i2=(4096<<i2)
+                        if (rand&i2048i2)~=0 then
                             SetVehicleDoorBroken(veh,i,true)
-                        elseif (rand&(4096<<i2))~=0 then
+                        elseif (rand&i4096i2)~=0 then
                             SetVehicleDoorOpen(veh,i,true,true)
                         end
                     end
                     for i=0,5 do
-                        if (rand&(1<<i))~=0 then
+                        local bin=(1<<i)
+                        if (rand&bin)~=0 then
                             IsVehicleTyreBurst(veh, i, true)
                         end
                     end
@@ -3952,9 +4003,10 @@ Citizen.CreateThread(function()
                             SetVehicleEngineHealth(veh,-3999.99)
                         end
                     else --25%
-                        rand=400+(rand&255)
+                        local bin=(rand&255)
+                        rand=400+bin
                         if GetVehicleEngineHealth(veh)>rand then
-                            if (rand%10)==0 then
+                            if (rand%1)==0 then
                                 SetVehicleEngineHealth(veh,rand-.1)
                             else
                                 --SetVehicleUndriveable(veh,true)
@@ -3964,7 +4016,8 @@ Citizen.CreateThread(function()
                                 SetVehicleEngineHealth(veh,-3999.99)
                             end
                         end
-                        rand=(rand&31)*0.3225--+5.0
+                        bin=(rand&31)
+                        rand=bin*0.3225--+5.0
                         SetVehicleFuelLevel(veh,rand)
                         DecorSetFloat(veh,"zm_fuel",rand)
                     end
@@ -4001,7 +4054,7 @@ Citizen.CreateThread(function()
             end
             local vpos=GetEntityCoords(veh)
             if player_peds==nil then player_peds=get_player_peds() end
-            if dist_to_closest_point(player_peds,vpos)>90000.0 then
+            if dist_to_closest_point(player_peds,vpos)>persistence.distance then
                 if IsEntityAMissionEntity(veh) then
                     if DecorExistOn(veh,"dontdelete") then
                         if not NetworkIsPlayerActive(GetPlayerFromServerId(DecorGetInt(veh,"dontdelete"))) then
@@ -4146,7 +4199,9 @@ Citizen.CreateThread(function()
                             0.0, r_color,g_color, 255, highlight)
                             
                             SetTextCentre(true)
-                            WriteText(7,inventory[i].amount,0.5*temp_scale,160,160,160,highlight,x,0.93+0.02)
+                            if inventory[i].amount~=nil then
+                                WriteText(7,{"~1~",inventory[i].amount},0.5*temp_scale,160,160,160,highlight,x,0.93+0.02)
+                            end
                             
                             name=inventory[i].item
                             if name~=nil then
@@ -4189,7 +4244,9 @@ Citizen.CreateThread(function()
                             0.0, r_color,g_color, 255, highlight)
                             
                             SetTextCentre(true)
-                            WriteText(7,inventory[i].amount,0.75*temp_scale,255,255,255,highlight,x,0.945)
+                            if inventory[i].amount~=nil then
+                                WriteText(7,{"~1~",inventory[i].amount},0.75*temp_scale,255,255,255,highlight,x,0.945)
+                            end
                             
                             name=inventory[i].item
                             if name~=nil then
@@ -4258,13 +4315,13 @@ Citizen.CreateThread(function()
                     DrawRect(inventory_scroll_bkg_x,newscrollposy,inventory_scrollsize_x,newscrollsizey,255,255,255,255)
                 end
                 if relationship_name[GetPedRelationshipGroupHash(myped)] then
-                    WriteText(2,"~c~Alignment ~s~"..relationship_name[GetPedRelationshipGroupHash(myped)],inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
+                    WriteText(2,{"~c~Alignment ~s~~a~",relationship_name[GetPedRelationshipGroupHash(myped)]},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
                 end
                 SetTextRightJustify(true)
                 SetTextWrap(inventory_up_x_left,inventory_up_x_right)
                 local g_b=255
                 if (player.weight>player.maxweight) then g_b=100 end
-                WriteText(4,"~c~WEIGHT ~s~"..tostring(player.weight).."~c~/"..tostring(player.maxweight).." KG",inventory_font_size,255,g_b,g_b,255,inventory_up_x_right,inventory_up_y)
+                WriteText(4,{"~c~WEIGHT ~s~~1~~c~/~1~ KG",player.weight,player.maxweight},inventory_font_size,255,g_b,g_b,255,inventory_up_x_right,inventory_up_y)
                 
                 local curitem=inventory.current
                 
@@ -4272,9 +4329,9 @@ Citizen.CreateThread(function()
                 if inventory[curitem] then
                     if droppingitem then
                         if item_names[inventory[curitem].item]~=nil then
-                            WriteText(2,"drop "..amounttodrop.." "..item_names[inventory[curitem].item],inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                            WriteText(2,{"drop ~1~ ~a~",amounttodrop,item_names[inventory[curitem].item]},inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
                         else 
-                            WriteText(2,"drop "..amounttodrop.." ".."ERROR Wrong item name",inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
+                            WriteText(2,{"drop ~1~ ~r~ERROR ~s~Wrong item name",amounttodrop},inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
                         end
                     else
                         WriteText(2,item_names[inventory[curitem].item],inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
@@ -4287,7 +4344,7 @@ Citizen.CreateThread(function()
                     end
                     DrawSprite("lsm", inventory[curitem].item, inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
                     local weight=item_weight[inventory[curitem].item]
-                    if weight then WriteText(4,weight.." KG",inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc+0.07) end
+                    if weight then WriteText(4,{"~1~ KG",weight},inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc+0.07) end
                 else
                     WriteText(2,"Empty",inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
                     SetTextWrap(inventory_down_x_left,inventory_down_x_right)
@@ -4362,10 +4419,12 @@ Citizen.CreateThread(function()
                     SetTextWrap(
                     x-(inv_new.item_scl_x/2),
                     x+(inv_new.item_scl_x/2)-0.001)
-                    WriteText(2,inventory[i].amount,inventory_font_size,255,255,255,255,
-                    (inventory_grid_left+(inv_new.item_scl_x/2))+(((inv_i-1)%inventory.rows)*inventory_grid_dist_x),
-                    inventory_grid_up+(math.floor((inv_i-1)/inventory.rows)*inventory_grid_dist_y)+0.01
-                    )
+                    if inventory[i].amount~=nil then
+                        WriteText(2,{"~1~",inventory[i].amount},inventory_font_size,255,255,255,255,
+                        (inventory_grid_left+(inv_new.item_scl_x/2))+(((inv_i-1)%inventory.rows)*inventory_grid_dist_x),
+                        inventory_grid_up+(math.floor((inv_i-1)/inventory.rows)*inventory_grid_dist_y)+0.01
+                        )
+                    end
                 end
             end
             if oldinventory then
@@ -4493,7 +4552,9 @@ Citizen.CreateThread(function()
                                 255)
                                 
                                 SetTextCentre(true)
-                                WriteText(4,inventory[i].amount,0.5,100,100,100,255,x,y+0.025)
+                                if inventory[i].amount~=nil then
+                                    WriteText(4,{"~1~",inventory[i].amount},0.5,100,100,100,255,x,y+0.025)
+                                end
                             
                                 SetTextCentre(true)
                                 WriteText(4,(item_names[name] or name),0.4,100,100,100,255,x,y-0.06)
@@ -4552,7 +4613,9 @@ Citizen.CreateThread(function()
                                 end
                                 
                                 SetTextCentre(true)
-                                WriteText(4,inventory[i].amount,0.5,255,255,255,255,x,y+0.025)
+                                if inventory[i].amount~=nil then
+                                    WriteText(4,{"~1~",inventory[i].amount},0.5,255,255,255,255,x,y+0.025)
+                                end
                             
                                 SetTextCentre(true)
                                 WriteText(4,(item_names[name] or name),0.4,255,255,255,255,x,y-0.06)
@@ -4654,7 +4717,7 @@ Citizen.CreateThread(function()
         if player.hydration>=0.01 then
             player.hydration=player.hydration-0.105
             if (player.weight>player.maxweight) then
-                player.hydration=player.hydration-3.315
+                player.hydration=player.hydration-0.5
             end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
@@ -4662,7 +4725,7 @@ Citizen.CreateThread(function()
         if player.saturation>=0.01 then
             player.saturation=player.saturation-0.06
             if (player.weight>player.maxweight) then
-                player.saturation=player.saturation-1.18
+                player.saturation=player.saturation-0.3
             end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
@@ -5222,7 +5285,7 @@ Citizen.CreateThread(function()
                                         if DecorExistOn(veh,"quest_entity") then
                                             if DecorGetInt(veh,"quest_entity")==v.id then
                                                 if GetBlipFromEntity(veh)==0 then
-                                                    WriteNotification("Retrieve ~y~"..(item_names[v.i] or v.i))
+                                                    SimpleNotification("Retrieve ~y~~a~",(item_names[v.i] or v.i))
                                                     SetBlipColour(AddBlipForEntity(veh),5)
                                                 end
                                                 found=true
@@ -5235,7 +5298,7 @@ Citizen.CreateThread(function()
                                                         local not_on_screen,x,y=N_0xf9904d11f1acbec3(vehpos.x,vehpos.y,vehpos.z+0.5)
                                                         if not not_on_screen then
                                                             SetTextCentre(true)
-                                                            WriteText(2,"~g~E ~s~to search for ~b~"..item_names[v.i],0.3,255,255,255,200,x,y)
+                                                            WriteText(2,{"~g~E ~s~to search for ~b~~a~",item_names[v.i] or v.i},0.3,255,255,255,200,x,y)
                                                         end
                                                     end
                                                     if IsControlJustPressed(0,86) then
@@ -5250,7 +5313,7 @@ Citizen.CreateThread(function()
                                                                 end
                                                                 if v.zone and v.zone.questpos then
                                                                     if not disablehud then
-                                                                        WriteNotification("Return ~y~"..(item_names[v.i] or v.i).." ~s~to ~g~"..(v.zone and v.zone.name or "base"))
+                                                                        SimpleNotification("Return ~y~~a~ ~s~to ~g~~a~",(item_names[v.i] or v.i),(v.zone and v.zone.name or "base"))
                                                                     end
                                                                     if v.blip then RemoveBlip(v.blip) v.blip=nil end
                                                                     v.blip=AddBlipForCoord(
@@ -5287,7 +5350,7 @@ Citizen.CreateThread(function()
                                         if DecorExistOn(veh,"quest_entity") then
                                             if DecorGetInt(veh,"quest_entity")==v.id then
                                                 if GetBlipFromEntity(veh)==0 then
-                                                    WriteNotification("Retrieve ~y~"..(item_names[v.i] or v.i))
+                                                    SimpleNotification("Retrieve ~y~~a~",(item_names[v.i] or v.i))
                                                     SetBlipColour(AddBlipForEntity(veh),5)
                                                 end
                                                 v.marked=true
@@ -5301,7 +5364,7 @@ Citizen.CreateThread(function()
                                                 if math.abs(dx)<v.r and dx*dx+dy*dy<v.r*v.r then
                                                     if not GetIsVehicleEngineRunning(veh) then
                                                         --SetBlipSprite(
-                                                        WriteNotification("Retrieve ~y~~a~",(item_names[v.i] or v.i))
+                                                        SimpleNotification("Retrieve ~y~~a~",(item_names[v.i] or v.i))
                                                         SetBlipColour(AddBlipForEntity(veh),5)
                                                         --,47)
                                                         NetworkRequestControlOfEntity(veh)
@@ -5329,7 +5392,7 @@ Citizen.CreateThread(function()
                                     if v.errors>6000 then
                                         v.done=true
                                         -- v.errors=nil
-                                        WriteNotification("There is no car, I should return to ~g~~a~ ~s~and report about it",(v.zone and v.zone.name or "base"))
+                                        SimpleNotification("There is no car, I should return to ~g~~a~ ~s~and report about it",(v.zone and v.zone.name or "base"))
                                         if v.blip then RemoveBlip(v.blip) v.blip=nil end
                                         if v.zone and v.zone.questpos then
                                             v.blip=AddBlipForCoord(
@@ -5350,7 +5413,7 @@ Citizen.CreateThread(function()
                         end
                     end
                 else
-                    WriteHint("~r~ERROR! ~s~Quest type "..v.t.." is ~r~not implemented!")
+                    WriteHint({"~r~ERROR! ~s~Quest type ~a~ is ~r~not implemented!",tostring(v.t)})
                 end
             end
         end
@@ -5532,12 +5595,16 @@ Citizen.CreateThread(function()
                 vehiclesave.doors=GetResourceKvpInt("garage_1_doors")
                 vehiclesave.tyres=GetResourceKvpInt("garage_1_tyres")
                 local colors=GetResourceKvpInt("garage_1_colors")
-                vehiclesave.colors={colors&0xFF,(colors>>8)&0xFF,(colors>>16)&0xFF,(colors>>24)&0xFF}
+                local colors8=(colors>>8)
+                local colors16=(colors>>16)
+                local colors24=(colors>>24)
+                
+                vehiclesave.colors={colors&0xFF,colors8&0xFF,colors16&0xFF,colors24&0xFF}
                 vehiclesave.total_mods=SetResourceKvpInt("garage_1_total_mods")
                 vehiclesave.mods={}
                 local modstring=GetResourceKvpString("garage_1_modstring")
                 if modstring~=nil then
-                    --WriteNotification("loading "..#modstring)
+                    --SimpleNotification("loading "..#modstring)
                     for i=1,#modstring,2 do
                         local k,v=string.byte(modstring,i,i+1)
                         k,v=k-1,v-1
@@ -5756,12 +5823,13 @@ Citizen.CreateThread(function()
                             local i=0
                             for thing,amount in pairs(v.loot) do
                                 i=i+1
+                                local name=item_names[thing] or thing
                                 if menu_index==i then
                                     selected_thing=thing
                                     selected_amount=amount
-                                    WriteText(7,item_names[thing].." x"..amount,.2,255,255,255,255,x,y)
+                                    WriteText(7,{"~a~ x ~1~",name,amount},.2,255,255,255,255,x,y)
                                 else
-                                    WriteText(7,item_names[thing].." x"..amount,.2,128,128,128,255,x,y)
+                                    WriteText(7,{"~a~ x ~1~",name,amount},.2,128,128,128,255,x,y)
                                 end
                                 y=y+.013
                             end
@@ -5972,12 +6040,12 @@ Citizen.CreateThread(function()
                                     --if (variations~=0) then current=current+1 end
                                     --if (textures~=0) then texture=texture+1 end
                                     WriteTextNoOutline(4,"<",0.35,0,0,0,alpha,0.280,txt_pos) --chosen line text
-                                    WriteTextNoOutline(4,current.." / "..variations.." >",0.35,0,0,0,alpha,0.285,txt_pos) --chosen line text
+                                    WriteTextNoOutline(4,{"~1~ / ~1~ >",current,variations},0.35,0,0,0,alpha,0.285,txt_pos) --chosen line text
                                     --WriteTextNoOutline(4,"E "..texture.." / "..textures,0.35,0,0,0,alpha,0.315,0.428+.025+i*.025) --chosen line text
                                 else
                                     WriteTextNoOutline(2,component_name[i],0.35,255,255,255,alpha,0.16,txt_pos) --not chosen line text
                                     --if (variations~=0) then current=current+1 end
-                                    WriteTextNoOutline(4,current.." / "..variations,0.35,255,255,255,alpha,0.285,txt_pos) --not chosen line text
+                                    WriteTextNoOutline(4,{"~1~ / ~1~",current,variations},0.35,255,255,255,alpha,0.285,txt_pos) --not chosen line text
                                 end
                                 txt_pos=txt_pos+0.025
                             end
@@ -5989,7 +6057,7 @@ Citizen.CreateThread(function()
                     if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                         try_to_load_garage()
                         if vehiclesave~=nil and vehiclesave.model~=nil then
-                            WriteNotification("You already have ~g~"..GetDisplayNameFromVehicleModel(vehiclesave.model).." ~s~in garage.")
+                            SimpleNotification("You already have ~g~~a~ ~s~in garage.",GetDisplayNameFromVehicleModel(vehiclesave.model))
                         else
                             -- place in garage
                             local flags=0
@@ -6034,7 +6102,7 @@ Citizen.CreateThread(function()
                             if IsVehicleTyreBurst(myveh, 47, false) then flags=flags|512 end
                             vehiclesave.tyres=flags
                             
-                            WriteNotification("~g~"..GetDisplayNameFromVehicleModel(vehiclesave.model).." ~s~saved in garage.")
+                            SimpleNotification("~g~~a~ ~s~saved in garage.",GetDisplayNameFromVehicleModel(vehiclesave.model))
                             SetEntityAsMissionEntity(myveh)
                             DeleteEntity(myveh)
                             
@@ -6056,11 +6124,11 @@ Citizen.CreateThread(function()
                             for k,v in pairs(vehiclesave.mods) do
                                 modstring=modstring..string.char(k+1,v+1)
                             end
-                            --WriteNotification("saving "..#modstring)
+                            --SimpleNotification("saving "..#modstring)
                             SetResourceKvp("garage_1_modstring",modstring)
                         end
                     else
-                        WriteNotification("You cannot use enemy garages.")
+                        SimpleNotification("You cannot use enemy garages.")
                     end
                 end
             elseif zone~=nil and not zone.raided and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
@@ -6093,7 +6161,8 @@ Citizen.CreateThread(function()
                                 
                                 flags=vs.doors
                                 for i=0,7 do
-                                    if (flags&(1<<i))~=0 then SetVehicleDoorBroken(myveh,i,true) end
+                                    local bin=(1<<i)
+                                    if (flags&bin)~=0 then SetVehicleDoorBroken(myveh,i,true) end
                                 end
                                 
                                 SetVehicleColours(myveh,vs.colors[1],vs.colors[2])
@@ -6119,20 +6188,20 @@ Citizen.CreateThread(function()
                                 if (flags&128)~=0 then SetVehicleTyreBurst(myveh, 7, false, 1000.1-.1) end
                                 if (flags&256)~=0 then SetVehicleTyreBurst(myveh, 45, false, 1000.1-.1) end
                                 if (flags&512)~=0 then SetVehicleTyreBurst(myveh, 47, false, 1000.1-.1) end
-                                WriteNotification("You took ~g~"..GetDisplayNameFromVehicleModel(vs.model).." ~s~from your garage.")
+                                SimpleNotification("You took ~g~~a~ ~s~from your garage.",GetDisplayNameFromVehicleModel(vs.model))
                                 vehiclesave=nil
                                 DeleteResourceKvp("garage_1_model")
                             else
-                                WriteNotification("Can't spawn vehicle, try again.")
+                                SimpleNotification("Can't spawn vehicle, try again.")
                             end
                         else
-                            WriteNotification("You don't have anything in your garage.")
+                            SimpleNotification("You don't have anything in your garage.")
                         end
                     else
-                        WriteNotification("You don't have anything in your garage.")
+                        SimpleNotification("You don't have anything in your garage.")
                     end
                 else
-                    WriteNotification("You cannot use enemy garages.")
+                    SimpleNotification("You cannot use enemy garages.")
                 end
             elseif zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) then
                 --buy car
@@ -6206,9 +6275,9 @@ Citizen.CreateThread(function()
                         need=zone.vehshop[current_trade].requirements[i+1]
                         DrawSprite("lsm",item,.39,.435+i*.05,inv_big_x,inv_big_y,0.0, 255, 255, 255, 255)
                         if have<need then
-                            WriteText(2,item.."\n"..have.." of "..need,0.35,255,0,0,255,.42,.428+i*.05)
+                            WriteText(2,{"~a~\n~1~ of ~1~",item,have,need},0.35,255,0,0,255,.42,.428+i*.05)
                         else
-                            WriteText(2,item.."\n"..have.." of "..need,0.35,0,255,0,255,.42,.428+i*.05)
+                            WriteText(2,{"~a~\n~1~ of ~1~",item,have,need},0.35,0,255,0,255,.42,.428+i*.05)
                         end
                     end
                 end
@@ -6248,11 +6317,11 @@ Citizen.CreateThread(function()
                                 end
                             end
                         else
-                            WriteNotification("Your ~r~inventory is full~s~, you can't take anything.")
+                            SimpleNotification("Your ~r~inventory is full~s~, you can't take anything.")
                         end
                     end
                 else
-                    WriteNotification("You cannot receive new free provision yet.")
+                    SimpleNotification("You cannot receive new free provision yet.")
                 end
             elseif zone~=nil and not zone.raided and zone.tradepos~=nil and in_radius(mypos,zone.tradepos,5) then
                 --trade
@@ -6315,7 +6384,7 @@ Citizen.CreateThread(function()
                                     inventory.current=inv_index_price --important for check_inv_slot_for_zero_amount()
                                     check_inv_slot_for_zero_amount() --to save
                                     inventory.highlight=255
-                                    --WriteNotification("Bought ~g~"..zone.trade[current_trade][1].."~s~.")
+                                    --SimpleNotification("Bought ~g~"..zone.trade[current_trade][1].."~s~.")
                                 end
                             elseif zone.trade[current_trade][4]==youhaveamount_price then
                                 inventory[inv_index_price].amount=0
@@ -6324,7 +6393,7 @@ Citizen.CreateThread(function()
                                 give_item_to_inventory(zone.trade[current_trade][1],zone.trade[current_trade][2])
                                 inventory.highlight=255
                             else
-                                WriteNotification("Not enough ~g~"..zone.trade[current_trade][3].."~s~!")
+                                SimpleNotification("Not enough ~g~~a~~s~!",zone.trade[current_trade][3])
                             end
                         end
                         DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
@@ -6364,11 +6433,11 @@ Citizen.CreateThread(function()
                                 local name=zone.trade[i][1]
                                 WriteTextNoOutline(2,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
                                 SetTextCentre(true)
-                                WriteTextNoOutline(2,"x "..zone.trade[i][2],0.25,0,0,0,255,0.305,y+0.02)
+                                WriteTextNoOutline(2,{"x ~1~",zone.trade[i][2]},0.25,0,0,0,255,0.305,y+0.02)
                                 
                                 DrawSprite("lsm", zone.trade[i][3],price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
-                                WriteTextNoOutline(2,"x "..zone.trade[i][4],0.25,0,0,0,255,price_items_x,y+0.02)
+                                WriteTextNoOutline(2,{"x ~1~",zone.trade[i][4]},0.25,0,0,0,255,price_items_x,y+0.02)
                                 DrawSprite("lsm", "Trade Button",trade_button_x,y,0.0255,0.0205,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
                                 local color=255
@@ -6381,19 +6450,19 @@ Citizen.CreateThread(function()
                         end
                     end
                 elseif GetRelationshipBetweenGroups(myfaction,zone.relationship)~=5 then
-                    WriteNotification("You need to be in this faction in order to trade.")
+                    SimpleNotification("You need to be in this faction in order to trade.")
                 elseif GetRelationshipBetweenGroups(myfaction,zone.relationship)==5 then
                     --zone.raided=true
                     --TriggerServerEvent("zoneraided",zone.tradepos.x,zone.tradepos.y,zone.tradepos.z,zone.name,zone.trade,zone.relationship)
-                    WriteNotification("You need to be in this faction in order to trade.")
+                    SimpleNotification("You need to be in this faction in order to trade.")
                     
                     Wait(300)
                 end
             elseif zone~=nil and not zone.raided and zone.ransack~=nil and in_radius(mypos,zone.ransack,1) then 
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
-                    WriteNotification("This is base warehouse. Become enemy with faction to start raid.")
+                    SimpleNotification("This is base warehouse. Become enemy with faction to start raid.")
                 else
-                    WriteNotification("You started safezone raid.")
+                    SimpleNotification("You started safezone raid.")
                     TriggerServerEvent("zoneraided",zone.ransack.x,zone.ransack.y,zone.ransack.z,zone.name,zone.ransack_list,zone.relationship)
                     Wait(300)
                 end
@@ -6421,9 +6490,9 @@ Citizen.CreateThread(function()
                                     end
                                     SetTextWrap(0.27,0.73)  
                                     if myfaction==zone.relationship then
-                                        WriteText(4,zone.quests.novice..zone.quests[questid].text,0.4,255,255,255,255,0.27,0.35)
+                                        WriteText(4,{"~a~~a~",zone.quests.novice,zone.quests[questid].text},0.4,255,255,255,255,0.27,0.35)
                                     else
-                                        WriteText(4,zone.quests.join_text..zone.quests[questid].text,0.4,255,255,255,255,0.27,0.35)
+                                        WriteText(4,{"~a~~a~",zone.quests.join_text,zone.quests[questid].text},0.4,255,255,255,255,0.27,0.35)
                                     end
                                     WriteText(4,"Required items:",0.4,255,255,255,255,0.27,0.6)
                                     SetTextWrap(0.27,0.73)  
@@ -6432,24 +6501,24 @@ Citizen.CreateThread(function()
                                     for i=1,#zone.quests[questid].items_reward,2 do
                                         SetTextWrap(0.27,0.73)  
                                         SetTextRightJustify(true)
-                                        WriteText(2,"~g~"..zone.quests[questid].items_reward[i].." ~s~x"..zone.quests[questid].items_reward[i+1],0.3,255,255,255,255,0.73,0.62+(i*0.01))
+                                        WriteText(2,{"~g~~a~ ~s~x~1~",zone.quests[questid].items_reward[i],zone.quests[questid].items_reward[i+1]},0.3,255,255,255,255,0.73,0.62+(i*0.01))
                                     end
                                     if do_we_have_all_that(zone.quests[questid].items_required) then
                                         WriteText(4,"Press ~g~E ~s~to give required items.",0.4,255,255,255,255,0.27,0.8)
                                         if IsControlJustPressed(0,86) then
                                             remove_all_that(zone.quests[questid].items_required)
                                             Wait(0)
-                                            WriteNotification("~g~You've finished quest.")
+                                            SimpleNotification("~g~You've finished quest.")
                                             player.reputation=player.reputation+zone.quests[questid].rep_bonus
                                             SetResourceKvpInt("reputation",player.reputation)
-                                            WriteNotification("Reputation ~g~+"..zone.quests[questid].rep_bonus)
+                                            SimpleNotification("Reputation ~g~+~1~",zone.quests[questid].rep_bonus)
                                             if can_fit_all_into_inventory(zone.quests[questid].items_reward) then
                                                 give_all_to_inventory(zone.quests[questid].items_reward)
                                             end
                                             if myfaction~=zone.relationship then
                                                 SetPedRelationshipGroupHash(myped,zone.relationship)
                                                 myfaction=GetPedRelationshipGroupHash(myped)
-                                                WriteNotification("~g~You've joined "..relationship_names[zone.relationship])
+                                                SimpleNotification("~g~You've joined ~a~",relationship_names[zone.relationship])
                                             end
                                             questid=math.random(1,#zone.quests)
                                         end
@@ -6466,7 +6535,7 @@ Citizen.CreateThread(function()
                                             if get_inventroy_item_amount(item)>=zone.quests[questid].items_required[i+1] then
                                                 color=255
                                             end
-                                            WriteText(4,item_names[item].." x"..zone.quests[questid].items_required[i+1],0.4,color,color,color,255,.27+i*0.04,.75)
+                                            WriteText(4,{"~a~ x~1~",item_names[item],zone.quests[questid].items_required[i+1]},0.4,color,color,color,255,.27+i*0.04,.75)
                                         else
                                             RequestStreamedTextureDict("lsm")
                                         end
@@ -6477,7 +6546,7 @@ Citizen.CreateThread(function()
                                 end
                             else
                                 SetTextWrap(0.27,0.73)  
-                                WriteText(4,"You need to have "..zone.join_faction.rep_amount-player.reputation.." more reputation.",0.4,255,255,255,255,0.35,0.35)
+                                WriteText(4,{"You need to have ~1~ more reputation.",zone.join_faction.rep_amount-player.reputation},0.4,255,255,255,255,0.35,0.35)
                             end
                         elseif zone.join_faction.rep_moreorless=="less" then
                         
@@ -6654,12 +6723,12 @@ Citizen.CreateThread(function()
                             if (variations~=0) then current=current+1 end
                             if (textures~=0) then texture=texture+1 end
                             WriteTextNoOutline(4,"<",0.35,0,0,0,alpha,0.280,0.428+.025+i*.025) --chosen line text
-                            WriteTextNoOutline(4,current.." / "..variations.." >",0.35,0,0,0,alpha,0.285,0.428+.025+i*.025) --chosen line text
-                            WriteTextNoOutline(4,"E "..texture.." / "..textures,0.35,0,0,0,alpha,0.315,0.428+.025+i*.025) --chosen line text
+                            WriteTextNoOutline(4,{"~1~ / ~1~ >",current,variations},0.35,0,0,0,alpha,0.285,0.428+.025+i*.025) --chosen line text
+                            WriteTextNoOutline(4,{"E ~1~ / ~1~",texture,textures},0.35,0,0,0,alpha,0.315,0.428+.025+i*.025) --chosen line text
                         else
                             WriteTextNoOutline(2,component_name[i],0.35,255,255,255,alpha,0.16,0.428+.025+i*.025) --not chosen line text
                             if (variations~=0) then current=current+1 end
-                            WriteTextNoOutline(4,current.." / "..variations,0.35,255,255,255,alpha,0.285,0.428+.025+i*.025) --not chosen line text
+                            WriteTextNoOutline(4,{"~1~ / ~1~",current,variations},0.35,255,255,255,alpha,0.285,0.428+.025+i*.025) --not chosen line text
                         end
                     end
                     for i=12,total_menu_count do
@@ -6673,12 +6742,12 @@ Citizen.CreateThread(function()
                             if (variations~=0) then current=current+1 end
                             texture=texture+1
                             WriteTextNoOutline(4,"<",0.35,0,0,0,alpha,0.280,0.428+.025+i*.025) --chosen line text
-                            WriteTextNoOutline(4,current.." / "..variations.." >",0.35,0,0,0,alpha,0.285,0.428+.025+i*.025) --chosen line text
-                            WriteTextNoOutline(4,"E "..texture.." / "..textures,0.35,0,0,0,alpha,0.325,0.428+.025+i*.025) --chosen line text
+                            WriteTextNoOutline(4,{"~1~ / ~1~ >",current,variations},0.35,0,0,0,alpha,0.285,0.428+.025+i*.025) --chosen line text
+                            WriteTextNoOutline(4,{"E ~1~ / ~1~",texture,textures},0.35,0,0,0,alpha,0.325,0.428+.025+i*.025) --chosen line text
                         else
                             WriteTextNoOutline(2,component_name[i],0.35,255,255,255,alpha,0.16,0.428+.025+i*.025) --not chosen line text
                             if (variations~=0) then current=current+1 end
-                            WriteTextNoOutline(4,current.." / "..variations,0.35,255,255,255,alpha,0.285,0.428+.025+i*.025) --not chosen line text
+                            WriteTextNoOutline(4,{"~1~ / ~1~",current,variations},0.35,255,255,255,alpha,0.285,0.428+.025+i*.025) --not chosen line text
                         end
                     end
                 end
@@ -6710,7 +6779,7 @@ Citizen.CreateThread(function()
                             if enough then
                                 local name=zone.clothes[current_menu][1]
                                 local hash=GetHashKey(name)
-                                WriteNotification("You changed your clothes.")
+                                SimpleNotification("You changed your clothes.")
                                 remove_all_that(zone.clothes[current_menu][2])
                                 RequestModel(hash) while not HasModelLoaded(hash) do Wait(0) end
                                 SetPlayerModel(PlayerId(),hash)
@@ -6745,9 +6814,9 @@ Citizen.CreateThread(function()
                         need=zone.clothes[current_menu][2][i+1]
                         DrawSprite("lsm",item,.39,.435+i*.05,inv_big_x,inv_big_y,0.0, 255, 255, 255, 255)
                         if have<need then
-                            WriteText(2,item.."\n"..have.." of "..need,0.35,255,0,0,255,.42,.428+i*.05)
+                            WriteText(2,{"~a~\n~1~ of ~1~",item,have,need},0.35,255,0,0,255,.42,.428+i*.05)
                         else
-                            WriteText(2,item.."\n"..have.." of "..need,0.35,0,255,0,255,.42,.428+i*.05)
+                            WriteText(2,{"~a~\n~1~ of ~1~",item,have,need},0.35,0,255,0,255,.42,.428+i*.05)
                         end
                     end
                 end
@@ -6798,7 +6867,7 @@ Citizen.CreateThread(function()
                                 remove_all_that(zone.crafts[current_menu][3])
                                 Wait(0)
                             else
-                                WriteNotification("Can't fit "..zone.crafts[current_menu][1].." in inventory, drop something.")
+                                SimpleNotification("Can't fit ~a~ in inventory, drop something.",zone.crafts[current_menu][1])
                                 --SetModelAsNoLongerNeeded(model)
                             end
                         end
@@ -6829,9 +6898,9 @@ Citizen.CreateThread(function()
                         need=zone.crafts[current_menu][3][i+1]
                         DrawSprite("lsm",item,.39,.435+i*.05,inv_big_x,inv_big_y,0.0, 255, 255, 255, 255)
                         if have<need then
-                            WriteText(2,item.."\n"..have.." of "..need,0.35,255,0,0,255,.42,.428+i*.05)
+                            WriteText(2,{"~a~\n~1~ of ~1~",item,have,need},0.35,255,0,0,255,.42,.428+i*.05)
                         else
-                            WriteText(2,item.."\n"..have.." of "..need,0.35,0,255,0,255,.42,.428+i*.05)
+                            WriteText(2,{"~a~\n~1~ of ~1~",item,have,need},0.35,0,255,0,255,.42,.428+i*.05)
                         end
                     end
                 end
@@ -6889,7 +6958,7 @@ Citizen.CreateThread(function()
                         if #(GetEntityCoords(pped)-mypos)>1 then break end
                         if not IsEntityPlayingAnim(pped,dict,anim,3) then break end
                         if is_other_player_playing_anim_nearby(mypos,myplayerid,dict,anim) then
-                            WriteNotification("~r~Conflict, other player is picking up something.")
+                            SimpleNotification("~r~Conflict, other player is picking up something.")
                             break
                         end
                         ended=((GetGameTimer()-started)>timetopickup)
@@ -7084,10 +7153,10 @@ Citizen.CreateThread(function()
                                         NetworkRequestControlOfEntity(pveh)
                                     end
                                 else
-                                    WriteNotification("You must be in driver seat to refuel vehicle.")
+                                    SimpleNotification("You must be in driver seat to refuel vehicle.")
                                 end
                             else
-                                WriteNotification("You need aircraft fuel for that vehicle.")
+                                SimpleNotification("You need aircraft fuel for that vehicle.")
                             end
                         end
                     elseif inventory[inventory.current].item=="aircraftfuel" then
@@ -7114,10 +7183,10 @@ Citizen.CreateThread(function()
                                         NetworkRequestControlOfEntity(pveh)
                                     end
                                 else
-                                    WriteNotification("You must be in driver seat to refuel vehicle.")
+                                    SimpleNotification("You must be in driver seat to refuel vehicle.")
                                 end
                             else
-                                WriteNotification("This fuel can be used only in aircraft vehicles.")
+                                SimpleNotification("This fuel can be used only in aircraft vehicles.")
                             end
                         end
                     elseif inventory[inventory.current].item=="engineparts" then
@@ -7130,13 +7199,13 @@ Citizen.CreateThread(function()
                                         inventory[inventory.current].amount=inventory[inventory.current].amount-1
                                         check_inv_slot_for_zero_amount()
                                     else
-                                        WriteNotification("Vehicle engine is in perfect condition.")
+                                        SimpleNotification("Vehicle engine is in perfect condition.")
                                     end
                                 else
                                     NetworkRequestControlOfEntity(pveh)
                                 end
                             else
-                                WriteNotification("You must be in driver seat to repair vehicle.")
+                                SimpleNotification("You must be in driver seat to repair vehicle.")
                             end
                         end
                     elseif inventory[inventory.current].item=="ammo" then --rifle
@@ -7287,7 +7356,7 @@ Citizen.CreateThread(function()
                                 check_inv_slot_for_zero_amount()
                             end
                         else
-                            WriteNotification("You need bodyarmor to insert armor plate in.")
+                            SimpleNotification("You need bodyarmor to insert armor plate in.")
                         end
                     elseif inventory[inventory.current].item=="bodyarmor" then
                         player.bodyarmor=not player.bodyarmor
@@ -7527,7 +7596,7 @@ Citizen.CreateThread(function()
         if zone~=oldzone then
             if oldzone~=nil and oldzone.name~=nil then
                 if not disablehud then
-                    --WriteNotification("You left "..oldzone.name..".")
+                    --SimpleNotification("You left "..oldzone.name..".")
                 end
                 --print("you exited zone")
                 --DisplayRadar(true)
@@ -7636,12 +7705,12 @@ Citizen.CreateThread(function()
                 end
                 if zone.name~=nil then
                     if not disablehud then
-                        --WriteNotification("You entered "..zone.name..".")
+                        --SimpleNotification("You entered "..zone.name..".")
                     end
                     --print("you entered zone")
                     FlashMinimapDisplay()
                     if lsm_random_spawn==0 and zone.spawnpos.x and zone.spawnpos.y and zone.spawnpos.z then
-                        WriteNotification("Now you respawn at "..zone.name..".")
+                        SimpleNotification("Now you respawn at ~a~.",zone.name)
                         SetResourceKvpFloat("x",zone.spawnpos.x)
                         SetResourceKvpFloat("y",zone.spawnpos.y)
                         SetResourceKvpFloat("z",zone.spawnpos.z)
@@ -7928,7 +7997,7 @@ Citizen.CreateThread(function()
     local last_timestamp=0
     local filter_mode=true
     local filter=0
-    local maxfilter=0x3F00
+    local maxfilter=0x7F00
     local function zombie_refresh()--needs ped, must be zombie and not dead
         SetPedCombatRange(ped,2)
         SetPedSeeingRange(ped, 100.0)
@@ -8294,7 +8363,8 @@ Citizen.CreateThread(function()
         if filter_mode then
             --if math.abs(timestamp-last_timestamp)>50 then
             --    last_timestamp=timestamp
-                filter=(filter+256)&maxfilter
+                local bin=(filter+256)
+                filter=bin&maxfilter
             --end
             player_peds=nil
             survivors=nil
@@ -8472,7 +8542,7 @@ Citizen.CreateThread(function()
                             --print("killer="..GetPedKiller(ped).." source_of_death="..GetPedSourceOfDeath(ped).." cause_of_death="..GetPedCauseOfDeath(ped))
                         zpos=GetEntityCoords(ped)
                         if player_peds==nil then player_peds=get_player_peds() end
-                        if dist_to_closest_point(player_peds,zpos)>90000.0 then
+                        if dist_to_closest_point(player_peds,zpos)>persistence.distance then
                             if IsEntityAMissionEntity(ped) then
                                 DeleteEntity(ped)
                             end
@@ -8622,9 +8692,9 @@ end
 Citizen.CreateThread(function()
     local function try_to_loot_engine(veh) if true then return end
         if DecorExistOn(veh,"scorched") then
-            --WriteNotification("Nothing to salvage here.")
+            --SimpleNotification("Nothing to salvage here.")
         elseif any_player_inside(veh) then
-            WriteNotification("Cannot loot engine while someone is in car.")
+            SimpleNotification("Cannot loot engine while someone is in car.")
         else
             local engine=GetVehicleEngineHealth(veh)
             local parts=math.floor((engine-no_engine_parts)*.05)
@@ -8667,7 +8737,7 @@ Citizen.CreateThread(function()
                     local item_decor=DecorGetInt(veh,"item")
                     local count_decor=DecorGetInt(veh,"count")
                     if item_decor==nil or item_decor==0 then
-                        WriteNotification("~r~ERROR Item from decor is nil or 0!")
+                        SimpleNotification("~r~ERROR Item from decor is nil or 0!")
                         print("ERROR Item from decor is nil or 0")
                     else
                         local item_name=item_index_to_name[item_decor]
@@ -8689,7 +8759,7 @@ Citizen.CreateThread(function()
                     end
                 end
             else
-                WriteNotification("Nothing useful.")
+                SimpleNotification("Nothing useful.")
                 DecorSetBool(veh,"zm_looted",true)
             end
         end
@@ -8746,7 +8816,7 @@ Citizen.CreateThread(function()
                             else                    chosentier=deadbodiesrewards_tier1 end
                             reward=chosentier[math.random(1,#chosentier)] 
                             if debug_mode then
-                                WriteNotification("Debug random loot number is: "..tier)
+                                SimpleNotification("Debug random loot number is: ~1~",tier)
                                 print("Debug random loot number is: "..tier)
                             end
                         else --zombie loot
@@ -8758,7 +8828,7 @@ Citizen.CreateThread(function()
                             else                    chosentier=deadbodiesrewards_tier1 end
                             reward=chosentier[math.random(1,#chosentier)] 
                             if debug_mode then
-                                WriteNotification("Debug random loot number is: "..tier)
+                                SimpleNotification("Debug random loot number is: ~1~",tier)
                                 print("Debug random loot number is: "..tier)
                             end
                         end
@@ -8777,7 +8847,7 @@ Citizen.CreateThread(function()
                                                 if count<0 then count=math.random(1,-count) end
                                                 if give_item_to_inventory(reward[1],count) then DecorSetBool(ped,"zm_looted",true) end
                                             else
-                                                WriteNotification("Nothing useful.")
+                                                SimpleNotification("Nothing useful.")
                                                 DecorSetBool(ped,"zm_looted",true)
                                             end
                                         -- else
@@ -8909,7 +8979,7 @@ Citizen.CreateThread(function()
                                     print("trying to pickup "..v[i])
                                     if give_item_to_inventory(v[i],v[i+1]) then took_something=true end
                                 else
-                                    WriteNotification(inventory_items_chances[v[i]].text)
+                                    SimpleNotification(inventory_items_chances[v[i]].text)
                                     local_spoiled=true
                                 end
                             end
@@ -8935,10 +9005,10 @@ Citizen.CreateThread(function()
             end
             if not found then
                 if empty then
-                    WriteNotification("This thing is ~r~empty~s~.")
+                    SimpleNotification("This thing is ~r~empty~s~.")
                 end
                 if spoiled then
-                    WriteNotification("This food is ~r~spoiled~s~.")
+                    SimpleNotification("This food is ~r~spoiled~s~.")
                 end
             end
             -- if health~=maxhealth then
@@ -9247,7 +9317,10 @@ for _,v in pairs(replace_models) do
     RequestModel(v)
 end
 AddEventHandler('populationPedCreating', function(x, y, z, model, setters)
-    if birds[model]==nil then
+    if npcslimiter.enablelimit and npcslimiter.current>=npcslimiter.max then
+        CancelEvent()
+        return
+    elseif birds[model]==nil then
         local zone=is_in_safe_zone(x,y,z)
         local newmodel
         if zone~=nil and zone.models~=nil then
@@ -9264,6 +9337,9 @@ AddEventHandler('populationPedCreating', function(x, y, z, model, setters)
                 --CancelEvent()
             end
         end
+    end
+    if npcslimiter.enablelimit then
+        npcslimiter.current=npcslimiter.current+1
     end
 end)
 
@@ -9791,7 +9867,7 @@ Citizen.CreateThread(function()
             if player.bleeding==1 then
                 WriteHint("You have ~r~1 BLEEDING WOUND~s~! Stop the bleeding with bandages, rags, or a medical kit!")
             else
-                WriteHint("You have ~r~"..player.bleeding.." BLEEDING WOUNDS~s~! Stop the bleeding with bandages, rags, or a medical kit!")
+                WriteHint({"You have ~r~~1~ BLEEDING WOUNDS~s~! Stop the bleeding with bandages, rags, or a medical kit!",player.bleeding})
             end
         end
         if player.blood<100.0 then
@@ -10488,7 +10564,7 @@ Citizen.CreateThread(function()
                 if firstchar=="~" then
                     newname=string.sub(newname,4)
                 end
-                WriteText(4,newname.." - "..relationship_names[zone.relationship],0.5,r,g,b,255,0.5,0.008) --base name
+                WriteText(4,{"~a~ - ~a~",newname,relationship_names[zone.relationship]},0.5,r,g,b,255,0.5,0.008) --base name
             end
             
             SetTextRightJustify(true)
@@ -10515,7 +10591,11 @@ Citizen.CreateThread(function()
         local myped=PlayerPedId()
         handle,npc=FindFirstPed()
         loop=(handle~=-1)
+        npcslimiter.current=0
         while loop do
+            if not IsPedAPlayer(npc) then
+                npcslimiter.current=npcslimiter.current+1
+            end
             if IsPedDeadOrDying(npc) and DecorExistOn(npc,"raider") and GetPedSourceOfDeath(npc)==myped then
                 if not checkeddeadbodies[npc] then
                     local gametimer=GetGameTimer()
@@ -10524,18 +10604,30 @@ Citizen.CreateThread(function()
                     local myfaction=GetPedRelationshipGroupHash(myped)
                     if relationship_good_bad[theirfaction]=="bad" then
                         change_reputation(1)
-                        WriteNotification("You have ~g~GAINED REPUTATION ~s~for killing a ~r~"..relationship_name[theirfaction])
+                        SimpleNotification("You have ~g~gained reputation ~s~for killing a ~r~~a~",relationship_name[theirfaction])
                     elseif relationship_good_bad[theirfaction]=="neutral" then
-                        WriteNotification("You don't gain ~y~reputation ~s~for killing ~y~"..relationship_names[theirfaction])
+                        SimpleNotification("You don't gain ~y~reputation ~s~for killing ~y~~a~",relationship_names[theirfaction])
                     elseif relationship_good_bad[theirfaction]=="good" then
                         change_reputation(-1)
-                        WriteNotification("You have ~r~LOST REPUTATION ~s~for killing a ~g~"..relationship_name[theirfaction])
+                        SimpleNotification("You have ~r~lost reputation ~s~for killing a ~g~~a~",relationship_name[theirfaction])
                     end
                 end
             end
             loop,npc=FindNextPed(handle)
         end
         EndFindPed(handle)
+        -- WriteHint("-----------------NPCs Limiter-------------")
+        -- if npcslimiter.enablelimit then
+            -- WriteHint("NPCs Limiter: ~g~enabled")
+        -- else
+            -- WriteHint("NPCs Limiter: ~c~disabled")
+        -- end
+        -- if npcslimiter.current>npcslimiter.max then
+            -- WriteHint({"NPCs: ~r~~1~ ~s~/ ~1~",npcslimiter.current,npcslimiter.max})
+        -- else
+            -- WriteHint({"NPCs: ~1~ / ~1~",npcslimiter.current,npcslimiter.max})
+        -- end
+        -- WriteHint("----------------------------------------------")
     end
 end)
 
@@ -10546,9 +10638,18 @@ extraction={
 {x=-1803.7950439453,y=-1229.6433105469,z=1.5942938327789,r=2.0},
 }
 
+-- air
+-- {x=1303.2777099609,y=4358.4536132813,z=-193.69143676758},
+-- {x=980.90032958984,y=2330.0258789063,z=-195.55923461914},
+
 extraction_spawns={
-{x=1303.2777099609,y=4358.4536132813,z=-193.69143676758},
-{x=980.90032958984,y=2330.0258789063,z=-195.55923461914},
+{x=-3132.7097167969,y=3715.3798828125,z=1.9997624158859,angle=218.88287353516},
+{x=-923.96728515625,y=6674.509765625,z=1.789999961853,angle=224.63050842285},
+{x=1961.4853515625,y=7054.9809570313,z=1.789999961853,angle=192.7882232666},
+{x=3549.5229492188,y=5677.9975585938,z=1.789999961853,angle=111.76022338867},
+{x=4157.2338867188,y=3343.8518066406,z=1.789999961853,angle=69.952743530273},
+{x=3414.9748535156,y=300.43109130859,z=2.8899998664856,angle=73.988624572754},
+{x=-3338.015625,y=592.30609130859,z=1.789999961853,angle=270.37200927734},
 }
 
 
@@ -10601,7 +10702,9 @@ Citizen.CreateThread(function()
                     
                     SetResourceKvpFloat("x",extraction_spawns[rnd].x)
                     SetResourceKvpFloat("y",extraction_spawns[rnd].y)
-                    SetResourceKvpFloat("z",1500.1)
+                    SetResourceKvpFloat("z",extraction_spawns[rnd].z)
+                    SetResourceKvpFloat("angle",extraction_spawns[rnd].angle)
+                    SetResourceKvpInt("spawnvehmodel",276773164)
                     repeat Wait(0)
                         WriteHint("~g~You can leave server now")
                         mypos=GetEntityCoords(myped)
@@ -10620,8 +10723,21 @@ Citizen.CreateThread(function()
     while true do Wait(0)
         --WriteTextNoOutline(4,"Drakeling Labs",0.4,200,200,200,255,0.025,0.007) 
         DrawSprite("lsm", "dlabs", 0.045,0.02   ,0.065*1.3,0.025*1.05,   0.0, 255, 255, 255, 255)
+        --WriteText(4,"Your character will not be saved if you disconnect without extracting. \nUse extraction points to save your character safely.",0.2,200,200,200,255,0.165,0.975) --status
     end
 end)
+
+Citizen.CreateThread(function()
+    while true do Wait(300000)
+        SimpleNotification("Your character will not be saved if you disconnect without extracting.")
+        SimpleNotification("Use extraction points to save your character safely.")
+        Wait(300000)
+        SimpleNotification("Discord: ~b~discord.gg/VZG5Nvk")
+        Wait(100)
+        SimpleNotification("Discord: ~b~discord.gg/w9mZMqJ")
+    end
+end)
+
 
 
 Citizen.CreateThread(function()

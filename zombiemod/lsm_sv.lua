@@ -2,6 +2,7 @@ local players_inventory={}
 local players_pos={}
 
 local raid_content={
+cash=1000,
 scrapplastic=150,
 scrapmetal=120,
 rags=50,
@@ -24,7 +25,7 @@ poolcue=1,
 molotov=1,
 pipebomb=1,
 flaregun=1,
-ball=5,
+ball=1,
 flaregunammo=50,
 food=20,
 canfood=20,
@@ -257,7 +258,9 @@ RegisterServerEvent("loot")
 AddEventHandler("loot",function(id,thing)
     local signal=signals[id]
     if signal~=nil then
-        if signal.abandoned~=nil then signal.abandoned=0 end
+        --if signal.abandoned~=nil then 
+            signal.abandoned=0 
+        --end
         local loot=signal.loot
         if loot~=nil and thing~=nil and loot[thing]~=nil then
             TriggerClientEvent("loot_crate_give",source,thing,loot[thing])
