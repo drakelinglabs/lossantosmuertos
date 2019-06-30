@@ -236,6 +236,74 @@ bodyarmor={[9]={var=2-1,tex=2-1}},
 --backpack={[5]={var=39-1,tex=1-1}},
 backpack={[5]={var=46-1,tex=1-1}},
 },
+trucker={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=2-1,tex=1-1}, --"torso" hands
+[4]={var=4-1,tex=range(1-1,16-1)}, --legs
+[5]={var=1-1,tex=1-1}, --hands "parachutes"
+[6]={var=4-1,tex=range(1-1,16-1)}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=1-1,tex=range(2-1,5-1)}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=4-1,tex=range(1-1,16-1)}, --additional parts for torso
+bodyarmor={[9]={var=4-1,tex=2-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+},
+business={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=2-1,tex=1-1}, --"torso" hands
+[4]={var=11-1,tex=1-1}, --legs
+[5]={var=1-1,tex=1-1}, --hands "parachutes"
+[6]={var=11-1,tex=1-1}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=4-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=5-1,tex=1-1}, --additional parts for torso
+bodyarmor={[9]={var=4-1,tex=2-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+},
+ordinary={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=2-1,tex=1-1}, --"torso" hands
+[4]={var=2-1,tex=range(1-1,16-1)}, --legs
+[5]={var=1-1,tex=1-1}, --hands "parachutes"
+[6]={var=2-1,tex=range(1-1,16-1)}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=1-1,tex=range(2-1,5-1)}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=8-1,tex=range(1-1,16-1)}, --additional parts for torso
+bodyarmor={[9]={var=4-1,tex=2-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+},
+gang={
+[0]={var=1-1,tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=2-1,tex=1-1}, --"torso" hands
+[4]={var=8-1,tex=range(1-1,16-1)}, --legs
+[5]={var=1-1,tex=1-1}, --hands "parachutes"
+[6]={var=2-1,tex=range(1-1,16-1)}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=0-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=0-1,tex=1-1}, --decals
+[11]={var=15-1,tex=range(1-1,16-1)}, --additional parts for torso
+bodyarmor={[9]={var=3-1,tex=2-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+},
 marauder={
 [0]={var=1-1,tex=1-1}, --head
 [1]={var=1-1,tex=1-1}, --"beard" masks
@@ -1202,9 +1270,9 @@ local safezones={
         {"cash",10,"juice",1},
         {"cash",25,"alcohol",1},
         {"cash",25,"scrapplastic",25},
-        {"cash",25,"scrapmetal",25},
+        {"cash",10,"scrapmetal",5},
         {"cash",25,"rags",15},
-        {"cash",25,"chemicals",5},
+        {"cash",50,"chemicals",5},
     },
     tradepos={x=-1144.1071777344,y=4908.369140625,z=220.96875},
     clothes={
@@ -1336,7 +1404,7 @@ local safezones={
         {"cash",30,"water",1},
         {"cash",30,"canfood",1},
         {"cash",50,"mre",1},
-        {"cash",400,"policedocs",1},
+        {"cash",150,"policedocs",1},
         {"cash",75,"dawntokens",1},
     },
     tradepos={x=452.37100219727,y=-980.07110595703,z=30.689582824707},
@@ -1556,6 +1624,7 @@ local safezones={
         {"gasoline",1,"cash",30},
         {"bandage",1,"cash",20},
         {"canfood",1,"cash",25},
+        {"soda",1,"cash",25},
         --{"clothes_banditgoon",1,"cash",300},
         --{"clothes_police",1,"cash",1500},
         --{"clothes_banditauthority",1,"cash",5000},
@@ -1963,6 +2032,10 @@ mgammo=0.1,
 launchergrenade=0.7,
 clothes_marauder=5.5,
 clothes_camouflage=7.8,
+clothes_trucker=3.0,
+clothes_ordinary=3.0,
+clothes_gang=3.0,
+clothes_business=2.0,
 armorplate=2.0,
 clothes_offdutysheriff=9.2,
 cowboyhat=0.7,
@@ -2102,6 +2175,10 @@ scope_thermal="Thermal Vision Scope",
 backpack="Backpack",
 duffelbag="Bag",
 tirerepair="Tire Repair Kit",
+clothes_trucker="Trucker Clothes",
+clothes_business="Business Clothes",
+clothes_ordinary="Ordinary Clothes",
+clothes_gang="Gang Clothes",
 }
 local item_descriptions={
 water="A plastic bottle filled with fresh water.",
@@ -2194,14 +2271,18 @@ scope_3="A tactical rail mounted holographic sight.",
 scope_advanced="An advanced high powered rail mounted rifle scope with variable magnification.",
 bandits_records="A collection of documents containing detailed plans for heists and building schematics.",
 cues="Cues that are named.",
-scope_compactholo="Compact Holographic Sight",
-muzzlebrake_1="Tactical Muzzle Brake",
-heavybarrel="Reinforced Rifle Barrel",
-scope_nightvision="Night Vision Scope",
-scope_thermal="Thermal Vision Scope",
-backpack="Standard backpack",
-duffelbag="Duffel bag",
-tirerepair="Repairs all tiers",
+scope_compactholo="An advanced rail mounted compact holographic sight.",
+muzzlebrake_1="A tactical muzzle brake compatible with most advanced weapons.",
+heavybarrel="A reinforced rifled barrel compatible with most advanced weapons.",
+scope_nightvision="An advanced night vision scope compatible with heavy sniper rifles.",
+scope_thermal="An advanced thermal optic compatible with heavy sniper rifles.",
+backpack="A standard backpack which increases a wearer's carrying capacity.",
+duffelbag="A large bag which drastically increases a wearer's carry capacity.",
+tirerepair="A generic repair kit containing all needed supplies to repair or replace damaged car tires.",
+clothes_trucker="A heavy set of trucker clothes.",
+clothes_business="A professional set of high quality business clothes.",
+clothes_ordinary="A set of ordinary clothes.",
+clothes_gang="A set of clothes branded with generic gang insignia.",
 }
 
 local weapon_upgrades={
@@ -2613,6 +2694,9 @@ local trunkrewards_tier3={
 {"juice",1},
 {"gasoline",-7},
 {"painkillers",-2},
+{"clothes_ordinary",1},
+{"clothes_gang",1},
+{"clothes_trucker",1},
 }
 local trunkrewards_tier4={
 {"pistolammo",-30},
@@ -2637,6 +2721,7 @@ local trunkrewards_tier4={
 {"lowcap",1},
 {"mre",-2},
 {"dawntokens",1},
+{"clothes_business",1},
 }
 local trunkrewards_tier5={
 {"snspistol",1},
@@ -2753,9 +2838,28 @@ grenade={chance=20,text="These grenades are ~r~not suitable for use ~s~anymore."
 weed={chance=50,text="This weed is ~r~not suitable for use ~s~."},
 bodyarmor={chance=20,text="This bodyarmor is ~r~not suitable for use ~s~anymore."},
 armorplate={chance=20,text="This armor plate is ~r~not suitable for use ~s~anymore."},
-flashlight_small={chance=25,text="This flashlight is ~r~broken~s~."},
-flashlight_large={chance=25,text="This flashlight is ~r~broken~s~."},
+flashlight_small={chance=15,text="This flashlight is ~r~broken~s~."},
+flashlight_large={chance=15,text="This flashlight is ~r~broken~s~."},
+fish={chance=10,text="This food is ~r~spoiled~s~."},
 }
+
+
+local randomloot={
+street_box={
+    {"food",1},
+    {"fish",1},
+    {"scrapmetal",2},
+},
+street_garbage={
+    {"scrapplastic",3},
+    {"scrapmetal",2},
+    {"rags",3},
+    {"food",1},
+    {"water",1},
+    {"soda",1},
+},
+}
+
 local pickups_objects={
 [-509973344]={"medkit",1,"bandage",2,solid=true},--wall medkit
 [-742198632]={"water",5,solid=true}, --water cooler
@@ -2794,22 +2898,22 @@ local pickups_objects={
 [-1839065906]={"food",1}, -- big cheese
 [-1816283392]={"food",1}, -- 14 in glass candies
 [1228376703]={"food",1}, -- meteorite
-[-54719154]={"food",10,"canfood",7,exp=true}, -- shop 30 canned and fod on low
-[-220235377]={"soda",7,exp=true}, -- shop 40 soda
-[643522702]={"alcohol",7,exp=true}, -- shop 40 alcohol
-[1437777724]={"food",7,exp=true}, -- shop bread 
-[-532065181]={"food",6,"chemicals",6,exp=true}, -- food and chem
+[-54719154]={"food",10,"canfood",7,exp=0.02}, -- shop 30 canned and fod on low
+[-220235377]={"soda",7,exp=0.02}, -- shop 40 soda
+[643522702]={"alcohol",7,exp=0.02}, -- shop 40 alcohol
+[1437777724]={"food",7,exp=0.02}, -- shop bread 
+[-532065181]={"food",6,"chemicals",6,exp=0.02}, -- food and chem
 [756199591]={"food",3}, -- shop gums
 [2067313593]={"food",4}, -- shop long gums
 [1404018125]={"alcohol",1}, -- green liquor
 [-1461673141]={"alcohol",1}, -- orange blocky
 [-169049173]={"alcohol",1}, -- black big alcohol
-[1421582485]={"food",3,exp=true}, -- shop ponchiks
+[1421582485]={"food",3,exp=0.02}, -- shop ponchiks
 [-802238381]={"food",3}, -- fruits
 [663958207]={"food",3}, -- shop guns shop type 3
-[1238061242]={"alcohol",4,exp=true}, -- spoiled alcohol
-[511490507]={"alcohol",15,exp=true}, -- spoiled alcohol
-[-1766954369]={"alcohol",10,exp=true}, -- spoiled shelf
+[1238061242]={"alcohol",4,exp=0.03}, -- spoiled alcohol
+[511490507]={"alcohol",15,exp=0.03}, -- spoiled alcohol
+[-1766954369]={"alcohol",10,exp=0.03}, -- spoiled shelf
 [-1243177429]={"alcohol",1}, -- 1 alcohol green
 [-1317590321]={"food",4}, -- shop long gums meth shop
 [2085590335]={"alcohol",3}, -- 6 triangle yellow bottles
@@ -2897,8 +3001,33 @@ local pickups_objects={
 [1871266393]={"engineparts",5}, --black closed tools
 [-738161850]={"engineparts",2}, --dark red closed
 
-[1165008631]={"mre",10}, --military crate blue eagle mre
+[1165008631]={"mre",5}, --military crate blue eagle mre
+
+[-66965919]={"flashlight",1}, --firefighters
+
+--[704797648]={"water",1}, -- small cactus
+
+[-1069975900]={"water",3}, --blue big barrel
+[1298403575]={"water",4}, --blue bigger barrel 2
+[-1738103333]={"gasoline",2}, -- metal barrel
+
+[-52732303]={randomloot.street_box,1}, --5 cardboard boxes
+[-1515940233]={randomloot.street_box,1}, --white line red fragile text
+[-1438964996]={randomloot.street_box,1}, --green FAN
+[258835349]={randomloot.street_box,1}, --5 GPostal
+[-1415300092]={randomloot.street_box,1}, --2 FRAGILE boxes
+[143291855]={randomloot.street_box,1}, --2 FRAGILE boxes
+[1513590521]={randomloot.street_box,1}, --a lot 045 boxes
+
+[1813879595]={randomloot.street_garbage,1}, --"small black trash bag",
+[1388308576]={randomloot.street_garbage,1},--"white trash bag",
+[1948359883]={randomloot.street_garbage,1},--"black trash bag",
+[897494494]={randomloot.street_garbage,1},--"white trash bag",
+[600967813]={randomloot.street_garbage,1},--"black trash bag",
+[-1681329307]={randomloot.street_garbage,1},--"triple black trash bag",
+[1098827230]={randomloot.street_garbage,1},--"black trash bag",
 }
+
 
 --local zombie={
 --skins={GetHashKey("a_f_y_genhot_01"),307287994},
@@ -3234,6 +3363,11 @@ local function check_clothes(pped) --if true then return true end
         if player.suit~="standard" then
             if not get_inventory_item_slot("clothes_"..player.suit) and not IsPedDeadOrDying(pped) then
                 player.suit="standard"
+            end
+        end
+        if player.backpack then
+            if not get_inventory_item_slot("duffelbag") and not IsPedDeadOrDying(pped) then
+                player.backpack=false
             end
         end
         local override={}
@@ -3855,6 +3989,9 @@ Citizen.CreateThread(function()
                                     if prop[3] then
                                         WriteText(font,{"~g~E ~s~to pick up ~g~~a~~s~ and ~g~~a~",prop[1],prop[3]},size,255,255,255,alpha,x,y)
                                         WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~~c~ and ~g~~a~",prop[1],prop[3]})
+                                    elseif type(prop[1])=="table" then
+                                        WriteText(font,{"~g~E ~s~to search for items",prop[1]},size,255,255,255,alpha,x,y)
+                                        WriteHint({"~c~Press ~s~E ~c~to search for items",prop[1]})
                                     else
                                         WriteText(font,{"~g~E ~s~to pick up ~g~~a~",prop[1]},size,255,255,255,alpha,x,y)
                                         WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~",prop[1]})
@@ -4693,15 +4830,86 @@ end)
 --weight management
 Citizen.CreateThread(function()
     while true do Wait(0)
+        local additional_weight={
+        backpack=30.0,
+        
+        banditauthority=15.0,
+        banditgoon=10.0,
+        banditmercenary=20.0,
+        business=5.0,
+        camouflage=15.0,
+        dawn=20.0,
+        explorer=25.0,
+        gang=5.0,
+        marauder=15.0,
+        mercenary=20.0,
+        offdutysheriff=10.0,
+        ordinary=5.0,
+        police=15.0,
+        scavenger=10.0,
+        trucker=5.0,
+        }
+        
+        local additionalweight=0.0
+        
+        if player.backpack then
+            additionalweight=additionalweight+additional_weight.backpack
+        end
+        if player.suit and additional_weight[player.suit] then
+            additionalweight=additionalweight+additional_weight[player.suit]
+        end
+        player.maxweight=player.standardweight+additionalweight
+        
         local sumweight=0.0
         if inventory.total>0 then
+            local itemweight
             for i=1,inventory.total do
-                local item_weight=item_weight[inventory[i].item]
-                if item_weight then
-                    sumweight=sumweight+(item_weight*inventory[i].amount)
+                itemweight=item_weight[inventory[i].item]
+                if itemweight then
+                    sumweight=sumweight+(itemweight*(inventory[i].amount))
+                end
+            end
+            if player.hat then
+                itemweight=item_weight[player.hat]
+                if itemweight then
+                    sumweight=sumweight-itemweight
+                end
+            end
+            if player.mask then
+                itemweight=item_weight[player.mask]
+                if itemweight then
+                    sumweight=sumweight-itemweight
+                end
+            end
+            if player.suit then
+                itemweight=item_weight["clothes_"..player.suit]
+                if itemweight then
+                    sumweight=sumweight-itemweight
+                end
+            end
+            if player.backpack then
+                itemweight=item_weight["duffelbag"]
+                if itemweight then
+                    sumweight=sumweight-itemweight
+                end
+            end
+            if player.bodyarmor then
+                itemweight=item_weight["bodyarmor"]
+                if itemweight then
+                    sumweight=sumweight-itemweight
                 end
             end
             player.weight=sumweight
+
+                    -- if inventory[i].item=="clothes_"..player.suit or inventory[i].item==player.hat or inventory[i].item==player.mask then 
+                        -- sumweight=sumweight+(itemweight*(inventory[i].amount-1))
+                    -- elseif inventory[i].item=="bodyarmor" and player.bodyarmor then 
+                        -- sumweight=sumweight+(itemweight*(inventory[i].amount-1))
+                    -- elseif player.backpack and inventory[i].item=="duffelbag" then
+                        -- sumweight=sumweight+(itemweight*(inventory[i].amount-1))
+                    -- else
+                        -- sumweight=sumweight+(itemweight*inventory[i].amount)
+                    -- end
         else
             player.weight=0.0
         end
@@ -4717,7 +4925,7 @@ Citizen.CreateThread(function()
         if player.hydration>=0.01 then
             player.hydration=player.hydration-0.105
             if (player.weight>player.maxweight) then
-                player.hydration=player.hydration-0.5
+                player.hydration=player.hydration-1.0
             end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
@@ -4725,7 +4933,7 @@ Citizen.CreateThread(function()
         if player.saturation>=0.01 then
             player.saturation=player.saturation-0.06
             if (player.weight>player.maxweight) then
-                player.saturation=player.saturation-0.3
+                player.saturation=player.saturation-0.6
             end
         else
             SetEntityHealth(pped,GetEntityHealth(pped)-1)
@@ -4749,11 +4957,7 @@ Citizen.CreateThread(function()
         end
         oldhealth=health
         
-        if player.backpack then
-            player.maxweight=65.0
-        else
-            player.maxweight=player.standardweight
-        end
+        
         
         check_clothes(pped)
     end
@@ -7449,6 +7653,34 @@ Citizen.CreateThread(function()
                             player.suit="banditmercenary"
                         end
                         check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_trucker" then
+                        if player.suit=="trucker" then
+                            player.suit="standard"
+                        else
+                            player.suit="trucker"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_business" then
+                        if player.suit=="business" then
+                            player.suit="standard"
+                        else
+                            player.suit="business"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_ordinary" then
+                        if player.suit=="ordinary" then
+                            player.suit="standard"
+                        else
+                            player.suit="ordinary"
+                        end
+                        check_clothes(pped)
+                    elseif inventory[inventory.current].item=="clothes_gang" then
+                        if player.suit=="gang" then
+                            player.suit="standard"
+                        else
+                            player.suit="gang"
+                        end
+                        check_clothes(pped)
                     elseif weapon_upgrades[inventory[inventory.current].item] then
                         if use_weapon_upgrade(inventory[inventory.current].item) then
                             inventory[inventory.current].amount=inventory[inventory.current].amount-1
@@ -8969,6 +9201,7 @@ Citizen.CreateThread(function()
                         elseif v.spoiled then
                             spoiled=true
                         else
+                            if type(v[1])=="table" then v=v[1][math.random(1,#v[1])] end
                             local took_something=false
                             local local_spoiled=false
                             for i=1,5,2 do
@@ -8989,7 +9222,7 @@ Citizen.CreateThread(function()
                                 if v.exp then
                                     DecorSetBool(obj,"zm_looted",true)
                                     local objpos=GetEntityCoords(obj)
-                                    AddExplosion(objpos.x, objpos.y, objpos.z, 16, 0.05, false, true, false, true)
+                                    AddExplosion(objpos.x, objpos.y, objpos.z, 16, v.exp, false, true, false, true)
                                 elseif v.solid then
                                     DecorSetBool(obj,"zm_looted",true)
                                 else
@@ -9163,7 +9396,7 @@ Citizen.CreateThread(function()
                         looted_array[hash]=nil
                     elseif model.exp then
                         DecorSetBool(obj,"zm_looted",true)
-                        AddExplosion(pos.x, pos.y, pos.z, 16, 0.05, false, true, false, true)
+                        AddExplosion(pos.x, pos.y, pos.z, 16, model.exp, false, true, false, true)
                     elseif model.solid then
                         DecorSetBool(obj,"zm_looted",true)
                     else
@@ -10215,7 +10448,7 @@ Citizen.CreateThread(function()
                         -- end
                     -- end
                 -- end
-                -- RemoveWeaponFromPed(ped,weapon_hash)
+                RemoveWeaponFromPed(ped,weapon_hash)
             end
         end
         for k,v in pairs(ammo_types) do
@@ -10693,9 +10926,24 @@ Citizen.CreateThread(function()
             if dx*dx+dy*dy+dz*dz<v.r then
                 WriteHint("~g~Press E to save and quit")
                 if IsControlJustPressed(0,86) then
-                    local myweapon=GetSelectedPedWeapon(myped)
-                    strip_weapon_upgrades(myweapon)
+                    --local myweapon=GetSelectedPedWeapon(myped)
+                    --strip_weapon_upgrades(myweapon)
                     --unload_weapon(myweapon)
+                    for k,v in pairs(weapons) do
+                        local weapon_hash=GetHashKey("weapon_"..k)
+                        if not IsWeaponValid(weapon_hash) then
+                            weapon_hash=GetHashKey("gadget_"..k)
+                            if not IsWeaponValid(weapon_hash) then
+                                weapon_hash=GetHashKey(k)
+                                if not IsWeaponValid(weapon_hash) then
+                                    weapon_hash=nil
+                                end
+                            end
+                        end
+                        if weapon_hash~=nil and HasPedGotWeapon(myped,weapon_hash) then
+                            strip_weapon_upgrades(weapon_hash)
+                        end
+                    end
                     TriggerServerEvent("updateplayerloot",nil)
                     enable_kvp_saving()
                     local rnd=math.random(1,#extraction_spawns)
@@ -10705,6 +10953,7 @@ Citizen.CreateThread(function()
                     SetResourceKvpFloat("z",extraction_spawns[rnd].z)
                     SetResourceKvpFloat("angle",extraction_spawns[rnd].angle)
                     SetResourceKvpInt("spawnvehmodel",276773164)
+                    TriggerServerEvent("extracted")
                     repeat Wait(0)
                         WriteHint("~g~You can leave server now")
                         mypos=GetEntityCoords(myped)
@@ -10732,7 +10981,7 @@ Citizen.CreateThread(function()
         SimpleNotification("Your character will not be saved if you disconnect without extracting.")
         SimpleNotification("Use extraction points to save your character safely.")
         Wait(300000)
-        SimpleNotification("Discord: ~b~discord.gg/VZG5Nvk")
+        --SimpleNotification("Discord: ~b~discord.gg/VZG5Nvk")
         Wait(100)
         SimpleNotification("Discord: ~b~discord.gg/w9mZMqJ")
     end

@@ -507,6 +507,12 @@ AddEventHandler("itemdrop",function(x,y,z,item,amount)
     loot[item]=amount
     create_loot_crate(x,y,z,loot,5,408,GetHashKey("prop_big_bag_01"),0,"weapon")
 end)
+
+
+RegisterServerEvent("extracted")
+AddEventHandler("extracted",function()
+    DropPlayer(source,'Character saved. See you again, bye!')
+end)
     
 -- RegisterServerEvent("place")
 -- AddEventHandler("place",function(model,x,y,z,yaw)
