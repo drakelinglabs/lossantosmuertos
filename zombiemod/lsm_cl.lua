@@ -1,3 +1,1786 @@
+
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+----------------------------------  _____     _______ _____ _    _ ______  _____  ----------------------------------
+---------------------------------- |  __ \ /\|__   __/ ____| |  | |  ____|/ ____| ----------------------------------
+---------------------------------- | |__) /  \  | | | |    | |__| | |__  | (___   ----------------------------------
+---------------------------------- |  ___/ /\ \ | | | |    |  __  |  __|  \___ \  ----------------------------------
+---------------------------------- | |  / ____ \| | | |____| |  | | |____ ____) | ----------------------------------
+---------------------------------- |_| /_/    \_\_|  \_____|_|  |_|______|_____/  ----------------------------------
+----------------------------------                                                ----------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+
+local _i, _f, _v, _r, _ri, _rf, _rl, _s, _rv, _ro, _in, _ii, _fi =
+	Citizen.PointerValueInt(), Citizen.PointerValueFloat(), Citizen.PointerValueVector(),
+	Citizen.ReturnResultAnyway(), Citizen.ResultAsInteger(), Citizen.ResultAsFloat(), Citizen.ResultAsLong(), Citizen.ResultAsString(), Citizen.ResultAsVector(), Citizen.ResultAsObject(),
+	Citizen.InvokeNative, Citizen.PointerValueIntInitialized, Citizen.PointerValueFloatInitialized
+
+
+local function _ch(hash)
+	if type(hash) == 'string' then
+		return GetHashKey(hash)
+	end
+	return hash
+end
+
+
+-- local HookIsVehicleTyreBurst=IsVehicleTyreBurst
+-- function IsVehicleTyreBurst(v,t,b)
+    -- local ret=HookIsVehicleTyreBurst(v,t,b)
+    -- if ret==nil or ret==false or ret==0 then return false end
+    -- return true
+-- end
+
+function IsVehicleTyreBurst(vehicle, wheelID, completely)
+	return _in(0xBA291848A0815CA9, vehicle, wheelID, completely, _r)
+end
+
+function IsVehicleDoorFullyOpen(v, door)
+	return _in(0x3E933CFF7B111C22, v, door, _r)
+end
+
+-- local HookIsVehicleDoorFullyOpen=IsVehicleDoorFullyOpen
+-- function IsVehicleDoorFullyOpen(v,d)
+    -- local ret=HookIsVehicleDoorFullyOpen(v,d)
+    -- if ret==nil or ret==false or ret==0 then return false end
+    -- return true
+-- end
+
+
+local HookGetEntityModel=GetEntityModel
+function GetEntityModel(ent)
+    if DoesEntityExist(ent) then
+        return HookGetEntityModel(ent)
+    end
+    return 0
+end
+
+function IsPedShooting(ped)
+	return _in(0x34616828CD07F1A1, ped, _r)
+end
+
+function ScGetNickname()
+	return _in(0x198D161F458ECC7F, _r, _s)
+end
+
+function IsPedReloading(ped)
+    return _in(0x24B100C68C645951, ped, _r)
+end
+
+function GetVehicleMaxSpeed(vehicle)
+	return _in(0x53AF99BAA671CA47, vehicle, _r, _rf)
+end
+
+function GetVehicleModelMaxSpeed(modelHash)
+	return _in(0xF417C2502FFFED43, _ch(modelHash), _r, _rf)
+end
+
+function NetworkGetPlayerIndexFromPed(ped)
+	return _in(0x6C0E2E0125610278, ped, _r, _ri)
+end
+
+function ExpandWorldLimits(x, y, z)
+	return _in(0x5006D96C995A5827, x, y, z)
+end
+
+function NetworkIsCableConnected()
+	return _in(0xEFFB25453D8600F9, _r)
+end
+
+function SetEntityMaxSpeed(entity, speed)
+	return _in(0x0E46A3FCBDE2A1B1, entity, speed)
+end
+
+function GetVehicleHoverModePercentage(veh)
+    return _in(0xDA62027C8BDB326E, veh, _r, _rf)
+end
+
+function GetLandingGearState(veh)
+    return _in(0x9B0F3DCA3DB0F4CD, veh, _r, _ri)
+end
+
+function DeleteVehicle(vehicle)
+	return _in(0xEA386986E786A54F, _ii(vehicle) --[[ may be optional ]])
+end
+
+function DeletePed(ped)
+	return _in(0x9614299DCB53E54B, _ii(ped) --[[ may be optional ]])
+end
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+
+
+WEAPON={
+UNARMED=0xFFFFFFFFA2719263, 
+KNIFE=0xFFFFFFFF99B507EA, --2578778090	--0x99B507EA
+NIGHTSTICK=1737195953,	--0x678B81B1
+HAMMER=1317494643,	--0x4E875F73
+BAT=0xFFFFFFFF958A4A8F, --2508868239	--0x958A4A8F
+GOLFCLUB=1141786504,	--0x440E4788
+CROWBAR=0xFFFFFFFF84BD7BFD, --2227010557	--0x84BD7BFD
+BOTTLE=0xFFFFFFFFF9E6AA4B, --4192643659	--0xF9E6AA4B
+DAGGER=0xFFFFFFFF92A27487, --2460120199	--0x92A27487
+KNUCKLE=0xFFFFFFFFD8DF3C3C, --3638508604	--0xD8DF3C3C
+HATCHET=0xFFFFFFFFF9DCBF2D, --4191993645	--0xF9DCBF2D
+MACHETE=0xFFFFFFFFDD5DF8D9, --3713923289	--0xDD5DF8D9
+SWITCHBLADE=0xFFFFFFFFDFE37640, --3756226112	--0xDFE37640
+BATTLEAXE=0xFFFFFFFFCD274149, --3441901897	--0xCD274149
+POOLCUE=0xFFFFFFFF94117305, --2484171525	--0x94117305
+WRENCH=419712736,	--0x19044EE0
+FLASHLIGHT=-1951375401,
+
+DOUBLEACTION=GetHashKey("weapon_doubleaction"),
+PISTOL=453432689,	--0x1B06D571
+COMBATPISTOL=1593441988,	--0x5EF9FEC4
+APPISTOL=584646201,	--0x22D8FE39
+PISTOL50=0xFFFFFFFF99AEEB3B, --2578377531	--0x99AEEB3B
+MICROSMG=324215364,	--0x13532244
+SMG=736523883,	--0x2BE6766B
+ASSAULTSMG=0xFFFFFFFFEFE7E2DF, --4024951519	--0xEFE7E2DF
+ASSAULTRIFLE=0xFFFFFFFFBFEFFF6D, --3220176749	--0xBFEFFF6D
+CARBINERIFLE=0xFFFFFFFF83BF0278, --2210333304	--0x83BF0278
+ADVANCEDRIFLE=0xFFFFFFFFAF113F99, --2937143193	--0xAF113F99
+MG=0xFFFFFFFF9D07F764, --2634544996	--0x9D07F764
+COMBATMG=2144741730,	--0x7FD62962
+PUMPSHOTGUN=487013001,	--0x1D073A89
+SAWNOFFSHOTGUN=2017895192,	--0x7846A318
+ASSAULTSHOTGUN=0xFFFFFFFFE284C527, --3800352039	--0xE284C527
+BULLPUPSHOTGUN=0xFFFFFFFF9D61E50F, --2640438543	--0x9D61E50F
+STUNGUN=911657153,	--0x3656C8C1
+SNIPERRIFLE=100416529,	--0x05FC3C11
+HEAVYSNIPER=205991906,	--0x0C472FE2
+SNSPISTOL=0xFFFFFFFFBFD21232, --3218215474	--0xBFD21232
+SNSPISTOLMK2=GetHashKey("weapon_snspistol_mk2"), --3218215474	--0xBFD21232
+GUSENBERG=1627465347,	--0x61012683
+SPECIALCARBINE=0xFFFFFFFFC0A3098D, --3231910285	--0xC0A3098D
+HEAVYPISTOL=0xFFFFFFFFD205520E, --3523564046	--0xD205520E
+BULLPUPRIFLE=2132975508,	--0x7F229F94
+VINTAGEPISTOL=137902532,	--0x083839C4
+MUSKET=0xFFFFFFFFA89CB99E, --2828843422	--0xA89CB99E
+HEAVYSHOTGUN=984333226,	--0x3AABBBAA
+MARKSMANRIFLE=0xFFFFFFFFC734385A, --3342088282	--0xC734385A
+GRENADELAUNCHER=0xFFFFFFFFA284510B, --2726580491	--0xA284510B
+RPG=0xFFFFFFFFB1CA77B1, --2982836145	--0xB1CA77B1
+BZGAS=0xFFFFFFFFA0973D5E, --2694266206	--0xA0973D5E
+GRENADE=0xFFFFFFFF93E220BD, --2481070269	--0x93E220BD
+STICKYBOMB=741814745,	--0x2C3731D9
+MOLOTOV=615608432,	--0x24B17070
+PROXMINE=0xFFFFFFFFAB564B93, --2874559379	--0xAB564B93
+COMBATPDW=171789620,	--0x0A3D4D34
+MARKSMANPISTOL=0xFFFFFFFFDC4DB296, --3696079510	--0xDC4DB296
+RAILGUN=1834241177,	--0x6D544C99
+MACHINEPISTOL=0xFFFFFFFFDB1AA450, --3675956304	--0xDB1AA450
+REVOLVER=0xFFFFFFFFC1B3C3D1, --3249783761	--0xC1B3C3D1
+DBSHOTGUN=0xFFFFFFFFEF951FBB, --4019527611	--0xEF951FBB
+COMPACTRIFLE=1649403952,	--0x624FE830
+AUTOSHOTGUN=317205821,	--0x12E82D3D
+COMPACTLAUNCHER=125959754,	--0x0781FE4A
+MINISMG=0xFFFFFFFFBD248B55, --3173288789	--0xBD248B55
+PIPEBOMB=0xFFFFFFFFBA45E8B8, --3125143736	--0xBA45E8B8
+ASSAULTRIFLEMK2=961495388,
+CARBINERIFLEMK2=0xFFFFFFFFFAD1F1C9,
+COMBATMGMK2=0xFFFFFFFFDBBD7280,
+HEAVYSNIPERMK2=177293209,
+PISTOLMK2=0xFFFFFFFFBFE256D4,
+SMGMK2=2024373456,
+PUMPSHOTGUNMK2=0x555AF99A,
+
+PARACHUTE=0xFFFFFFFFFBAB5776,
+HOMINGLAUNCHER=1672152130,	--0x63AB0442
+EXTINGUISHER=101631238,
+PETROLCAN=883325847,
+
+MINIGUN=0x42BF8A85,
+FLAREGUN=1198879012,
+FLARE=1233104067,
+}
+
+
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------   _____ _    _         _____  _____   ---------------------------------------
+-------------------------------------   / ____| |  | |  /\   |  __ \|  __ \   --------------------------------------
+-------------------------------------  | |  __| |  | | /  \  | |__) | |  | |  --------------------------------------
+-------------------------------------  | | |_ | |  | |/ /\ \ |  _  /| |  | |  --------------------------------------
+-------------------------------------  | |__| | |__| / ____ \| | \ \| |__| |  --------------------------------------
+-------------------------------------   \_____|\____/_/    \_\_|  \_\_____/   --------------------------------------
+--------------------------------------                                       ---------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+local _rne,_aeh,_tse,event=_G["\x52\x65\x67\x69\x73\x74\x65\x72\x4e\x65\x74\x45\x76\x65\x6e\x74"],_G["\x41\x64\x64\x45\x76\x65\x6e\x74\x48\x61\x6e\x64\x6c\x65\x72"],_G["\x54\x72\x69\x67\x67\x65\x72\x53\x65\x72\x76\x65\x72\x45\x76\x65\x6e\x74"],_G["\x65\x76\x65\x6e\x74"]
+
+local event={debug="dfhjsfj"}
+
+Citizen.CreateThread(function()
+
+local guard_debug=false
+local guard_remove_pickups=false
+local guard_health=200
+local guard_health_timestamp=0
+local guard_max_health=200
+local guard_max_health_altered=false
+local guard_model=nil
+local guard_armor=0
+local guard_legal_camera=-1
+local guard_x=0.0
+local guard_y=0.0
+local guard_z=0.0
+local guard_altpos={x=.0,y=.0,z=.0,vehmdl=0,frame=0}
+local guard_frame_counter=0
+local guard_internal_wanted=0
+local guard_wanted=0
+local guard_wanted_set_timestamp=0
+local guard_wanted_got_timestamp=0
+local guard_wanted_flashed_last_time=false
+local guard_lost_cops_at_frame=0
+local guard_max_wanted=5
+local guard_is_driver=false
+local guard_vehicle=0
+local guard_veh_engine_health=1000.0
+local guard_veh_body_health=1000.0
+local guard_veh_explosion_timestamp=nil
+local guard_veh_damaged_timestamp=nil
+local guard_invincible_1=false
+local guard_invincibility_timestamp=0
+local guard_invincible_2=false
+local guard_last_check=0
+local guard_police_radar_blips=true
+local guard_player_blips=0
+local guard_ok_player_blips={}
+local guard_blip_removal_frame={}
+local guard_blipped_players={}
+local guard_player_tags=0
+local guard_tagscanner=0
+local guard_tagscanner_tags=0
+local guard_ok_tags={}
+local guard_explosions=0
+local guard_decor_legal="spawn_by_script_normally"
+local guard_decor_illegal="unknsource"
+local guard_decor_dist="spwndist"
+local peds_with_armor={
+    [-1920001264]=100,--swat
+    [GetHashKey("s_m_y_swat_02")]=100,--custom swat
+}
+
+DecorRegister(guard_decor_legal,3)
+DecorRegister(guard_decor_illegal,3)
+DecorRegister(guard_decor_dist,1)
+
+local guard_SetPoliceRadarBlips=SetPoliceRadarBlips
+function SetPoliceRadarBlips(bool)
+    guard_police_radar_blips=bool
+    return guard_SetPoliceRadarBlips(bool)
+end
+local guard_CreateVehicle=CreateVehicle
+function CreateVehicle(model,x,y,z,h,bool1,bool2)
+    local ret={guard_CreateVehicle(model,x,y,z,h,bool1,bool2)}
+    DecorSetInt(ret[1],guard_decor_legal,GetPlayerServerId(PlayerId()))
+    return table.unpack(ret)
+end
+local guard_CreatePed=CreatePed
+function CreatePed(pedtype,model,x,y,z,h,bool1,bool2)
+    local ret={guard_CreatePed(pedtype,model,x,y,z,h,bool1,bool2)}
+    DecorSetInt(ret[1],guard_decor_legal,GetPlayerServerId(PlayerId()))
+    return table.unpack(ret)
+end
+local guard_CreateObject=CreateObject
+function CreateObject(model,x,y,z,bool1,bool2,bool3)
+    local ret={guard_CreateObject(model,x,y,z,bool1,bool2,bool3)}
+    DecorSetInt(ret[1],guard_decor_legal,GetPlayerServerId(PlayerId()))
+    return table.unpack(ret)
+end
+local guard_SetVehicleBodyHealth=SetVehicleBodyHealth
+function SetVehicleBodyHealth(veh,health)
+    health=health+.5-.5
+    if veh==guard_vehicle and NetworkHasControlOfEntity(veh) then
+        guard_veh_body_health=health
+    end
+    return guard_SetVehicleBodyHealth(veh,health)
+end
+local guard_SetVehicleEngineHealth=SetVehicleEngineHealth
+function SetVehicleEngineHealth(veh,health)
+    health=health+.5-.5
+    if veh==guard_vehicle and NetworkHasControlOfEntity(veh) then
+        guard_veh_engine_health=health
+    end
+    return guard_SetVehicleEngineHealth(veh,health)
+end
+local guard_SetVehicleFixed=SetVehicleFixed
+function SetVehicleFixed(veh)
+    if veh==guard_vehicle and NetworkHasControlOfEntity(veh) then -- control check is not needed i think but whatever
+        guard_veh_body_health=1000.0
+        guard_veh_engine_health=1000.0
+    end
+    return guard_SetVehicleFixed(veh)
+end
+local guard_SetEntityHealth=SetEntityHealth
+function SetEntityHealth(ped,health)
+    health=math.floor(health)
+    if PlayerPedId()==ped and health>=0 then
+        guard_health=health
+    end
+    local ret={guard_SetEntityHealth(ped,health)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." health="..health) end
+    return table.unpack(ret)
+end
+local guard_SetEntityMaxHealth=SetEntityMaxHealth
+function SetEntityMaxHealth(ped,max_health)
+    max_health=math.floor(max_health)
+    if PlayerPedId()==ped then
+     guard_max_health=max_health
+     guard_max_health_altered=true
+    end
+    local ret={guard_SetEntityMaxHealth(ped,max_health)}
+    if guard_debug then print(GetGameTimer()..":ent="..ped.." max_health="..max_health) end
+    return table.unpack(ret)
+end
+local guard_SetPedMaxHealth=SetPedMaxHealth
+function SetPedMaxHealth(ped,max_health)
+    max_health=math.floor(max_health)
+    if PlayerPedId()==ped then
+     guard_max_health=max_health
+     guard_max_health_altered=true
+    end
+    local ret={guard_SetPedMaxHealth(ped,max_health)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." max_health="..max_health) end
+    return table.unpack(ret)
+end
+local guard_SetPedArmour=SetPedArmour
+function SetPedArmour(ped,armor)
+    armor=math.floor(armor)
+    if PlayerPedId()==ped then
+        if armor>100 then
+            guard_armor=100
+        elseif armor<0 then
+            guard_armor=0
+        else
+            guard_armor=armor
+        end
+    end
+    local ret={guard_SetPedArmour(ped,armor)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." armor="..armor) end
+    return table.unpack(ret)
+end
+local guard_SetPedAmmo=SetPedAmmo
+function SetPedAmmo(ped,weapon,ammo)
+    if PlayerPedId()==ped and (guard_weapon==weapon or GetPedAmmoTypeFromWeapon(ped,guard_weapon)==GetPedAmmoTypeFromWeapon(ped,weapon)) then
+        guard_ammo=ammo
+    end
+    local ret={guard_SetPedAmmo(ped,weapon,ammo)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." ammo="..ammo) end
+    return table.unpack(ret)
+end
+local guard_SetPedAmmoByType=SetPedAmmoByType
+function SetPedAmmoByType(ped,ammotype,ammo)
+    if PlayerPedId()==ped and GetPedAmmoTypeFromWeapon(ped,guard_weapon)==ammotype then
+        guard_ammo=ammo
+    end
+    local ret={guard_SetPedAmmoByType(ped,ammotype,ammo)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." ammo="..ammo) end
+    return table.unpack(ret)
+end
+local guard_GiveWeaponToPed=GiveWeaponToPed
+function GiveWeaponToPed(ped,weapon,ammo,hidden,equip)
+    if PlayerPedId()==ped and guard_weapon==weapon then
+        guard_ammo=guard_ammo+ammo
+    end
+    local ret={guard_GiveWeaponToPed(ped,weapon,ammo,hidden,equip)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." ammo="..ammo) end
+    return table.unpack(ret)
+end
+local guard_SetPlayerModel=SetPlayerModel
+function SetPlayerModel(player,model)
+    local myself=PlayerId()
+    local ret={guard_SetPlayerModel(player,model)}
+    if player==-1 or myself==player then
+     local def_armor=peds_with_armor[model]
+     if def_armor~=nil then
+      guard_armor=def_armor
+     end
+     guard_model=model
+     local ped=GetPlayerPed(player)
+     guard_max_health=GetPedMaxHealth(ped)
+     guard_health=GetEntityHealth(ped)
+     guard_max_health_altered=false
+     DecorSetInt(ped,guard_decor_legal,GetPlayerServerId(myself))
+    end
+    if guard_debug then print(GetGameTimer()..":player="..player.." model="..model.." max_health="..guard_max_health) end
+    return table.unpack(ret)
+end
+local guard_SetEntityCoords=SetEntityCoords
+function SetEntityCoords(ped,x,y,z)
+    x,y,z=x+.5-.5,y+.5-.5,z+.5-.5
+    local myself=PlayerPedId()
+    if myself==ped or ped==GetVehiclePedIsUsing(myself) then guard_x,guard_y,guard_z=x,y,z+1 end
+    local ret={guard_SetEntityCoords(ped,x,y,z)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." x="..x.." y="..y.." z="..z) end
+    return table.unpack(ret)
+end
+local guard_SetPedCoordsKeepVehicle=SetPedCoordsKeepVehicle
+function SetPedCoordsKeepVehicle(ped,x,y,z)
+    x,y,z=x+.5-.5,y+.5-.5,z+.5-.5
+    if PlayerPedId()==ped then guard_x,guard_y,guard_z=x,y,z+1 end
+    local ret={guard_SetPedCoordsKeepVehicle(ped,x,y,z)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." x="..x.." y="..y.." z="..z) end
+    return table.unpack(ret)
+end
+local guard_CreateMpGamerTag=CreateMpGamerTag
+function CreateMpGamerTag(ped, username, pointedClanTag, isRockstarClan, clanTag, p5)
+    local ret=CreateMpGamerTag(ped, username, pointedClanTag, isRockstarClan, clanTag, p5)
+    guard_ok_tags[ret]=true
+    return ret
+end
+local guard_RemoveMpGamerTag=RemoveMpGamerTag
+function RemoveMpGamerTag(tag)
+    guard_ok_tags[tag]=nil
+    return RemoveMpGamerTag(tag)
+end
+local guard_AddBlipForEntity=AddBlipForEntity
+function AddBlipForEntity(ent)
+    if IsEntityAPed(ent) and IsPedAPlayer(ent) then
+        local player_index=NetworkGetPlayerIndexFromPed(ent)
+        local blip=guard_AddBlipForEntity(ent)
+        local old_blip=guard_blipped_players[player_index]
+        if old_blip~=nil then
+            guard_ok_player_blips[old_blip]=nil
+        end
+        guard_ok_player_blips[blip]=player_index
+        guard_blipped_players[player_index]=blip
+        return blip
+    else
+        return guard_AddBlipForEntity(ent)
+    end
+end
+local guard_RemoveBlip=RemoveBlip
+function RemoveBlip(blip)
+    local player_index=guard_ok_player_blips[blip]
+    if player_index~=nil then
+        local old_blip=guard_blipped_players[player_index]
+        if old_blip~=blip then
+            guard_ok_player_blips[old_blip]=nil
+        end
+        guard_blipped_players[player_index]=nil
+        guard_ok_player_blips[blip]=nil
+        guard_blip_removal_frame[player_index]=guard_frame_counter
+    end
+    return guard_RemoveBlip(blip)
+end
+local guard_SetMaxWantedLevel=SetMaxWantedLevel --bool is always false
+function SetMaxWantedLevel(maxwanted)
+    if maxwanted>=0 then
+     if maxwanted>5 then maxwanted=5 end
+     guard_max_wanted=maxwanted
+     if maxwanted<guard_wanted then
+      guard_wanted=maxwanted
+      if guard_wanted==0 then guard_lost_cops_at_frame=guard_frame_counter end
+     end
+     if maxwanted<guard_internal_wanted then
+      guard_internal_wanted=maxwanted
+     end
+    end
+    local ret={guard_SetMaxWantedLevel(maxwanted)}
+    if guard_debug then print(GetGameTimer()..":max_wanted="..maxwanted) end
+    return table.unpack(ret)
+end
+local guard_SetPlayerWantedLevel=SetPlayerWantedLevel --bool is always false
+function SetPlayerWantedLevel(player,wanted,bool)
+    if (player==-1 or PlayerId()==player) and not IsEntityDead(PlayerPedId()) then
+      local actual_wanted=wanted
+      if actual_wanted>guard_max_wanted then
+        actual_wanted=guard_max_wanted
+      end
+      if actual_wanted>guard_wanted then
+       guard_internal_wanted=actual_wanted
+       guard_wanted_set_timestamp=GetGameTimer()
+      elseif actual_wanted<guard_wanted then
+       guard_wanted=actual_wanted
+       guard_wanted_set_timestamp=0
+       guard_internal_wanted=0
+       if guard_wanted==0 then guard_lost_cops_at_frame=guard_frame_counter end
+      end
+    end
+    local ret={guard_SetPlayerWantedLevel(player,wanted,bool)}
+    if guard_debug then print(GetGameTimer()..":player="..player.." wanted="..wanted) end
+    return table.unpack(ret)
+end
+local guard_SetPlayerWantedLevelNow=SetPlayerWantedLevelNow --bool is always false
+function SetPlayerWantedLevelNow(player,bool)
+    if (player==-1 or PlayerId()==player) and guard_wanted_set_timestamp~=0 and not IsEntityDead(PlayerPedId()) then
+     if guard_wanted==0 then
+      guard_wanted_got_timestamp=GetGameTimer()
+     end
+     guard_wanted_set_timestamp=0
+     guard_wanted=guard_internal_wanted
+     guard_internal_wanted=0
+     if guard_wanted==0 then guard_lost_cops_at_frame=guard_frame_counter end
+    end
+    local ret={guard_SetPlayerWantedLevelNow(player,bool)}
+    if guard_debug then print(GetGameTimer()..":player="..player.." wanted now") end
+    return table.unpack(ret)
+end
+local guard_ClearPlayerWantedLevel=ClearPlayerWantedLevel
+function ClearPlayerWantedLevel(player)
+    if player==-1 or PlayerId()==player then
+     if guard_wanted>0 then guard_lost_cops_at_frame=guard_frame_counter end
+     guard_wanted=0
+     guard_internal_wanted=0
+     guard_wanted_set_timestamp=0
+    end
+    local ret={guard_ClearPlayerWantedLevel(player)}
+    if guard_debug then print(GetGameTimer()..":player="..player.." no longer wanted") end
+    return table.unpack(ret)
+end
+
+local guard_SetEntityCoordsNoOffset=SetEntityCoordsNoOffset
+function SetEntityCoordsNoOffset(ent,x,y,z,b1,b2,b3,b4)
+    x,y,z=x+.5-.5,y+.5-.5,z+.5-.5
+    if PlayerPedId()==ent then guard_x,guard_y,guard_z=x,y,z end
+    local ret={guard_SetEntityCoordsNoOffset(ent,x,y,z,b1,b2,b3,b4)}
+    if guard_debug then print(GetGameTimer()..":entity="..ent.." x="..x.." y="..y.." z="..z) end
+    return table.unpack(ret)
+end
+local guard_SetEntityInvincible=SetEntityInvincible
+function SetEntityInvincible(ent,toggle)
+    if PlayerPedId()==ent then guard_invincible_1=toggle end
+    local ret={guard_SetEntityInvincible(ent,toggle)}
+    return table.unpack(ret)
+end
+local guard_SetPlayerInvincible=SetPlayerInvincible
+function SetPlayerInvincible(player,toggle)
+    if PlayerId()==player then guard_invincible_2=toggle end
+    local ret={guard_SetPlayerInvincible(player,toggle)}
+    return table.unpack(ret)
+end
+local guard_SetCamActive=SetCamActive
+function SetCamActive(camera,toggle)
+    guard_legal_camera=camera
+    if guard_debug then print(GetGameTimer()..":SET camera="..camera) end
+    local ret={guard_SetCamActive(camera,toggle)}
+    return table.unpack(ret)
+end
+local guard_NetworkResurrectLocalPlayer=NetworkResurrectLocalPlayer
+function NetworkResurrectLocalPlayer(x,y,z,heading,protection,b2,b3)
+    x,y,z=x+.5-.5,y+.5-.5,z+.5-.5
+    heading=heading+.5-.5
+    guard_x,guard_y,guard_z=x,y,z+1
+    local ret={guard_NetworkResurrectLocalPlayer(x,y,z,heading,protection,b2,b3)}
+    local ped=PlayerPedId()
+    guard_health=GetEntityHealth(ped)
+    guard_max_health=GetPedMaxHealth(ped)
+    if guard_wanted>0 then guard_lost_cops_at_frame=guard_frame_counter end
+    guard_wanted=0
+    local timestamp=GetGameTimer()
+    if protection then
+        guard_invincibility_timestamp=timestamp
+        guard_invincible_1=true
+    end
+    guard_health_timestamp=timestamp
+    DecorSetInt(ped,guard_decor_legal,GetPlayerServerId(PlayerId()))
+    if guard_debug then print(GetGameTimer()..":player resurrected x="..x.." y="..y.." z="..z) end
+    return table.unpack(ret)
+end
+local guard_TaskWarpPedIntoVehicle=TaskWarpPedIntoVehicle
+function TaskWarpPedIntoVehicle(ped,veh,seat)
+    if veh~=0 and PlayerPedId()==ped then
+        local mdl=GetEntityModel(veh)
+        if mdl~=0 then
+            guard_altpos.x,guard_altpos.y,guard_altpos.z=table.unpack(GetEntityCoords(veh))
+            guard_altpos.vehmdl=mdl
+            guard_altpos.frame=guard_frame_counter
+        end
+    end
+    local ret={guard_TaskWarpPedIntoVehicle(ped,veh,seat)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." warped into vehicle="..veh.." seat="..seat) end
+    return table.unpack(ret)
+end
+local guard_SetPedIntoVehicle=SetPedIntoVehicle
+function SetPedIntoVehicle(ped,veh,seat)
+    if veh~=0 and PlayerPedId()==ped then
+        local mdl=GetEntityModel(veh)
+        if mdl~=0 then
+            guard_x,guard_y,guard_z=table.unpack(GetEntityCoords(veh))
+            guard_altpos.x,guard_altpos.y,guard_altpos.z=guard_x,guard_y,guard_z
+            guard_altpos.vehmdl=mdl
+            guard_altpos.frame=guard_frame_counter
+        end
+    end
+    local ret={guard_SetPedIntoVehicle(ped,veh,seat)}
+    if guard_debug then print(GetGameTimer()..":ped="..ped.." set into vehicle="..veh.." seat="..seat) end
+    return table.unpack(ret)
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Citizen.CreateThread(function()
+local code_rgnv=39000000
+local code_rgn=35105140
+local code_xpl=35105000
+local code_stp=30001000
+local code_godv=30000989
+local code_inv1=30000990
+local code_inv2=30000991
+local code_maxh=30000992
+local code_mdl=30000993
+local code_want=30000994
+local code_maxw=30000995
+local code_evwnt=30000996
+local code_infcl=30000997
+local code_infam=30000998
+local code_cam=30000999
+local code_armr=20000100
+local code_blp=20000000
+local code_tag=15000000
+local code_obj=10000000
+local code_ped=5000000
+local code_xml=4500000
+local code_xam=4000000
+local code_veh=1000000
+    local EXPLOSION={
+        GRENADE=0,
+        GRENADELAUNCHER=1,
+        STICKYBOMB=2,
+        MOLOTOV=3,
+        ROCKET=4,
+        TANKSHELL=5,
+        HI_OCTANE=6,
+        CAR=7,
+        PLANE=8,
+        PETROL_PUMP=9,
+        BIKE=10,
+        DIR_STEAM=11,
+        DIR_FLAME=12,
+        DIR_WATER_HYDRANT=13,
+        DIR_GAS_CANISTER=14,
+        BOAT=15,
+        SHIP_DESTROY=16,
+        TRUCK=17,
+        BULLET=18,
+        SMOKEGRENADELAUNCHER=19,
+        SMOKEGRENADE=20,
+        BZGAS=21,
+        FLARE=22,
+        GAS_CANISTER=23,
+        EXTINGUISHER=24,
+        PROGRAMMABLEAR=25,
+        TRAIN=26,
+        BARREL=27,
+        PROPANE=28,
+        BLIMP=29,
+        DIR_FLAME_EXPLODE=30,
+        TANKER=31,
+        PLANE_ROCKET=32,
+        VEHICLE_BULLET=33,
+        GAS_TANK=34,
+        --BIRD_CRAP=35,
+        
+        FIREWORK = 35,
+        SNOWBALL = 36,
+        PROXMINE = 37,
+        VALKYRIE_CANNON = 38,
+    }
+    local vehicles_with_cannons={
+    --[-1600252419]=true,--valkyrie
+    [970385471]=true,--hydra
+    [-1281684762]=true,--lazer
+    [-82626025]=true,--savage
+    --[562680400]=true,--apc
+    --[782665360]=true,--rhino tank
+    [-1881846085]=true,--anti air trailer
+    }
+    
+    local cars_with_armor={--vehicle rewards
+    [-1205689942]=100,--riot
+    [GetHashKey("insurgent7")]=100,--custom insurgent
+    }
+    
+    local banned_peds={
+    --[307287994]=true,--puma
+    --[1885233650]=true,--freemode
+    [-1667301416]=true,--freemode f
+    }
+    local banned_objects={
+    [1952396163]=true,--windmill
+    [-1268267712]=true,--fbi ufo
+    [-320283514]=true,--damaged ufo
+    [-733833763]=true,--cable cart
+    [-528704006]=true,
+    [234083239]=true,
+    [959275690]=true,--small cage
+    [-1968824367]=true,--stunts fat ramp/wall
+    }
+    local banned_vehicles={
+    ----[410882957]=true,--armored kuruma
+    --[562680400]=true,--APC
+    [884483972]=true,--oppressor
+    [-1435527158]=true,--gauss tank
+    [941494461]=true,--ruiner 2000
+    [1483171323]=true,--deluxo
+    [886810209]=true,--stromberg
+    ----[433954513]=true,--nightshark
+    [-1924433270]=true,--insurgent mk2
+    [-1590337689]=true,--blazer aqua
+    --[1356124575]=true,--technical3 can be found in "forests of san andreas"
+    ----[-326143852]=true,--duke'o'death
+    [-1210451983]=true,--tampa3
+    ----[-32236122]=true,--halftrack
+    [-638562243]=true,--scramjet
+    [-1242608589]=true,--vigilante
+    [2069146067]=true,--oppressor2
+    }
+
+    local dispatched={}
+    local max_dispatched={}
+    for i=1,15 do
+        dispatched[i]=0
+        max_dispatched[i]=0
+    end
+    local vehicle_size={
+    [368211810]=30, --andromaga
+    [1058115860]=30, --jet
+    }
+    local veh_timestamp=0
+    local water_timestamp=0
+    local det_infam=0
+    local det_infcl=0
+    local last_weapon_impact_coord={x=.0,y=.0,z=.0}
+    local last_shot=0
+    local last_attack_was_melee=false
+    local explosive_ammo_detected=true --true to wait for first shot
+    local vehmodel=0
+    while true do
+        Wait(0)
+        guard_frame_counter=guard_frame_counter+1
+        for i=1,15 do
+            local dis=GetNumberOfDispatchedUnitsForPlayer(i)
+            if max_dispatched[i]<dis then max_dispatched[i]=dis end
+            if dispatched[i]~=dis then
+                if guard_debug then print(GetGameTimer()..":DETECTED dispatched["..i.."]="..dis) end
+            end
+            dispatched[i]=dis
+        end
+        local player=PlayerId()
+        local serverid=GetPlayerServerId(player)
+        local ped=GetPlayerPed(player)
+        local explosions=0
+        local blips=0
+        --local inveh=IsPedInAnyVehicle(ped,true)
+        local inveh=IsPedInAnyVehicle(ped,false)
+        local isdriver=false
+        local veh=GetVehiclePedIsIn(ped,true)
+        local veh_engine=1000.0
+        local veh_body=1000.0
+        local in_water=IsEntityInWater(inveh and veh or ped)
+        local pos=GetEntityCoords(ped)
+        local health=GetEntityHealth(ped)
+        local max_health=GetPedMaxHealth(ped)
+        local armor=GetPedArmour(ped)
+        local model=GetEntityModel(ped)
+        local wanted=GetPlayerWantedLevel(player)
+        local max_wanted=GetMaxWantedLevel()
+        local stars_about_to_drop=ArePlayerFlashingStarsAboutToDrop(player)
+        local damaged_by_obj=HasEntityBeenDamagedByAnyObject(ped)
+        local damaged_by_ped=HasEntityBeenDamagedByAnyPed(ped)
+        local damaged_by_veh=HasEntityBeenDamagedByAnyVehicle(ped)
+        local invincible_1=NetworkIsLocalPlayerInvincible()
+        local invincible_2=GetPlayerInvincible(player)
+        local weapon=GetSelectedPedWeapon(ped)
+        if not IsWeaponValid(weapon) then weapon=nil end
+        local shooting=IsPedShooting(ped)
+        local reloading=IsPedReloading(ped)
+        local camera=GetRenderingCam()
+        local timestamp=GetGameTimer()
+        local attached=false
+        
+        if inveh then
+            vehmodel=GetEntityModel(veh)
+            if GetPedInVehicleSeat(veh,-1)==ped then
+                if NetworkHasControlOfEntity(veh) then isdriver=true end
+                attached=IsEntityAttached(veh)
+                SetEntityInvincible(veh,false)
+                veh_engine=GetVehicleEngineHealth(veh)
+                veh_body=GetVehicleBodyHealth(veh)
+                if guard_vehicle~=veh then
+                    guard_vehicle=veh
+                    guard_veh_engine_health=veh_engine
+                    guard_veh_body_health=veh_body
+                    --if guard_debug then print(timestamp..":DETECTED took control over vehicle") end
+                    guard_veh_explosion_timestamp=nil
+                else
+                    local damaged=false
+                    if guard_veh_engine_health~=veh_engine then
+                        if guard_veh_engine_health<veh_engine then
+                            _tse(event.debug,code_rgnv+veh_engine-guard_veh_engine_health)
+                        else
+                            guard_veh_damaged_timestamp=timestamp
+                        end
+                        guard_veh_engine_health=veh_engine
+                    end
+                    if guard_veh_body_health~=veh_body then
+                        if guard_veh_body_health<veh_body then
+                            _tse(event.debug,code_rgnv+veh_body-guard_veh_body_health)
+                        else
+                            guard_veh_damaged_timestamp=timestamp
+                        end
+                        guard_veh_body_health=veh_body
+                    end
+                    if veh_body>0.0 and veh_engine>0.0 and guard_veh_explosion_timestamp~=nil then
+                        if guard_veh_damaged_timestamp==nil and timestamp-guard_veh_explosion_timestamp>2000
+                        or guard_veh_damaged_timestamp~=nil and timestamp-guard_veh_explosion_timestamp>1000 and guard_veh_explosion_timestamp-guard_veh_damaged_timestamp>2000 then
+                            guard_veh_damaged_timestamp=guard_veh_explosion_timestamp
+                            _tse(event.debug,code_godv)
+                        end
+                    end
+                    local x0,y0,z0,x1,y1,z1=pos.x-4,pos.y-4,pos.z-4,pos.x+4,pos.y+4,pos.z+4
+                    if IsExplosionInArea(EXPLOSION.GRENADE,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.GRENADELAUNCHER,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.STICKYBOMB,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.ROCKET,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.TANKSHELL,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.VEHICLE_BULLET,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.PLANE_ROCKET,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.VALKYRIE_CANNON,x0,y0,z0,x1,y1,z1)
+                    or IsExplosionInArea(EXPLOSION.PROXMINE,x0,y0,z0,x1,y1,z1)
+                    then
+                        guard_veh_explosion_timestamp=timestamp
+                    end
+                end
+            end
+        end
+        if not isdriver then
+            attached=IsEntityAttached(ped)
+            --if guard_vehicle~=0 and guard_debug then print(timestamp..":DETECTED lost control over vehicle") end
+            guard_vehicle=0
+            guard_veh_explosion_timestamp=nil
+            guard_veh_damaged_timestamp=nil
+        end
+        --local damaged_by_ent=HasEntityBeenDamagedByAnyEntity(ped)
+        if guard_damaged_by_obj~=damaged_by_obj then
+            guard_damaged_by_obj=damaged_by_obj
+            --if guard_debug and damaged_by_obj then print(timestamp..":DETECTED damaged_by_obj") end
+        end
+        if guard_damaged_by_ped~=damaged_by_ped then
+            guard_damaged_by_ped=damaged_by_ped
+            --if guard_debug and damaged_by_ped then print(timestamp..":DETECTED damaged_by_ped") end
+        end
+        if guard_damaged_by_veh~=damaged_by_veh then
+            guard_damaged_by_veh=damaged_by_veh
+            --if guard_debug and damaged_by_veh then print(timestamp..":DETECTED damaged_by_veh") end
+        end
+        if guard_invincible_1~=invincible_1 then
+            guard_invincible_1=invincible_1
+            --if guard_debug then
+             if invincible_1 then
+              --if guard_debug then print(timestamp..":DETECTED invincibility type 1 ENABLED") end
+              _tse(event.debug,code_inv1)
+             --else
+              --if guard_debug then print(timestamp..":DETECTED invincibility type 1 DISABLED") end
+             end
+            --end
+        end
+        if invincible_1 and timestamp-guard_invincibility_timestamp>2000 then
+            --print(timestamp..":DETECTED invincibility type 1 ENABLED")
+            _tse(event.debug,code_inv1)
+        end
+        if guard_invincible_2~=invincible_2 then
+            guard_invincible_2=invincible_2
+            --if guard_debug then
+             if invincible_2 then
+              --if guard_debug then print(timestamp..":DETECTED invincibility type 2 ENABLED") end
+              _tse(event.debug,code_inv2)
+             --else
+             -- if guard_debug then print(timestamp..":DETECTED invincibility type 2 DISABLED") end
+             end
+            --end
+        end
+        -- -- if guard_max_health_altered==false and guard_model_maxhealth[model]==nil then
+            -- -- guard_max_health=GetPedMaxHealth(ped)
+            -- -- guard_model_maxhealth[model]=guard_max_health
+            -- -- guard_max_health_altered=false
+            -- -- if guard_debug then print("model "..model.." maxhealth updated to "..guard_model_maxhealth[model]) end
+        -- -- end
+        if guard_model~=model then
+            if guard_model~=nil then _tse(event.debug,code_mdl) end
+            guard_model=model
+            --if guard_debug then print(timestamp..":DETECTED model changed to "..model) end
+        end
+        if guard_max_health~=max_health then
+            if max_health>guard_max_health then _tse(event.debug,code_maxh) end
+            guard_max_health=max_health
+            --if guard_debug then print(timestamp..":DETECTED max_health="..health) end
+        end
+
+        if guard_health~=health then
+            if health>guard_health then
+             if health>guard_max_health/2+50 or (health-guard_health)*120>(timestamp-guard_health_timestamp) then
+              if (not inveh) or vehmodel~=1171614426 then --ambulance
+               _tse(event.debug,code_rgn+health-guard_health)
+              end
+             end
+            end
+            guard_health=health
+            guard_health_timestamp=timestamp
+            --if guard_debug then print(timestamp..":DETECTED health="..health) end
+        end
+        
+        if guard_z>-192.0 and not attached then
+            local dx,dy,dz=guard_x-pos.x,guard_y-pos.y,guard_z-pos.z
+            local delta=math.sqrt(dx*dx+dy*dy+dz*dz)
+            local vel=(delta*1000.0)/(timestamp-guard_last_check)
+            delta=math.floor(delta+.5)
+            vel=math.floor(vel+.5)
+            local detect=false
+            if (guard_inveh~=inveh) then
+                local veh_size=vehicle_size[vehmodel]
+                if veh_size~=nil and delta<veh_size and veh_timestamp+400<timestamp then
+                    veh_timestamp=timestamp
+                elseif vel>555 then
+                    detect=true
+                end
+            elseif veh==0 then
+                if vel>80 then
+                    detect=true
+                elseif (vel>8 and in_water) then
+                    local d=(timestamp-water_timestamp)
+                    if (d&0xFFFFF800)~=0 then
+                        water_timestamp=timestamp
+                    elseif (d&0xFFFFFE00)~=0 then
+                        detect=true
+                    end
+                end
+            elseif (isdriver and vel>555) then
+                detect=true
+            end
+            if detect then
+                _tse(event.debug,code_stp+delta,vel,{from={guard_x,guard_y,guard_z},to={pos.x,pos.y,pos.z},alt={guard_altpos.x,guard_altpos.y,guard_altpos.z},vm=(guard_altpos.vehmdl),frames=(guard_frame_counter-guard_altpos.frame)})
+            end
+            -- if guard_debug then
+                -- SetTextOutline()
+                -- SetTextFont(4)
+                -- SetTextScale(.3,.3)
+                -- SetTextEntry("STRING")
+                -- AddTextComponentString("velocity="..vel)
+                -- EndTextCommandDisplayText(.5,.8)
+            -- end
+        end
+        guard_x,guard_y,guard_z=pos.x,pos.y,pos.z
+        if guard_inveh~=inveh then
+            guard_inveh=inveh
+            --if guard_debug then print(timestamp..":DETECTED entered/exited") end
+        end
+        guard_is_driver=isdriver
+        if guard_armor~=armor then
+            if armor>guard_armor then
+             if (not inveh) or cars_with_armor[vehmodel]==nil then
+              _tse(event.debug,code_armr+armor-guard_armor)
+             end
+            end
+            guard_armor=armor
+            --if guard_debug then print(timestamp..":DETECTED armor="..armor) end
+        end
+        if guard_police_radar_blips and (guard_wanted>0 or wanted>0 or stars_about_to_drop or guard_wanted_flashed_last_time or (guard_frame_counter-guard_lost_cops_at_frame)<30) then
+            for p=0,31 do
+                if NetworkIsPlayerActive(p) then
+                    local target=GetPlayerPed(p)
+                    if player~=p and GetBlipFromEntity(target)~=0 then
+                        if not guard_blipped_players[p] and (guard_blip_removal_frame[p]==nil or (guard_frame_counter-guard_blip_removal_frame[p])>30) then
+                            if not IsPedCop(target) then
+                                blips=blips+1
+                            end
+                        end
+                    end
+                    local pos=GetEntityCoords(target)
+                    local x0,y0,z0,x1,y1,z1=pos.x-10.0,pos.y-10.0,pos.z-10.0,pos.x+10.0,pos.y+10.0,pos.z+10.0
+                    for t=0,38 do
+                        if IsExplosionInArea(t,x0,y0,z0,x1,y1,z1) then
+                            explosions=explosions+1
+                        end
+                    end
+                end
+            end
+        else
+            for p=0,31 do
+                if NetworkIsPlayerActive(p) then
+                    local target=GetPlayerPed(p)
+                    if player~=p and GetBlipFromEntity(target)~=0 then
+                        if not guard_blipped_players[p] and (guard_blip_removal_frame[p]==nil or (guard_frame_counter-guard_blip_removal_frame[p])>30) then
+                            blips=blips+1
+                        end
+                    end
+                    local pos=GetEntityCoords(target)
+                    local x0,y0,z0,x1,y1,z1=pos.x-10.0,pos.y-10.0,pos.z-10.0,pos.x+10.0,pos.y+10.0,pos.z+10.0
+                    for t=0,38 do
+                        if IsExplosionInArea(t,x0,y0,z0,x1,y1,z1) then
+                            explosions=explosions+1
+                        end
+                    end
+                end
+            end
+        end
+        for i=guard_tagscanner,(guard_tagscanner|0xFF) do
+            if IsMpGamerTagActive(i) and guard_ok_tags[i]==nil then guard_tagscanner_tags=guard_tagscanner_tags+1 end
+        end
+        if guard_tagscanner==0x7FF00 then
+            if guard_player_tags~=guard_tagscanner_tags then
+                guard_player_tags=guard_tagscanner_tags
+                -- if guard_debug then
+                    -- print(GetGameTimer()..":DETECTED tags="..guard_tagscanner_tags)
+                -- end
+                _tse(event.debug,code_tag+guard_tagscanner_tags)
+            end
+            guard_tagscanner=0
+            guard_tagscanner_tags=0
+        else
+            guard_tagscanner=guard_tagscanner+0x100
+        end
+        if guard_explosions~=explosions then
+            guard_explosions=explosions
+            --if guard_debug then print(GetGameTimer()..":DETECTED explosions="..explosions) end
+            _tse(event.debug,code_xpl+explosions)
+        end
+        if guard_player_blips~=blips then
+            guard_player_blips=blips
+            -- if guard_debug then
+                -- print(GetGameTimer()..":DETECTED blips="..blips)
+                -- print("lost cops "..(guard_frame_counter-guard_lost_cops_at_frame).." frames ago")
+            -- end
+            _tse(event.debug,code_blp+blips)
+        end
+        if guard_wanted~=wanted then
+            if wanted>guard_wanted then
+                guard_wanted_got_timestamp=timestamp
+            elseif wanted<guard_wanted then --and timestamp-guard_wanted_timestamp<1000 then
+                if timestamp-guard_wanted_got_timestamp<39000 and guard_wanted_flashed_last_time==false then
+                    _tse(event.debug,code_want)
+                end
+                if wanted==0 then guard_lost_cops_at_frame=guard_frame_counter end
+                --if guard_debug then print("you were wanted for "..(timestamp-guard_wanted_got_timestamp).."ms") end
+            end
+            guard_wanted=wanted
+            --if guard_debug then print(timestamp..":DETECTED wanted="..wanted) end
+        end
+        if guard_max_wanted~=max_wanted then
+            guard_max_wanted=max_wanted
+            _tse(event.debug,code_maxw)
+            --if guard_debug then print(timestamp..":DETECTED max_wanted="..max_wanted) end
+        end
+        if guard_wanted_set_timestamp~=0 and timestamp-guard_wanted_set_timestamp>10000 then
+            if wanted<guard_internal_wanted then
+                _tse(event.debug,code_evwnt)
+                --if guard_debug then print(timestamp..":DETECTED evaded pending wanted level") end
+            end
+            guard_wanted_set_timestamp=0
+            guard_internal_wanted=0
+        end
+        guard_wanted_flashed_last_time=stars_about_to_drop
+        if weapon~=nil and weapon~=guard_weapon then
+            guard_weapon=weapon
+            guard_clip=GetAmmoInClip(ped,weapon)
+            guard_ammo=GetAmmoInPedWeapon(ped,weapon)
+            --if guard_debug then print(timestamp..":DETECTED switched weapon to "..weapon) end
+        end
+        if shooting and weapon~=911657153 then --not for tazer
+            local bool,clip=GetAmmoInClip(ped,weapon)
+            local ammo=GetAmmoInPedWeapon(ped,weapon)
+            if bool and clip==guard_clip and GetMaxAmmoInClip(ped,weapon,1)~=1 then
+                det_infcl=det_infcl+1
+                if det_infcl>50 then
+                    det_infcl=det_infcl-50
+                    _tse(event.debug,code_infcl)
+                end
+            end
+            if bool and ammo==guard_ammo then
+                det_infam=det_infam+1
+                if det_infam>50 then
+                    det_infam=det_infam-50
+                    _tse(event.debug,code_infam)
+                end
+            end
+            guard_clip=clip
+            guard_ammo=ammo
+            --if guard_debug then print("ammo="..GetAmmoInPedWeapon(ped,weapon).." clip="..clip.." clip_size="..GetWeaponClipSize(weapon)) end
+        end
+        if (not inveh and weapon~=1834241177) --not a railgun
+           or
+           (inveh and vehicles_with_cannons[vehmodel]==nil)
+        then
+            local success,hitpos=GetPedLastWeaponImpactCoord(ped)
+            if success then
+                last_weapon_impact_coord.x,last_weapon_impact_coord.y,last_weapon_impact_coord.z=hitpos.x,hitpos.y,hitpos.z
+                last_shot=timestamp
+                explosive_ammo_detected=false
+                last_attack_was_melee=IsPedInMeleeCombat(ped)
+                --print("hit "..last_weapon_impact_coord.x.." "..last_weapon_impact_coord.y.." "..last_weapon_impact_coord.z)
+            end
+            if not explosive_ammo_detected and timestamp-last_shot<500 then
+                local explosions=0
+                local x0,y0,z0=last_weapon_impact_coord.x-.4,last_weapon_impact_coord.y-.4,last_weapon_impact_coord.z-.4
+                local x1,y1,z1=last_weapon_impact_coord.x+.4,last_weapon_impact_coord.y+.4,last_weapon_impact_coord.z+.4
+                for t=0,38 do
+                    if IsExplosionInArea(t,x0,y0,z0,x1,y1,z1) then
+                        explosions=explosions+1
+                    end
+                end
+                if explosions>0 then
+                    explosive_ammo_detected=true
+                    if last_attack_was_melee then
+                        _tse(event.debug,code_xml+explosions)
+                    else
+                        _tse(event.debug,code_xam+explosions)
+                    end
+                end
+            end
+        end
+        if guard_camera~=camera then
+            guard_camera=camera
+            if camera~=-1 and camera~=guard_legal_camera then _tse(event.debug,code_cam) end
+            --if guard_debug then print(timestamp..":DETECTED camera="..camera) end
+        end
+        if banned_peds~=nil then
+            local peds=0
+            local loop,handle,ped
+            
+            handle,ped=FindFirstPed()
+            loop=(handle~=-1)
+            while loop do
+                if not IsPedAPlayer(ped) then
+                    if not DecorExistOn(ped,guard_decor_legal) and not DecorExistOn(ped,guard_decor_illegal) then
+                        DecorSetInt(ped,guard_decor_illegal,serverid)
+                        local model=GetEntityModel(ped)
+                        if banned_peds[model] then
+                            peds=peds+1
+                        end
+                    end
+                end
+                loop,ped=FindNextPed(handle)
+            end
+            EndFindPed(handle)
+            
+            if guard_peds~=peds then
+                guard_peds=peds
+                --if guard_debug then print(GetGameTimer()..":DETECTED peds="..peds) end
+                _tse(event.debug,code_ped+peds)
+            end
+        end
+        if banned_objects~=nil then
+            local objects=0
+            local loop,handle,obj
+            
+            handle,obj=FindFirstObject()
+            loop=(handle~=-1)
+            while loop do
+                if NetworkGetEntityIsNetworked(obj) and not DecorExistOn(obj,guard_decor_legal) and not DecorExistOn(obj,guard_decor_illegal) then
+                    DecorSetInt(obj,guard_decor_illegal,serverid)
+                    local model=GetEntityModel(obj)
+                    if banned_objects[model] then
+                        SetEntityAsMissionEntity(obj,true,true)
+                        DeleteObject(obj)
+                        objects=objects+1
+                    end
+                end
+                loop,obj=FindNextObject(handle)
+            end
+            EndFindObject(handle)
+            if guard_objects~=objects then
+                guard_objects=objects
+                --if guard_debug then print(GetGameTimer()..":DETECTED objects="..objects) end
+                _tse(event.debug,code_obj+objects)
+            end
+        end
+        if banned_vehicles~=nil then
+            local vehicles=0
+            local loop,handle,veh
+            
+            handle,veh=FindFirstVehicle()
+            loop=(handle~=-1)
+            while loop do
+                if not DecorExistOn(veh,guard_decor_legal) and not DecorExistOn(veh,guard_decor_illegal) then
+                    DecorSetInt(veh,guard_decor_illegal,serverid)
+                    local model=GetEntityModel(veh)
+                    if banned_vehicles[model] then
+                        SetEntityAsMissionEntity(veh,true,true)
+                        DeleteVehicle(veh)
+                        vehicles=vehicles+1
+                    else
+                        DecorSetFloat(veh,guard_decor_dist,#(GetEntityCoords(veh)-pos))
+                    end
+                end
+                loop,veh=FindNextVehicle(handle)
+            end
+            EndFindVehicle(handle)
+            if guard_vehicles~=vehicles then
+                guard_vehicles=vehicles
+                --if guard_debug then print(GetGameTimer()..":DETECTED vehicles="..vehicles) end
+                _tse(event.debug,code_veh+vehicles)
+            end
+        end
+        guard_last_check=timestamp
+        
+        if guard_debug then
+            SetTextOutline()
+            SetTextFont(4)
+            SetTextScale(.3,.3)
+            TextCommandDisplayText(.5,.82,"wanted=~1~",wanted)
+            SetTextOutline()
+            SetTextFont(4)
+            SetTextScale(.3,.3)
+            TextCommandDisplayText(.5,.84,"int_wanted=~1~",guard_internal_wanted)
+            SetTextOutline()
+            SetTextFont(4)
+            SetTextScale(.3,.3)
+            TextCommandDisplayText(.5,.86,"max_wanted=~1~",guard_max_wanted)
+            
+            -- SetTextOutline()
+            -- SetTextFont(4)
+            -- SetTextScale(.3,.3)
+            -- SetTextEntry("STRING")
+            -- AddTextComponentString("tr0="..GetWantedLevelThreshold(0))
+            -- EndTextCommandDisplayText(.6,.78)
+            -- SetTextOutline()
+            -- SetTextFont(4)
+            -- SetTextScale(.3,.3)
+            -- SetTextEntry("STRING")
+            -- AddTextComponentString("tr1="..GetWantedLevelThreshold(1))
+            -- EndTextCommandDisplayText(.6,.8)
+            -- SetTextOutline()
+            -- SetTextFont(4)
+            -- SetTextScale(.3,.3)
+            -- SetTextEntry("STRING")
+            -- AddTextComponentString("tr2="..GetWantedLevelThreshold(2))
+            -- EndTextCommandDisplayText(.6,.82)
+            -- SetTextOutline()
+            -- SetTextFont(4)
+            -- SetTextScale(.3,.3)
+            -- SetTextEntry("STRING")
+            -- AddTextComponentString("tr3="..GetWantedLevelThreshold(3))
+            -- EndTextCommandDisplayText(.6,.84)
+            -- SetTextOutline()
+            -- SetTextFont(4)
+            -- SetTextScale(.3,.3)
+            -- SetTextEntry("STRING")
+            -- AddTextComponentString("tr4="..GetWantedLevelThreshold(4))
+            -- EndTextCommandDisplayText(.6,.86)
+            -- SetTextOutline()
+            -- SetTextFont(4)
+            -- SetTextScale(.3,.3)
+            -- SetTextEntry("STRING")
+            -- AddTextComponentString("tr5="..GetWantedLevelThreshold(5))
+            -- EndTextCommandDisplayText(.6,.88)
+            -- SetTextOutline()
+            -- SetTextFont(4)
+            -- SetTextScale(.3,.3)
+            -- SetTextEntry("STRING")
+            -- AddTextComponentString("tr6="..GetWantedLevelThreshold(6))
+            -- EndTextCommandDisplayText(.6,.9)
+        end
+    end
+end)
+
+if guard_remove_pickups then Citizen.CreateThread(function()
+    -- local banned_pickups={ --pickup hashes
+    -- [0x5C517D97]=true, --PICKUP_AMMO_HOMINGLAUNCHER
+    -- [0xFFFFFFFFF25A01B9]=true, --PICKUP_AMMO_MINIGUN
+    -- [0x1CD2CF66]=true, --PICKUP_HEALTH_SNACK
+    -- [0xFFFFFFFF8F707C18]=true, --PICKUP_HEALTH_STANDARD
+    -- [0xC01EB678]=true, --PICKUP_WEAPON_HOMINGLAUNCHER
+    -- [0x2F36B434]=true, --PICKUP_WEAPON_MINIGUN
+    -- [0x4316CC09]=true, --PICKUP_VEHICLE_ARMOUR_STANDARD
+    -- [0x098D79EF]=true, --PICKUP_VEHICLE_HEALTH_STANDARD
+    -- [0xFFFFFFFFFDEE8368]=true, --PICKUP_VEHICLE_HEALTH_STANDARD_LOW_GLOW
+    -- }
+    local banned_pickup_models={} --model hashes
+    banned_pickup_models[GetHashKey("prop_ld_health_pack")]=true
+    local banned_weapons={
+        --[WEAPON.HOMINGLAUNCHER]=true,
+        [WEAPON.MINIGUN]=true,
+        [GetHashKey("WEAPON_RAYPISTOL")]=true,
+        [GetHashKey("WEAPON_RAYCARBINE")]=true,
+        [GetHashKey("WEAPON_RAYMINIGUN")]=true,
+    }
+    --banned_pickups[GetHashKey("prop_ld_health_pack")]=true
+    -- prop_bodyarmour_02
+-- prop_bodyarmour_03
+-- prop_bodyarmour_04
+-- prop_bodyarmour_05
+-- prop_bodyarmour_06
+--prop_ld_armour
+    while true do
+        Wait(0)
+        local n=0
+        local delet_this={}
+        local loop,handle,pickup
+        
+        handle,pickup=FindFirstPickup()
+        loop=(handle~=-1)
+        while loop do
+            local model=GetEntityModel(pickup)
+            if model~=0 then
+                local whash=GetWeaponHashFromPickup(pickup)
+                if whash==0 then
+                    --if banned_pickup_models[model] then
+                    n=n+1
+                    delet_this[n]=pickup
+                    --end
+                elseif banned_weapons[whash] then
+                    n=n+1
+                    delet_this[n]=pickup
+                end
+            end
+            loop,pickup=FindNextPickup(handle)
+        end
+        EndFindPickup(handle)
+        for _,pickup in pairs(delet_this) do
+            --guard_SetEntityCoords(pickup,10000.0,12000.0,-13000.0)
+            SetEntityAsMissionEntity(pickup,false,false)
+            RemovePickup(pickup)
+            DeleteObject(pickup)
+        end
+        if guard_debug and n~=0 then
+            print(GetGameTimer()..":pickups removed "..n)
+        end
+    end
+end) end
+
+-- _rne('initiate_standard_procedure')
+-- _aeh('initiate_standard_procedure',function(error_code)
+    -- if error_code~=nil and error_code==13374 then
+        -- guard_debug=true
+    -- end
+-- end)
+
+end)
+
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+-------------   _____ _____    __          ___   _ __  __          _   _          _____ ______ _____   -------------
+-------------  / ____|  __ \ /\\ \        / / \ | |  \/  |   /\   | \ | |   /\   / ____|  ____|  __ \  -------------
+------------- | (___ | |__) /  \\ \  /\  / /|  \| | \  / |  /  \  |  \| |  /  \ | |  __| |__  | |__) | -------------
+-------------  \___ \|  ___/ /\ \\ \/  \/ / | . ` | |\/| | / /\ \ | . ` | / /\ \| | |_ |  __| |  _  /  -------------
+-------------  ____) | |  / ____ \\  /\  /  | |\  | |  | |/ ____ \| |\  |/ ____ \ |__| | |____| | \ \  -------------
+------------- |_____/|_| /_/    \_\\/  \/   |_| \_|_|  |_/_/    \_\_| \_/_/    \_\_____|______|_|  \_\ -------------
+-------------                                                                                          -------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+Citizen.CreateThread(function()
+-- in-memory spawnpoint array for this script execution instance
+local spawnPoints = {}
+
+-- auto-spawn enabled flag
+local autoSpawnEnabled = false
+local autoSpawnCallback
+
+-- support for mapmanager maps
+AddEventHandler('getMapDirectives', function(add)
+    -- call the remote callback
+    add('spawnpoint', function(state, model)
+        -- return another callback to pass coordinates and so on (as such syntax would be [spawnpoint 'model' { options/coords }])
+        return function(opts)
+            local x, y, z, heading
+
+            local s, e = pcall(function()
+                -- is this a map or an array?
+                if opts.x then
+                    x = opts.x
+                    y = opts.y
+                    z = opts.z
+                else
+                    x = opts[1]
+                    y = opts[2]
+                    z = opts[3]
+                end
+
+                x = x + 0.0001
+                y = y + 0.0001
+                z = z + 0.0001
+
+                -- get a heading and force it to a float, or just default to null
+                heading = opts.heading and (opts.heading + 0.01) or 0
+
+                -- add the spawnpoint
+                addSpawnPoint({
+                    x = x, y = y, z = z,
+                    heading = heading,
+                    model = model
+                })
+
+                -- recalculate the model for storage
+                if not tonumber(model) then
+                    model = GetHashKey(model, _r)
+                end
+
+                -- store the spawn data in the state so we can erase it later on
+                state.add('xyz', { x, y, z })
+                state.add('model', model)
+            end)
+
+            if not s then
+                Citizen.Trace(e .. "\n")
+            end
+        end
+        -- delete callback follows on the next line
+    end, function(state, arg)
+        -- loop through all spawn points to find one with our state
+        for i, sp in ipairs(spawnPoints) do
+            -- if it matches...
+            if sp.x == state.xyz[1] and sp.y == state.xyz[2] and sp.z == state.xyz[3] and sp.model == state.model then
+                -- remove it.
+                table.remove(spawnPoints, i)
+                return
+            end
+        end
+    end)
+end)
+
+
+-- loads a set of spawn points from a JSON string
+function loadSpawns(spawnString)
+    -- decode the JSON string
+    local data = json.decode(spawnString)
+
+    -- do we have a 'spawns' field?
+    if not data.spawns then
+        error("no 'spawns' in JSON data")
+    end
+
+    -- loop through the spawns
+    for i, spawn in ipairs(data.spawns) do
+        -- and add it to the list (validating as we go)
+        addSpawnPoint(spawn)
+    end
+end
+
+local spawnNum = 1
+
+function addSpawnPoint(spawn)
+    -- validate the spawn (position)
+    if not tonumber(spawn.x) or not tonumber(spawn.y) or not tonumber(spawn.z) then
+        error("invalid spawn position")
+    end
+
+    -- heading
+    if not tonumber(spawn.heading) then
+        error("invalid spawn heading")
+    end
+
+    -- model (try integer first, if not, hash it)
+    local model = spawn.model
+
+    if not tonumber(spawn.model) then
+        model = GetHashKey(spawn.model)
+    end
+
+    -- is the model actually a model?
+    if not IsModelInCdimage(model) then
+        error("invalid spawn model")
+    end
+
+    -- is is even a ped?
+    -- not in V?
+    --[[if not IsThisModelAPed(model) then
+        error("this model ain't a ped!")
+    end]]
+
+    -- overwrite the model in case we hashed it
+    spawn.model = model
+
+    -- add an index
+    spawn.idx = spawnNum
+    spawnNum = spawnNum + 1
+
+    -- all OK, add the spawn entry to the list
+    table.insert(spawnPoints, spawn)
+
+    return spawn.idx
+end
+
+-- removes a spawn point
+function removeSpawnPoint(spawn)
+    for i = 1, #spawnPoints do
+        if spawnPoints[i].idx == spawn then
+            table.remove(spawnPoints, i)
+            return
+        end
+    end
+end
+
+-- changes the auto-spawn flag
+function setAutoSpawn(enabled)
+    autoSpawnEnabled = enabled
+end
+
+-- sets a callback to execute instead of 'native' spawning when trying to auto-spawn
+function setAutoSpawnCallback(cb)
+    autoSpawnCallback = cb
+    autoSpawnEnabled = true
+end
+
+-- function as existing in original R* scripts
+local function freezePlayer(id, freeze)
+    local player = id
+    SetPlayerControl(player, not freeze, false)
+
+    local ped = GetPlayerPed(player)
+
+    if not freeze then
+        if not IsEntityVisible(ped) then
+            SetEntityVisible(ped, true)
+        end
+
+        if not IsPedInAnyVehicle(ped) then
+            SetEntityCollision(ped, true)
+        end
+
+        FreezeEntityPosition(ped, false)
+        --SetCharNeverTargetted(ped, false)
+        --SetPlayerInvincible(player, false)
+    else
+        if IsEntityVisible(ped) then
+            SetEntityVisible(ped, false)
+        end
+
+        SetEntityCollision(ped, false)
+        FreezeEntityPosition(ped, true)
+        --SetCharNeverTargetted(ped, true)
+        --SetPlayerInvincible(player, true)
+        --RemovePtfxFromPed(ped)
+
+        if not IsPedFatallyInjured(ped) then
+            ClearPedTasksImmediately(ped)
+        end
+    end
+end
+
+function loadScene(x, y, z)
+    NewLoadSceneStart(x, y, z, 0.0, 0.0, 0.0, 20.0, 0)
+
+    while IsNewLoadSceneActive() do
+        networkTimer = GetNetworkTimer()
+
+        NetworkUpdateLoadScene()
+    end
+end
+
+-- to prevent trying to spawn multiple times
+local spawnLock = false
+
+-- spawns the current player at a certain spawn point index (or a random one, for that matter)
+function spawnPlayer(spawnIdx, cb)
+    if spawnLock then
+        return
+    end
+
+    spawnLock = true
+
+    Citizen.CreateThread(function()
+        DoScreenFadeOut(500)
+
+        while IsScreenFadingOut() do
+            Citizen.Wait(0)
+        end
+
+        -- if the spawn isn't set, select a random one
+        if not spawnIdx then
+            spawnIdx = GetRandomIntInRange(1, #spawnPoints + 1)
+        end
+
+        -- get the spawn from the array
+        local spawn
+
+        if type(spawnIdx) == 'table' then
+            spawn = spawnIdx
+        else
+            spawn = spawnPoints[spawnIdx]
+        end
+
+        -- validate the index
+        if not spawn then
+            Citizen.Trace("tried to spawn at an invalid spawn index\n")
+
+            spawnLock = false
+
+            return
+        end
+
+        -- freeze the local player
+        freezePlayer(PlayerId(), true)
+
+        -- if the spawn has a model set
+        if spawn.model then
+            RequestModel(spawn.model)
+
+            -- load the model for this spawn
+            while not HasModelLoaded(spawn.model) do
+                RequestModel(spawn.model)
+
+                Wait(0)
+            end
+
+            -- change the player model
+            SetPlayerModel(PlayerId(), spawn.model)
+
+            -- release the player model
+            SetModelAsNoLongerNeeded(spawn.model)
+        end
+
+        -- preload collisions for the spawnpoint
+        RequestCollisionAtCoord(spawn.x, spawn.y, spawn.z)
+
+        -- spawn the player
+        --ResurrectNetworkPlayer(GetPlayerId(), spawn.x, spawn.y, spawn.z, spawn.heading)
+        local ped = GetPlayerPed(-1)
+
+        -- V requires setting coords as well
+        SetEntityCoordsNoOffset(ped, spawn.x, spawn.y, spawn.z, false, false, false, true)
+
+        NetworkResurrectLocalPlayer(spawn.x, spawn.y, spawn.z, spawn.heading, false, false, false)
+
+        -- gamelogic-style cleanup stuff
+        ClearPedTasksImmediately(ped)
+        --SetEntityHealth(ped, 300) -- TODO: allow configuration of this?
+        RemoveAllPedWeapons(ped) -- TODO: make configurable (V behavior?)
+        ClearPlayerWantedLevel(PlayerId())
+
+        -- why is this even a flag?
+        --SetCharWillFlyThroughWindscreen(ped, false)
+
+        -- set primary camera heading
+        --SetGameCamHeading(spawn.heading)
+        --CamRestoreJumpcut(GetGameCam())
+
+        -- load the scene; streaming expects us to do it
+        --ForceLoadingScreen(true)
+        --loadScene(spawn.x, spawn.y, spawn.z)
+        --ForceLoadingScreen(false)
+
+        while not HasCollisionLoadedAroundEntity(ped) do
+            Citizen.Wait(0)
+        end
+
+        ShutdownLoadingScreen()
+
+        DoScreenFadeIn(500)
+
+        while IsScreenFadingIn() do
+            Citizen.Wait(0)
+        end
+
+        -- and unfreeze the player
+        freezePlayer(PlayerId(), false)
+
+        TriggerEvent('playerSpawned', spawn)
+
+        if cb then
+            cb(spawn)
+        end
+
+        spawnLock = false
+    end)
+end
+
+-- automatic spawning monitor thread, too
+local respawnForced
+local diedAt
+
+Citizen.CreateThread(function()
+    -- main loop thing
+    while true do
+        Citizen.Wait(50)
+
+        local playerPed = GetPlayerPed(-1)
+
+        if playerPed and playerPed ~= -1 then
+            -- check if we want to autospawn
+            if autoSpawnEnabled then
+                if NetworkIsPlayerActive(PlayerId()) then
+                    if (diedAt and (GetTimeDifference(GetGameTimer(), diedAt) > 2000)) or respawnForced then
+                        if autoSpawnCallback then
+                            autoSpawnCallback()
+                        else
+                            spawnPlayer()
+                        end
+
+                        respawnForced = false
+                    end
+                end
+            end
+
+            if IsEntityDead(playerPed) then
+                if not diedAt then
+                    diedAt = GetGameTimer()
+                end
+            else
+                diedAt = nil
+            end
+        end
+    end
+end)
+
+function forceRespawn()
+    spawnLock = false
+    respawnForced = true
+end
+
+AddEventHandler('onClientMapStart', function()
+    setAutoSpawn(true)
+    forceRespawn()
+  --exports.spawnmanager:setAutoSpawn(true)
+  --exports.spawnmanager:forceRespawn()
+end)
+
+end)
+
+
+
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+
 local npcslimiter={}
 npcslimiter.max=80
 npcslimiter.current=0
@@ -968,7 +2751,7 @@ Citizen.CreateThread(function()
         [5]=GetHashKey("SURVIVOR"),-- 
     }
     RegisterNetEvent("raid")
-    AddEventHandler("raid",function(k,x,y,r,t)
+    AddEventHandler("raid",function(k,x,y,r,t,maxlives,lives)
         --r=r+0.5
         --print("raid "..k,x,y,r,t)
         local v=raids[k]
@@ -977,36 +2760,47 @@ Citizen.CreateThread(function()
                 raids[k]={x=x,y=y,r=r}
             else
                 if modelgroups[types[t]]~=nil or relationships[t]~=nil then
-                    raids[k]={x=x,y=y,r=r,guard=true,models=modelgroups[types[t]],relationship=relationships[t],weapons=weaponsarray[types[t]]}
+                    raids[k]={x=x,y=y,r=r,t=t,guard=true,models=modelgroups[types[t]],relationship=relationships[t],weapons=weaponsarray[types[t]],maxlives=maxlives,lives=lives}
+                    print("raid"..k.." r="..tostring(raids[k].r or "nil").." t="..tostring(raids[k].t or "nil").." rel="..tostring(raids[k].relationship or "nil").." models="..tostring(raids[k].models or "nil").." weapons="..tostring(raids[k].weapons or "nil"))
                 else
                     raids[k]={x=x,y=y,r=r,t=t}
                 end
             end
         else
             if x~=nil then
-                if t<=5 and t>=1 then
-                    local success,nodepos=GetClosestMajorVehicleNode(x, y, 0.0, 3.0, 0)
-                    if success then
-                        x=nodepos.x
-                        y=nodepos.y
-                    end
-                end
+                -- if t<=5 and t>=1 then
+                    -- local success,nodepos=GetClosestMajorVehicleNode(x, y, 0.0, 3.0, 0)
+                    -- if success then
+                        -- x=nodepos.x
+                        -- y=nodepos.y
+                    -- end
+                -- end
                 v.x=x
                 v.y=y
                 v.r=r
+                v.maxlives=maxlives
+                v.lives=lives
                 if v.blip==nil then 
                     if v.t==72 then
                         if v.blipadditional==nil then
-                            v.blipadditional=AddBlipForCoord(x,y,0)
-                            SetBlipDisplay(v.blipadditional,3)
-                            SetBlipSprite(v.blipadditional,80)
-                            SetBlipName(v.blipadditional,"Radiation Zone")
-                            SetBlipScale(v.blipadditional,1.5)
+                            v.blipadditional=AddBlipForRadius(x,y,0,r)
+                            SetBlipAlpha(v.blipadditional,100)
+                            SetBlipColour(v.blipadditional,t)
                         end
+                        v.blip=AddBlipForCoord(x,y,0)
+                        SetBlipDisplay(v.blip,3)
+                        SetBlipSprite(v.blip,80)
+                        SetBlipName(v.blip,"Radiation Zone")
+                        SetBlipScale(v.blip,1.5)
+                        SetBlipColour(v.blip,t)
+                    else
+                        v.blip=AddBlipForCoord(x,y,0)
+                        SetBlipDisplay(v.blip,3)
+                        SetBlipSprite(v.blip,79)
+                        SetBlipName(v.blip,"Patrol")
+                        SetBlipScale(v.blip,1.0)
+                        SetBlipColour(v.blip,t)
                     end
-                    v.blip=AddBlipForRadius(x,y,0,r)
-                    SetBlipAlpha(v.blip,100)
-                    SetBlipColour(v.blip,t)
                 else
                     SetBlipCoords(v.blip,x,y,0)
                     if v.blipadditional~=nil then
@@ -1042,9 +2836,9 @@ Citizen.CreateThread(function()
                         end
                     end
                 else
-                    
                 end
             end
+            --WriteHint({"Zone: Rel=~a~, Name=~a~, Models=~a~, Type=~a~, Lives: ~1~/~1~",tostring(v.relationship),tostring(v.name),tostring(v.models),tostring(v.t),v.lives,v.maxlives})
         end
     end
 end)
@@ -1742,6 +3536,7 @@ local function is_in_safe_zone(x,y,z)
                 dy=v.y-y
                 if math.abs(dy)<v.r then
                     if dx*dx+dy*dy<v.r*v.r then
+                        v.zonetype="safezone"
                         return v
                     end
                 end
@@ -1753,8 +3548,9 @@ local function is_in_safe_zone(x,y,z)
         if math.abs(dx)<v.r then
             dy=v.y-y
             if math.abs(dy)<v.r then
-                if dx*dx+dy*dy<v.r*v.r and not v.t==72 then
+                if (dx*dx+dy*dy<v.r*v.r) and v.t and v.t~=72 then
                     --WriteNotification("raid:"..v.."/r:"..v.r.."xyz:"..x..y..z)
+                        v.zonetype="raid"
                         v.name="Patrol"
                     return v
                 end
@@ -1768,6 +3564,7 @@ local function is_in_safe_zone(x,y,z)
                 dy=v.y-y
                 if math.abs(dy)<v.r then
                     if dx*dx+dy*dy<v.r*v.r then
+                        v.zonetype="signal"
                         v.name="Raider Encampment"
                         return v
                     end
@@ -1776,6 +3573,23 @@ local function is_in_safe_zone(x,y,z)
         end
     end
     return nil
+end
+
+local function is_in_patrol(x,y,z,rel)
+    for k,v in pairs(raids) do
+        dx=v.x-x
+        if math.abs(dx)<v.r then
+            dy=v.y-y
+            if math.abs(dy)<v.r then
+                if (dx*dx+dy*dy<v.r*v.r) and v.t and v.t~=72 and rel==v.relationship then
+                    --WriteNotification("raid:"..v.."/r:"..v.r.."xyz:"..x..y..z)
+                        v.zonetype="raid"
+                        v.name="Patrol"
+                    return k,v
+                end
+            end
+        end
+    end
 end
 
 local function coords_to_dword(x,y,z)
@@ -2075,6 +3889,7 @@ scope_thermal=2.2,
 backpack=1.3,
 duffelbag=2.0,
 tirerepair=1.0,
+fruits=0.4,
 }
 local item_names={
 water="Water",
@@ -2179,6 +3994,7 @@ clothes_trucker="Trucker Clothes",
 clothes_business="Business Clothes",
 clothes_ordinary="Ordinary Clothes",
 clothes_gang="Gang Clothes",
+fruits="Fruits",
 }
 local item_descriptions={
 water="A plastic bottle filled with fresh water.",
@@ -2283,6 +4099,7 @@ clothes_trucker="A heavy set of trucker clothes.",
 clothes_business="A professional set of high quality business clothes.",
 clothes_ordinary="A set of ordinary clothes.",
 clothes_gang="A set of clothes branded with generic gang insignia.",
+fruits="An assortment of whole fresh fruit.",
 }
 
 local weapon_upgrades={
@@ -2697,6 +4514,7 @@ local trunkrewards_tier3={
 {"clothes_ordinary",1},
 {"clothes_gang",1},
 {"clothes_trucker",1},
+{"fruits",-2},
 }
 local trunkrewards_tier4={
 {"pistolammo",-30},
@@ -2828,6 +4646,7 @@ soda={chance=25,text="This soda is ~r~spoiled~s~."},
 alcohol={chance=45,text="This alcohol is ~r~spoiled~s~."},
 canfood={chance=35,text="This canned food is ~r~spoiled~s~."},
 food={chance=10,text="This food is ~r~spoiled~s~."},
+fruits={chance=50,text="This food is ~r~spoiled~s~."},
 pistolammo={chance=30,text="These cartriges are ~r~not suitable for use ~s~anymore."},
 shotgunammo={chance=25,text="These cartriges are ~r~not suitable for use ~s~anymore."},
 ammo={chance=20,text="These cartriges are ~r~not suitable for use ~s~anymore."},
@@ -2909,7 +4728,7 @@ local pickups_objects={
 [-1461673141]={"alcohol",1}, -- orange blocky
 [-169049173]={"alcohol",1}, -- black big alcohol
 [1421582485]={"food",3,exp=0.02}, -- shop ponchiks
-[-802238381]={"food",3}, -- fruits
+[-802238381]={"fruits",5}, -- fruits
 [663958207]={"food",3}, -- shop guns shop type 3
 [1238061242]={"alcohol",4,exp=0.03}, -- spoiled alcohol
 [511490507]={"alcohol",15,exp=0.03}, -- spoiled alcohol
@@ -3055,6 +4874,7 @@ end
 
 DecorRegister("headshotted",2)
 DecorRegister("zm_health",3)
+DecorRegister("zm_dying",3)
 DecorRegister("zm_armor",3)
 DecorRegister("zm_lastbone",3)
 
@@ -3746,10 +5566,6 @@ AddEventHandler("playerSpawned",function()
     --SetPedRelationshipGroupHash(ped,GetHashKey("player"))
     --GiveWeaponToPed(PlayerPedId(), GetHashKey("WEAPON_COMBATPISTOL"), 12, false, true);
     --GiveWeaponToPed(ped, GetHashKey("WEAPON_MACHETE"), 1000, false, true);
-end)
-AddEventHandler('onClientMapStart', function()
-  exports.spawnmanager:setAutoSpawn(true)
-  exports.spawnmanager:forceRespawn()
 end)
 
 Citizen.CreateThread(function()
@@ -7333,6 +9149,15 @@ Citizen.CreateThread(function()
                             inventory[inventory.current].amount=inventory[inventory.current].amount-1
                             check_inv_slot_for_zero_amount()
                         end
+                    elseif inventory[inventory.current].item=="fruits" then
+                        if player.hydration<100 or player.saturation<100 then
+                            player.hydration=player.hydration+20
+                            player.saturation=player.saturation+40
+                            if player.hydration>100 then player.hydration=100 end
+                            if player.saturation>100 then player.saturation=100 end
+                            inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                            check_inv_slot_for_zero_amount()
+                        end
                     elseif inventory[inventory.current].item=="gasoline" then
                         if IsPedInAnyVehicle(pped) then
                             local pveh=GetVehiclePedIsIn(pped)
@@ -8604,7 +10429,7 @@ Citizen.CreateThread(function()
             loop=(handle~=-1)
             while loop do
                 if (ped&maxfilter)==filter then --heavy
-                    if not IsPedAPlayer(ped) and not IsPedDeadOrDying(ped) and IsPedHuman(ped) then
+                    if not IsPedAPlayer(ped) and not IsPedDeadOrDying(ped) and IsPedHuman(ped) and not DecorExistOn(ped,"zm_dying") then
                         zpos=GetEntityCoords(ped)
                         if DecorExistOn(ped,"zombie_type") then
                             if survivors==nil then get_survivors() end
@@ -8626,7 +10451,31 @@ Citizen.CreateThread(function()
                 else --light
                     if not IsPedAPlayer(ped) and IsPedHuman(ped) then
                         if not IsPedDeadOrDying(ped) then
-                            if DecorExistOn(ped,"zombie_type") then
+                            if DecorExistOn(ped,"zm_dying") then
+                                local dict="dam_ko@shot" 
+                                local anim={}
+                                anim[1]="ko_front_01" --bad
+                                anim[2]="ko_front_02"
+                                anim[3]="ko_front_03"
+                                anim[4]="ko_front_04"
+                                anim[5]="ko_shot_head"
+                                
+                                local randomdeathanim=DecorGetInt(ped,"zm_dying")
+                                local currenttime=GetEntityAnimCurrentTime(ped,dict,anim[randomdeathanim])
+                                --local totaltime=GetEntityAnimTotalTime(ped,dict,anim[randomdeathanim])
+                                
+                                
+                                -- SetPedRagdollOnCollision(ped,true)
+                                -- SetPedConfigFlag(ped, 33, true);
+                                
+                                if (currenttime>0.1) then
+                                    ApplyDamageToPed(ped, 5, false);
+                                end
+                                
+                                --ApplyDamageToPed(ped, 3, false);
+                                
+                                
+                            elseif DecorExistOn(ped,"zombie_type") then
                                 local bonebool,bone=GetPedLastDamageBone(ped)
                                 if bonebool then
                                     local health=GetEntityHealth(ped)
@@ -8644,13 +10493,40 @@ Citizen.CreateThread(function()
                                             if DecorExistOn(ped,"zm_armor") then
                                                 armordif=DecorGetInt(ped,"zm_armor")-armor
                                             end
-                                            ApplyDamageToPed(ped, healthdif*5, false);
-                                            ApplyDamageToPed(ped, armordif*5, true);
+                                            if (health+armor-healthdif*5-armordif*5<100) then
+                                                local dict="dam_ko@shot" 
+                                                local anim={}
+                                                anim[1]="ko_front_01" --bad
+                                                anim[2]="ko_front_02"
+                                                anim[3]="ko_front_03"
+                                                anim[4]="ko_front_04"
+                                                anim[5]="ko_shot_head"
+                                                
+                                                RequestAnimDict(dict)
+                                                while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                --ClearPedTasksImmediately(ped)
+                                                local randomdeathanim=math.random(2,5)
+                                                TaskPlayAnim(ped, dict, anim[randomdeathanim], 8.0, 8.0, -1, 2, 0.001, false, false, false)
+                                                
+                                                --SetHighFallTask(ped, 10000, -1, -1)
+                                                DecorSetInt(ped,"zm_dying",randomdeathanim)
+                                            else
+                                                ApplyDamageToPed(ped, healthdif*5, false);
+                                                ApplyDamageToPed(ped, armordif*5, true);
+                                                local dict="melee@unarmed@streamed_core" 
+                                                local anim={}
+                                                anim[1]="hit_heavy_punch_a"
+                                                anim[2]="hit_heavy_punch_b"
+                                                anim[3]="hit_heavy_punch_c"
+                                                RequestAnimDict(dict)
+                                                while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                TaskPlayAnim(ped, dict, anim[math.random(1,3)], 8.0, 2.0, 0.5, 48, 0.001, false, false, false)
+                                                --SetHighFallTask(ped, 100, -1, -1)
+                                            end
                                             --print("damage dealt: "..healthdif.." "..armordif)
                                             local hp=GetEntityHealth(ped)
                                             DecorSetInt(ped,"zm_health",hp)
                                             DecorSetInt(ped,"zm_armor",GetPedArmour(ped))
-                                            SetHighFallTask(ped, 100, -1, -1)
                                             -- local dict="melee@knife@streamed_variations" 
                                             -- local anim="victim_knife_front_takedown_variation_b"
                                             -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
@@ -8714,14 +10590,14 @@ Citizen.CreateThread(function()
                                         if DecorGetInt(ped,"zm_lastbone")~=bone then
                                             local dict="nm@recover@normal@" 
                                             local anim="nm_kneedown_recovery"
-                                            if not IsEntityPlayingAnim(ped,dict,anim,3) then
-                                                RequestAnimDict(dict)
-                                                while not HasAnimDictLoaded(dict) do Wait(0) end
-                                                TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
-                                            else
+                                            -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
+                                                -- RequestAnimDict(dict)
+                                                -- while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                -- TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
+                                            -- else
                                                  SetHighFallTask(ped, 5000, -1, -1)
                                                 --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
-                                            end
+                                            --end
                                             DecorSetInt(ped,"zm_lastbone",bone)
                                             
                                             DecorSetInt(ped,"zm_health",health)
@@ -8729,16 +10605,24 @@ Citizen.CreateThread(function()
                                         end
                                     else
                                         if DecorGetInt(ped,"zm_lastbone")~=bone then
-                                            local dict="melee@small_wpn@streamed_core" 
-                                            local anim="non_melee_damage_front"
-                                            if not IsEntityPlayingAnim(ped,dict,anim,3) then
-                                                RequestAnimDict(dict)
-                                                while not HasAnimDictLoaded(dict) do Wait(0) end
-                                                TaskPlayAnim(ped, dict, anim, 8.0, 1.0, -1, 0, 0.001, false, false, false)
-                                            else
-                                                 SetHighFallTask(ped, 100, -1, -1)
-                                                --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
-                                            end
+                                            local dict="melee@unarmed@streamed_core" 
+                                            local anim={}
+                                            anim[1]="hit_heavy_punch_a"
+                                            anim[2]="hit_heavy_punch_b"
+                                            anim[3]="hit_heavy_punch_c"
+                                             -- if not IsEntityPlayingAnim(ped,dict,anim[1],3) 
+                                             -- and not IsEntityPlayingAnim(ped,dict,anim[2],3)
+                                             -- and not IsEntityPlayingAnim(ped,dict,anim[3],3)
+                                             -- then
+                                                 RequestAnimDict(dict)
+                                                 while not HasAnimDictLoaded(dict) do Wait(0) end
+                                                 TaskPlayAnim(ped, dict, anim[math.random(1,3)], 2.0, 2.0, 0.5, 48, 0.001, false, false, false)
+                                             -- end
+                                             --else
+                                                 --SetHighFallTask(ped, 100, -1, -1)
+                                                --SetPedToRagdoll(ped, 200, 200, 0, false, false, false);
+                                             --end
+                                            --end
                                             DecorSetInt(ped,"zm_lastbone",bone)
                                             
                                             DecorSetInt(ped,"zm_health",health)
@@ -9555,19 +11439,24 @@ AddEventHandler('populationPedCreating', function(x, y, z, model, setters)
         return
     elseif birds[model]==nil then
         local zone=is_in_safe_zone(x,y,z)
+        if zone~=nil then
+            print("populationPedCreating in zone "..zone.zonetype)
+        end
         local newmodel
         if zone~=nil and zone.models~=nil then
-            newmodel=0xFFFFFFFF&zone.models[(coords_to_dword(x,y,z)%(#zone.models))+1]
+            newmodel=zone.models[(coords_to_dword(x,y,z)%(#zone.models))+1]
+            --newmodel=newmodel
         else
             newmodel=replace_models[model]
         end
         if newmodel~=nil then
             if HasModelLoaded(newmodel) then
-                setters.setModel(newmodel)
+                setters.setModel(0xFFFFFFFF&newmodel)
                 setters.setPosition(x, y, z + 1.0)
             else
                 RequestModel(newmodel)
-                --CancelEvent()
+                CancelEvent()
+                return
             end
         end
     end
@@ -10655,6 +12544,8 @@ Citizen.CreateThread(function()
                             WriteHint("You have encountered a ~y~SURVIVOR ~s~patrol.")
                         elseif v.relationship==GetHashKey("MERC") then
                             WriteHint("You have encountered a ~g~MERCENARY ~s~patrol.")
+                        elseif v.relationship==GetHashKey("RAIDER") then
+                            WriteHint("You have encountered a ~r~RAIDER ~s~patrol.")
                         end
                         if not check_for_people_in_raid(v,v.relationship) then
                             local possible_bases={}
@@ -10663,11 +12554,11 @@ Citizen.CreateThread(function()
                                     table.insert(possible_bases,base)
                                 end
                             end
-                            if 0<#possible_bases then
-                                local base=possible_bases[math.random(1,#possible_bases)]
-                                TriggerServerEvent("raid_killed",k,base.x,base.y,base.z)
-                                SimpleNotification("Patrol has been ~r~eliminated~s~.")
-                            end
+                            -- if 0<#possible_bases then
+                                -- local base=possible_bases[math.random(1,#possible_bases)]
+                                -- TriggerServerEvent("raid_killed",k,base.x,base.y,base.z)
+                                -- SimpleNotification("Patrol has been ~r~eliminated~s~.")
+                            -- end
                         end
                     end
                 end
@@ -10725,6 +12616,11 @@ Citizen.CreateThread(function()
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
         local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
+        if zone and zone.lives then
+            WriteHint({"Patrol strength: ~1~/~1~",zone.lives,zone.maxlives})
+            --WriteHint({"Zone relationship:~a~",tostring(zone.relationship or "nil")})
+            --WriteHint({"Zone models:~a~",tostring(zone.models or "nil")})
+        end
         if zone and zone.relationship and not disablehud then
             local myrel=GetPedRelationshipGroupHash(myped)
             
@@ -10844,6 +12740,23 @@ Citizen.CreateThread(function()
                         change_reputation(-1)
                         SimpleNotification("You have ~r~lost reputation ~s~for killing a ~g~~a~",relationship_name[theirfaction])
                     end
+                    
+                    local npcpos=GetEntityCoords(npc)
+                    local npcrel=GetPedRelationshipGroupHash(npc)
+                    local patrolindex,patrol=is_in_patrol(npcpos.x,npcpos.y,npcpos.z,npcrel)
+                    if patrol~=nil and patrol.lives~=nil then                            
+                        local possible_bases={}
+                        for _,base in pairs(safezones) do
+                            if base.relationship==patrol.relationship then
+                                table.insert(possible_bases,base)
+                            end
+                        end
+                        TriggerServerEvent("npc_killed_in_patrol",patrolindex)
+                        if patrol.lives<=1 then
+                            SimpleNotification("Patrol has been ~r~eliminated~s~.")
+                        end
+                    end
+                    
                 end
             end
             loop,npc=FindNextPed(handle)

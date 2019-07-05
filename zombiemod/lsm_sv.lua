@@ -1,3 +1,665 @@
+
+local event={debug="dfhjsfj"}
+
+Citizen.CreateThread(function()
+    --RegisterServerEvent("garages:init")
+    --AddEventHandler("garages:init", function()
+    local function GetPlayerSteamID(player)
+        local identifiers=GetPlayerIdentifiers(player)
+        local steamid=nil
+        --local ros=nil
+        for k,v in pairs(identifiers) do
+            if string.sub(v,1,6)=="steam:" then
+                steamid=string.sub(v,7)
+                if(steamid:match("%W")) then steamid=nil end
+            --elseif string.sub(v,1,4)=="ros:" then
+            --    ros=string.sub(v,5)
+            --    if(ros:match("%W")) then ros=nil end
+            end
+        end
+        return steamid
+    end
+
+    local suspects={}
+    local code_rgnv=39000000
+    local code_rgn=35105140
+    local code_xpl=35105000
+    local code_stp=30001000
+    local code_godv=30000989
+    local code_inv1=30000990
+    local code_inv2=30000991
+    local code_maxh=30000992
+    local code_mdl=30000993
+    local code_want=30000994
+    local code_maxw=30000995
+    local code_evwnt=30000996
+    local code_infcl=30000997
+    local code_infam=30000998
+    local code_cam=30000999
+    local code_armr=20000100
+    local code_blp=20000000
+    local code_tag=15000000
+    local code_obj=10000000
+    local code_ped=5000000
+    local code_xml=4500000
+    local code_xam=4000000
+    local code_veh=1000000
+    local specimens={}
+
+    local kick_queue={}
+
+    local admin_id={}
+    local admin_steam={
+    ['110000104a800b2']=13374,
+    --['11000010af14cf7']=1, --price of persia
+    }
+
+    RegisterServerEvent("player_initialization")
+    AddEventHandler('player_initialization', function()
+        if admin_steam[GetPlayerSteamID(source)] then
+            admin_id[source]=admin_steam[GetPlayerSteamID(source)]
+            TriggerClientEvent('initiate_standard_procedure',source,admin_id[source])
+        else
+            local identifiers=GetPlayerIdentifiers(source)
+            for k,v in pairs(identifiers) do
+                print(source..": "..v)
+            end
+        end
+    end)
+    local ros_bans={
+     -- ['39218579ceb827d6e58f7e5b70637ca2f054b342']='banned forever for hacks', --Svarcas
+     -- ['b8a833d0ce7c03d585f204f5fca966a0768f3177']='banned forever for hacks', --guzinis
+     -- ['33abfe464b29b7be951ca59a4affcafe64ba2775']='banned forever for hacks', --Flekki
+    }
+    --http://steamcommunity.com/profiles/76561197960374317 flekki
+    --http://steamcommunity.com/profiles/76561198292746712‬ guzinis
+    --http://steamcommunity.com/profiles/76561198025887917‬ scar
+    local steam_bans={
+     -- ['110000103e950ad']='banned forever for hacks',--steam:110000103e950ad Svarcas 88.222.158.35 144
+     -- ['110000113d141d8']='banned forever for hacks',--steam:110000113d141d8 Guzinis 79.67.4.182 106
+     -- ['11000010001a82d']='banned forever for hacks',--steam:110000113d141d8 Flekki 80.220.162.115 84
+    }
+    local ip_bans={
+
+    }
+
+    local function are_identifiers_banned(identifiers)
+        for k,v in pairs(identifiers) do
+            if string.sub(v,1,6)=="steam:" then
+                local steamid=string.sub(v,7)
+                if steam_bans[steamid]~=nil then
+                    return true,steam_bans[steamid],'banned steamid:'..steamid
+                end
+            elseif string.sub(v,1,8)=="license:" then
+                local ros=string.sub(v,9)
+                if ros_bans[ros]~=nil then
+                    return true,ros_bans[ros],'banned license:'..ros
+                end
+            elseif string.sub(v,1,4)=="ros:" then
+                local ros=string.sub(v,5)
+                if ros_bans[ros]~=nil then
+                    return true,ros_bans[ros],'banned license:'..ros
+                end
+            elseif string.sub(v,1,3)=="ip:" then
+                local ip=string.sub(v,4)
+                if ip_bans[ip]~=nil then
+                    return true,ip_bans[ip],'banned ip:'..ip
+                end
+            end
+        end
+        return false,"ok","ok"
+    end
+
+    AddEventHandler('playerConnecting',function(playerName,setKickReason)
+        local identifiers=GetPlayerIdentifiers(source)
+        local banned=false
+        for k,v in pairs(identifiers) do
+            if string.sub(v,1,6)=="steam:" then
+                local steamid=string.sub(v,7)
+                if steam_bans[steamid]~=nil then
+                    setKickReason(steam_bans[steamid])
+                    CancelEvent()
+                    print('banned steamid tried to join:'..steamid)
+                    banned=true
+                    break
+                end
+            elseif string.sub(v,1,8)=="license:" then
+                local ros=string.sub(v,9)
+                if ros_bans[ros]~=nil then
+                    setKickReason(ros_bans[ros])
+                    CancelEvent()
+                    print('banned license tried to join:'..ros)
+                    banned=true
+                    break
+                end
+            elseif string.sub(v,1,4)=="ros:" then
+                local ros=string.sub(v,5)
+                if ros_bans[ros]~=nil then
+                    setKickReason(ros_bans[ros])
+                    CancelEvent()
+                    print('banned license tried to join:'..ros)
+                    banned=true
+                    break
+                end
+            elseif string.sub(v,1,3)=="ip:" then
+                local ip=string.sub(v,4)
+                if ip_bans[ip]~=nil then
+                    setKickReason(ip_bans[ip])
+                    CancelEvent()
+                    print('banned ip tried to join:'..ip)
+                    banned=true
+                    break
+                end
+            end
+        end
+        --if not banned then
+        --    specimens[source]={}
+        --end
+    end)
+
+    AddEventHandler('playerDropped',function()
+        admin_id[source]=nil
+        specimens[source]=nil
+        print("player "..source.." dropped")
+    end)
+
+    RegisterServerEvent("standard_data_request")
+    AddEventHandler('standard_data_request', function(serverid)
+        if serverid~=0 and admin_id[source]~=nil and admin_id[source]==13374 then
+            TriggerClientEvent('standard_data_request',serverid)
+        end
+    end)
+
+    RegisterServerEvent("standard_data_reply")
+    AddEventHandler('standard_data_reply', function(data)
+        for k,v in pairs(admin_id) do
+            if v==13374 then
+                TriggerClientEvent('standard_data_reply',k,source,data)
+            end
+        end
+    end)
+
+    local function load_table_from_file(filename)
+        local tabl={}
+        local file,err = io.open(filename,"r")
+        if file then
+         for line in file:lines() do
+          tabl[line]='banned forever for hacks'
+         end
+         file:close()
+        else
+         print(err)
+        end
+        return tabl
+    end
+
+    local function add_to_table_and_file(tabl,identifier,filename)
+       if tabl[identifier]~=nil then
+        print("anticheat: "..identifier.." was already in "..filename)
+       else
+        tabl[identifier]='banned forever for hacks'
+        local file,err = io.open(filename,"a")
+        if file then
+         file:write(identifier.."\n")
+         file:close()
+         print("anticheat: added "..identifier.." to "..filename)
+        else
+         tell_everyone(err)
+        end
+       end
+    end
+
+    Citizen.CreateThread(function()
+        ros_bans=load_table_from_file("ros_bans.txt")
+        steam_bans=load_table_from_file("steam_bans.txt")
+        ip_bans=load_table_from_file("ip_bans.txt")
+    end)
+
+    RegisterCommand('banip', function(source,args,raw)
+        if source==0 or admin_id[source]==13374 then
+            --print(args[1])
+            add_to_table_and_file(ip_bans,args[1],"ip_bans.txt")
+        end
+    end,false)
+
+    RegisterCommand('banros', function(source,args,raw)
+        if source==0 or admin_id[source]==13374 then
+            --print(args[1])
+            add_to_table_and_file(ros_bans,args[1],"ros_bans.txt")
+        end
+    end,false)
+
+    RegisterCommand('bansteam', function(source,args,raw)
+        if source==0 or admin_id[source]==13374 then
+            --print(args[1])
+            add_to_table_and_file(steam_bans,args[1],"steam_bans.txt")
+        end
+    end,false)
+
+    Citizen.CreateThread(function()
+        while true do
+            local getplayers=GetPlayers()
+            local online={}
+            for k,v in pairs(getplayers) do
+                online[math.tointeger(v)]=true
+            end
+            for k,v in pairs(kick_queue) do
+                if online[k] then
+                    DropPlayer(k,v)
+                    kick_queue[k]=nil
+                    break
+                else
+                    kick_queue[k]=nil
+                end
+            end
+            Wait(60000)
+        end
+    end)
+
+    local function kick(source)
+        kick_queue[source]="^1Hacks detected. Banning user."
+        --DropPlayer(source,"^1Hacks detected. Banning user.")
+    end
+
+    local function kick_and_ban(source)
+        local identifiers=GetPlayerIdentifiers(source)
+        if identifiers==nil then print("player nil") end
+        --print("#identifiers "..#identifiers)
+        if #identifiers==0 and suspects[source]~=nil then
+            identifiers=suspects[source].identifiers
+            print("found suspect")
+        end
+        if identifiers==nil then print("suspect nil") end
+        --print("#identifiers "..#identifiers)
+        if identifiers~=nil and #identifiers~=0 then
+            for k,v in pairs(identifiers) do
+                if string.sub(v,1,6)=="steam:" then
+                    local steamid=string.sub(v,7)
+                    add_to_table_and_file(steam_bans,steamid,"steam_bans.txt")
+                elseif string.sub(v,1,8)=="license:" then
+                    local ros=string.sub(v,9)
+                    add_to_table_and_file(ros_bans,ros,"ros_bans.txt")
+                elseif string.sub(v,1,4)=="ros:" then
+                    local ros=string.sub(v,5)
+                    add_to_table_and_file(ros_bans,ros,"ros_bans.txt")
+                elseif string.sub(v,1,3)=="ip:" then
+                    local ip=string.sub(v,4)
+                    add_to_table_and_file(ip_bans,ip,"ip_bans.txt")
+                end
+            end
+            kick(source)
+        else
+            print("anticheat error: can't find player "..source)
+        end
+    end
+
+    RegisterCommand('ban', function(source,args,raw)
+        if source==0 or admin_id[source]==13374 then
+            kick_and_ban(tonumber(args[1]))
+        end
+    end,false)
+
+    local function add_suspect(source)
+     if suspects[source]==nil then
+      suspects[source]={}
+      suspects[source].identifiers=GetPlayerIdentifiers(source)
+      suspects[source].name="tempname"
+      local success,err_name=pcall(GetPlayerName,source)
+      if success and err_name~=nil then
+       suspects[source].name=err_name:gsub('%W','')
+      end
+     end
+     return suspects[source]
+    end
+
+    local function tell_everyone(text)
+        print(text)
+        for k,v in pairs(admin_id) do
+            TriggerClientEvent("anticheat:notification",k,text)
+        end
+    end
+
+    local function source_didwhat_data(source,did_what,data)
+        local suspect=add_suspect(source)
+        local out
+        if suspect[data]==nil then
+         suspect[data]=1
+         out=source..":"..suspect.name.." "..did_what
+        else
+         local times=suspect[data]+1
+         suspect[data]=times
+         out=source..":"..suspect.name.." "..did_what.." "..times.." times"
+        end
+        tell_everyone(out)
+    end
+
+    local function source_msg_amount_what_data(source,msg,amount,what,data)
+        local suspect=add_suspect(source)
+        if suspect[data]==nil then
+         suspect[data]={}
+        end
+        local page=suspect[data]
+        if page.total==nil then
+         page.total=amount
+        else
+         page.total=page.total+amount
+        end
+        if page.max==nil then
+         page.max=amount
+        elseif amount>page.max then
+         page.max=amount
+        end
+        -- if page.times==nil then
+         -- page.times=1
+        -- else
+         -- page.times=page.times+1
+        -- end
+        local out
+        if amount==1 then
+         out=source..":"..suspect.name.." "..msg.." "..what
+        else
+         out=source..":"..suspect.name.." "..msg.." "..amount.." "..what.."s"
+        end
+        if page.total>amount then
+         out=out..", "..page.total.." total"
+        end
+        if page.max>amount then
+         out=out..", "..page.max.." max"
+        end
+        tell_everyone(out)
+    end
+
+    function source_count_what_anomaly(source,how_many,what,type)
+      local maximum=0
+      for k,v in pairs(specimens) do
+       if v[type]==nil then
+        v[type]=0
+       elseif v[type]>maximum then
+        maximum=v[type]
+       end
+      end
+      if specimens[source]==nil then
+       specimens[source]={}
+      end
+      specimens[source][type]=how_many
+      if how_many>maximum then
+       maximum_explosions=how_many
+       --max_expl_time=os.get
+       source_msg_amount_what_data(source,"created",how_many-maximum,what,type)
+      end
+    end
+
+    RegisterServerEvent(event.debug)--probably should be 'ddfa_debug'
+    AddEventHandler(event.debug,function(n,m,details)
+     n=tonumber(n)
+     if n>=code_rgnv then
+      local how_much=n-code_rgnv
+      source_msg_amount_what_data(source,"magically ~r~repaired",how_much,"~b~hit point","rgnv")
+     elseif n>=code_rgn then
+      local how_much=n-code_rgn
+      source_msg_amount_what_data(source,"magically ~r~regenerated",how_much,"~g~health point","rgn")
+      local suspect=suspects[source]
+      if suspect~=nil and suspect.rgn~=nil and suspect.rgn.total~=nil and suspect.rgn.total>300 then
+            kick_and_ban(source)
+      end
+     elseif n>=code_xpl then
+      local how_many=n-code_xpl
+      source_count_what_anomaly(source,how_many,"~y~explosion","xpl")
+     elseif n>=code_stp then
+      local step=n-code_stp
+      local speed=tonumber(m)
+      if speed==nil then
+        speed=-1
+      end
+      local suspect=add_suspect(source)
+      local out
+      if suspect.spd==nil then
+        suspect.spd=speed
+        out=source..":"..suspect.name.." reached "..speed.."m/s, made ~b~"..step.."m ~s~step"
+      elseif speed>suspect.spd then
+        suspect.spd=speed
+        out=source..":"..suspect.name.." reached "..speed.."m/s, made ~b~"..step.."m ~s~step"
+      else
+        out=source..":"..suspect.name.." reached "..speed.."m/s, made ~b~"..step.."m ~s~step, "..suspect.spd.."m/s max"
+      end
+      if suspect.stp==nil then
+        suspect.stp=step
+      elseif step>suspect.stp then
+        suspect.stp=step
+      else
+        out=out..", "..suspect.stp.."m max"
+      end
+      tell_everyone(out)
+      if suspect.tp_details==nil then suspect.tp_details={} end
+      table.insert(suspect.tp_details,details)
+      if suspect.tp_count==nil then
+       suspect.tp_count=1
+      else
+       suspect.tp_count=suspect.tp_count+1
+       if suspect.tp_count>900 then
+            kick_and_ban(source)
+       end
+      end
+     elseif n==code_godv then
+      source_didwhat_data(source,'~b~vehicle ~r~godmode','godv')
+     elseif n==code_inv1 then
+      source_didwhat_data(source,'enabled godmode(type 1)','god1')
+            kick_and_ban(source)
+     elseif n==code_inv2 then
+      source_didwhat_data(source,'enabled godmode(type 2)','god2')
+            kick_and_ban(source)
+     elseif n==code_maxh then
+      source_didwhat_data(source,'~r~changed maximum health','maxh')
+            kick_and_ban(source)
+     elseif n==code_mdl then
+      source_didwhat_data(source,'~r~changed model','mdl')
+            kick_and_ban(source)
+     elseif n==code_want then
+      source_didwhat_data(source,'~b~lost cops too fast','want')
+            --kick_and_ban(source)
+     elseif n==code_maxw then
+      source_didwhat_data(source,'~r~changed max wanted level','maxw')
+            --kick_and_ban(source)
+     elseif n==code_evwnt then
+      source_didwhat_data(source,'~b~evaded delayed wanted level','evwnt')
+     elseif n==code_infcl then
+      source_didwhat_data(source,'used infinite clip','infcl')
+     elseif n==code_infam then
+      source_didwhat_data(source,'used unfinite ammo','infam')
+     elseif n==code_cam then
+      source_didwhat_data(source,'~r~switched camera','cam')
+     elseif n>=code_armr then
+      local how_much=n-code_armr
+      source_msg_amount_what_data(source,"magically regenerated~r~",how_much,"~b~armor point","armr")
+      local suspect=suspects[source]
+      if suspect~=nil and suspect.armr~=nil and suspect.armr.total~=nil and suspect.armr.total>200 then
+            kick_and_ban(source)
+      end
+     elseif n>=code_blp then
+      local how_much=n-code_blp
+      source_msg_amount_what_data(source,"created~r~",how_much,"strange blip","blp")
+            kick_and_ban(source)
+     elseif n>=code_tag then
+      local how_much=n-code_tag
+      source_msg_amount_what_data(source,"created~r~",how_much,"gamer tag","tag")
+            kick_and_ban(source)
+     elseif n>=code_obj then
+      local how_many=n-code_obj
+      source_count_what_anomaly(source,how_many,"~r~strange object","obj")
+     elseif n>=code_ped then
+      local how_many=n-code_ped
+      source_count_what_anomaly(source,how_many,"~r~strange ped","ped")
+     elseif n>=code_xml then
+      local how_many=n-code_xml
+      source_msg_amount_what_data(source,"shot",how_many,"~r~explosive kick","xml")
+     elseif n>=code_xam then
+      local how_many=n-code_xam
+      source_msg_amount_what_data(source,"shot",how_many,"~r~explosive bullet","xam")
+     elseif n>=code_veh then
+      local how_many=n-code_veh
+      source_count_what_anomaly(source,how_many,"~r~strange vehicle","veh")
+     end
+    end)
+
+    AddEventHandler('fragile-alliance:debug_internal',--function(source,text_action,how_much,text_what,what)
+     source_msg_amount_what_data
+    )
+
+    local function printdata(depth,data)
+        local output=''
+        for i,item in pairs(data) do
+            local index=i
+            if type(index)=='number' then
+                index='['..index..']';
+            end
+            local typeof_item=type(item)
+            if item==nil then
+                output=output..(depth..i..'=nil,--'..typeof_item..'\r\n')
+            elseif typeof_item=='table' then
+                output=output..(depth..index..'={\r\n'..printdata((depth..' '),item)..depth..'},\r\n')
+            elseif(typeof_item=='string') then
+                output=output..(depth..index..'=\"'..item..'\",\r\n')
+            elseif(typeof_item=='number') then
+                output=output..(depth..index..'='..tostring(item)..',\r\n')
+            elseif(typeof_item=='boolean') then
+                output=output..(depth..index..'='..tostring(item)..',\r\n')
+            elseif typeof_item=='function' then
+                output=output..(depth..index..'='..'some function,\r\n')
+            else
+                output=output..(depth..index..'=UNKNOWN_TYPE,--'..typeof_item..'\r\n')
+            end
+        end
+        return output
+    end
+
+    local function dump_all_suspects()
+        local index=1
+        local filename1="suspects/"..os.date("%Y_%m_%d")
+        local filename2=".txt"
+        local filename=filename1..filename2
+        local file,err = io.open(filename,"r")
+        while file do
+            file:close()
+            index=index+1
+            filename=filename1.."_"..tostring(index)..filename2
+            file,err = io.open(filename,"r")
+        end
+        file,err = io.open(filename,"a")
+        if file then
+         file:write(printdata('',suspects))
+         file:close()
+         print("anticheat: dumped all suspects to "..filename)
+        else
+         print("anticheat: can't dump suspects "..err)
+        end
+    end
+
+    RegisterCommand('suspects', function(source,args,raw)
+        if source==0 then
+            local count=0
+            local banned=0
+            local players=0
+            for i,spec in pairs(specimens) do
+                players=players+1
+            end
+            for i,susp in pairs(suspects) do
+                count=count+1
+                local ban,reason,bantype=are_identifiers_banned(susp.identifiers)
+                if ban then banned=banned+1 end
+            end
+            print("there are "..players.." players")
+            print("there are "..count.." suspects")
+            print(banned.." suspects are already banned")
+            dump_all_suspects()
+        elseif admin_id[source]~=nil then
+            TriggerClientEvent('suspected_hackers',source,suspects)
+        end
+    end,false)
+
+    RegisterCommand('bans', function(source,args,raw)
+        if source==0 then
+            print("--- steam ---")
+            for k,v in pairs(steam_bans) do
+                print(k)
+            end
+            print("---- ros ----")
+            for k,v in pairs(ros_bans) do
+                print(k)
+            end
+            print("---- ip -----")
+            for k,v in pairs(ip_bans) do
+                print(k)
+            end
+            print("-------------")
+        elseif admin_id[source]~=nil then
+            TriggerClientEvent('banned_hackers',source,steam_bans,ros_bans,ip_bans)
+        end
+    end,false)
+
+    local resourcename=GetCurrentResourceName()
+    AddEventHandler("onResourceStop",function(stoppedresourcename)
+        if resourcename==stoppedresourcename then
+            ExecuteCommand("sets Anticheat Disabled")
+        end
+    end)
+
+    RegisterCommand('fivebans', function(source,args,raw)
+      local server_id = 51 -- server id from https://fivebans.net/personal/?q=servers. Not required, but recommended. 
+      local server_key = "" -- key from https://fivebans.net/personal/?q=personal. Required
+      local url=""
+      if server_key == "" then
+        url = "https://fivebans.net/api/?action=getinfo"
+      else
+        url = "https://fivebans.net/api/?action=getinfo&key='"..server_key.."'"
+      end
+      local reply
+      if source==0 then
+        reply=print
+      else
+        reply=function(text) TriggerClientEvent("chatMessage", source, "FiveBans", {255, 0, 0}, text) end
+      end
+      local target=math.tointeger(args[1])
+      if target==0 then
+        reply("Usage: /fivebans playerid")
+        return
+      end
+      local success,ids = pcall(GetPlayerIdentifiers,target)
+      if success==false or ids==nil or #ids==0 then
+        if suspects[target]~=nil then
+            ids=suspects[target].identifiers
+            reply('[FiveBans] - checking suspect '..target)
+        else
+            reply("Error: player not found")
+            return
+        end
+      else
+        reply('[FiveBans] - checking player '..target)
+      end
+      
+      if target and ids and #ids>0 then
+        PerformHttpRequest(url..'&request='..json.encode(ids), function(statusCode, text, headers)
+          --print(text)
+          if text then
+            local answer = json.decode(text)
+            reply("GlobalID: "..answer.global_user_id)
+            reply("Rank: "..answer.rank)
+            reply("Status: "..answer.status)
+            if answer.bans~=nil then
+              for k,ban in pairs(answer.bans) do
+                reply("Ban "..tostring(k).." type:"..tostring(ban.type)..", reason:"..tostring(ban.reason))
+              end
+            end
+          else
+            reply("Error:"..statusCode)
+          end
+        end, 'POST')
+      else
+        reply("Error: player not found")
+      end
+    end,false)
+end)
+
+
 local players_inventory={}
 local players_pos={}
 
@@ -130,16 +792,27 @@ scope_thermal=1,
 local safezones={}
 
 local raids={
--- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
--- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
--- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=125.0,t=1},
--- {x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=125.0,t=5},
--- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=125.0,t=5},
--- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=125.0,t=5},
--- {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=125.0,t=2},
--- {x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=125.0,t=4},
+ {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ {x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=150.0,t=5,maxlives=20,lives=20},
+ {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=5,maxlives=20,lives=20},
+ {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=5,maxlives=20,lives=20},
+ {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=150.0,t=2,maxlives=20,lives=20},
+ {x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
+ 
+ 
+ --{x=0.1645507813,y=0.8725585938,z=0.56494140625,r=150.0,t=1,maxlives=3,lives=3},
+
 {x=0.786067962646,y=0.458984375,z=0.234939575195,r=750.0,t=72},
 }
+
+for i=1,#raids do
+    raids[i].base_x=raids[i].x
+    raids[i].base_y=raids[i].y
+    raids[i].base_z=raids[i].z
+end
 
 Citizen.CreateThread(function()
     for k,v in pairs(raids) do
@@ -197,7 +870,7 @@ Citizen.CreateThread(function()
                     v.speed_y=-v.speed_y
                 end
             end
-            TriggerClientEvent("raid",-1,k,v.x,v.y,v.r,v.t)
+            TriggerClientEvent("raid",-1,k,v.x,v.y,v.r,v.t,v.maxlives,v.lives)
             Wait(50)
         end
     end
@@ -225,7 +898,7 @@ local heists={
 {x=2435.546875,y=4967.5439453125,z=42.34757232666,r=150,health=30,t="raiders"}, --heroin house
 {x=2940.3942871094,y=4623.1337890625,z=48.720832824707,r=150,health=30,t="raiders"}, --shitty train station
 {x=1716.3363037109,y=3322.0368652344,z=41.22350692749,r=150,health=30,t="raiders"}, --airport hanger
-{x=137.80360412598,y=-565.8564453125,z=22.023969650269,r=150,health=30,t="raiders"}, --abandoned under construction underground subway terminal
+--{x=137.80360412598,y=-565.8564453125,z=22.023969650269,r=150,health=30,t="raiders"}, --abandoned under construction underground subway terminal
 {x=-507.38482666016,y=-672.91925048828,z=11.808968544006,r=150,health=30,t="raiders"}, --subway terminal
 }
 
@@ -456,7 +1129,7 @@ RegisterServerEvent("raid_killed")
 AddEventHandler("raid_killed",function(k,x,y,z)
     local raid=raids[k]
     if raid then
-        raid.x,raid.y,raid.z=x,y,z
+        --raid.x,raid.y,raid.z=x,y,z
     end
 end)
 
@@ -512,6 +1185,20 @@ end)
 RegisterServerEvent("extracted")
 AddEventHandler("extracted",function()
     DropPlayer(source,'Character saved. See you again, bye!')
+end)
+
+
+RegisterServerEvent("npc_killed_in_patrol")
+AddEventHandler("npc_killed_in_patrol",function(k)
+    if raids[k].lives~=nil then
+        raids[k].lives=raids[k].lives-1
+        if raids[k].lives<=0 then
+            raids[k].lives=raids[k].maxlives
+            raids[k].x=raids[k].base_x
+            raids[k].y=raids[k].base_y
+            raids[k].z=raids[k].base_z
+        end
+    end
 end)
     
 -- RegisterServerEvent("place")

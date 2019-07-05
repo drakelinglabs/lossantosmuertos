@@ -9,9 +9,21 @@ description 'Los Santos Muertos'
 client_scripts {
 'lsm_cl.lua',
 }
+
+
+export 'getRandomSpawnPoint'
+export 'spawnPlayer'
+export 'addSpawnPoint'
+export 'removeSpawnPoint'
+export 'loadSpawns'
+export 'setAutoSpawn'
+export 'setAutoSpawnCallback'
+export 'forceRespawn'
+
 server_scripts {
 'lsm_sv.lua',
 }
+
 
 -- files{
 -- "peds.meta"
