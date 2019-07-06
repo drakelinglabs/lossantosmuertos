@@ -664,6 +664,167 @@ local players_inventory={}
 local players_pos={}
 
 local raid_content={
+blackops={
+cash=1000,
+gasmask=8,
+appistol=1,
+pistolammo=200,
+shotgunammo=100,
+ammo=300,
+heavyrifleammo=200,
+pistol50=1,
+pistol_mk2=1,
+revolver_mk2=1,
+medkit=4,
+pumpshotgun_mk2=1,
+autoshotgun=1,
+assaultsmg=1,
+combatmg_mk2=1,
+combatpdw=1,
+smg_mk2=1,
+assaultrifle_mk2=1,
+bullpuprifle_mk2=1,
+carbinerifle_mk2=1,
+specialcarbine_mk2=1,
+marksmanrifle_mk2=1,
+heavysniper_mk2=1,
+compactlauncher=1,
+grenadelauncher=1,
+bodyarmor=6,
+brasscatcher=2,
+radio=2,
+smgammo=600,
+mgammo=600,
+launchergrenade=20,
+armorplate=20,
+suppressor_1=2,
+suppressor_2=2,
+suppressor_3=2,
+suppressor_4=2,
+suppressor_5=2,
+scope_advanced=2,
+scope_compactholo=4,
+muzzlebrake_1=4,
+heavybarrel=4,
+scope_nightvision=1,
+scope_thermal=1,
+},
+military={
+cash=1000,
+mre=20,
+ammo=300,
+heavyrifleammo=200,
+pistolammo=200,
+shotgunammo=100,
+gasmask=4,
+combatpistol=1,
+heavypistol=1,
+assaultshotgun=1,
+bullpupshotgun=1,
+sawnoffshotgun=1,
+combatmg=1,
+mg=1,
+microsmg=1,
+minismg=1,
+advancedrifle=1,
+bullpuprifle=1,
+carbinerifle=1,
+specialcarbine=1,
+heavysniper=1,
+sniperrifle=1,
+bodyarmor=4,
+radio=4,
+smgammo=400,
+mgammo=400,
+armorplate=10,
+grip=5,
+flashlight_small=5,
+flashlight_large=5,
+scope_1=4,
+scope_2=4,
+scope_3=4,
+},
+survivorstockpile={
+cash=500,
+scrapplastic=100,
+scrapmetal=100,
+rags=40,
+cigarettes=50,
+alcohol=50,
+chemicals=30,
+engineparts=16,
+switchblade=1,
+knife=1,
+dagger=1,
+bat=1,
+battleaxe=1,
+crowbar=1,
+knuckle=1,
+machete=1,
+wrench=1,
+poolcue=1,
+molotov=1,
+pipebomb=1,
+flaregun=1,
+ball=1,
+flaregunammo=50,
+food=10,
+canfood=8,
+soda=6,
+juice=6,
+gasoline=20,
+weed=25,
+water=8,
+pistolammo=60,
+shotgunammo=40,
+snspistol=1,
+vintagepistol=1,
+doubleaction=1,
+marksmanpistol=1,
+dbshotgun=1,
+musket=1,
+heavyshotgun=1,
+gusenberg=1,
+machinepistol=1,
+compactrifle=1,
+gunpowder=10,
+
+},
+medical={
+medkit=10,
+painkillers=20,
+},
+provision={
+food=20,
+canfood=20,
+soda=20,
+juice=20,
+mre=20,
+water=20,
+},
+governmentrelief={
+flashlight=1,
+gasoline=40,
+gasmask=4,
+bodyarmor=2,
+gunpowder=30,
+radio=6,
+aircraftfuel=40,
+armorplate=4,
+},
+governmentweapons={
+pistolammo=200,
+shotgunammo=100,
+pistol=1,
+revolver=1,
+pumpshotgun=1,
+smg=1,
+assaultrifle=1,
+marksmanrifle=1,
+smgammo=200,
+},
+
+random={
 cash=1000,
 scrapplastic=150,
 scrapmetal=120,
@@ -714,7 +875,6 @@ marksmanpistol=1,
 pistol50=1,
 pistol_mk2=1,
 revolver_mk2=1,
-pistol_mk2=1,
 dbshotgun=1,
 musket=1,
 -- provisionkey=4,
@@ -757,7 +917,6 @@ marksmanrifle_mk2=1,
 heavysniper_mk2=1,
 compactlauncher=1,
 grenadelauncher=1,
-assaultshotgun=1,
 bodyarmor=4,
 brasscatcher=2,
 gunpowder=40,
@@ -786,8 +945,9 @@ scope_compactholo=4,
 muzzlebrake_1=4,
 heavybarrel=4,
 scope_nightvision=1,
-scope_thermal=1,
+scope_thermal=1,}
 }
+
 
 local safezones={}
 
@@ -796,11 +956,16 @@ local raids={
  {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
  {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
  {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ 
  {x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=150.0,t=5,maxlives=20,lives=20},
- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=5,maxlives=20,lives=20},
- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=5,maxlives=20,lives=20},
- {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=150.0,t=2,maxlives=20,lives=20},
- {x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
+ {x=-902.81695556641,y=5419.4990234375,z=36.243270874023,r=150.0,t=5,maxlives=20,lives=20},
+ 
+ {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=3,maxlives=20,lives=20},
+ {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=3,maxlives=20,lives=20},
+ 
+    {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=150.0,t=2,maxlives=20,lives=20},
+
+    {x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
  
  
  --{x=0.1645507813,y=0.8725585938,z=0.56494140625,r=150.0,t=1,maxlives=3,lives=3},
@@ -876,30 +1041,30 @@ Citizen.CreateThread(function()
     end
 end)
 
-local heists={
-{x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=150,health=30,t="raiders"}, --military bunker base
-{x=445.91668701172,y=5572.1088867188,z=781.18475341797,r=150,health=30,t="raiders"}, --mountain top
-{x=3536.2355957031,y=3665.2844238281,z=28.121892929077,r=150,health=30,t="raiders"}, --research labs
-{x=2746.4077148438,y=1487.2686767578,z=30.791791915894,r=150,health=30,t="raiders"}, --power plant
---{x=2790.9555664063,y=-707.29125976563,z=4.7133226394653,r=150,health=30,t="raiders"}, --beach
-{x=1238.3894042969,y=-2951.0502929688,z=9.3192529678345,r=150,health=30,t="raiders"}, --container ship
-{x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150,health=30,t="raiders"}, --mercenary warehouse
-{x=236.56707763672,y=-3262.6123046875,z=40.538223266602,r=150,health=30,t="raiders"}, --container building
-{x=-936.50152587891,y=-2931.2546386719,z=13.945076942444,r=150,health=30,t="raiders"}, --airport
-{x=2.5822401046753,y=524.87506103516,z=170.61721801758,r=150,health=30,t="raiders"}, --fancy house
-{x=1661.3355712891,y=1.8060301542282,z=166.11805725098,r=150,health=30,t="raiders"}, --the dam
-{x=1451.8610839844,y=1135.7989501953,z=114.33403778076,r=150,health=30,t="raiders"}, --horse place
-{x=758.7587890625,y=1274.16015625,z=360.29653930664,r=150,health=30,t="raiders"}, --radio station
-{x=-2953.1159667969,y=55.811592102051,z=11.608504295349,r=150,health=30,t="raiders"}, --business area
-{x=-555.87243652344,y=5321.4926757813,z=73.599678039551,r=150,health=30,t="raiders"}, --grain refinery
-{x=-106.81156158447,y=6201.3974609375,z=31.025737762451,r=150,health=30,t="raiders"}, --chicken processing plant
-{x=1541.8145751953,y=6335.2880859375,z=24.075588226318,r=150,health=30,t="raiders"}, --northern vagrant warehouse
-{x=2812.8129882813,y=5972.2504882813,z=350.70419311523,r=150,health=30,t="raiders"}, --mountain top radio station
-{x=2435.546875,y=4967.5439453125,z=42.34757232666,r=150,health=30,t="raiders"}, --heroin house
-{x=2940.3942871094,y=4623.1337890625,z=48.720832824707,r=150,health=30,t="raiders"}, --shitty train station
-{x=1716.3363037109,y=3322.0368652344,z=41.22350692749,r=150,health=30,t="raiders"}, --airport hanger
---{x=137.80360412598,y=-565.8564453125,z=22.023969650269,r=150,health=30,t="raiders"}, --abandoned under construction underground subway terminal
-{x=-507.38482666016,y=-672.91925048828,z=11.808968544006,r=150,health=30,t="raiders"}, --subway terminal
+local heists={ --,t="raiders" r=150
+{x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --military bunker base
+{x=445.91668701172,y=5572.1088867188,z=781.18475341797,r=0,health=30,content="military",b=568,t="raiders",name="Military Weapons Cache"}, --mountain top
+{x=3536.2355957031,y=3665.2844238281,z=28.121892929077,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --research labs
+{x=2746.4077148438,y=1487.2686767578,z=30.791791915894,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --power plant
+--{x=2790.9555664063,y=-707.29125976563,z=4.7133226394653,r=0,health=30,content="survivorstockpile",t="raiders",name="Survival Stockpile"}, --beach
+{x=1238.3894042969,y=-2951.0502929688,z=9.3192529678345,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --container ship
+{x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --mercenary warehouse
+{x=236.56707763672,y=-3262.6123046875,z=40.538223266602,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --container building
+{x=-936.50152587891,y=-2931.2546386719,z=13.945076942444,r=0,health=30,content="medical",b=568,t="raiders",name="Medical Supply Drop"}, --airport
+{x=2.5822401046753,y=524.87506103516,z=170.61721801758,r=0,health=30,content="provision",b=568,t="raiders",name="Provisions Supply Drop"}, --fancy house
+{x=1661.3355712891,y=1.8060301542282,z=166.11805725098,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --the dam
+{x=1451.8610839844,y=1135.7989501953,z=114.33403778076,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --horse place
+{x=758.7587890625,y=1274.16015625,z=360.29653930664,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --radio station
+{x=-2953.1159667969,y=55.811592102051,z=11.608504295349,r=0,health=30,content="governmentweapons",b=568,t="raiders",name="Government Weapons Cache"}, --business area
+{x=-555.87243652344,y=5321.4926757813,z=73.599678039551,r=0,health=30,content="governmentweapons",b=568,t="raiders",name="Government Weapons Cache"}, --grain refinery
+{x=-106.81156158447,y=6201.3974609375,z=31.025737762451,r=0,health=30,content="provision",b=568,t="raiders",name="Provisions Supply Drop"}, --chicken processing plant
+{x=1541.8145751953,y=6335.2880859375,z=24.075588226318,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --northern vagrant warehouse
+{x=2812.8129882813,y=5972.2504882813,z=350.70419311523,r=0,health=30,content="governmentweapons",b=568,t="raiders",name="Government Weapons Cache"}, --mountain top radio station
+{x=2435.546875,y=4967.5439453125,z=42.34757232666,r=0,health=30,content="provision",b=568,t="raiders",name="Provisions Supply Drop"}, --heroin house
+{x=2940.3942871094,y=4623.1337890625,z=48.720832824707,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --shitty train station
+{x=1716.3363037109,y=3322.0368652344,z=41.22350692749,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --airport hanger
+--{x=137.80360412598,y=-565.8564453125,z=22.023969650269,r=0,health=30}, --abandoned under construction underground subway terminal
+{x=-507.38482666016,y=-672.91925048828,z=11.808968544006,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --subway terminal
 }
 
 local signals={}
@@ -978,16 +1143,17 @@ AddEventHandler("request_data",function()
     end
 end)
 
-local function create_loot_crate(x,y,z,loot,health,b,m,r,t)
+local function create_loot_crate(x,y,z,loot,health,b,m,r,t,name)
+    --print("create_loot_crate name:"..(name or "nil"))
     local id=1+#signals
-    signals[id]={x=x,y=y,z=z,loot=loot,health=health,b=b,m=m,r=r,t=t}
-    TriggerClientEvent("updatesignal",-1,id,x,y,z,b,m,r,t)
+    signals[id]={x=x,y=y,z=z,loot=loot,health=health,b=b,m=m,r=r,t=t,name=name}
+    TriggerClientEvent("updatesignal",-1,id,x,y,z,b,m,r,t,name)
     return id
 end
 
 Citizen.CreateThread(function()
     local used_heists={}
-    while true do Wait(60000)
+    while true do Wait(180000)
         local active=0
         for k,v in pairs(signals) do
             if v.b==nil or (v.b~=310 and v.b~=408) then
@@ -1012,7 +1178,7 @@ Citizen.CreateThread(function()
                 end
             end
         end
-        if active<3 then
+        if active<1 then
             active=0
             if 0==#heists then
                 heists,used_heists=used_heists,heists
@@ -1020,8 +1186,23 @@ Citizen.CreateThread(function()
             local heistid=math.random(1,#heists)
             local rand=heists[heistid]
             local loot={}
-            for k,v in pairs(raid_content) do
-                if math.random(1,18)==1 then
+            local rcontent=raid_content[rand.content]
+            local count=0
+            if rcontent==nil then
+                rcontent=raid_content["random"]
+            end
+            for k,v in pairs(rcontent) do
+                count=count+1
+            end
+            if count==0 then
+                rcontent=raid_content["random"]
+                for k,v in pairs(rcontent) do
+                    count=count+1
+                end
+            end
+            count=1+math.floor(count/5)
+            for k,v in pairs(rcontent) do
+                if math.random(1,count)==1 then
                     active=active+1
                     if v>1 then
                         loot[k]=math.random(math.floor(v/2),v)
@@ -1032,7 +1213,8 @@ Citizen.CreateThread(function()
             end
             if active>1 then
                 --create_loot_crate(rand.x,rand.y,rand.z,loot,20,rand.b,rand.m,rand.r,rand.t)
-                create_loot_crate(rand.x,rand.y,rand.z,loot,rand.health,rand.b,rand.m,rand.r,rand.t)
+                create_loot_crate(rand.x,rand.y,rand.z,loot,rand.health,rand.b,rand.m,rand.r,rand.t,rand.name)
+                print("Sending loot crate: x:"..rand.x.." y:"..rand.y.." z:"..rand.z.." health:"..rand.health.." type:"..(rand.t or "nil").." name:"..(rand.name or "nil"))
                 table.insert(used_heists,rand)
                 table.remove(heists,heistid)
             end
@@ -1077,7 +1259,7 @@ end)
 
 RegisterServerEvent("imdead")
 AddEventHandler("imdead",function(x,y,z,loot)
-    create_loot_crate(x,y,z,loot,20,310,GetHashKey("prop_big_bag_01"),0,"raiders")
+    create_loot_crate(x,y,z,loot,20,310,GetHashKey("prop_big_bag_01"),0)
     players_inventory[source]=nil
 end)
 
@@ -1164,7 +1346,7 @@ AddEventHandler('playerDropped', function()
     local loot=players_inventory[source]
     if p~=nil and loot~=nil then
         for k,v in pairs(loot) do
-            create_loot_crate(p.x,p.y,p.z,loot,20,310,GetHashKey("prop_big_bag_01"),0,"raiders")
+            create_loot_crate(p.x,p.y,p.z,loot,20,310,GetHashKey("prop_big_bag_01"),0)
             print("player "..source.." dropped from server and dropped items")
             break
         end

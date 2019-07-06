@@ -2688,27 +2688,29 @@ player.weight=0.0
 
 local weaponsarray={
     raiders={-- 1 raiders
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
-    "dagger","knife","machete","crowbar","hatchet","bat","flaregun","poolcue","switchblade","poolcue","knuckle",
+    -- "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    -- "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    -- "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    -- "dagger","knife","machete","crowbar","hatchet","bat","poolcue","switchblade","poolcue","knuckle",
+    -- "dagger","knife","machete","crowbar","hatchet","bat","flaregun","poolcue","switchblade","poolcue","knuckle",
     "pistol","snspistol","vintagepistol","combatpistol",
-    "dbshotgun","pumpshotgun",
+    "dbshotgun","pumpshotgun","doubleaction","revolver",
     "musket"},
     bandit={-- 
     "pistol","snspistol","vintagepistol","combatpistol",
-    "dbshotgun","pumpshotgun",
+    "dbshotgun","pumpshotgun","compactrifle","doubleaction","revolver",
     "musket"},
     survivor={-- 
     "pistol","snspistol","vintagepistol","combatpistol",
-    "dbshotgun","pumpshotgun",
+    "dbshotgun","pumpshotgun","doubleaction","revolver",
     "musket"},
+    government={-- 
+    "pistol","pumpshotgun","smg","carbinerifle"},
     military={-- 2 military
     "carbinerifle","pistol","pumpshotgun","smg","sniperrifle"
     },
     mercenaries={-- 4 mercenaries
-    "carbinerifle_mk2","pistol_mk2","assaultrifle_mk2","sniperrifle"
+    "carbinerifle_mk2","pistol_mk2","assaultrifle_mk2","marksmanrifle_mk2","smg_mk2"
     },
 }
 local modelgroups={
@@ -2728,6 +2730,9 @@ local modelgroups={
     survivor={-- 5
     1885233650,
     },
+    government={-- 3
+    1885233650,
+    },
     bandit={-- 5
     1885233650,
     },
@@ -2740,6 +2745,7 @@ Citizen.CreateThread(function()
     local types={
         [1]="bandit",
         [2]="military",
+        [3]="government",
         [4]="mercenaries",
         [5]="survivor",
     }
@@ -2747,6 +2753,7 @@ Citizen.CreateThread(function()
     local relationships={
         [1]=GetHashKey("BANDIT"),-- 1 raiders
         [2]=GetHashKey("RAIDER"),-- 2 military
+        [3]=GetHashKey("GOVERNMENT"),-- 3 gov
         [4]=GetHashKey("RAIDER"),-- 4 mercenaries
         [5]=GetHashKey("SURVIVOR"),-- 
     }
@@ -2788,16 +2795,34 @@ Citizen.CreateThread(function()
                             SetBlipColour(v.blipadditional,t)
                         end
                         v.blip=AddBlipForCoord(x,y,0)
+                        --SetBlipAlpha(v.blip,255)
                         SetBlipDisplay(v.blip,3)
                         SetBlipSprite(v.blip,80)
                         SetBlipName(v.blip,"Radiation Zone")
                         SetBlipScale(v.blip,1.5)
-                        SetBlipColour(v.blip,t)
+                        --SetBlipColour(v.blip,t)
                     else
                         v.blip=AddBlipForCoord(x,y,0)
-                        SetBlipDisplay(v.blip,3)
-                        SetBlipSprite(v.blip,79)
-                        SetBlipName(v.blip,"Patrol")
+                        SetBlipAsShortRange(v.blip,true)
+                        SetBlipDisplay(v.blip,2)
+                        if v.relationship==GetHashKey("SURVIVOR") then
+                            SetBlipSprite(v.blip,77)
+                            SetBlipName(v.blip,"Survivor Scavenging Party")
+                        elseif v.relationship==GetHashKey("BANDIT") then
+                            SetBlipSprite(v.blip,79)
+                            SetBlipName(v.blip,"Marauder Death Squad")
+                        elseif v.relationship==GetHashKey("GOVERNMENT") then
+                            SetBlipSprite(v.blip,84)
+                            SetBlipName(v.blip,"Government Peacekeeper Patrol")
+                        elseif v.relationship==GetHashKey("RAIDER") then
+                            if v.t==2 then
+                                SetBlipSprite(v.blip,90)
+                                SetBlipName(v.blip,"Military Armed Patrol")
+                            elseif v.t==4 then
+                                SetBlipSprite(v.blip,89)
+                                SetBlipName(v.blip,"Mercenary Raiding Party")
+                            end
+                        end
                         SetBlipScale(v.blip,1.0)
                         SetBlipColour(v.blip,t)
                     end
@@ -2949,11 +2974,10 @@ local dawn_crafts={
     },
 }
 
-for k,v in pairs(weaponsarray.raiders) do
-    weaponsarray.raiders[k]=GetHashKey("weapon_"..v)
-end
-for k,v in pairs(weaponsarray.military) do
-    weaponsarray.military[k]=GetHashKey("weapon_"..v)
+for _,v in pairs(weaponsarray) do
+    for i,name in pairs(v) do
+        v[i]=GetHashKey("weapon_"..name)
+    end
 end
 
 local safezones={
@@ -3045,9 +3069,9 @@ local safezones={
     relationship="BANDIT"},--weed farm
 ]]
     --Altruists camp
-    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=77,color=2,
+    {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=85,color=2,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
-    name="~g~Survivor Settlement~s~",
+    name="Survivor Settlement~s~",
     friends=true,
     tradespace=5,
     trade={
@@ -3178,10 +3202,10 @@ local safezones={
     
     
     --LSPD station
-    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=76,color=3,
+    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=88,color=3,
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
-    name="~b~Government Checkpoint~s~",
+    name="Government Checkpoint~s~",
     friends=true,
     tradespace=4,
     trade={
@@ -3410,9 +3434,9 @@ local safezones={
     ]]
     
 ----------------------------------------------------
-    {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=78,color=5,
+    {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=86,color=5,
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
-    name="~o~Marauder Fortress~s~",
+    name="Marauder Fortress~s~",
     tradespace=4,
     trade={
         {"gasoline",1,"cash",30},
@@ -3439,7 +3463,7 @@ local safezones={
     tradepos={x=1682.52734375,y=2476.2099609375,z=45.823303222656},
     --craftpos={x=1689.4483642578,y=2552.2507324219,z=45.56485748291},
     crafts=normal_crafts,
-    weapons={"carbinerifle","pumpshotgun","sniperrifle"},    
+    weapons=weaponsarray.bandit,    
     --garagepos={x=1655.3520507813,y=2665.0593261719,z=45.465591430664,angle=229.13996887207},
     --vehpos={x=1710.98828125,y=2691.3481445313,z=45.472282409668,angle=180.61428833008},
     vehshop={
@@ -3551,7 +3575,9 @@ local function is_in_safe_zone(x,y,z)
                 if (dx*dx+dy*dy<v.r*v.r) and v.t and v.t~=72 then
                     --WriteNotification("raid:"..v.."/r:"..v.r.."xyz:"..x..y..z)
                         v.zonetype="raid"
-                        v.name="Patrol"
+                        if not v.name then
+                            v.name="Patrol"
+                        end
                     return v
                 end
             end
@@ -3565,7 +3591,9 @@ local function is_in_safe_zone(x,y,z)
                 if math.abs(dy)<v.r then
                     if dx*dx+dy*dy<v.r*v.r then
                         v.zonetype="signal"
-                        v.name="Raider Encampment"
+                        if not v.name then
+                            v.name="Raider Encampment"
+                        end
                         return v
                     end
                 end
@@ -4408,6 +4436,7 @@ local deadbodiesrewards_tier3={
 {"ball",1},
 {"flaregunammo",-5},
 {"painkillers",1},
+{"fruits",-2},
 }
 local deadbodiesrewards_tier4={
 {"pistolammo",-10},
@@ -4646,20 +4675,20 @@ soda={chance=25,text="This soda is ~r~spoiled~s~."},
 alcohol={chance=45,text="This alcohol is ~r~spoiled~s~."},
 canfood={chance=35,text="This canned food is ~r~spoiled~s~."},
 food={chance=10,text="This food is ~r~spoiled~s~."},
-fruits={chance=50,text="This food is ~r~spoiled~s~."},
-pistolammo={chance=30,text="These cartriges are ~r~not suitable for use ~s~anymore."},
-shotgunammo={chance=25,text="These cartriges are ~r~not suitable for use ~s~anymore."},
-ammo={chance=20,text="These cartriges are ~r~not suitable for use ~s~anymore."},
-heavyrifleammo={chance=60,text="These cartriges are ~r~not suitable for use ~s~anymore."},
-cash={chance=30,text="There is ~r~nothing inside~s~."},
-gasmask={chance=20,text="This ~r~gasmask is broken~s~."},
-grenade={chance=20,text="These grenades are ~r~not suitable for use ~s~anymore."},
-weed={chance=50,text="This weed is ~r~not suitable for use ~s~."},
-bodyarmor={chance=20,text="This bodyarmor is ~r~not suitable for use ~s~anymore."},
-armorplate={chance=20,text="This armor plate is ~r~not suitable for use ~s~anymore."},
+fruits={chance=50,text="This food is ~r~rotten~s~."},
+pistolammo={chance=30,text="This box is ~r~empty~s~."},
+shotgunammo={chance=25,text="This box is ~r~empty~s~."},
+ammo={chance=20,text="This box is ~r~empty~s~."},
+heavyrifleammo={chance=60,text="This box is ~r~empty~s~."},
+cash={chance=30,text="These dollar bills are ~r~ruined~s~."},
+gasmask={chance=20,text="This gasmask is ~r~broken~s~."},
+grenade={chance=20,text="This box is ~r~empty~s~."},
+weed={chance=50,text="This weed is ~r~spoiled~s~."},
+bodyarmor={chance=20,text="This bodyarmor is ~r~damaged beyond repair~s~."},
+armorplate={chance=20,text="This armor plate is ~r~damaged beyond repair~s~."},
 flashlight_small={chance=15,text="This flashlight is ~r~broken~s~."},
 flashlight_large={chance=15,text="This flashlight is ~r~broken~s~."},
-fish={chance=10,text="This food is ~r~spoiled~s~."},
+fish={chance=10,text="This food is ~r~rotten~s~."},
 }
 
 
@@ -5780,7 +5809,7 @@ Citizen.CreateThread(function()
                 if IsPedDeadOrDying(ped) then
                     local distance=#(mypos-pedpos)
                     if distance<1.5 and not DecorExistOn(ped,"zm_looted") then
-                        WriteHint("~c~Press ~s~E ~c~to search body")
+                        WriteHint("~c~Press ~s~E ~c~to loot corpse")
                         break;
                     end
                 end
@@ -5803,14 +5832,14 @@ Citizen.CreateThread(function()
                                 if not IsEntityAPed(attached) or IsPedDeadOrDying(attached) then
                                     SetTextCentre(true)
                                     if prop[3] then
-                                        WriteText(font,{"~g~E ~s~to pick up ~g~~a~~s~ and ~g~~a~",prop[1],prop[3]},size,255,255,255,alpha,x,y)
-                                        WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~~c~ and ~g~~a~",prop[1],prop[3]})
+                                        WriteText(font,{"~g~E ~s~to pick up ~g~~a~~s~ and ~g~~a~",item_names[prop[1]] or localization[prop[1]] or prop[1],item_names[prop[3]] or localization[prop[3]] or prop[3]},size,255,255,255,alpha,x,y)
+                                        WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~~c~ and ~g~~a~",item_names[prop[1]] or localization[prop[1]] or prop[1],item_names[prop[3]] or localization[prop[3]] or prop[3]})
                                     elseif type(prop[1])=="table" then
-                                        WriteText(font,{"~g~E ~s~to search for items",prop[1]},size,255,255,255,alpha,x,y)
-                                        WriteHint({"~c~Press ~s~E ~c~to search for items",prop[1]})
+                                        WriteText(font,{"~g~E ~s~to search for items",item_names[prop[1]] or localization[prop[1]] or prop[1]},size,255,255,255,alpha,x,y)
+                                        WriteHint({"~c~Press ~s~E ~c~to search for items",item_names[prop[1]] or localization[prop[1]] or prop[1]})
                                     else
-                                        WriteText(font,{"~g~E ~s~to pick up ~g~~a~",prop[1]},size,255,255,255,alpha,x,y)
-                                        WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~",prop[1]})
+                                        WriteText(font,{"~g~E ~s~to pick up ~g~~a~",item_names[prop[1]] or localization[prop[1]] or prop[1]},size,255,255,255,alpha,x,y)
+                                        WriteHint({"~c~Press ~s~E ~c~to pick up ~g~~a~",item_names[prop[1]] or localization[prop[1]] or prop[1]})
                                     end
                                 end
                             end
@@ -10111,9 +10140,10 @@ Citizen.CreateThread(function()
         end
     end
     local function zombie_init()--needs ped and zpos
-        if GetPedType(ped)==6 then --cops
-            DecorSetBool(ped,"raider",true)
-        elseif IsPedHuman(ped) then
+        -- if GetPedType(ped)==6 then --cops
+            -- DecorSetBool(ped,"raider",true)
+        -- else
+        if IsPedHuman(ped) then
             zone=is_in_safe_zone(zpos.x,zpos.y,zpos.z)
             if zone==nil or zone.relationship==nil then
                 if IsPedInAnyHeli(ped) or IsPedInAnyPlane(ped) or math.random(1,20)==1 and false then --loners
@@ -10135,9 +10165,9 @@ Citizen.CreateThread(function()
                     SetPedFleeAttributes(ped, 16, 0)
                     SetPedFleeAttributes(ped, 32, 0)
                     SetPedFleeAttributes(ped, 64, 0)
-                    local weaponsarray=weaponsarray.raiders
-                    local randomweapon=math.random(1,#weaponsarray)
-                    GiveWeaponToPed(ped, weaponsarray[randomweapon], math.random(1,5000), false, true)
+                    local warray=weaponsarray.raiders
+                    local randomweapon=math.random(1,#warray)
+                    GiveWeaponToPed(ped, warray[randomweapon], math.random(1,5000), false, true)
                 else --zombie
                     SetPedRagdollBlockingFlags(ped,1)
                     SetPedCanRagdollFromPlayerImpact(ped,false)
@@ -10257,10 +10287,11 @@ Citizen.CreateThread(function()
                 SetPedFleeAttributes(ped, 16, 0)
                 SetPedFleeAttributes(ped, 32, 0)
                 SetPedFleeAttributes(ped, 64, 0)
-                local weaponsarray=zone.weapons
-                if weaponsarray then
-                    local randomweapon=math.random(1,#weaponsarray)
-                    GiveWeaponToPed(ped, weaponsarray[randomweapon], 5000, false, true)
+                RemoveAllPedWeapons(ped,false)
+                local warray=zone.weapons
+                if warray then
+                    local randomweapon=math.random(1,#warray)
+                    GiveWeaponToPed(ped, warray[randomweapon], 5000, false, true)
                     SetPedCanSwitchWeapon(ped,false)
                 end
                 
@@ -10371,7 +10402,7 @@ Citizen.CreateThread(function()
             --SetBlockingOfNonTemporaryEvents(ped, 1)
             TaskSetBlockingOfNonTemporaryEvents(ped, 1)
             --TaskCombatPed(ped, target, 0, 16);
-            if not IsPedRagdoll(ped) and not IsPedGettingUp(ped) then
+            if not IsPedRagdoll(ped) and not IsPedGettingUp(ped) and not IsPedBeingStealthKilled(ped) and not IsPedBeingStunned(ped,0) and not IsPedInMeleeCombat(ped) then
             
                 local dict="melee@unarmed@streamed_core_fps"--"melee@thrown@streamed_core" 
                 local anim="running_shove"--"plyr_takedown_rear"
@@ -10429,23 +10460,69 @@ Citizen.CreateThread(function()
             loop=(handle~=-1)
             while loop do
                 if (ped&maxfilter)==filter then --heavy
-                    if not IsPedAPlayer(ped) and not IsPedDeadOrDying(ped) and IsPedHuman(ped) and not DecorExistOn(ped,"zm_dying") then
+                    if not IsPedAPlayer(ped) and IsPedHuman(ped) then
                         zpos=GetEntityCoords(ped)
                         if DecorExistOn(ped,"zombie_type") then
-                            if survivors==nil then get_survivors() end
-                            zombie_attack()
-                            RequestAnimSet(clipset.anim)
-                            if HasAnimSetLoaded(clipset.anim) then
-                                SetPedMovementClipset(ped,clipset.anim,clipset.speed)
+                            if (not IsPedDeadOrDying(ped)) and not (DecorExistOn(ped,"zm_dying")) then
+                                if survivors==nil then get_survivors() end
+                                zombie_attack()
+                                RequestAnimSet(clipset.anim)
+                                if HasAnimSetLoaded(clipset.anim) then
+                                    SetPedMovementClipset(ped,clipset.anim,clipset.speed)
+                                end
                             end
                         elseif DecorExistOn(ped,"raider") then
-                            --SetPedAccuracy(ped,0)
-                            zone=is_in_safe_zone(zpos.x,zpos.y,zpos.z)
-                            raider_think()
+                            if (not IsPedDeadOrDying(ped)) and not (DecorExistOn(ped,"zm_dying")) then
+                                --SetPedAccuracy(ped,0)
+                                zone=is_in_safe_zone(zpos.x,zpos.y,zpos.z)
+                                raider_think()
+                                local blip=GetBlipFromEntity(ped)
+                                if #(zpos-ppos)<150 then
+                                    if blip==0 then
+                                        blip=AddBlipForEntity(ped)
+                                        SetBlipScale(blip,0.5)
+                                        SetBlipDisplay(blip,5)
+                                        SetBlipAsShortRange(blip,true)
+                                    end
+                                    local reldif=GetRelationshipBetweenGroups(GetPedRelationshipGroupHash(pped),GetPedRelationshipGroupHash(ped))
+                                    if reldif==0 then
+                                        SetBlipColour(blip,2)
+                                    elseif reldif==5 then
+                                        SetBlipColour(blip,1)
+                                    else
+                                        SetBlipColour(blip,5)
+                                    end
+                                else
+                                    if blip~=0 then
+                                        RemoveBlip(blip)
+                                    end
+                                end
+                            else
+                                local blip=GetBlipFromEntity(ped)
+                                if #(zpos-ppos)<150 then
+                                    if blip==0 then
+                                        blip=AddBlipForEntity(ped)
+                                        SetBlipScale(blip,0.5)
+                                        SetBlipDisplay(blip,5)
+                                        SetBlipAsShortRange(blip,true)
+                                    end
+                                    if DecorExistOn(ped,"zm_looted") then
+                                        SetBlipColour(blip,40)
+                                    else
+                                        SetBlipColour(blip,39)
+                                    end
+                                else
+                                    if blip~=0 then
+                                        RemoveBlip(blip)
+                                    end
+                                end
+                            end
                         else
-                           -- if DecorGetInt(ped,"zombie_type")~=4 then
+                            if (not IsPedDeadOrDying(ped)) and not (DecorExistOn(ped,"zm_dying")) then
+                            -- if DecorGetInt(ped,"zombie_type")~=4 then
                                 zombie_init()
-                           -- end
+                            -- end
+                            end
                         end
                     end
                 else --light
@@ -10837,8 +10914,8 @@ Citizen.CreateThread(function()
                 if      tier>98 then    chosentier=trunkrewards_tier6
                 elseif  tier>93 then    chosentier=trunkrewards_tier5
                 elseif  tier>84 then    chosentier=trunkrewards_tier4
-                elseif  tier>68 then    chosentier=trunkrewards_tier3
-                elseif  tier>43 then    chosentier=trunkrewards_tier2
+                elseif  tier>60 then    chosentier=trunkrewards_tier3
+                elseif  tier>33 then    chosentier=trunkrewards_tier2
                 else                    chosentier=trunkrewards_tier1 end
                 
                 local reward=chosentier[random_number%#chosentier+1]
@@ -11122,7 +11199,7 @@ Citizen.CreateThread(function()
             end
             if not found then
                 if empty then
-                    SimpleNotification("This thing is ~r~empty~s~.")
+                    SimpleNotification("This container is ~r~empty~s~.")
                 end
                 if spoiled then
                     SimpleNotification("This food is ~r~spoiled~s~.")
@@ -11802,7 +11879,8 @@ end,false)
 
 
 RegisterNetEvent("updatesignal")
-AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t)
+AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t,name)
+    print("got signal name:"..(name or "nil"))
     local signal=signals[id]
     if x~=nil and y~=nil then
         if signal==nil then signal={} signals[id]=signal end
@@ -11810,6 +11888,9 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t)
         signal.x=x
         signal.y=y
         signal.loot=nil
+        if name~=nil then
+            signal.name=name
+        end
         if r~=nil and t~=nil then
             signal.r=r
             signal.weapons=weaponsarray[t]
@@ -11817,8 +11898,10 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t)
             signal.goto_center=true
             if t=="raiders" then
                 signal.relationship=GetHashKey("RAIDER")
-            else
+            elseif t=="bandits" then
                 signal.relationship=GetHashKey("BANDIT")
+            else
+                signal.relationship=nil
             end
         end
         if z==nil then
@@ -11831,16 +11914,25 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t)
         end
         if signal.blip==nil then
             signal.blip=AddBlipForCoord(x,y,0)
-            SetBlipSprite(signal.blip,b or 84)
+            SetBlipSprite(signal.blip,b or 568)
             SetBlipColour(signal.blip,b and 4 or 1)
             SetBlipScale(signal.blip,1.0)
-            if b==nil or b==84 then
-                SetBlipName(signal.blip, "Raider Encampment")
+            if b==nil or b==568 then
+                if signal.name==nil then
+                    signal.name="Raider Encampment"
+                end
             elseif b==408 then
-                SetBlipName(signal.blip, "Dropped Loot")
+                if signal.name==nil then
+                    signal.name="Dropped Loot"
+                end
                 SetBlipDisplay(signal.blip,5)
             elseif b==310 then
-                SetBlipName(signal.blip, "Survivor Loot")
+                if signal.name==nil then
+                    signal.name="Survivor Loot"
+                end
+            end
+            if signal.name then
+                SetBlipName(signal.blip, signal.name)
             end
                 
             SetBlipAsShortRange(signal.blip,true)
@@ -11887,6 +11979,7 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t)
         end
         signals[id]=nil
     end
+    --update_blips_relationship_colors()
 end)
 
 RegisterNetEvent("lootcratehealth")
@@ -12539,13 +12632,31 @@ Citizen.CreateThread(function()
                 if math.abs(dy)<v.r then
                     if dx*dx+dy*dy<v.r*v.r then
                         if v.relationship==GetHashKey("BANDIT") then
-                            WriteHint("You have encountered a ~r~BANDIT ~s~patrol.")
+                            if v.lives then
+                                WriteHint({"You have encountered a ~r~MARAUDER ~s~patrol of ~1~ ~r~MARAUDERS~s~.",v.lives})
+                            end
                         elseif v.relationship==GetHashKey("SURVIVOR") then
-                            WriteHint("You have encountered a ~y~SURVIVOR ~s~patrol.")
+                            if v.lives then
+                                WriteHint({"You have encountered a ~y~SURVIVOR ~s~patrol of ~1~ ~y~SURVIVORS~s~.",v.lives})
+                            end
                         elseif v.relationship==GetHashKey("MERC") then
-                            WriteHint("You have encountered a ~g~MERCENARY ~s~patrol.")
+                            if v.lives then
+                                WriteHint({"You have encountered a ~r~MERCENARY ~s~patrol of ~1~ ~r~MERCENARIES~s~.",v.lives})
+                            end
                         elseif v.relationship==GetHashKey("RAIDER") then
-                            WriteHint("You have encountered a ~r~RAIDER ~s~patrol.")
+                            if v.lives then
+                                if v.t==2 then
+                                    WriteHint({"You have encountered a ~r~MILITARY ~s~patrol of ~1~ ~r~SOLDIERS~s~.",v.lives})
+                                elseif v.t==4 then
+                                    WriteHint({"You have encountered a ~r~MERCENARY ~s~patrol of ~1~ ~r~MERCENARIES~s~.",v.lives})
+                                else
+                                    WriteHint({"You have encountered a ~r~RAIDER ~s~patrol of ~1~ ~r~RAIDERS~s~.",v.lives})
+                                end
+                            end
+                        elseif v.relationship==GetHashKey("GOVERNMENT") then
+                            if v.lives then
+                                WriteHint({"You have encountered a ~y~GOVERNMENT ~s~patrol of ~1~ ~y~OFFICERS~s~.",v.lives})
+                            end
                         end
                         if not check_for_people_in_raid(v,v.relationship) then
                             local possible_bases={}
@@ -12559,6 +12670,23 @@ Citizen.CreateThread(function()
                                 -- TriggerServerEvent("raid_killed",k,base.x,base.y,base.z)
                                 -- SimpleNotification("Patrol has been ~r~eliminated~s~.")
                             -- end
+                        end
+                    end
+                end
+            end
+        end
+        for k,v in pairs(safezones) do
+            dx=v.x-mypos.x
+            if math.abs(dx)<v.r then
+                dy=v.y-mypos.y
+                if math.abs(dy)<v.r then
+                    if dx*dx+dy*dy<v.r*v.r then
+                        if v.relationship==GetHashKey("BANDIT") then
+                            WriteHint("You have encountered a ~r~MARAUDER ~s~stronghold.")
+                        elseif v.relationship==GetHashKey("SURVIVOR") then
+                            WriteHint("You have encountered a ~y~SURVIVOR ~s~stronghold.")
+                        elseif v.relationship==GetHashKey("GOVERNMENT") then
+                            WriteHint("You have encountered a ~y~GOVERNMENT ~s~stronghold.")
                         end
                     end
                 end
@@ -12594,119 +12722,119 @@ Citizen.CreateThread(function()
 end)
 
 
-Citizen.CreateThread(function()
-    local xxxxxxx=0.0
+-- Citizen.CreateThread(function()
+    -- local xxxxxxx=0.0
     
-    local neutral={}
-    neutral.r=255
-    neutral.g=235
-    neutral.b=100
-    local friends={}
-    friends.r=50
-    friends.g=200
-    friends.b=75
-    local enemy={}
-    enemy.r=200
-    enemy.g=50
-    enemy.b=50
+    -- local neutral={}
+    -- neutral.r=255
+    -- neutral.g=235
+    -- neutral.b=100
+    -- local friends={}
+    -- friends.r=50
+    -- friends.g=200
+    -- friends.b=75
+    -- local enemy={}
+    -- enemy.r=200
+    -- enemy.g=50
+    -- enemy.b=50
     
-    local r,g,b
+    -- local r,g,b
     
-    while true do Wait(0)
-        local myped=PlayerPedId()
-        local mypos=GetEntityCoords(myped)
-        local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
-        if zone and zone.lives then
-            WriteHint({"Patrol strength: ~1~/~1~",zone.lives,zone.maxlives})
-            --WriteHint({"Zone relationship:~a~",tostring(zone.relationship or "nil")})
-            --WriteHint({"Zone models:~a~",tostring(zone.models or "nil")})
-        end
-        if zone and zone.relationship and not disablehud then
-            local myrel=GetPedRelationshipGroupHash(myped)
+    -- while true do Wait(0)
+        -- local myped=PlayerPedId()
+        -- local mypos=GetEntityCoords(myped)
+        -- local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
+        -- if zone and zone.lives then
+            -- WriteHint({"Patrol strength: ~1~/~1~",zone.lives,zone.maxlives})
+            -- --WriteHint({"Zone relationship:~a~",tostring(zone.relationship or "nil")})
+            -- --WriteHint({"Zone models:~a~",tostring(zone.models or "nil")})
+        -- end
+        -- if zone and zone.relationship and not disablehud then
+            -- local myrel=GetPedRelationshipGroupHash(myped)
             
-            local relnumber=GetRelationshipBetweenGroups(myrel,zone.relationship)
+            -- local relnumber=GetRelationshipBetweenGroups(myrel,zone.relationship)
             
-            local chunk_x=0.049
-            local chunk_y=0.008
+            -- local chunk_x=0.049
+            -- local chunk_y=0.008
         
         
-            SetTextCentre(true)
-            DrawRect(0.5,0.05,0.301,0.012,0,0,0,255) -- -0.00025 --black bar
+            -- SetTextCentre(true)
+            -- DrawRect(0.5,0.05,0.301,0.012,0,0,0,255) -- -0.00025 --black bar
             
-            DrawRect(0.5-.125,0.05,chunk_x,chunk_y,50,50,50,255) --grey
-            DrawRect(0.5-.075,0.05,chunk_x,chunk_y,50,50,50,255)
-            DrawRect(0.5-.025,0.05,chunk_x,chunk_y,50,50,50,255)
-            DrawRect(0.5+.025,0.05,chunk_x,chunk_y,50,50,50,255)
-            DrawRect(0.5+.075,0.05,chunk_x,chunk_y,50,50,50,255)
-            DrawRect(0.5+.125,0.05,chunk_x,chunk_y,50,50,50,255)
+            -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,50,50,50,255) --grey
+            -- DrawRect(0.5-.075,0.05,chunk_x,chunk_y,50,50,50,255)
+            -- DrawRect(0.5-.025,0.05,chunk_x,chunk_y,50,50,50,255)
+            -- DrawRect(0.5+.025,0.05,chunk_x,chunk_y,50,50,50,255)
+            -- DrawRect(0.5+.075,0.05,chunk_x,chunk_y,50,50,50,255)
+            -- DrawRect(0.5+.125,0.05,chunk_x,chunk_y,50,50,50,255)
             
-            if relnumber==0 then
-                r=friends.r
-                g=friends.g
-                b=friends.b
-                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5+.075,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5+.125,0.05,chunk_x,chunk_y,r,g,b,255)
-            elseif relnumber==1 then
-                r=friends.r
-                g=friends.g
-                b=friends.b
-                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5+.075,0.05,chunk_x,chunk_y,r,g,b,255)
-            elseif relnumber==2 then
-                r=neutral.r
-                g=neutral.g
-                b=neutral.b
-                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
-            elseif relnumber==3 then
-                r=neutral.r
-                g=neutral.g
-                b=neutral.b
-                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
-            elseif relnumber==4 then
-                r=enemy.r
-                g=enemy.g
-                b=enemy.b
-                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
-                DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
-            elseif relnumber==5 then
-                r=enemy.r
-                g=enemy.g
-                b=enemy.b
-                DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
-            end
+            -- if relnumber==0 then
+                -- r=friends.r
+                -- g=friends.g
+                -- b=friends.b
+                -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5+.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5+.125,0.05,chunk_x,chunk_y,r,g,b,255)
+            -- elseif relnumber==1 then
+                -- r=friends.r
+                -- g=friends.g
+                -- b=friends.b
+                -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5+.075,0.05,chunk_x,chunk_y,r,g,b,255)
+            -- elseif relnumber==2 then
+                -- r=neutral.r
+                -- g=neutral.g
+                -- b=neutral.b
+                -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5+.025,0.05,chunk_x,chunk_y,r,g,b,255)
+            -- elseif relnumber==3 then
+                -- r=neutral.r
+                -- g=neutral.g
+                -- b=neutral.b
+                -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.025,0.05,chunk_x,chunk_y,r,g,b,255)
+            -- elseif relnumber==4 then
+                -- r=enemy.r
+                -- g=enemy.g
+                -- b=enemy.b
+                -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+                -- DrawRect(0.5-.075,0.05,chunk_x,chunk_y,r,g,b,255)
+            -- elseif relnumber==5 then
+                -- r=enemy.r
+                -- g=enemy.g
+                -- b=enemy.b
+                -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
+            -- end
             
-            if zone.name then
-                local newname=zone.name
-                local firstchar=string.sub(newname,1,1)
-                if firstchar=="~" then
-                    newname=string.sub(newname,4)
-                end
-                WriteText(4,{"~a~ - ~a~",newname,relationship_names[zone.relationship]},0.5,r,g,b,255,0.5,0.008) --base name
-            end
+            -- if zone.name then
+                -- local newname=zone.name
+                -- local firstchar=string.sub(newname,1,1)
+                -- if firstchar=="~" then
+                    -- newname=string.sub(newname,4)
+                -- end
+                -- WriteText(4,{"~a~ - ~a~",newname,relationship_names[zone.relationship]},0.5,r,g,b,255,0.5,0.008) --base name
+            -- end
             
-            SetTextRightJustify(true)
-            SetTextWrap(0.0,0.34)            
-            WriteText(4,"Hostile",0.4,r,g,b,255,xxxxxxx,0.035) --My faction
-            WriteText(4,"Friendly",0.4,r,g,b,255,0.66,0.035) --Their faction
-            -- WriteText(4,relationship_names[myrel],0.4,r,g,b,255,xxxxxxx,0.035) --My faction
-            -- WriteText(4,relationship_names[zone.relationship],0.4,r,g,b,255,0.66,0.035) --Their faction
-            SetTextCentre(true)
-            WriteText(4,relationship_names[relnumber],0.3,r,g,b,255,0.5,0.062) --status
-        end
-    end
-end)
+            -- SetTextRightJustify(true)
+            -- SetTextWrap(0.0,0.34)            
+            -- WriteText(4,"Hostile",0.4,r,g,b,255,xxxxxxx,0.035) --My faction
+            -- WriteText(4,"Friendly",0.4,r,g,b,255,0.66,0.035) --Their faction
+            -- -- WriteText(4,relationship_names[myrel],0.4,r,g,b,255,xxxxxxx,0.035) --My faction
+            -- -- WriteText(4,relationship_names[zone.relationship],0.4,r,g,b,255,0.66,0.035) --Their faction
+            -- SetTextCentre(true)
+            -- WriteText(4,relationship_names[relnumber],0.3,r,g,b,255,0.5,0.062) --status
+        -- end
+    -- end
+-- end)
 
 local function change_reputation(howmuch)
     SetResourceKvpInt("reputation",player.reputation+howmuch)
@@ -12935,17 +13063,55 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+local function update_blips_relationship_colors()
+    local myped=PlayerPedId()
+    local myrel=GetPedRelationshipGroupHash(myped)
+    for k,v in pairs(safezones) do
+        if v.bliphandler and v.relationship then
+            local rel=GetRelationshipBetweenGroups(v.relationship,myrel)
+            if rel==0 then
+                SetBlipColour(v.bliphandler,2)
+            elseif rel==5 then
+                SetBlipColour(v.bliphandler,1)
+            else
+                SetBlipColour(v.bliphandler,5)
+            end
+        end
+    end
+    for k,v in pairs(raids) do
+        if v.blip and v.relationship then
+            local rel=GetRelationshipBetweenGroups(v.relationship,myrel)
+            if rel==0 then
+                SetBlipColour(v.blip,2)
+            elseif rel==5 then
+                SetBlipColour(v.blip,1)
+            else
+                SetBlipColour(v.blip,5)
+            end
+        end
+    end
+    for k,v in pairs(signals) do
+        if v.blip and v.relationship then
+            local rel=GetRelationshipBetweenGroups(v.relationship,myrel)
+            if rel==0 then
+                SetBlipColour(v.blip,2)
+            elseif rel==5 then
+                SetBlipColour(v.blip,1)
+            else
+                SetBlipColour(v.blip,5)
+            end
+        end
+    end
+end
+
+
     
--- Citizen.CreateThread(function()
-    -- while true do Wait(0)
-        -- local myped=PlayerPedId()
-        -- local myplayer=PlayerId()
-        -- local jumping=IsPedJumping(myped)
-        -- local climbing=IsPedClimbing(myped)
-        -- WriteHint("jumpimh: "..(jumping and "true" or "false"))
-        -- WriteHint("climbing: "..(climbing and "true" or "false"))
-    -- end
--- end)
+Citizen.CreateThread(function()
+    while true do Wait(10000)
+        update_blips_relationship_colors()
+    end
+end)
 
 
 --custom dispatch
