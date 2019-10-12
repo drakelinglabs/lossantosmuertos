@@ -1,3 +1,4 @@
+local devmode=(GetConvarInt("lsm_devmode",0)~=0)
 
 local event={debug="dfhjsfj"}
 
@@ -178,6 +179,13 @@ Citizen.CreateThread(function()
             end
         end
     end)
+	
+    local function tell_everyone(text)
+        print(text)
+        for k,v in pairs(admin_id) do
+            TriggerClientEvent("anticheat:notification",k,text)
+        end
+    end
 
     local function load_table_from_file(filename)
         local tabl={}
@@ -194,19 +202,23 @@ Citizen.CreateThread(function()
     end
 
     local function add_to_table_and_file(tabl,identifier,filename)
-       if tabl[identifier]~=nil then
-        print("anticheat: "..identifier.." was already in "..filename)
-       else
-        tabl[identifier]='banned forever for hacks'
-        local file,err = io.open(filename,"a")
-        if file then
-         file:write(identifier.."\n")
-         file:close()
-         print("anticheat: added "..identifier.." to "..filename)
-        else
-         tell_everyone(err)
-        end
-       end
+		if not devmode then
+		   if tabl[identifier]~=nil then
+			print("anticheat: "..identifier.." was already in "..filename)
+		   else
+			tabl[identifier]='banned forever for hacks'
+			local file,err = io.open(filename,"a")
+			if file then
+			 file:write(identifier.."\n")
+			 file:close()
+			 print("anticheat: added "..identifier.." to "..filename)
+			else
+			 tell_everyone(err)
+			end
+		   end
+		else
+			tell_everyone(identifier.." added to "..filename.." (not really)")
+		end
     end
 
     Citizen.CreateThread(function()
@@ -257,7 +269,11 @@ Citizen.CreateThread(function()
     end)
 
     local function kick(source)
-        kick_queue[source]="^1Hacks detected. Banning user."
+		if devmode then
+			TriggerClientEvent("anticheat:notification",source,"~r~Hacks detected. Banning user.")
+		else
+			kick_queue[source]="^1Hacks detected. Banning user."
+		end
         --DropPlayer(source,"^1Hacks detected. Banning user.")
     end
 
@@ -310,13 +326,6 @@ Citizen.CreateThread(function()
       end
      end
      return suspects[source]
-    end
-
-    local function tell_everyone(text)
-        print(text)
-        for k,v in pairs(admin_id) do
-            TriggerClientEvent("anticheat:notification",k,text)
-        end
     end
 
     local function source_didwhat_data(source,did_what,data)
@@ -399,7 +408,7 @@ Citizen.CreateThread(function()
       local how_much=n-code_rgn
       source_msg_amount_what_data(source,"magically ~r~regenerated",how_much,"~g~health point","rgn")
       local suspect=suspects[source]
-      if suspect~=nil and suspect.rgn~=nil and suspect.rgn.total~=nil and suspect.rgn.total>300 then
+      if suspect~=nil and suspect.rgn~=nil and suspect.rgn.total~=nil and suspect.rgn.total>300 and (suspect.rgn.total%200~=0) then
             kick_and_ban(source)
       end
      elseif n>=code_xpl then
@@ -478,7 +487,8 @@ Citizen.CreateThread(function()
      elseif n>=code_blp then
       local how_much=n-code_blp
       source_msg_amount_what_data(source,"created~r~",how_much,"strange blip","blp")
-            kick_and_ban(source)
+            print("Someone should be banned for blips")
+            --kick_and_ban(source)
      elseif n>=code_tag then
       local how_much=n-code_tag
       source_msg_amount_what_data(source,"created~r~",how_much,"gamer tag","tag")
@@ -665,6 +675,7 @@ local players_pos={}
 
 local raid_content={
 blackops={
+roninmask=1,
 cash=1000,
 gasmask=8,
 appistol=1,
@@ -693,7 +704,7 @@ grenadelauncher=1,
 bodyarmor=6,
 brasscatcher=2,
 radio=2,
-smgammo=600,
+smgammo=1200,
 mgammo=600,
 launchergrenade=20,
 armorplate=20,
@@ -734,7 +745,7 @@ heavysniper=1,
 sniperrifle=1,
 bodyarmor=4,
 radio=4,
-smgammo=400,
+smgammo=800,
 mgammo=400,
 armorplate=10,
 grip=5,
@@ -821,7 +832,21 @@ pumpshotgun=1,
 smg=1,
 assaultrifle=1,
 marksmanrifle=1,
-smgammo=200,
+smgammo=400,
+},
+marauderweapons={
+pistolammo=200,
+shotgunammo=100,
+snspistol=1,
+vintagepistol=1,
+doubleaction=1,
+dbshotgun=1,
+heavyshotgun=1,
+doubleaction=1,
+minismg=1,
+compactrifle=1,
+musket=1,
+smgammo=400,
 },
 
 random={
@@ -925,7 +950,7 @@ aircraftfuel=30,
 --sheriffkey=4,
 policedocs=10,
 painkillers=10,
-smgammo=400,
+smgammo=800,
 mgammo=200,
 launchergrenade=10,
 armorplate=20,
@@ -954,8 +979,8 @@ local safezones={}
 local raids={
  {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
  {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ --{x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ --{x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
  
  {x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=150.0,t=5,maxlives=20,lives=20},
  {x=-902.81695556641,y=5419.4990234375,z=36.243270874023,r=150.0,t=5,maxlives=20,lives=20},
@@ -965,7 +990,8 @@ local raids={
  
     {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=150.0,t=2,maxlives=20,lives=20},
 
-    {x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
+    --{x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
+    {x=568.62316894531,y=0.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
  
  
  --{x=0.1645507813,y=0.8725585938,z=0.56494140625,r=150.0,t=1,maxlives=3,lives=3},
@@ -978,6 +1004,57 @@ for i=1,#raids do
     raids[i].base_y=raids[i].y
     raids[i].base_z=raids[i].z
 end
+
+local function is_in_polygons(x,y,areas)
+	local c=false
+	for _,array in pairs(areas) do
+		local j=#array
+		local b,d=false,(array[j].y>y)
+		for i=1,#array do
+		  b=(array[i].y>y)
+		  if ((b~=d) and (x-array[i].x)<(array[j].x-array[i].x)*(y-array[i].y)/(array[j].y-array[i].y))
+			 then c=not c end
+		  j=i
+		  d=b
+		end
+	end
+    return c
+end
+
+-- local function check_collision_with_area(areas, x,y)
+	-- local s=false
+	-- for _,cycle in pairs(areas) do
+		-- local v1=cycle[#cycle]
+		-- local v2
+		-- for k=1,#cycle do
+			-- v2=v1
+			-- v1=cycle[k]
+			-- if v1.y>v2.y then
+				-- if y<=v1.y and y>v2.y then --между точками
+					-- if x<v1.x and x<v2.x then
+						-- s=not s
+					-- elseif x<v1.x or x<v2.x then
+						-- if 
+							-- s=not s
+						-- end
+					-- end
+				-- end
+			-- else
+				-- if y>v1.y and y<=v2.y then --между точками
+					-- s=not s
+					-- if x<v1.x and x<v2.x then
+						-- s=not s
+					-- elseif x<v1.x or x<v2.x then
+						-- if 
+							-- s=not s
+						-- end
+					-- end
+				-- end
+			-- end
+		-- end
+	-- end
+	-- return s
+-- end
 
 Citizen.CreateThread(function()
     for k,v in pairs(raids) do
@@ -1002,46 +1079,92 @@ Citizen.CreateThread(function()
     ymin=-2000,
     ymax=7000,
     }
+	local areas={
+	 --ocean
+	 {
+	    {x=1040.1569824219,y=6590.4682617188,z=-194.00999450684},
+		{x=2158.47265625,y=6364.302734375,z=-194.00999450684},
+		{x=3262.3083496094,y=5358.650390625,z=-194.00964355469},
+		{x=3083.8444824219,y=3816.0510253906,z=-194.00999450684},
+		{x=2482.5983886719,y=1832.576171875,z=-194.0104675293},
+		{x=2644.341796875,y=-386.98217773438,z=-194.00999450684},
+		{x=1590.0284423828,y=-2565.4174804688,z=-194.01063537598},
+		{x=-1223.8962402344,y=-1746.9150390625,z=-194.0094909668},
+		{x=-2294.3803710938,y=4458.2412109375,z=-194.00942993164},
+		{x=-522.42041015625,y=6313.8818359375,z=-194.01026916504},
+	 },
+
+	 --alamo sea
+	 {
+		{x=1071.4890136719,y=4399.7314453125,z=-194.01034545898},
+		{x=2342.1381835938,y=4675.9892578125,z=-194.00999450684},
+		{x=2435.044921875,y=3932.3486328125,z=-194.00999450684},
+		{x=1770.8565673828,y=3950.2895507813,z=-194.01048278809},
+		{x=470.53698730469,y=3565.4243164063,z=-194.0104675293},
+		{x=-254.68249511719,y=3952.0620117188,z=-194.00999450684},
+		{x=52.54150390625,y=4451.22265625,z=-194.00999450684},
+	 },
+
+	 -- --dam
+	 -- {},
+
+	 --chiliad
+	 {
+		{x=809.34417724609,y=4507.6254882813,z=59.453296661377},
+		{x=19.204833984375,y=4521.091796875,z=-194.01026916504},
+		{x=-446.88269042969,y=5246.6079101563,z=-194.01026916504},
+		{x=-23.638427734375,y=6131.87109375,z=-194.01025390625},
+		{x=1403.4545898438,y=6325.24609375,z=-194.01045227051},
+		{x=2173.9172363281,y=5544.5546875,z=-194.00999450684},
+	 },
+	}
     while true do
         for k,v in pairs(raids) do
-            v.x=v.x+v.speed_x
-            v.y=v.y+v.speed_y
-            local direction=math.random(1,5)
-            if durection==1 then
-                v.speed_x,v.speed_y=rotate2d(v.speed_x,v.speed_y,v.rotation_x,v.rotation_y)
-            elseif direction==2 then
-                v.rotation_y=-v.rotation_y
-            end
+			if is_in_polygons(v.x+v.speed_x,v.y+v.speed_y,areas) then
+				v.x=v.x+v.speed_x
+				v.y=v.y+v.speed_y
+				local direction=math.random(1,5)
+				if durection==1 then
+					v.speed_x,v.speed_y=rotate2d(v.speed_x,v.speed_y,v.rotation_x,v.rotation_y)
+				elseif direction==2 then
+					v.rotation_y=-v.rotation_y
+				end
+				-- if v.x<limits.xmin then
+					-- v.x=limits.xmin
+					-- if v.speed_x<0 then
+						-- v.speed_x=-v.speed_x
+					-- end
+				-- elseif v.x>limits.xmax then
+					-- v.x=limits.xmax
+					-- if v.speed_x>0 then
+						-- v.speed_x=-v.speed_x
+					-- end
+				-- end
+				-- if v.y<limits.ymin then
+					-- v.y=limits.ymin
+					-- if v.speed_y<0 then
+						-- v.speed_y=-v.speed_y
+					-- end
+				-- elseif v.y>limits.ymax then
+					-- v.y=limits.ymax
+					-- if v.speed_y>0 then
+						-- v.speed_y=-v.speed_y
+					-- end
+				-- end
+				TriggerClientEvent("raid",-1,k,v.x,v.y,v.r,v.t,v.maxlives,v.lives)
+			else
+				v.speed_x=-v.speed_x
+				v.speed_y=-v.speed_y
+			end
             --r=math.random(100.0,500.0)+0.00001
-            if v.x<limits.xmin then
-                v.x=limits.xmin
-                if v.speed_x<0 then
-                    v.speed_x=-v.speed_x
-                end
-            elseif v.x>limits.xmax then
-                v.x=limits.xmax
-                if v.speed_x>0 then
-                    v.speed_x=-v.speed_x
-                end
-            end
-            if v.y<limits.ymin then
-                v.y=limits.ymin
-                if v.speed_y<0 then
-                    v.speed_y=-v.speed_y
-                end
-            elseif v.y>limits.ymax then
-                v.y=limits.ymax
-                if v.speed_y>0 then
-                    v.speed_y=-v.speed_y
-                end
-            end
-            TriggerClientEvent("raid",-1,k,v.x,v.y,v.r,v.t,v.maxlives,v.lives)
+			
             Wait(50)
         end
     end
 end)
 
 local heists={ --,t="raiders" r=150
+{x=3090.9416503906,y=-4717.8530273438,z=15.262616157532,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --carrier
 {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --military bunker base
 {x=445.91668701172,y=5572.1088867188,z=781.18475341797,r=0,health=30,content="military",b=568,t="raiders",name="Military Weapons Cache"}, --mountain top
 {x=3536.2355957031,y=3665.2844238281,z=28.121892929077,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --research labs
@@ -1065,6 +1188,8 @@ local heists={ --,t="raiders" r=150
 {x=1716.3363037109,y=3322.0368652344,z=41.22350692749,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --airport hanger
 --{x=137.80360412598,y=-565.8564453125,z=22.023969650269,r=0,health=30}, --abandoned under construction underground subway terminal
 {x=-507.38482666016,y=-672.91925048828,z=11.808968544006,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --subway terminal
+{x=-1125.8520507813,y=4896.5424804688,z=218.47247314453,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --survivor base
+{x=1694.9357910156,y=2552.8166503906,z=45.564903259277,r=0,health=30,content="marauderweapons",b=568,t="raiders",name="Marauder Weapons Cache"}, --marauder base
 }
 
 local signals={}
@@ -1128,6 +1253,33 @@ AddEventHandler("loot",function(id,thing)
     end
 end)
 
+local doors={}
+Citizen.CreateThread(function()
+    while true do Wait(1000)
+		for doorid,door in pairs(doors) do
+			local locked=false
+			for player,pos in pairs(players_pos) do
+				--print((pos.x or "nil").."pos.x "..(pos.y or "nil").."pos.y "..(door.x or "nil").."door.x "..(door.y or "nil").."door.y ")
+				if (math.abs(pos.x-door.x)+math.abs(pos.y-door.y))<300 then
+					locked=true
+					break
+				end
+			end
+			if not locked then
+				TriggerClientEvent("close_door",-1,doorid)
+				print("closing door "..doorid)
+				doors[doorid]=nil
+			end
+		end
+	end
+end)
+RegisterServerEvent("open_door")
+AddEventHandler("open_door",function(doorid,x,y)
+	doors[doorid]={x=x,y=y}
+	TriggerClientEvent("open_door",-1,doorid)
+	print(source," opened door "..doorid)
+end)
+
 RegisterServerEvent("request_data")
 AddEventHandler("request_data",function()
     local _s=source
@@ -1138,9 +1290,13 @@ AddEventHandler("request_data",function()
         end
     end
     for id,signal in pairs(signals) do
-        TriggerClientEvent("updatesignal",_s,id,signal.x,signal.y,signal.z,signal.b,signal.m,signal.r,signal.t)
+        TriggerClientEvent("updatesignal",_s,id,signal.x,signal.y,signal.z,signal.b,signal.m,signal.r,signal.t,signal.name)
         Wait(100)
     end
+	for doorid,_ in pairs(doors) do
+		TriggerClientEvent("open_door",_s,doorid)
+		Wait(100)
+	end
 end)
 
 local function create_loot_crate(x,y,z,loot,health,b,m,r,t,name)
@@ -1160,7 +1316,7 @@ Citizen.CreateThread(function()
                 if v.abandoned==nil then
                     active=active+1
                     -- v.abandoned=0
-                elseif v.abandoned<15 then
+                elseif v.abandoned<5 then
                     active=active+1
                     v.abandoned=v.abandoned+1
                 else
@@ -1170,7 +1326,7 @@ Citizen.CreateThread(function()
             else
                 if v.abandoned==nil then
                     v.abandoned=0
-                elseif v.abandoned<15 then
+                elseif v.abandoned<5 then
                     v.abandoned=v.abandoned+1
                 else
                     signals[k]=nil
@@ -1214,7 +1370,7 @@ Citizen.CreateThread(function()
             if active>1 then
                 --create_loot_crate(rand.x,rand.y,rand.z,loot,20,rand.b,rand.m,rand.r,rand.t)
                 create_loot_crate(rand.x,rand.y,rand.z,loot,rand.health,rand.b,rand.m,rand.r,rand.t,rand.name)
-                print("Sending loot crate: x:"..rand.x.." y:"..rand.y.." z:"..rand.z.." health:"..rand.health.." type:"..(rand.t or "nil").." name:"..(rand.name or "nil"))
+                print("Sending loot crate: x:"..rand.x.." y:"..rand.y.." z:"..rand.z.." health:"..rand.health.." b:"..(rand.b or "nil").." m:"..(rand.m or "nil").." r:"..(rand.r or "nil").." type:"..(rand.t or "nil").." name:"..(rand.name or "nil"))
                 table.insert(used_heists,rand)
                 table.remove(heists,heistid)
             end
@@ -1382,6 +1538,14 @@ AddEventHandler("npc_killed_in_patrol",function(k)
         end
     end
 end)
+
+
+Citizen.CreateThread(function()
+    while true do
+        devmode=(GetConvarInt("lsm_devmode",0)~=0) Wait(1000)
+    end
+end)
+
     
 -- RegisterServerEvent("place")
 -- AddEventHandler("place",function(model,x,y,z,yaw)
