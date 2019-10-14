@@ -3713,47 +3713,191 @@ local respawn_time=720 --two real days
 local looted_array={}
 
 local normal_crafts={
-    {"tshirtmask",1,
-        {"rags",5},
+	{"bodyarmor",1,
+        {"milspecfabrics",2,
+		"level3asoftplate",2,
+		},
     },
-    {"molotov",1,
-        {"gasoline",1,
-        "alcohol",1,
-        "rags",1},
-    },
-    {"pipebomb",1,
-        {"engineparts",1,
-        "chemicals",1,
-        "scrapmetal",1},
-    },
-    {"proxmine",1,
-        {"engineparts",1,
-        "chemicals",3,
-        "scrapmetal",2,
-        "scrapplastic",2},
-    },
-    {"mgammo",50,
-        {"ammo",50,
-        "scrapplastic",1},
-    },
-    {"flare",3,
-        {"chemicals",1,
-        "scrapplastic",1},
-    },
-    {"flaregun",1,
-        {"scrapplastic",1,
-        "scrapmetal",1},
-    },
-    {"flaregunammo",5,
-        {"chemicals",1,
-        "gunpowder",1,
-        "scrapplastic",1},
+    {"armorplate",1,
+        {"milspecmetal",2,
+		"industrialplastic",2,
+		},
     },
     {"bandage",1,
-        {"alcohol",1,
-        "rags",2},
+        {"rags",2,
+		"alcohol",1,
+		},
     },
+    {"medkit",1,
+        {"bandage",3,
+		"painkillers",2,
+		},
+    },
+    {"pistolammo",50,
+        {"leadscrap",1,
+		"gunpowder",2,
+		"scrapmetal",2,
+		},
+    },
+    {"shotgunammo",25,
+        {"leadscrap",1,
+		"gunpowder",2,
+		"scrapmetal",2,
+		},
+    },
+    {"smgammo",50,
+        {"leadscrap",1,
+		"gunpowder",2,
+		"scrapmetal",2,
+		},
+    },
+    {"ammo",50,
+        {"leadscrap",2,
+		"gunpowder",3,
+		"milspecmetal",3,
+		},
+    },
+    {"mgammo",60,
+        {"leadscrap",3,
+		"gunpowder",3,
+		"milspecmetal",2,
+		},
+    },
+    {"heavyrifleammo",20,
+        {"leadscrap",2,
+		"gunpowder",3,
+		"milspecmetal",3,
+		},
+    },
+    {"rocket",1,
+        {"militarygradeexplosivematerials",1,
+		"milspecelectronicscrap",1,
+		"industrialplastic",1,
+		},
+    },
+    {"grenade",2,
+        {"milspecmetal",1,
+		"gunpowder",4,
+		"industrialelectronicscrap",2,
+		},
+    },
+    {"launchergrenade",1,
+        {"militarygradeexplosivematerials",1,
+		"gunpowder",2,
+		"milspecmetal",1,
+		},
+    },
+    {"proxmine",1,
+        {"militarygradeexplosivematerials",1,
+		"milspecelectronicscrap",1,
+		"industrialscrapmetal",1,
+		},
+    },
+    {"clothes_marauder",1,
+        {"industrialscrapmetal",4,
+		"fabrics",6,
+		"industrialfabrics",4,
+		"rags",8,
+		},
+    },
+    {"molotov",1,
+        {"rags",1,
+		"alcohol",1,
+		"gasoline",1,
+		},
+    },
+    {"pipebomb",1,
+        {"industrialplastic",1,
+		"gunpowder",2,
+		"industrialelectronicscrap",2,
+		},
+    },
+    {"level3plates",1,
+        {"milspecmetal",2,
+		"industrialplastic",1,
+		},
+    },
+    {"bzgas",1,
+        {"industrialscrapmetal",2,
+		"chemicals",2,
+		},
+    },
+    {"clothes_loner",1,
+        {"industrialfabrics",1,
+		"scrapfabrics",4,
+		"rags",6,
+		},
+    },
+    {"duffelbag",1,
+        {"industrialfabrics",1,
+		"scrapfabrics",5,
+		"rags",10,
+		},
+    },
+    {"flaregun",1,
+        {"industrialscrapmetal",3,
+		"industrialplastic",2,
+		},
+    },
+    {"flaregunammo",2,
+        {"gunpowder",2,
+		"industrialplastic",1,
+		"scrapmetal",1,
+		},
+    },
+    -- {"tshirtmask",1,
+        -- {"rags",5},
+    -- },
+    -- {"molotov",1,
+        -- {"gasoline",1,
+        -- "alcohol",1,
+        -- "rags",1},
+    -- },
+    -- {"pipebomb",1,
+        -- {"engineparts",1,
+        -- "chemicals",1,
+        -- "scrapmetal",1},
+    -- },
+    -- {"proxmine",1,
+        -- {"engineparts",1,
+        -- "chemicals",3,
+        -- "scrapmetal",2,
+        -- "scrapplastic",2},
+    -- },
+    -- {"mgammo",50,
+        -- {"ammo",50,
+        -- "scrapplastic",1},
+    -- },
+    -- {"flare",3,
+        -- {"chemicals",1,
+        -- "scrapplastic",1},
+    -- },
+    -- {"flaregun",1,
+        -- {"scrapplastic",1,
+        -- "scrapmetal",1},
+    -- },
+    -- {"flaregunammo",5,
+        -- {"chemicals",1,
+        -- "gunpowder",1,
+        -- "scrapplastic",1},
+    -- },
+    -- {"bandage",1,
+        -- {"alcohol",1,
+        -- "rags",2},
+    -- },
 }
+
+if true then
+	local duplicates={}
+	for k,v in pairs(normal_crafts) do
+		if duplicates[v[1]] then
+			print("duplicate_blueprint "..v[1])
+		else
+			duplicates[v[1]]=true
+		end
+	end
+end
+
 
 local dawn_crafts={
     {"tshirtmask",1,
@@ -4322,11 +4466,11 @@ local safezones={
     },
     {"level3plates",1,
         {"milspecmetal",2,
-		"industrialscrapplastic",1,
+		"industrialplastic",1,
 		},
     },
     {"bzgas",1,
-        {"industrialmetalscrap",2,
+        {"industrialscrapmetal",2,
 		"chemicals",2,
 		},
     },
@@ -4564,7 +4708,7 @@ local safezones={
     craftpos={x=1689.4483642578,y=2552.2507324219,z=45.56485748291},
     crafts={
     {"clothes_marauder",1,
-        {"industrialmetalscrap",4,
+        {"industrialscrapmetal",4,
 		"fabrics",6,
 		"industrialfabrics",4,
 		"rags",8,
@@ -4577,7 +4721,7 @@ local safezones={
 		},
     },
     {"pipebomb",1,
-        {"industrialscrapplastic",1,
+        {"industrialplastic",1,
 		"gunpowder",2,
 		"industrialelectronicscrap",2,
 		},
@@ -4763,7 +4907,7 @@ local safezones={
     },
     {"armorplate",1,
         {"milspecmetal",2,
-		"industrialscrapplastic",2,
+		"industrialplastic",2,
 		},
     },
     {"bandage",1,
@@ -4821,7 +4965,7 @@ local safezones={
     {"proxmine",1,
         {"militarygradeexplosivematerials",1,
 		"milspecelectronicscrap",1,
-		"industrialmetalscrap",1,
+		"industrialscrapmetal",1,
 		},
     },
     {"grenade",2,
@@ -4986,7 +5130,7 @@ local safezones={
     },
     {"armorplate",1,
         {"milspecmetal",2,
-		"industrialscrapplastic",2,
+		"industrialplastic",2,
 		},
     },
     {"duffelbag",1,
@@ -5026,25 +5170,25 @@ local safezones={
     {"ammo",50,
         {"leadscrap",2,
 		"gunpowder",3,
-		"milspecscrapmetal",3,
+		"milspecmetal",3,
 		},
     },
     {"mgammo",60,
         {"leadscrap",3,
 		"gunpowder",3,
-		"milspecscrapmetal",2,
+		"milspecmetal",2,
 		},
     },
     {"heavyrifleammo",20,
         {"leadscrap",2,
 		"gunpowder",3,
-		"milspecscrapmetal",3,
+		"milspecmetal",3,
 		},
     },
     {"rocket",1,
         {"militarygradeexplosivematerials",1,
 		"milspecelectronicscrap",1,
-		"industrialscrapplastic",1,
+		"industrialplastic",1,
 		},
     },
     {"grenade",2,
@@ -5192,7 +5336,18 @@ local safezones={
 
 }
 
+--local crafts_blueprints={}
+
+
 for _,z in pairs(safezones) do
+	-- if zone.crafts then
+		-- for k,v in pairs(zone.crafts) do
+			-- normal_crafts[v[1]]={amount=v[2],requirements=v[3]}
+			-- item_names["blueprint_"..v[1]]="Blueprint ("..item_names[v[1]]..")"
+			-- item_descriptions[v[1]]="Blueprint to craft "..item_names[v[1]]
+			-- item_weight[v[1]]=0.05
+		-- end
+	-- end
 	if z.storagepos and z.storagename then
 		local inventory=z.storage
 		if inventory==nil then
@@ -5834,6 +5989,7 @@ minismg="Hawk & Little Scorpion Submachine Gun",
 smg="Hawk & Little Submachine Gun",
 smg_mk2="Hawk & Little Tactical Submachine Gun",
 advancedrifle="Vom Feuer Advanced Assault Rifle",
+rocket="Rocket",
 assaultrifle="Shrewsbury Assault Rifle",
 assaultrifle_mk2="Shrewsbury Tactical Assault Rifle",
 bullpuprifle="Hawk & Little Bullpup Assault Rifle",
@@ -5893,10 +6049,10 @@ milspecelectronicscrap="Milspec Electronic Scrap",
 industrialfabrics="Industrial Fabrics",
 milspecfabrics="Milspec Fabrics",
 leadscrap="Lead Scrap",
-industrialmetalscrap="Industrial Metal Scrap",
+industrialscrapmetal="Industrial Metal Scrap",
 milspecmetal="Milspec Metal Scrap",
 industrialplastic="Industrial Plastic Scrap",
-milspecplasticscrap="Milspec Plastic Scrap",
+milspecplastic="Milspec Plastic Scrap",
 scrapplastic="Scrap Plastic",
 rags="Rags",
 gasmask="Gasmask",
@@ -6076,6 +6232,7 @@ grenadelauncher="A semi-automatic high explosive grenade launcher.",
 petrolcan="Petrol Can",
 bottle="A sharp broken bottle.",
 rpg="A crude high explosive rocket launcher.",
+rocket="Rocket for vehicle cannons.",
 flare="A small red smoke flare that emits a bright red light.",
 minigun="Minigun",
 extinguisher="Fire extinguisher",
@@ -6216,6 +6373,13 @@ clothes_gang="A set of clothes branded with generic gang insignia.",
 fruits="An assortment of whole fresh fruit.",
 trashfood="A box of leftover food, that doesn't seem rotten.",
 }
+
+for k,v in pairs(normal_crafts) do
+	local bn="blueprint_"..v[1]
+	item_names[bn]="Blueprint ("..(item_names[v[1]] or v[1])..")"
+	item_descriptions[bn]="Blueprint to craft "..(item_names[v[1]] or v[1]).."."
+	item_weight[bn]=0.05
+end
 
 local weapon_upgrades_types={
     flashlight_small="hud_flashlight",
@@ -6565,8 +6729,15 @@ local birds={
 local deadbodiesrewards_tier1={
 {"scrapplastic",1},
 {"rags",-2},
+{"electronicscrap",-2},
+{"scrapfabrics",-2},
 }
 local deadbodiesrewards_tier2={
+{"leadscrap",1},
+{"industrialplastic",-2},
+{"industrialscrapmetal",-2},
+{"industrialelectronicscrap",-2},
+{"industrialfabrics",1},
 {"cigarettes",1},
 {"bandage",-2},
 {"flaregunammo",-5},
@@ -6575,6 +6746,10 @@ local deadbodiesrewards_tier2={
 {"trashfood",1},
 }
 local deadbodiesrewards_tier3={
+{"milspecfabrics",-2},
+{"milspecmetal",-2},
+{"milspecplastic",-2},
+{"milspecfabrics",-2},
 {"food",1},
 {"canfood",1},
 {"soda",1},
@@ -6658,9 +6833,16 @@ local deadbodiesrewards_tier6={
 local trunkrewards_tier1={
 {"scrapplastic",-5},
 {"scrapmetal",-5},
+{"electronicscrap",-2},
 {"rags",-3},
+{"scrapfabrics",-2},
 }
 local trunkrewards_tier2={
+{"leadscrap",1},
+{"industrialplastic",-2},
+{"industrialscrapmetal",-2},
+{"industrialelectronicscrap",-2},
+{"industrialfabrics",-2},
 {"cigarettes",-3},
 {"alcohol",-2},
 {"chemicals",-3},
@@ -6695,6 +6877,10 @@ local trunkrewards_tier2={
 {"bottle",1},
 }
 local trunkrewards_tier3={
+{"milspecfabrics",-2},
+{"milspecmetal",-2},
+{"milspecplastic",-2},
+{"milspecfabrics",-2},
 {"food",-3},
 {"canfood",-2},
 {"soda",-2},
@@ -6707,6 +6893,7 @@ local trunkrewards_tier3={
 {"fruits",-2},
 }
 local trunkrewards_tier4={
+{"blueprint",1},
 {"pistolammo",-30},
 {"smgammo",-40},
 {"shotgunammo",-8},
@@ -8719,7 +8906,13 @@ local function DrawItem(dict,item,x,y,s1,s2,angle,r,g,b,a)
 		drawname=components[1]
 		components[1]=nil
 	end
-	DrawSprite(dict, drawname, x,y,s1,s2,angle,r,g,b,a)
+	if string.sub(drawname,1,10)=="blueprint_" then
+		DrawSprite("lsm","blueprint",x,y,s1,s2,angle,r,g,b,a)
+		DrawSprite("lsm",string.sub(drawname,11),x,y,s1*0.75,s2*0.75,angle,255,255,255,200)
+	else
+		DrawSprite("lsm",drawname,x,y,s1,s2,angle,r,g,b,a)
+	end
+	--DrawSprite(dict, drawname, x,y,s1,s2,angle,r,g,b,a)
 	if components then
 		for i=2,#components do
 			--WriteHint(25,{"~c~components: ~1~",i})
@@ -12528,7 +12721,26 @@ Citizen.CreateThread(function()
 				
             elseif zone~=nil and zone.craftpos~=nil and in_radius(mypos,zone.craftpos,1) then 
                 --craft
-                local current_menu=1
+                local current_menu=0
+				local items_that_can_be_crafted={}
+				local known_recipes={}
+				for i=1,inventory.total do
+					local v=inventory[i]
+					if string.sub(v.item,1,10)=="blueprint_" then
+						known_recipes[string.sub(v.item,11)]=true
+					end
+				end
+				for i=1,#normal_crafts do
+					local v=normal_crafts[i]
+					if known_recipes[v[1]] then
+						current_menu=current_menu+1
+						items_that_can_be_crafted[current_menu]=v
+					end
+				end
+				known_recipes=nil
+				if current_menu==0 then
+					SimpleNotification("You don't have any blueprints.")
+				end
 
                 while true do Wait(0)
                     inventory.highlight=0
@@ -12537,7 +12749,7 @@ Citizen.CreateThread(function()
                     if IsControlJustPressed(0,177) or not in_radius(mypos,zone.craftpos,5) then
                         break
                     elseif IsControlJustPressed(0,175) then --right
-                        if current_menu<#zone.crafts then
+                        if current_menu<#items_that_can_be_crafted then
                             current_menu=current_menu+1
                         else
                             current_menu=1
@@ -12546,10 +12758,10 @@ Citizen.CreateThread(function()
                         if current_menu>1 then
                             current_menu=current_menu-1
                         else
-                            current_menu=#zone.crafts
+                            current_menu=#items_that_can_be_crafted
                         end
                     elseif IsControlJustPressed(0,86) then --e veh horn
-                        local enough=do_we_have_all_that(zone.crafts[current_menu][3])
+                        local enough=do_we_have_all_that(items_that_can_be_crafted[current_menu][3])
                         if enough then
                             -- local model=GetHashKey(zone.crafts[current_menu][1])
                             -- if not HasModelLoaded(model) then
@@ -12569,11 +12781,11 @@ Citizen.CreateThread(function()
                                 -- if IsWeaponValid(hash) then
                                     -- GiveWeaponToPed(PlayerPedId(), hash, 1, false, true)
                                 --end
-                            if give_item_to_inventory(zone.crafts[current_menu][1],zone.crafts[current_menu][2]) then
-                                remove_all_that(zone.crafts[current_menu][3])
+                            if give_item_to_inventory(items_that_can_be_crafted[current_menu][1],items_that_can_be_crafted[current_menu][2]) then
+                                remove_all_that(items_that_can_be_crafted[current_menu][3])
                                 Wait(0)
                             else
-                                SimpleNotification("Can't fit ~a~ in inventory, drop something.",zone.crafts[current_menu][1])
+                                SimpleNotification("Can't fit ~a~ in inventory, drop something.",items_that_can_be_crafted[current_menu][1])
                                 --SetModelAsNoLongerNeeded(model)
                             end
                         end
@@ -12583,11 +12795,11 @@ Citizen.CreateThread(function()
 					WriteTextNoOutline(2,"Workshop",0.4,0,0,0,255,0.307,0.19)
 					DrawRect(.3025,.28,inv_sml_x,inv_sml_y, 0, 0, 0, 255)
 					DrawSprite("lsm","item",.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-					DrawSprite("lsm",zone.crafts[current_menu][1],.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-					WriteTextNoOutline(4,item_names[zone.crafts[current_menu][1]] or zone.crafts[current_menu][1],0.4,0,0,0,255,.3325,.25)
+					DrawSprite("lsm",items_that_can_be_crafted[current_menu][1],.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+					WriteTextNoOutline(4,item_names[items_that_can_be_crafted[current_menu][1]] or items_that_can_be_crafted[current_menu][1],0.4,0,0,0,255,.3325,.25)
 							SetTextRightJustify(true)
 							SetTextWrap(0.0,.3025+0.015)        
-							WriteText(4,zone.crafts[current_menu][2],0.3,255,255,255,255,.3025+0.01,.28+0.01)
+							WriteText(4,items_that_can_be_crafted[current_menu][2],0.3,255,255,255,255,.3025+0.01,.28+0.01)
 					
 					WriteTextNoOutline(2,"Ingredients",0.4,0,0,0,255,0.29,0.33)
 					
@@ -12598,7 +12810,7 @@ Citizen.CreateThread(function()
 					WriteTextNoOutline(2,"Craft",0.3,255,255,255,255,0.32,0.75-0.011)
 					
 					
-					WriteTextNoOutline(4,{"~1~ / ~1~",current_menu,#zone.crafts},0.3,0,0,0,255,0.42,0.75-0.011)
+					WriteTextNoOutline(4,{"~1~ / ~1~",current_menu,#items_that_can_be_crafted},0.3,0,0,0,255,0.42,0.75-0.011)
 					
 					-- for k,v in pairs(zone.crafts) do
 						-- if current_menu==k then
@@ -12629,10 +12841,10 @@ Citizen.CreateThread(function()
                         -- end
                     -- end
                     local item,have,need
-                    for i=1,#zone.crafts[current_menu][3],2 do
-                        item=zone.crafts[current_menu][3][i]
+                    for i=1,#items_that_can_be_crafted[current_menu][3],2 do
+                        item=items_that_can_be_crafted[current_menu][3][i]
                         have=get_inventroy_item_amount(item)
-                        need=zone.crafts[current_menu][3][i+1]
+                        need=items_that_can_be_crafted[current_menu][3][i+1]
 						local x=.28275+i*.02
 						local y=.4
 						DrawRect(x,.4,inv_sml_x,inv_sml_y, 0, 0, 0, 255)
@@ -13226,6 +13438,32 @@ Citizen.CreateThread(function()
                         if player.bodyarmor then
                             if myarmor<100 then
                                 local newarmor=myarmor+50
+                                if newarmor>100 then newarmor=100 end
+                                SetPedArmour(pped,newarmor)
+                                inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                                check_inv_slot_for_zero_amount()
+                            end
+                        else
+                            SimpleNotification("You need bodyarmor to insert armor plate in.")
+                        end
+                    elseif inventory[inventory.current].item=="level3asoftplate" then
+                        local myarmor=GetPedArmour(pped)
+                        if player.bodyarmor then
+                            if myarmor<100 then
+                                local newarmor=myarmor+13
+                                if newarmor>100 then newarmor=100 end
+                                SetPedArmour(pped,newarmor)
+                                inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                                check_inv_slot_for_zero_amount()
+                            end
+                        else
+                            SimpleNotification("You need bodyarmor to insert armor plate in.")
+                        end
+                    elseif inventory[inventory.current].item=="level3plates" then
+                        local myarmor=GetPedArmour(pped)
+                        if player.bodyarmor then
+                            if myarmor<100 then
+                                local newarmor=myarmor+25
                                 if newarmor>100 then newarmor=100 end
                                 SetPedArmour(pped,newarmor)
                                 inventory[inventory.current].amount=inventory[inventory.current].amount-1
@@ -15279,6 +15517,12 @@ Citizen.CreateThread(function()
                 local reward=chosentier[random_number%#chosentier+1]
                 local item=reward[1]
                 local count=reward[2]
+				
+				if item=="blueprint" then
+					local randomchosenitem=math.random(1,#normal_crafts)
+					item="blueprint_"..normal_crafts[randomchosenitem][1]
+				end
+				
                 if count<0 then count=math.random(1,-count) end
                 
                 if not DecorExistOn(veh,"item") then
