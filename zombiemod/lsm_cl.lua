@@ -2079,6 +2079,8 @@ flare=1808594799,
 proxmine=-1356724057,
 ball=-6986138,
 stickybomb=1411692055,
+rocketammo=1742569970,
+vulcanammo=2680539266,
 }
 local ammo_name={}
 for k,v in pairs(ammo_types) do
@@ -5932,7 +5934,7 @@ mgammo="Machinegun Ammunition",
 launchergrenade="40mm Grenade",
 clothes_marauder="Light Combat Clothes",
 clothes_camouflage="Light Camouflaged Clothes",
-armorplate="Armor Plate",
+armorplate="Level lV Plates",
 clothes_offdutysheriff="Camouflaged Raincoat",
 cowboyhat="Cowboy Hat",
 pmccap="Private Military Cap",
