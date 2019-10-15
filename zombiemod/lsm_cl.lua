@@ -7006,12 +7006,12 @@ local trunkrewards_tier6={
 }
 
 local deadbodiesrewards={
-[-681004504]={"NIGHTSTICK",1}, --security
-[1581098148]={"pistolammo",15}, --cop male
-[368603149]={"pistolammo",15}, --cop female
-[-673538407]={"HAMMER",1}, --construct
-[-277793362]={"REVOLVER",12}, --ranger m
-[-1614285257]={"REVOLVER",12}, --ranger f
+--[-681004504]={"NIGHTSTICK",1}, --security
+--[1581098148]={"pistolammo",15}, --cop male
+--[368603149]={"pistolammo",15}, --cop female
+--[-673538407]={"HAMMER",1}, --construct
+--[-277793362]={"REVOLVER",12}, --ranger m
+--[-1614285257]={"REVOLVER",12}, --ranger f
 
 [307287994]={"meat",6}, --mountain lion
 [-1788665315]={"meat",4}, --rottweiler
@@ -7043,6 +7043,7 @@ local deadbodiesrewards={
 [113504370]={"meat",15}, --tigershark
 [-1384627013]={"meat",3}, --westy
 }
+
 local inventory_items_chances={
 water={chance=80,text="This water is ~r~spoiled~s~."},
 juice={chance=15,text="This juice is ~r~spoiled~s~."},
@@ -7070,25 +7071,38 @@ fish={chance=10,text="This food is ~r~rotten~s~."},
 
 local randomloot={
 street_box={
+    {"lowcap",1},
+    {"clothes_trash",1},
+    {"tshirtmask",1},
+    {"tapemask",1},
+    {"scrapplastic",-5},
+    {"rags",-5},
+    {"scrapmetal",-5},
+    {"bandage",-3},
+    {"cash",-25},
+    {"trashfood",-2},
+    {"wrench",1},
+    {"bottle",1},
+    {"bat",1},
+    {"alcohol",1},
+    {"water",-2},
+    {"canfood",1},
+    {"electronicscrap",-5},
+    {"leadscrap",-5},
+    {"engineparts",1},
     {"juice",-3},
-    {"canfood",-3},
     {"soda",-3},
-    {"scrapmetal",-2},
-    {"snspistol",1},
+    {"vintagepistol",1},
     {"pistolammo",-30},
     {"flashlight",1},
     {"clothes_loner",1},
     {"crowbar",1},
-    {"wrench",1},
     {"tirerepair",1},
-    {"heavybarrel",1},
     {"lowcap",1},
     {"painkillers",-3},
-    {"radio",1},
     {"flaregun",1},
     {"flaregunammo",-20},
     {"cigarettes",-6},
-    {"chemicals",-3},
 },
 street_garbage={
     {"scrapplastic",-3},
@@ -7098,10 +7112,63 @@ street_garbage={
 	{"bottle",1},
 	{"clothes_trash",1},
 },
+weapon_box={
+    {"scope_thermal",1},
+    {"scope_nightvision",1},
+    {"heavybarrel",1},
+    {"muzzlebrake_1",1},
+    {"scope_compactholo",1},
+    {"scope_advanced",1},
+    {"scope_3",1},
+    {"scope_2",1},
+    {"scope_1",1},
+    {"suppressor_5",1},
+    {"suppressor_4",1},
+    {"suppressor_3",1},
+    {"suppressor_2",1},
+    {"suppressor_1",1},
+    {"flashlight_large",1},
+    {"flashlight_small",1},
+    {"grip",1},
+    {"snspistol",1},
+    {"vintagepistol",1},
+    {"pistol",1},
+    {"combatpistol",1},
+    {"doubleaction",1},
+    {"revolver",1},
+    {"heavypistol",1},
+    {"pistol50",1},
+    {"microsmg",1},
+    {"minismg",1},
+},
+body_armor={
+    {"level3asoftplate",-2},
+    {"level3plates",-2},
+    {"armorplate",-2},
+    {"bodyarmor",1},
+},
+repair_box={
+    {"tirerepair",-2},
+    {"engineparts",-7},
+},
+explosives_box={
+    {"leadscrap",-10},
+    {"industrialmetalscrap",-10},
+    {"industrialelectronicscrap",-10},
+    {"milspecelectronicscrap",-10},
+    {"milspecfabrics",-10},
+    {"milspecmetal",-10},
+    {"milspecplasticscrap",-10},
+    {"gunpowder",-10},
+},
 }
 
 local pickups_objects={
+--Medical Pickups
 [-509973344]={"medkit",1,"bandage",2,solid=true},--wall medkit
+[-2140074399]={"medkit",1}, --barber medkit
+
+--Food Pickups
 [-742198632]={"water",5,solid=true}, --water cooler
 [1541274880]={"soda",1}, -- cola 2 liters
 [-1982036471]={"soda",4}, --soda 4 in pack
@@ -7167,42 +7234,43 @@ local pickups_objects={
 [218661250]={"alcohol",1}, -- 1 cherenkov purple
 [-77406713]={"alcohol",1}, -- 1 cherenkov red
 [516891919]={"alcohol",1}, -- 1 cherenkov greyish
-[-1406045366]={"cigarettes",10}, -- 3 lines of cigs
-[759654580]={"cash",100,solid=true}, -- cash register
-[303280717]={"cash",200,solid=true}, -- cash register
+[-1922399062]={"food",3}, --burger shot packet
+[2127253708]={"juice",1}, --burger shot can
+[1165008631]={"mre",-5,solid=true}, --military crate blue eagle mre
+--[704797648]={"water",1}, -- small cactus
+[-1069975900]={"water",-3,solid=true}, --blue big barrel
+[1298403575]={"water",-4,solid=true}, --blue bigger barrel 2
 
-[1093460780]={"ammo",10}, --green open rifle thing
+--Cash Pickups
+[759654580]={"cash",-100,solid=true}, -- cash register
+[303280717]={"cash",-200,solid=true}, -- cash register
+[-449200111]={"cash",-100}, --100$ bill
+
+--Ammo Pickups
+[1093460780]={"ammo",-10}, --green open rifle thing
+[27391672]={"shotgunammo",-20}, -- box
+[-278834633]={"heavyrifleammo",-30}, -- box
+[1580014892]={"ammo",-40}, --green closed rifle thing
+[-1522670383]={"ammo",-200}, --found on carrier
+[1936480843]={"pistolammo",-50}, --green closed rifle thing
+[-1422265815]={randomloot.explosives_box,1}, --15green closed rifle thing
+[1824078756]={randomloot.explosives_box,1}, --10white closed rifle thing
+
+--Weapon Pickups
+[-1920611843]={randomloot.weapon_box,1}, --blue case
+[1430410579]={randomloot.weapon_box,1}, --white case
+[-868490170]={"gasmask",1}, --green closed rifle thing
 -- [2084498973]={"machete",1}, -- camo machete
 -- [1179681321]={"machete",1}, -- black machete
-[-1920611843]={"flashlight_small",1}, --blue case
-[1430410579]={"flashlight_large",1}, --white case
-[27391672]={"shotgunammo",20}, -- box
-[-278834633]={"heavyrifleammo",30}, -- box
-[1580014892]={"ammo",40}, --green closed rifle thing
-[-1522670383]={"ammo",200}, --found on carrier
-[1936480843]={"pistolammo",50}, --green closed rifle thing
-[-868490170]={"gasmask",1}, --green closed rifle thing
-[701173564]={"bodyarmor",1,"armorplate",2}, --light cool black
-[1111175276]={"bodyarmor",1,"armorplate",2}, --forest armor
-[-1779214373]={"bodyarmor",1,"armorplate",2}, --right up armor
-[-1497794201]={"bodyarmor",1,"armorplate",2}, --green armor
-[2022153476]={"bodyarmor",1,"armorplate",2}, --sand armor
 
-[-1422265815]={"gunpowder",2}, --15green closed rifle thing
-[1824078756]={"gunpowder",2}, --10white closed rifle thing
-
-[1158698200]={"engineparts",10}, --car battery
-[-2124552702]={"engineparts",1}, --car black fix box
-[-1532806025]={"gasoline",5}, --beige diesel
-[-449200111]={"cash",100}, --100$ bill
-
+--Barber Pickups
 [-1023683840]={"chemicals",1}, --barber 3 green small things
-[-2140074399]={"medkit",1}, --barber medkit
 [-1515174995]={"chemicals",3}, --barber 3 cyan
 [-1133354853]={"chemicals",1}, --barber 1 red
 [795984016]={"chemicals",1}, --barber 1 cyan white shampoo
 [202070568]={"chemicals",1}, --barber 1 cyan
 
+--Tattoo Pickups
 [1331928335]={"chemicals",20}, --tatoo dno uppershelf
 [990852227]={"cigarettes",1}, --tatoo dno red cigs
 [-511987637]={"chemicals",2}, --tatoo dno green bottle
@@ -7218,42 +7286,45 @@ local pickups_objects={
 [-1977709371]={"chemicals",30}, --tatoo norm 3 floor
 [-1020100884]={"chemicals",20}, --tatoo norm 3 floor corner
 
-[-276344022]={"aircraftfuel",5}, --red xero
-[786272259]={"gasoline",10}, --red metal canister
-[309108893]={"gasoline",8}, --white ron
-[544881832]={"chemicals",8}, --terroil
-[-239954748]={"aircraftfuel",2}, --motoroil but ok
-
-[-305885281]={"weed",3}, --weed small 
-[452618762]={"weed",6}, --weed high
-
-[-2031321722]={"revolver",1}, --sheriff station box handle with care
+--Tradeable PIckups
+[-305885281]={"weed",-3}, --weed small 
+[452618762]={"weed",-6}, --weed high
 [-445408901]={"policedocs",1}, --sheriff PAPERS docs
+[-1130190827]={"bandits_records",1}, --plastic thing with lists
+[-1406045366]={"cigarettes",-10}, -- 3 lines of cigs
+
+--Clothes Pickups
 [-1929385697]={"clothes_offdutysheriff",1,"cowboyhat",1}, --sheriff hat and clothes
 
-[-1922399062]={"food",3}, --burger shot packet
-[2127253708]={"juice",1}, --burger shot can
-
-[-1130190827]={"bandits_records",1}, --plastic thing with lists
+--Misc Pickups
 [1299967108]={"cues",1}, --wall cues
-
-[-1326111298]={"engineparts",10}, --red big open tools
-[-1674314660]={"engineparts",5}, --red closed tools
-[1871266393]={"engineparts",5}, --black closed tools
-[-738161850]={"engineparts",2}, --dark red closed
-
-[1165008631]={"mre",5,solid=true}, --military crate blue eagle mre
-
 [-66965919]={"flashlight",1}, --firefighters
 [-1964402432]={"radio",1},--carrier control room
 [-2011860718]={"tacticalglasses",1},--carrier control room
 
---[704797648]={"water",1}, -- small cactus
+--Armor Pickups
+[701173564]={randomloot.body_armor,1}, --light cool black
+[1111175276]={randomloot.body_armor,1}, --forest armor
+[-1779214373]={randomloot.body_armor,1}, --right up armor
+[-1497794201]={randomloot.body_armor,1}, --green armor
+[2022153476]={randomloot.body_armor,1}, --sand armor
 
-[-1069975900]={"water",3,solid=true}, --blue big barrel
-[1298403575]={"water",4,solid=true}, --blue bigger barrel 2
-[-1738103333]={"gasoline",2,solid=true}, -- metal barrel
+--Vehicle Pickups
+[-1326111298]={randomloot.repair_box,1}, --red big open tools
+[-1674314660]={randomloot.repair_box,1}, --red closed tools
+[1871266393]={randomloot.repair_box,1}, --black closed tools
+[-738161850]={randomloot.repair_box,1}, --dark red closed
+[-276344022]={"aircraftfuel",-5}, --red xero
+[786272259]={"gasoline",-10}, --red metal canister
+[309108893]={"gasoline",-8}, --white ron
+[544881832]={"chemicals",-8}, --terroil
+[-239954748]={"aircraftfuel",-2}, --motoroil but ok
+[1158698200]={"engineparts",-10}, --car battery
+[-2124552702]={"engineparts",-2}, --car black fix box
+[-1532806025]={"gasoline",-5}, --beige diesel
+[-1738103333]={"gasoline",-4,solid=true}, -- metal barrel
 
+--Box Pickups
 [-52732303]={randomloot.street_box,1}, --5 cardboard boxes
 [-1515940233]={randomloot.street_box,1}, --white line red fragile text
 [-1438964996]={randomloot.street_box,1}, --green FAN
@@ -7264,7 +7335,9 @@ local pickups_objects={
 [-939897404]={randomloot.street_box,1}, --few boxes + white thing
 [1280771616]={randomloot.street_box,1}, --a lot of boxes fragile on blue thing
 [1387151245]={randomloot.street_box,1,solid=true}, --boxes on metal thing
+[-2031321722]={randomloot.weapon_box,1}, --sheriff station box handle with care
 
+--Trash Pickups
 [1813879595]={randomloot.street_garbage,1}, --"small black trash bag",
 [1388308576]={randomloot.street_garbage,1},--"white trash bag",
 [1948359883]={randomloot.street_garbage,1},--"black trash bag",
