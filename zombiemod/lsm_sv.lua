@@ -787,6 +787,7 @@ local players_pos={}
 
 local raid_content={
 blackops={
+blueprint=1,
 roninmask=1,
 cash=1000,
 gasmask=8,
@@ -833,6 +834,7 @@ scope_nightvision=1,
 scope_thermal=1,
 },
 military={
+blueprint=1,
 cash=1000,
 mre=20,
 ammo=300,
@@ -868,6 +870,7 @@ scope_2=4,
 scope_3=4,
 },
 survivorstockpile={
+blueprint=1,
 cash=500,
 scrapplastic=100,
 scrapmetal=100,
@@ -915,6 +918,7 @@ gunpowder=10,
 },
 medical={
 medkit=10,
+bandage=20,
 painkillers=20,
 },
 provision={
@@ -926,8 +930,10 @@ mre=20,
 water=20,
 },
 governmentrelief={
+blueprint=1,
 flashlight=1,
 gasoline=40,
+bandage=10,
 gasmask=4,
 bodyarmor=2,
 gunpowder=30,
@@ -936,6 +942,7 @@ aircraftfuel=40,
 armorplate=4,
 },
 governmentweapons={
+blueprint=1,    
 pistolammo=200,
 shotgunammo=100,
 pistol=1,
@@ -947,6 +954,7 @@ marksmanrifle=1,
 smgammo=400,
 },
 marauderweapons={
+blueprint=1,
 pistolammo=200,
 shotgunammo=100,
 snspistol=1,
