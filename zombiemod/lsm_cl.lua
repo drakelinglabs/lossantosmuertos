@@ -2079,8 +2079,6 @@ flare=1808594799,
 proxmine=-1356724057,
 ball=-6986138,
 stickybomb=1411692055,
-rocketammo=1742569970,
-vulcanammo=2680539266,
 }
 local ammo_name={}
 for k,v in pairs(ammo_types) do
@@ -4043,7 +4041,9 @@ local safezones={
     {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=85,color=2,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
     name="Scavenger Settlement~s~",
+	extracion={x=-1111.5900878906,y=4937.0,z=218.38917541504},
     friends=true,
+	tradelistname="survivors",
     tradespace=5,
     trade={
         {"clothes_scavenger",1,"cash",750},
@@ -4309,6 +4309,7 @@ local safezones={
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
     name="Government Checkpoint~s~",
+	extraction={x=455.85806274414,y=-984.05700683594,z=43.691688537598},
     friends=true,
     tradespace=4,
     trade={
@@ -4662,6 +4663,7 @@ local safezones={
     {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=86,color=5,
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Marauder Fortress~s~",
+	extraction={x=1690.7955322266,y=2646.1235351563,z=54.579902648926},
     tradespace=4,
     trade={
         {"clothes_banditgoon",1,"cash",750},
@@ -4859,6 +4861,7 @@ local safezones={
     {x=-2079.6791992188,y=3112.3244628906,z=32.28897857666,r=500.0,blip=93,color=2,
     models={1657546978,-220552467,1702441027,-265970301,1490458366,1925237458},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Military Outpost~s~",
+	extraction={x=-2345.5778808594,y=3232.2980957031,z=34.742935180664},
     tradespace=4,
     trade={
         {"clothes_pmc",1,"cash",4000},
@@ -5084,6 +5087,7 @@ local safezones={
     {x=-477.89663696289,y=-1708.9427490234,z=18.171932220459,r=100.0,blip=94,color=4,
     models={1885233650},
     name="Mercenary Base~s~",
+	extraction={x=-441.30157470703,y=-1695.2406005859,z=19.008533477783},
     tradespace=4,
     trade={
         {"clothes_combat_desert",1,"cash",4500},
@@ -6090,7 +6094,7 @@ mgammo="Machinegun Ammunition",
 launchergrenade="40mm Grenade",
 clothes_marauder="Light Combat Clothes",
 clothes_camouflage="Light Camouflaged Clothes",
-armorplate="Level lV Plates",
+armorplate="Armor Plate",
 clothes_offdutysheriff="Camouflaged Raincoat",
 cowboyhat="Cowboy Hat",
 pmccap="Private Military Cap",
@@ -12018,6 +12022,7 @@ Citizen.CreateThread(function()
                     inventory.highlight=255
                     local current_trade=1
                     local scroll=1
+					TriggerServerEvent("request_trade_table",zone.tradelistname)
                     while true do Wait(0)
                         local inv_index_price=0
                         local inv_index_goods=0
@@ -12526,6 +12531,16 @@ Citizen.CreateThread(function()
 					end
 				end
 					
+			elseif zone~=nil and zone.extraction~=nil and in_radius(mypos,zone.extraction,1) then 
+                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
+					if player.faction==zone.relationship then
+						--- EXTRACTION CODE HERE
+					else
+						SimpleNotification("You cannot use faction extraction point.")
+					end
+				else
+					SimpleNotification("You can not use enemy extraction points storages.")
+				end
             elseif zone~=nil and zone.storagepos~=nil and zone.storagename~=nil and in_radius(mypos,zone.storagepos,1) then 
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 					if player.faction==zone.relationship then
@@ -18899,6 +18914,16 @@ Citizen.CreateThread(function()
 			elseif IsControlJustPressed(0,14) then
 				--renderFPcam(0)
 			end
+	end
+end)
+
+
+RegisterNetEvent("updatetradelist")
+AddEventHandler("updatetradelist",function(zonetradename,list)
+    for k,v in pairs(safezones) do 
+		if v.tradelistname==zonetradename then
+			v.trade=list
+		end
 	end
 end)
 -- Citizen.CreateThread(function()
