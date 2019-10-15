@@ -2,6 +2,30 @@ local devmode=(GetConvarInt("lsm_devmode",0)~=0)
 
 local event={debug="dfhjsfj"}
 
+local function range(a,b,except)
+    local ret={}
+    if except~=nil then
+        local blacklist={}
+        if type(except)=="table" then
+            for k,v in pairs(except) do
+                blacklist[v]=true
+            end
+        else
+            blacklist[except]=true
+        end
+        for i=a,b do
+            if not blacklist[i] then
+                table.insert(ret,i)
+            end
+        end
+    else
+        for i=a,b do
+            table.insert(ret,i)
+        end
+    end
+    return ret
+end
+
 Citizen.CreateThread(function()
     --RegisterServerEvent("garages:init")
     --AddEventHandler("garages:init", function()
@@ -739,9 +763,37 @@ trades.tiers[4].survivors={
 	maxprice=1500},
 }
 
--- Server sided random trades
--- so basically list is made out of randomly chosen items from tiers
--- ITEM    AMOUNT    PRICE     MIN     MAX
+trades.chopshops={}
+trades.chopshops.survivors={
+	{chance=3, --means 1 out of 3, so 33%; chance=10 means 1 out of 10, so 10%
+	vehname="imperator",
+	priceitem="cash",
+	minprice=250,
+	maxprice=750,
+	 mods={
+	 [28]=1,
+	 [48]=range(0,3),
+	 },
+	},
+	
+}
+
+local function generate_chopshop_list(faction)
+	local list={}
+	local index=0
+	for k,v in pairs(trades.chopshops[faction]) do
+		if math.random(1,v.chance)==1 then
+			index=index+1
+			list[index]={
+			[1]=v.vehname,
+			[2]=v.priceitem,
+			[3]=math.random(v.minprice,v.maxprice),
+			}
+			list[index].mods=v.mods
+		end
+	end
+	return list
+end
 
 local function generate_trade_list(faction)
 	local list={}
@@ -767,12 +819,22 @@ local function generate_trade_list(faction)
 end
 
 trades.survivors={}
-trades.survivors=generate_trade_list("survivors")
+trades.survivors.trade={}
+trades.survivors.trade=generate_trade_list("survivors")
+trades.survivors.chopshop={}
+trades.survivors.chopshop=generate_chopshop_list("survivors")
 
 RegisterServerEvent("request_trade_table")
 AddEventHandler("request_trade_table",function(tradelistname)
-	if trades[tradelistname] then
-		TriggerClientEvent("updatetradelist",source,tradelistname,trades[tradelistname])
+	if trades[tradelistname] and trades[tradelistname].trade then
+		TriggerClientEvent("updatetradelist",source,tradelistname,trades[tradelistname].trade)
+	end
+end)
+
+RegisterServerEvent("request_vehshop_table")
+AddEventHandler("request_vehshop_table",function(tradelistname)
+	if trades[tradelistname] and trades[tradelistname].chopshop then
+		TriggerClientEvent("updatevehshoplist",source,tradelistname,trades[tradelistname].chopshop)
 	end
 end)
 -- print("========================================")
@@ -787,7 +849,6 @@ local players_pos={}
 
 local raid_content={
 blackops={
-blueprint=1,
 roninmask=1,
 cash=1000,
 gasmask=8,
@@ -834,7 +895,6 @@ scope_nightvision=1,
 scope_thermal=1,
 },
 military={
-blueprint=1,
 cash=1000,
 mre=20,
 ammo=300,
@@ -870,7 +930,6 @@ scope_2=4,
 scope_3=4,
 },
 survivorstockpile={
-blueprint=1,
 cash=500,
 scrapplastic=100,
 scrapmetal=100,
@@ -918,7 +977,6 @@ gunpowder=10,
 },
 medical={
 medkit=10,
-bandage=20,
 painkillers=20,
 },
 provision={
@@ -930,10 +988,8 @@ mre=20,
 water=20,
 },
 governmentrelief={
-blueprint=1,
 flashlight=1,
 gasoline=40,
-bandage=10,
 gasmask=4,
 bodyarmor=2,
 gunpowder=30,
@@ -942,7 +998,6 @@ aircraftfuel=40,
 armorplate=4,
 },
 governmentweapons={
-blueprint=1,    
 pistolammo=200,
 shotgunammo=100,
 pistol=1,
@@ -954,7 +1009,6 @@ marksmanrifle=1,
 smgammo=400,
 },
 marauderweapons={
-blueprint=1,
 pistolammo=200,
 shotgunammo=100,
 snspistol=1,
