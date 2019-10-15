@@ -4854,7 +4854,24 @@ local safezones={
 
     relationship="BANDIT"},--Prison
 	
-	
+--Smugglers base
+----------------------------------------------------
+    {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=469,color=4,
+    models={1885233650},
+    name="Smugglers Camp",
+    extraction={x=2232.3471679688,y=5611.4184570313,z=54.914485931396},
+    tradepos={x=2221.4025878906,y=5614.6494140625,z=54.901615142822},
+    factionjoinpos={x=2224.2741699219,y=5604.5356445313,z=54.927871704102},
+    factionjoin={cost=},
+    storagepos={x=2192.8664550781,y=5598.0258789063,z=53.746047973633},
+    storagename="",
+    craftpos={x=2194.7612304688,y=5595.3881835938,z=53.762287139893},
+    weapons=weapons.mercenaries,
+    garagename="",
+    garagepos={x=2202.8256835938,y=5561.177734375,z=53.95454788208},
+    vehpos={x=2196.3247070313,y=5608.0581054688,z=53.495838165283}, --chopshop position
+    relationship="SMUGGLERS",
+}
 	
 	---military base
 ----------------------------------------------------
