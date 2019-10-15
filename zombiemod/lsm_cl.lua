@@ -3185,6 +3185,26 @@ local relationship_requirements={
         -- end
     -- end
 -- end
+extraction={
+{x=-1609.5236816406,y=5258.9194335938,z=3.9741017818451,r=2.0},
+{x=2824.3920898438,y=-748.71466064453,z=1.5879430770874,r=2.0},
+{x=-1803.7950439453,y=-1229.6433105469,z=1.5942938327789,r=2.0},
+}
+
+-- air
+-- {x=1303.2777099609,y=4358.4536132813,z=-193.69143676758},
+-- {x=980.90032958984,y=2330.0258789063,z=-195.55923461914},
+
+extraction_spawns={
+{x=-3132.7097167969,y=3715.3798828125,z=1.9997624158859,angle=218.88287353516},
+{x=-923.96728515625,y=6674.509765625,z=1.789999961853,angle=224.63050842285},
+{x=1961.4853515625,y=7054.9809570313,z=1.789999961853,angle=192.7882232666},
+{x=3549.5229492188,y=5677.9975585938,z=1.789999961853,angle=111.76022338867},
+{x=4157.2338867188,y=3343.8518066406,z=1.789999961853,angle=69.952743530273},
+{x=3414.9748535156,y=300.43109130859,z=2.8899998664856,angle=73.988624572754},
+{x=-3338.015625,y=592.30609130859,z=1.789999961853,angle=270.37200927734},
+}
+
 
 local npc_items_pricelist={
 water=15,
@@ -3468,6 +3488,8 @@ player.brasscatcher=false
 player.radio=false
 player.bleeding=0
 player.reputation=GetResourceKvpInt("reputation") or 40
+player.faction=GetResourceKvpInt("player_faction") or nil
+print("loaded player faction "..player.faction or "nil")
 player.standardweight=35.0
 player.maxweight=35.0
 player.weight=0.0
@@ -3508,6 +3530,7 @@ player.suit=return_player_standard_outfit()
 	-- local myped=PlayerPedId()
 	-- SetPedRelationshipGroupHash(myped,GetHashKey(rel))
 -- end
+
 
 
 local weaponsarray={
@@ -4041,7 +4064,7 @@ local safezones={
     {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=85,color=2,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
     name="Scavenger Settlement~s~",
-	extracion={x=-1111.5900878906,y=4937.0,z=218.38917541504},
+	extraction={x=-1111.5900878906,y=4937.0,z=218.38917541504,r=3.0},
     friends=true,
 	tradelistname="survivors",
     tradespace=5,
@@ -4309,7 +4332,7 @@ local safezones={
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
     name="Government Checkpoint~s~",
-	extraction={x=455.85806274414,y=-984.05700683594,z=43.691688537598},
+	extraction={x=455.85806274414,y=-984.05700683594,z=43.691688537598,r=3.0},
     friends=true,
     tradespace=4,
     trade={
@@ -4663,7 +4686,7 @@ local safezones={
     {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=86,color=5,
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Marauder Fortress~s~",
-	extraction={x=1690.7955322266,y=2646.1235351563,z=54.579902648926},
+	extraction={x=1690.7955322266,y=2646.1235351563,z=54.579902648926,r=3.0},
     tradespace=4,
     trade={
         {"clothes_banditgoon",1,"cash",750},
@@ -4854,31 +4877,14 @@ local safezones={
 
     relationship="BANDIT"},--Prison
 	
---Smugglers base
-----------------------------------------------------
-    {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=469,color=4,
-    models={1885233650},
-    name="Smugglers Camp",
-    extraction={x=2232.3471679688,y=5611.4184570313,z=54.914485931396},
-    tradepos={x=2221.4025878906,y=5614.6494140625,z=54.901615142822},
-    factionjoinpos={x=2224.2741699219,y=5604.5356445313,z=54.927871704102},
-    factionjoin={cost=},
-    storagepos={x=2192.8664550781,y=5598.0258789063,z=53.746047973633},
-    storagename="",
-    craftpos={x=2194.7612304688,y=5595.3881835938,z=53.762287139893},
-    weapons=weapons.mercenaries,
-    garagename="",
-    garagepos={x=2202.8256835938,y=5561.177734375,z=53.95454788208},
-    vehpos={x=2196.3247070313,y=5608.0581054688,z=53.495838165283}, --chopshop position
-    relationship="SMUGGLERS",
-}
+	
 	
 	---military base
 ----------------------------------------------------
     {x=-2079.6791992188,y=3112.3244628906,z=32.28897857666,r=500.0,blip=93,color=2,
     models={1657546978,-220552467,1702441027,-265970301,1490458366,1925237458},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Military Outpost~s~",
-	extraction={x=-2345.5778808594,y=3232.2980957031,z=34.742935180664},
+	extraction={x=-2345.5778808594,y=3232.2980957031,z=34.742935180664,r=3.0},
     tradespace=4,
     trade={
         {"clothes_pmc",1,"cash",4000},
@@ -5104,7 +5110,7 @@ local safezones={
     {x=-477.89663696289,y=-1708.9427490234,z=18.171932220459,r=100.0,blip=94,color=4,
     models={1885233650},
     name="Mercenary Base~s~",
-	extraction={x=-441.30157470703,y=-1695.2406005859,z=19.008533477783},
+	extraction={x=-441.30157470703,y=-1695.2406005859,z=19.008533477783,r=3.0},
     tradespace=4,
     trade={
         {"clothes_combat_desert",1,"cash",4500},
@@ -7027,12 +7033,12 @@ local trunkrewards_tier6={
 }
 
 local deadbodiesrewards={
---[-681004504]={"NIGHTSTICK",1}, --security
---[1581098148]={"pistolammo",15}, --cop male
---[368603149]={"pistolammo",15}, --cop female
---[-673538407]={"HAMMER",1}, --construct
---[-277793362]={"REVOLVER",12}, --ranger m
---[-1614285257]={"REVOLVER",12}, --ranger f
+[-681004504]={"NIGHTSTICK",1}, --security
+[1581098148]={"pistolammo",15}, --cop male
+[368603149]={"pistolammo",15}, --cop female
+[-673538407]={"HAMMER",1}, --construct
+[-277793362]={"REVOLVER",12}, --ranger m
+[-1614285257]={"REVOLVER",12}, --ranger f
 
 [307287994]={"meat",6}, --mountain lion
 [-1788665315]={"meat",4}, --rottweiler
@@ -7064,7 +7070,6 @@ local deadbodiesrewards={
 [113504370]={"meat",15}, --tigershark
 [-1384627013]={"meat",3}, --westy
 }
-
 local inventory_items_chances={
 water={chance=80,text="This water is ~r~spoiled~s~."},
 juice={chance=15,text="This juice is ~r~spoiled~s~."},
@@ -7092,38 +7097,25 @@ fish={chance=10,text="This food is ~r~rotten~s~."},
 
 local randomloot={
 street_box={
-    {"lowcap",1},
-    {"clothes_trash",1},
-    {"tshirtmask",1},
-    {"tapemask",1},
-    {"scrapplastic",-5},
-    {"rags",-5},
-    {"scrapmetal",-5},
-    {"bandage",-3},
-    {"cash",-25},
-    {"trashfood",-2},
-    {"wrench",1},
-    {"bottle",1},
-    {"bat",1},
-    {"alcohol",1},
-    {"water",-2},
-    {"canfood",1},
-    {"electronicscrap",-5},
-    {"leadscrap",-5},
-    {"engineparts",1},
     {"juice",-3},
+    {"canfood",-3},
     {"soda",-3},
-    {"vintagepistol",1},
+    {"scrapmetal",-2},
+    {"snspistol",1},
     {"pistolammo",-30},
     {"flashlight",1},
     {"clothes_loner",1},
     {"crowbar",1},
+    {"wrench",1},
     {"tirerepair",1},
+    {"heavybarrel",1},
     {"lowcap",1},
     {"painkillers",-3},
+    {"radio",1},
     {"flaregun",1},
     {"flaregunammo",-20},
     {"cigarettes",-6},
+    {"chemicals",-3},
 },
 street_garbage={
     {"scrapplastic",-3},
@@ -7133,63 +7125,10 @@ street_garbage={
 	{"bottle",1},
 	{"clothes_trash",1},
 },
-weapon_box={
-    {"scope_thermal",1},
-    {"scope_nightvision",1},
-    {"heavybarrel",1},
-    {"muzzlebrake_1",1},
-    {"scope_compactholo",1},
-    {"scope_advanced",1},
-    {"scope_3",1},
-    {"scope_2",1},
-    {"scope_1",1},
-    {"suppressor_5",1},
-    {"suppressor_4",1},
-    {"suppressor_3",1},
-    {"suppressor_2",1},
-    {"suppressor_1",1},
-    {"flashlight_large",1},
-    {"flashlight_small",1},
-    {"grip",1},
-    {"snspistol",1},
-    {"vintagepistol",1},
-    {"pistol",1},
-    {"combatpistol",1},
-    {"doubleaction",1},
-    {"revolver",1},
-    {"heavypistol",1},
-    {"pistol50",1},
-    {"microsmg",1},
-    {"minismg",1},
-},
-body_armor={
-    {"level3asoftplate",-2},
-    {"level3plates",-2},
-    {"armorplate",-2},
-    {"bodyarmor",1},
-},
-repair_box={
-    {"tirerepair",-2},
-    {"engineparts",-7},
-},
-explosives_box={
-    {"leadscrap",-10},
-    {"industrialmetalscrap",-10},
-    {"industrialelectronicscrap",-10},
-    {"milspecelectronicscrap",-10},
-    {"milspecfabrics",-10},
-    {"milspecmetal",-10},
-    {"milspecplasticscrap",-10},
-    {"gunpowder",-10},
-},
 }
 
 local pickups_objects={
---Medical Pickups
 [-509973344]={"medkit",1,"bandage",2,solid=true},--wall medkit
-[-2140074399]={"medkit",1}, --barber medkit
-
---Food Pickups
 [-742198632]={"water",5,solid=true}, --water cooler
 [1541274880]={"soda",1}, -- cola 2 liters
 [-1982036471]={"soda",4}, --soda 4 in pack
@@ -7255,43 +7194,42 @@ local pickups_objects={
 [218661250]={"alcohol",1}, -- 1 cherenkov purple
 [-77406713]={"alcohol",1}, -- 1 cherenkov red
 [516891919]={"alcohol",1}, -- 1 cherenkov greyish
-[-1922399062]={"food",3}, --burger shot packet
-[2127253708]={"juice",1}, --burger shot can
-[1165008631]={"mre",-5,solid=true}, --military crate blue eagle mre
---[704797648]={"water",1}, -- small cactus
-[-1069975900]={"water",-3,solid=true}, --blue big barrel
-[1298403575]={"water",-4,solid=true}, --blue bigger barrel 2
+[-1406045366]={"cigarettes",10}, -- 3 lines of cigs
+[759654580]={"cash",100,solid=true}, -- cash register
+[303280717]={"cash",200,solid=true}, -- cash register
 
---Cash Pickups
-[759654580]={"cash",-100,solid=true}, -- cash register
-[303280717]={"cash",-200,solid=true}, -- cash register
-[-449200111]={"cash",-100}, --100$ bill
-
---Ammo Pickups
-[1093460780]={"ammo",-10}, --green open rifle thing
-[27391672]={"shotgunammo",-20}, -- box
-[-278834633]={"heavyrifleammo",-30}, -- box
-[1580014892]={"ammo",-40}, --green closed rifle thing
-[-1522670383]={"ammo",-200}, --found on carrier
-[1936480843]={"pistolammo",-50}, --green closed rifle thing
-[-1422265815]={randomloot.explosives_box,1}, --15green closed rifle thing
-[1824078756]={randomloot.explosives_box,1}, --10white closed rifle thing
-
---Weapon Pickups
-[-1920611843]={randomloot.weapon_box,1}, --blue case
-[1430410579]={randomloot.weapon_box,1}, --white case
-[-868490170]={"gasmask",1}, --green closed rifle thing
+[1093460780]={"ammo",10}, --green open rifle thing
 -- [2084498973]={"machete",1}, -- camo machete
 -- [1179681321]={"machete",1}, -- black machete
+[-1920611843]={"flashlight_small",1}, --blue case
+[1430410579]={"flashlight_large",1}, --white case
+[27391672]={"shotgunammo",20}, -- box
+[-278834633]={"heavyrifleammo",30}, -- box
+[1580014892]={"ammo",40}, --green closed rifle thing
+[-1522670383]={"ammo",200}, --found on carrier
+[1936480843]={"pistolammo",50}, --green closed rifle thing
+[-868490170]={"gasmask",1}, --green closed rifle thing
+[701173564]={"bodyarmor",1,"armorplate",2}, --light cool black
+[1111175276]={"bodyarmor",1,"armorplate",2}, --forest armor
+[-1779214373]={"bodyarmor",1,"armorplate",2}, --right up armor
+[-1497794201]={"bodyarmor",1,"armorplate",2}, --green armor
+[2022153476]={"bodyarmor",1,"armorplate",2}, --sand armor
 
---Barber Pickups
+[-1422265815]={"gunpowder",2}, --15green closed rifle thing
+[1824078756]={"gunpowder",2}, --10white closed rifle thing
+
+[1158698200]={"engineparts",10}, --car battery
+[-2124552702]={"engineparts",1}, --car black fix box
+[-1532806025]={"gasoline",5}, --beige diesel
+[-449200111]={"cash",100}, --100$ bill
+
 [-1023683840]={"chemicals",1}, --barber 3 green small things
+[-2140074399]={"medkit",1}, --barber medkit
 [-1515174995]={"chemicals",3}, --barber 3 cyan
 [-1133354853]={"chemicals",1}, --barber 1 red
 [795984016]={"chemicals",1}, --barber 1 cyan white shampoo
 [202070568]={"chemicals",1}, --barber 1 cyan
 
---Tattoo Pickups
 [1331928335]={"chemicals",20}, --tatoo dno uppershelf
 [990852227]={"cigarettes",1}, --tatoo dno red cigs
 [-511987637]={"chemicals",2}, --tatoo dno green bottle
@@ -7307,45 +7245,42 @@ local pickups_objects={
 [-1977709371]={"chemicals",30}, --tatoo norm 3 floor
 [-1020100884]={"chemicals",20}, --tatoo norm 3 floor corner
 
---Tradeable PIckups
-[-305885281]={"weed",-3}, --weed small 
-[452618762]={"weed",-6}, --weed high
-[-445408901]={"policedocs",1}, --sheriff PAPERS docs
-[-1130190827]={"bandits_records",1}, --plastic thing with lists
-[-1406045366]={"cigarettes",-10}, -- 3 lines of cigs
+[-276344022]={"aircraftfuel",5}, --red xero
+[786272259]={"gasoline",10}, --red metal canister
+[309108893]={"gasoline",8}, --white ron
+[544881832]={"chemicals",8}, --terroil
+[-239954748]={"aircraftfuel",2}, --motoroil but ok
 
---Clothes Pickups
+[-305885281]={"weed",3}, --weed small 
+[452618762]={"weed",6}, --weed high
+
+[-2031321722]={"revolver",1}, --sheriff station box handle with care
+[-445408901]={"policedocs",1}, --sheriff PAPERS docs
 [-1929385697]={"clothes_offdutysheriff",1,"cowboyhat",1}, --sheriff hat and clothes
 
---Misc Pickups
+[-1922399062]={"food",3}, --burger shot packet
+[2127253708]={"juice",1}, --burger shot can
+
+[-1130190827]={"bandits_records",1}, --plastic thing with lists
 [1299967108]={"cues",1}, --wall cues
+
+[-1326111298]={"engineparts",10}, --red big open tools
+[-1674314660]={"engineparts",5}, --red closed tools
+[1871266393]={"engineparts",5}, --black closed tools
+[-738161850]={"engineparts",2}, --dark red closed
+
+[1165008631]={"mre",5,solid=true}, --military crate blue eagle mre
+
 [-66965919]={"flashlight",1}, --firefighters
 [-1964402432]={"radio",1},--carrier control room
 [-2011860718]={"tacticalglasses",1},--carrier control room
 
---Armor Pickups
-[701173564]={randomloot.body_armor,1}, --light cool black
-[1111175276]={randomloot.body_armor,1}, --forest armor
-[-1779214373]={randomloot.body_armor,1}, --right up armor
-[-1497794201]={randomloot.body_armor,1}, --green armor
-[2022153476]={randomloot.body_armor,1}, --sand armor
+--[704797648]={"water",1}, -- small cactus
 
---Vehicle Pickups
-[-1326111298]={randomloot.repair_box,1}, --red big open tools
-[-1674314660]={randomloot.repair_box,1}, --red closed tools
-[1871266393]={randomloot.repair_box,1}, --black closed tools
-[-738161850]={randomloot.repair_box,1}, --dark red closed
-[-276344022]={"aircraftfuel",-5}, --red xero
-[786272259]={"gasoline",-10}, --red metal canister
-[309108893]={"gasoline",-8}, --white ron
-[544881832]={"chemicals",-8}, --terroil
-[-239954748]={"aircraftfuel",-2}, --motoroil but ok
-[1158698200]={"engineparts",-10}, --car battery
-[-2124552702]={"engineparts",-2}, --car black fix box
-[-1532806025]={"gasoline",-5}, --beige diesel
-[-1738103333]={"gasoline",-4,solid=true}, -- metal barrel
+[-1069975900]={"water",3,solid=true}, --blue big barrel
+[1298403575]={"water",4,solid=true}, --blue bigger barrel 2
+[-1738103333]={"gasoline",2,solid=true}, -- metal barrel
 
---Box Pickups
 [-52732303]={randomloot.street_box,1}, --5 cardboard boxes
 [-1515940233]={randomloot.street_box,1}, --white line red fragile text
 [-1438964996]={randomloot.street_box,1}, --green FAN
@@ -7356,9 +7291,7 @@ local pickups_objects={
 [-939897404]={randomloot.street_box,1}, --few boxes + white thing
 [1280771616]={randomloot.street_box,1}, --a lot of boxes fragile on blue thing
 [1387151245]={randomloot.street_box,1,solid=true}, --boxes on metal thing
-[-2031321722]={randomloot.weapon_box,1}, --sheriff station box handle with care
 
---Trash Pickups
 [1813879595]={randomloot.street_garbage,1}, --"small black trash bag",
 [1388308576]={randomloot.street_garbage,1},--"white trash bag",
 [1948359883]={randomloot.street_garbage,1},--"black trash bag",
@@ -8680,7 +8613,7 @@ Citizen.CreateThread(function()
             loop=(handle~=-1)
             while loop do
                 local model=GetEntityModel(obj)
-				if pickups_objects[model] then
+				if pickups_objects[model] and not is_in_safe_zone(mypos.x,mypos.y,mypos.z) then
 					local prop=pickups_objects[model]
                     if not prop.spoiled and not DecorExistOn(obj,"zm_looted") then
                         local objpos=GetEntityCoords(obj)
@@ -10628,6 +10561,151 @@ end)
     -- end
 -- end)
 
+function player_extraction(v)
+	local myped=PlayerPedId()
+	local mypos
+	local d,dx,dy,dz
+	--local myweapon=GetSelectedPedWeapon(myped)
+	--strip_weapon_upgrades(myweapon)
+	--unload_weapon(myweapon)
+	-- for k,v in pairs(weapons) do
+		-- local weapon_hash=GetHashKey("weapon_"..k)
+		-- if not IsWeaponValid(weapon_hash) then
+			-- weapon_hash=GetHashKey("gadget_"..k)
+			-- if not IsWeaponValid(weapon_hash) then
+				-- weapon_hash=GetHashKey(k)
+				-- if not IsWeaponValid(weapon_hash) then
+					-- weapon_hash=nil
+				-- end
+			-- end
+		-- end
+		-- if weapon_hash~=nil and HasPedGotWeapon(myped,weapon_hash) then
+			-- strip_weapon_upgrades(weapon_hash)
+		-- end
+	-- end
+	TriggerServerEvent("updateplayerloot",nil)
+	local rnd=math.random(1,#extraction_spawns)
+	enable_kvp_saving()
+	
+	SetResourceKvpFloat("x",extraction_spawns[rnd].x)
+	SetResourceKvpFloat("y",extraction_spawns[rnd].y)
+	SetResourceKvpFloat("z",extraction_spawns[rnd].z)
+	SetResourceKvpFloat("angle",extraction_spawns[rnd].angle)
+	SetResourceKvpInt("spawnvehmodel",276773164)
+	
+	-- for weapon_name,weapon_hash in pairs(weapons) do
+		-- if weapon_hash~=nil and HasPedGotWeapon(myped,weapon_hash) then
+			-- for upgrade_name,v in pairs(weapon_upgrades) do
+				-- local upgrade_hash=v[weapon_hash]
+				-- if upgrade_hash~=nil then
+					-- local concname=string.format('_%x%x',weapon_hash&0xFFFFFFFF,upgrade_hash&0xFFFFFFFF)
+					-- if HasPedGotWeaponComponent(myped, weapon_hash, upgrade_hash) then
+						-- SetResourceKvpInt(concname,1)
+						-- print("save weapon with component:"..concname)
+					-- else
+						-- DeleteResourceKvp(concname)
+					-- end
+				-- end
+			-- end
+			-- SetResourceKvpInt(weapon_name,1)
+		-- else
+			-- DeleteResourceKvp(weapon_name)
+		-- end
+	-- end
+	-- for k,v in pairs(ammo_types) do
+		-- local ammo=GetPedAmmoByType(myped,v)
+		-- if ammo>0 then
+			-- SetResourceKvpInt(k,ammo)
+		-- else
+			-- DeleteResourceKvp(k)
+		-- end
+	-- end
+	SetResourceKvpInt("inventory_total",inventory.total)
+	SetResourceKvpInt("inventory_current",inventory.current)
+	for i=1,inventory.max do
+		if not inventory[i] then
+			DeleteResourceKvp("inventory_item_"..i)
+		else
+			SetResourceKvp("inventory_item_"..i,inventory[i].item)
+			SetResourceKvpInt("inventory_amount_"..i,inventory[i].amount)
+		end
+	end
+	if player.suit then
+		if get_inventory_item_slot("clothes_"..player.suit) then
+			SetResourceKvp("suit",player.suit)
+		else
+			DeleteResourceKvp("suit")
+		end
+	else
+		DeleteResourceKvp("suit")
+	end
+	if player.hat then
+		if get_inventory_item_slot(player.hat) then
+			SetResourceKvp("hat",player.hat)
+		end
+	else
+		DeleteResourceKvp("hat")
+	end
+	if player.mask then
+		if get_inventory_item_slot(player.mask) then
+			SetResourceKvp("mask",player.mask)
+		end
+	else
+		DeleteResourceKvp("mask")
+	end
+	if player.backpack then
+		if get_inventory_item_slot("duffelbag") then
+			SetResourceKvp("backpack",tostring(player.backpack))
+		end
+	else
+		DeleteResourceKvp("backpack")
+	end
+	if player.bodyarmor then
+		if get_inventory_item_slot("bodyarmor") then
+			SetResourceKvp("bodyarmor",tostring(player.bodyarmor))
+		end
+	else
+		DeleteResourceKvp("bodyarmor")
+	end
+	local armour=GetPedArmour(myped)
+	SetResourceKvpInt("armour",armour)
+	
+	
+	for _,zone in pairs(safezones) do
+		if zone.storagepos and zone.storagename then
+			local name="st_"..zone.storagename
+			local inventory=name
+			SetResourceKvpInt(name.."_total",inventory.total)
+			SetResourceKvpInt(name.."_current",inventory.current)
+			local imax=0
+			for k,v in pairs(item_names) do
+				imax=imax+1
+			end
+			for i=1,imax do
+				if not inventory[i] then
+					DeleteResourceKvp(name.."_item_"..i)
+				else
+					SetResourceKvp(name.."_item_"..i,inventory[i].item)
+					SetResourceKvpInt(name.."_amount_"..i,inventory[i].amount)
+				end
+			end
+		end
+	end
+	
+	Wait(500)
+	TriggerServerEvent("extracted")
+	
+	repeat Wait(0)
+		WriteHint(9,"~g~You can leave server now")
+		mypos=GetEntityCoords(myped)
+		dx,dy,dz=mypos.x-v.x,mypos.y-v.y,mypos.z-v.z
+	until dx*dx+dy*dy+dz*dz>v.r*3
+	Wait(20000)
+	disable_kvp_saving()
+	send_player_loot()
+	SimpleNotification("Saving aborted.")
+end
+
 
 local prop_mb_crate_01a=GetHashKey("prop_mb_crate_01a")
 Citizen.CreateThread(function()
@@ -11775,6 +11853,7 @@ Citizen.CreateThread(function()
                     local current_menu=0
 					local current_trade=1
                     local scroll=1
+					TriggerServerEvent("request_vehshop_table",zone.tradelistname)
                     while true do Wait(0)
                         inventory.highlight=0
                         pped=PlayerPedId()
@@ -12032,7 +12111,7 @@ Citizen.CreateThread(function()
                 else
                     SimpleNotification("You can not receive new free provision yet.")
                 end
-            elseif zone~=nil and not zone.raided and zone.tradepos~=nil and in_radius(mypos,zone.tradepos,5) then
+            elseif zone~=nil and not zone.raided and zone.tradepos~=nil and in_radius(mypos,zone.tradepos,3) then
                 --trade
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                     --print("trade open")
@@ -12543,6 +12622,10 @@ Citizen.CreateThread(function()
 						--SwitchFaction(zone.relationship)
 						--SetPedRelationshipGroupHash(pped,zone.relationship)
 						player.faction=zone.relationship
+						saving_kvp_mode.SetResourceKvpInt("player_faction",player.faction)
+						print("saving player faction "..player.faction)
+						FlashMinimapDisplay()
+						SimpleNotification("You have joined faction")
 					else
 						SimpleNotification("Not enough cash.")
 					end
@@ -12552,6 +12635,7 @@ Citizen.CreateThread(function()
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 					if player.faction==zone.relationship then
 						--- EXTRACTION CODE HERE
+						player_extraction(zone.extraction)
 					else
 						SimpleNotification("You cannot use faction extraction point.")
 					end
@@ -14037,6 +14121,7 @@ Citizen.CreateThread(function()
     local traderblip
     local ransackblip
     local joinfactionblip
+	local extractionblip
     local vehblip
     local garageblip
     local clothesblip
@@ -14100,6 +14185,17 @@ Citizen.CreateThread(function()
 						SetBlipDisplay(joinfactionblip,5)
                         SetBlipColour(joinfactionblip,67)
                         if enemybase then SetBlipColour(joinfactionblip,55) end
+                    end
+                end
+                if zone.extraction~=nil and not zone.raided then
+                    if extractionblip~=nil then
+                        SetBlipCoords(extractionblip,zone.extraction.x,zone.extraction.y,zone.extraction.z)
+                    else
+                        extractionblip=AddBlipForCoord(zone.extraction.x,zone.extraction.y,zone.extraction.z)
+                        SetBlipSprite(extractionblip,126)
+						SetBlipDisplay(extractionblip,5)
+                        SetBlipColour(extractionblip,2)
+                        if enemybase then SetBlipColour(extractionblip,55) end
                     end
                 end
                 if zone.vehpos~=nil and not zone.raided then
@@ -14217,6 +14313,10 @@ Citizen.CreateThread(function()
                     RemoveBlip(joinfactionblip)
                     joinfactionblip=nil
                 end
+                if extractionblip~=nil then
+                    RemoveBlip(extractionblip)
+                    extractionblip=nil
+                end
                 if vehblip~=nil then
                     RemoveBlip(vehblip)
                     vehblip=nil
@@ -14315,6 +14415,14 @@ Citizen.CreateThread(function()
                     1.0, 1.0, -1.0, --scl
                     100, 100, 255, 200, 
                     true, false, 2, true, 0, 0, false);
+                end
+                if zone.extraction~=nil and not zone.raided and not enemybase then
+					DrawMarker(20, zone.extraction.x, zone.extraction.y, zone.extraction.z, 
+					0.0, 0.0, 0.0, --dir
+					0.0, 0.0, 0.0, --rot
+					0.6, 0.6, -0.6, --scl
+					150, 255, 175, 200, 
+					true, false, 2, true, 0, 0, false)
                 end
                 if zone.clothespos~=nil and not zone.raided and not enemybase then
                     DrawMarker(20, zone.clothespos.x, zone.clothespos.y, zone.clothespos.z, 
@@ -15845,6 +15953,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         local ped=PlayerPedId()
+		local mypos=GetEntityCoords(ped)
         if IsPedInAnyVehicle(ped,false) then
             local veh=GetVehiclePedIsUsing(ped)
             if veh~=0 and GetEntityModel(veh)==1938952078 then --fire truck
@@ -15853,7 +15962,7 @@ Citizen.CreateThread(function()
             else
                 Wait(500)
             end
-        elseif IsControlJustPressed(0,86) and not IsPedDeadOrDying(ped) then
+        elseif IsControlJustPressed(0,86) and not IsPedDeadOrDying(ped) and not is_in_safe_zone(mypos.x,mypos.y,mypos.z) then
             pos=GetEntityCoords(ped)
             local obj
             local empty=false
@@ -17264,6 +17373,7 @@ death_event=function()
             DeleteResourceKvp("inventory_amount_"..i)
         end
 		player.faction=nil
+		saving_kvp_mode.DeleteResourceKvp("player_faction")
 end
 
 RegisterNetEvent("zonestatus")
@@ -17323,6 +17433,10 @@ load_save_event=function()
 	end
 	if GetResourceKvpString("bodyarmor") then
 		player.bodyarmor=true
+	end
+	if GetResourceKvpInt("player_faction") then
+		player.faction=GetResourceKvpInt("player_faction")
+		print("loaded player faction "..player.faction or "nil")
 	end
 	Citizen.CreateThread(function()
 		while true do
@@ -17739,6 +17853,7 @@ Citizen.CreateThread(function()
 						elseif plusorminus=="minus" then change_reputation(-50) end
 						SimpleNotification("~r~You've killed ~a~ and got expelled from your faction.",relationship_name[theirfaction])
 						player.faction=nil
+						saving_kvp_mode.DeleteResourceKvp("player_faction")
 						
 					end
                     
@@ -17803,26 +17918,6 @@ Citizen.CreateThread(function()
 end)
 
 
-extraction={
-{x=-1609.5236816406,y=5258.9194335938,z=3.9741017818451,r=2.0},
-{x=2824.3920898438,y=-748.71466064453,z=1.5879430770874,r=2.0},
-{x=-1803.7950439453,y=-1229.6433105469,z=1.5942938327789,r=2.0},
-}
-
--- air
--- {x=1303.2777099609,y=4358.4536132813,z=-193.69143676758},
--- {x=980.90032958984,y=2330.0258789063,z=-195.55923461914},
-
-extraction_spawns={
-{x=-3132.7097167969,y=3715.3798828125,z=1.9997624158859,angle=218.88287353516},
-{x=-923.96728515625,y=6674.509765625,z=1.789999961853,angle=224.63050842285},
-{x=1961.4853515625,y=7054.9809570313,z=1.789999961853,angle=192.7882232666},
-{x=3549.5229492188,y=5677.9975585938,z=1.789999961853,angle=111.76022338867},
-{x=4157.2338867188,y=3343.8518066406,z=1.789999961853,angle=69.952743530273},
-{x=3414.9748535156,y=300.43109130859,z=2.8899998664856,angle=73.988624572754},
-{x=-3338.015625,y=592.30609130859,z=1.789999961853,angle=270.37200927734},
-}
-
 
 Citizen.CreateThread(function()
     while true do Wait(0)
@@ -17841,6 +17936,7 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
 
 
 Citizen.CreateThread(function()
@@ -17864,145 +17960,7 @@ Citizen.CreateThread(function()
             if dx*dx+dy*dy+dz*dz<v.r then
                 WriteHint(9,"~g~Press E to save and quit")
                 if IsControlJustPressed(0,86) then
-                    --local myweapon=GetSelectedPedWeapon(myped)
-                    --strip_weapon_upgrades(myweapon)
-                    --unload_weapon(myweapon)
-                    -- for k,v in pairs(weapons) do
-                        -- local weapon_hash=GetHashKey("weapon_"..k)
-                        -- if not IsWeaponValid(weapon_hash) then
-                            -- weapon_hash=GetHashKey("gadget_"..k)
-                            -- if not IsWeaponValid(weapon_hash) then
-                                -- weapon_hash=GetHashKey(k)
-                                -- if not IsWeaponValid(weapon_hash) then
-                                    -- weapon_hash=nil
-                                -- end
-                            -- end
-                        -- end
-                        -- if weapon_hash~=nil and HasPedGotWeapon(myped,weapon_hash) then
-                            -- strip_weapon_upgrades(weapon_hash)
-                        -- end
-                    -- end
-                    TriggerServerEvent("updateplayerloot",nil)
-                    local rnd=math.random(1,#extraction_spawns)
-                    enable_kvp_saving()
-                    
-                    SetResourceKvpFloat("x",extraction_spawns[rnd].x)
-                    SetResourceKvpFloat("y",extraction_spawns[rnd].y)
-                    SetResourceKvpFloat("z",extraction_spawns[rnd].z)
-                    SetResourceKvpFloat("angle",extraction_spawns[rnd].angle)
-                    SetResourceKvpInt("spawnvehmodel",276773164)
-					
-					-- for weapon_name,weapon_hash in pairs(weapons) do
-						-- if weapon_hash~=nil and HasPedGotWeapon(myped,weapon_hash) then
-							-- for upgrade_name,v in pairs(weapon_upgrades) do
-								-- local upgrade_hash=v[weapon_hash]
-								-- if upgrade_hash~=nil then
-									-- local concname=string.format('_%x%x',weapon_hash&0xFFFFFFFF,upgrade_hash&0xFFFFFFFF)
-									-- if HasPedGotWeaponComponent(myped, weapon_hash, upgrade_hash) then
-										-- SetResourceKvpInt(concname,1)
-										-- print("save weapon with component:"..concname)
-									-- else
-										-- DeleteResourceKvp(concname)
-									-- end
-								-- end
-							-- end
-							-- SetResourceKvpInt(weapon_name,1)
-						-- else
-							-- DeleteResourceKvp(weapon_name)
-						-- end
-					-- end
-					-- for k,v in pairs(ammo_types) do
-						-- local ammo=GetPedAmmoByType(myped,v)
-						-- if ammo>0 then
-							-- SetResourceKvpInt(k,ammo)
-						-- else
-							-- DeleteResourceKvp(k)
-						-- end
-					-- end
-					SetResourceKvpInt("inventory_total",inventory.total)
-					SetResourceKvpInt("inventory_current",inventory.current)
-					for i=1,inventory.max do
-						if not inventory[i] then
-							DeleteResourceKvp("inventory_item_"..i)
-						else
-							SetResourceKvp("inventory_item_"..i,inventory[i].item)
-							SetResourceKvpInt("inventory_amount_"..i,inventory[i].amount)
-						end
-					end
-					if player.suit then
-						if get_inventory_item_slot("clothes_"..player.suit) then
-							SetResourceKvp("suit",player.suit)
-						else
-							DeleteResourceKvp("suit")
-						end
-					else
-						DeleteResourceKvp("suit")
-					end
-					if player.hat then
-						if get_inventory_item_slot(player.hat) then
-							SetResourceKvp("hat",player.hat)
-						end
-					else
-						DeleteResourceKvp("hat")
-					end
-					if player.mask then
-						if get_inventory_item_slot(player.mask) then
-							SetResourceKvp("mask",player.mask)
-						end
-					else
-						DeleteResourceKvp("mask")
-					end
-					if player.backpack then
-						if get_inventory_item_slot("duffelbag") then
-							SetResourceKvp("backpack",tostring(player.backpack))
-						end
-					else
-						DeleteResourceKvp("backpack")
-					end
-					if player.bodyarmor then
-						if get_inventory_item_slot("bodyarmor") then
-							SetResourceKvp("bodyarmor",tostring(player.bodyarmor))
-						end
-					else
-						DeleteResourceKvp("bodyarmor")
-					end
-					local armour=GetPedArmour(myped)
-					SetResourceKvpInt("armour",armour)
-					
-					
-					for _,zone in pairs(safezones) do
-						if zone.storagepos and zone.storagename then
-							local name="st_"..z.storagename
-							local inventory=name
-							SetResourceKvpInt(name.."_total",inventory.total)
-							SetResourceKvpInt(name.."_current",inventory.current)
-							local imax=0
-							for k,v in pairs(item_names) do
-								imax=imax+1
-							end
-							for i=1,imax do
-								if not inventory[i] then
-									DeleteResourceKvp(name.."_item_"..i)
-								else
-									SetResourceKvp(name.."_item_"..i,inventory[i].item)
-									SetResourceKvpInt(name.."_amount_"..i,inventory[i].amount)
-								end
-							end
-						end
-					end
-					
-					Wait(500)
-                    TriggerServerEvent("extracted")
-					
-                    repeat Wait(0)
-                        WriteHint(9,"~g~You can leave server now")
-                        mypos=GetEntityCoords(myped)
-                        dx,dy,dz=mypos.x-v.x,mypos.y-v.y,mypos.z-v.z
-                    until dx*dx+dy*dy+dz*dz>v.r*3
-					Wait(20000)
-                    disable_kvp_saving()
-                    send_player_loot()
-                    SimpleNotification("Saving aborted.")
+					player_extraction(v)
                 end
             end
         end
@@ -18940,6 +18898,15 @@ AddEventHandler("updatetradelist",function(zonetradename,list)
     for k,v in pairs(safezones) do 
 		if v.tradelistname==zonetradename then
 			v.trade=list
+		end
+	end
+end)
+
+RegisterNetEvent("updatevehshoplist")
+AddEventHandler("updatevehshoplist",function(zonetradename,list)
+    for k,v in pairs(safezones) do 
+		if v.tradelistname==zonetradename then
+			v.vehshop=list
 		end
 	end
 end)
