@@ -1809,6 +1809,7 @@ local players_pos={}
 
 local raid_content={
 blackops={
+blueprint=1,
 pmccap=1,
 tacticalglasses=1,
 roninmask=1,
@@ -1885,6 +1886,7 @@ milspecfabrics=25,
 milspecelectronicscrap=25,
 },
 military={
+blueprint=1,
 pmccap=1,
 tacticalglasses=1,
 camocap=1,
@@ -1935,6 +1937,7 @@ milspecfabrics=25,
 milspecelectronicscrap=25,
 },
 survivorstockpile={
+blueprint=1,
 cash=1000,
 industrialelectronicscrap=25,
 industrialfabrics=25,
@@ -1966,6 +1969,7 @@ mre=25,
 provisionkey=1,
 },
 governmentrelief={
+blueprint=1,
 cash=1000,
 water=15,
 canfood=15,
@@ -1979,6 +1983,7 @@ clothes_explorer=1,
 policedocs=5,
 },
 governmentweapons={
+blueprint=1,
 sniperrifle=1,
 combatpistol=1,
 revolver=1,
@@ -2002,6 +2007,7 @@ sheriffkey=1,
 policedocs=5,
 },
 marauderweapons={
+blueprint=1,
 mg=1,
 compactrifle=1,
 minismg=1,
