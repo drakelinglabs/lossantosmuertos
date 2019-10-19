@@ -17982,15 +17982,14 @@ end)
 
 Citizen.CreateThread(function()
     while true do 
-		Wait(1000)
-		SimpleNotification("Welcome to LOS SANTOS MUERTOS! Due to concerns regarding cheating and stream sniping... we kindly ask that no footage of this server be livestreamed publicly (other than by whitelisted streamers) without explicit permission. Violators of this policy may be removed!")
-		Wait(300000)
-        SimpleNotification("Your character will not be saved if you disconnect without extracting.")
-        SimpleNotification("Use extraction points to save your character safely.")
+        Wait(1000)
+        SimpleNotification("Welcome to Los Santos Muertos! We humbly request that unauthorized streamers refrain from broadcasting from this server without permission. Violators of this policy may be removed. Thank you!")
         Wait(300000)
-        --SimpleNotification("Discord: ~b~discord.gg/VZG5Nvk")
-        Wait(100)
-        SimpleNotification("Discord: ~b~discord.gg/w9mZMqJ")
+		SimpleNotification("Thanks for playing Los Santos Muertos! If you enjoy our server, and want to support development... consider donating at ~b~https://donorbox.org/lossantosmuertos")
+		Wait(300000)
+        SimpleNotification("Your character will not be saved if you disconnect without extracting. Use extraction points to save your character safely.")
+        Wait(300000)
+        SimpleNotification("Join the Los Santos Muertos Discord community! Use our invite link at ~b~discord.gg/w9mZMqJ")
     end
 end)
 
