@@ -4334,6 +4334,7 @@ local safezones={
     name="Government Checkpoint~s~",
 	extraction={x=455.85806274414,y=-984.05700683594,z=43.691688537598,r=3.0},
     friends=true,
+	tradelistname="government",
     tradespace=4,
     trade={
         {"clothes_riot",1,"cash",2350},
@@ -4688,6 +4689,7 @@ local safezones={
     name="Marauder Fortress~s~",
 	extraction={x=1690.7955322266,y=2646.1235351563,z=54.579902648926,r=3.0},
     tradespace=4,
+	tradelistname="marauders",
     trade={
         {"clothes_banditgoon",1,"cash",750},
         {"clothes_marauder",1,"cash",1200},
@@ -4885,7 +4887,8 @@ local safezones={
     models={1657546978,-220552467,1702441027,-265970301,1490458366,1925237458},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Military Outpost~s~",
 	extraction={x=-2345.5778808594,y=3232.2980957031,z=34.742935180664,r=3.0},
-    tradespace=4,
+    tradelistname="military",
+	tradespace=4,
     trade={
         {"clothes_pmc",1,"cash",4000},
         {"gasmask",1,"cash",650},
@@ -5112,6 +5115,7 @@ local safezones={
     name="Mercenary Base~s~",
 	extraction={x=-441.30157470703,y=-1695.2406005859,z=19.008533477783,r=3.0},
     tradespace=4,
+	tradelistname="mercenary",
     trade={
         {"clothes_combat_desert",1,"cash",4500},
         {"clothes_combat_green",1,"cash",4500},
@@ -6329,6 +6333,7 @@ mgammo="A belt of large caliber ammunition, commonly used in heavy machine guns.
 launchergrenade="A large caliber explosive cartridge, used in grenade launchers.",
 clothes_marauder="Light weight well fitted tactical clothing.",
 clothes_camouflage="Light weight well fitted camouflaged clothing.",
+armorplate="A bullet proof trauma pad. Used with plate carrier vests to provide ballistic protection.",
 clothes_offdutysheriff="A large camouflaged raincoat.",
 cowboyhat="A stylish cowboy hat.",
 pmccap="A typical baseball cap, branded with the insignia of a notorious private military company.",
@@ -6398,22 +6403,6 @@ clothes_ordinary="A set of ordinary clothes.",
 clothes_gang="A set of clothes branded with generic gang insignia.",
 fruits="An assortment of whole fresh fruit.",
 trashfood="A box of leftover food, that doesn't seem rotten.",
-electronicscrap="An assorted bunch of broken electronics. Useful for crafting items.",
-petrolcan="A metal can typically used for holding combustible liquids.",
-level3asoftplate="A set of civilian grade armor plates. These offer limited protection.",
-level3plates="A set of high grade armor plates. These offer expanded protection.",
-armorplate="A set of military grade armor plates. These offer maximum protection.",
-extinguisher="A standard fire extinguisher. Can be used to put out fires.",
-milspecfabrics="An assortment of military grade fabrics. Useful for crafting items.",
-industrialfabrics="An assortment of high grade fabrics. Useful for crafting items.",
-leadscrap="An assortment of lead based metal scrap. Useful for crafting items.",
-industrialplastic="An assortment of high grade plastics. Useful for crafting items.",
-milspecmetal="An assortment of military grade metals. Useful for crafting items.",
-milspecplasticscrap="An assortment of military grade plastics. Useful for crafting items.",
-industrialelectronicscrap="An assorted bunch of military grade broken electronics. Useful for crafting items.",
-milspecelectronicscrap="An assorted bunch of high grade broken electronics. Useful for crafting items.",
-industrialmetalscrap="An assortment of high grade metals. Useful for crafting items.",
-minigun="A large caliber rotary machine gun. Kills things fairly quickly.",
 }
 
 for k,v in pairs(normal_crafts) do
@@ -12944,130 +12933,131 @@ Citizen.CreateThread(function()
 				known_recipes=nil
 				if current_menu==0 then
 					SimpleNotification("You don't have any blueprints.")
-				end
-
-                while true do Wait(0)
-                    inventory.highlight=0
-                    pped=PlayerPedId()
-                    mypos=GetEntityCoords(pped)
-                    if IsControlJustPressed(0,177) or not in_radius(mypos,zone.craftpos,5) then
-                        break
-                    elseif IsControlJustPressed(0,175) then --right
-                        if current_menu<#items_that_can_be_crafted then
-                            current_menu=current_menu+1
-                        else
-                            current_menu=1
-                        end
-                    elseif IsControlJustPressed(0,174) then --left
-                        if current_menu>1 then
-                            current_menu=current_menu-1
-                        else
-                            current_menu=#items_that_can_be_crafted
-                        end
-                    elseif IsControlJustPressed(0,86) then --e veh horn
-                        local enough=do_we_have_all_that(items_that_can_be_crafted[current_menu][3])
-                        if enough then
-                            -- local model=GetHashKey(zone.crafts[current_menu][1])
-                            -- if not HasModelLoaded(model) then
-                                -- RequestModel(model)
-                                -- Wait(0)
-                                -- while not HasModelLoaded(model) do Wait(0) end
-                                -- enough=do_we_have_all_that(zone.crafts[current_menu][3])
-                            -- end
-                                -- local name=zone.crafts[current_menu][1]
-                                -- local hash=GetHashKey("weapon_"..name)
-                                -- if not IsWeaponValid(hash) then
-                                    -- hash=GetHashKey("gadget_"..name)
-                                    -- if not IsWeaponValid(hash) then
-                                        -- hash=GetHashKey(name)
-                                    -- end
-                                -- end
-                                -- if IsWeaponValid(hash) then
-                                    -- GiveWeaponToPed(PlayerPedId(), hash, 1, false, true)
-                                --end
-                            if give_item_to_inventory(items_that_can_be_crafted[current_menu][1],items_that_can_be_crafted[current_menu][2]) then
-                                remove_all_that(items_that_can_be_crafted[current_menu][3])
-                                Wait(0)
-                            else
-                                SimpleNotification("Can't fit ~a~ in inventory, drop something.",items_that_can_be_crafted[current_menu][1])
-                                --SetModelAsNoLongerNeeded(model)
-                            end
-                        end
-                    end
-					DrawSprite("lsm","craft_background",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
-					DrawSprite("lsm","craft_icon",0.296,0.2045,0.017,0.03,0.0, 255, 255, 255, 255)
-					WriteTextNoOutline(2,"Workshop",0.4,0,0,0,255,0.307,0.19)
-					DrawRect(.3025,.28,inv_sml_x,inv_sml_y, 0, 0, 0, 255)
-					DrawSprite("lsm","item",.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-					DrawSprite("lsm",items_that_can_be_crafted[current_menu][1],.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-					WriteTextNoOutline(4,item_names[items_that_can_be_crafted[current_menu][1]] or items_that_can_be_crafted[current_menu][1],0.4,0,0,0,255,.3325,.25)
-							SetTextRightJustify(true)
-							SetTextWrap(0.0,.3025+0.015)        
-							WriteText(4,items_that_can_be_crafted[current_menu][2],0.3,255,255,255,255,.3025+0.01,.28+0.01)
-					
-					WriteTextNoOutline(2,"Ingredients",0.4,0,0,0,255,0.29,0.33)
-					
-					DrawSprite("lsm", "arrow_left",.32-0.025,0.75+0.001,0.0075*1.2,0.015*1.3,0.0, 255, 255, 255, 255)
-					DrawSprite("lsm", "Trade Button",.32,0.75,0.0255*1.2,0.0205*1.2,0.0, 255, 255, 255, 255)
-					DrawSprite("lsm", "arrow_right",.32+0.025,0.75+0.001,0.0075*1.2,0.015*1.3,0.0, 255, 255, 255, 255)
-					SetTextCentre(true)
-					WriteTextNoOutline(2,"Craft",0.3,255,255,255,255,0.32,0.75-0.011)
-					
-					
-					WriteTextNoOutline(4,{"~1~ / ~1~",current_menu,#items_that_can_be_crafted},0.3,0,0,0,255,0.42,0.75-0.011)
-					
-					-- for k,v in pairs(zone.crafts) do
-						-- if current_menu==k then
-							-- DrawRect(0.275+k*0.015,0.785,inv_sml_x*0.5,inv_sml_y*0.5, 0, 0, 0, 255)
-							-- --DrawSprite("lsm","item",0.275+k*0.015,0.785,inv_sml_x*0.5,inv_sml_y*0.5,0.0, 255, 255, 255, 255)
-						-- end
-						-- DrawSprite("lsm",v[1],0.275+k*0.015,0.785,inv_sml_x*0.5,inv_sml_y*0.5,0.0, 255, 255, 255, 255)
-					-- end
-					--WriteTextNoOutline(2,"Service",0.3,0,0,0,255,0.290,0.24)
-					--WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
-                    --DrawRect(0.25,0.65,0.2,0.6,0,0,0,175)
-                    --DrawRect(0.25,0.40,0.2,0.1,0,150,200,255) --blue header
-                    --SetTextCentre(true)
-                    --WriteText(7,"Crafting",1.0,255,255,255,255,0.25,0.375)
-                    --DrawRect(0.25,0.44+current_menu*.025,0.2,0.025,255,255,255,255) --chosenline
-                    -- for i=1,#zone.crafts do
-                        -- local txt=zone.crafts[i][1]
-                        -- if not do_we_have_all_that(zone.crafts[i][3]) then
-                            -- txt="~c~"..txt
-                        -- end
-                        -- if zone.crafts[i][2]~=1 then
-                            -- txt=txt.." ~c~x"..zone.crafts[i][2]
-                        -- end
-                        -- if i==current_menu then
-                            -- WriteTextNoOutline(2,txt,0.35,0,0,0,255,0.16,0.428+i*.025) --chosen line text
-                        -- else
-                            -- WriteTextNoOutline(2,txt,0.35,255,255,255,255,0.16,0.428+i*.025) --not chosen line text
-                        -- end
-                    -- end
-                    local item,have,need
-                    for i=1,#items_that_can_be_crafted[current_menu][3],2 do
-                        item=items_that_can_be_crafted[current_menu][3][i]
-                        have=get_inventroy_item_amount(item)
-                        need=items_that_can_be_crafted[current_menu][3][i+1]
-						local x=.28275+i*.02
-						local y=.4
-						DrawRect(x,.4,inv_sml_x,inv_sml_y, 0, 0, 0, 255)
-                        if have>=need then
-							DrawSprite("lsm","equipped_item",x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-							DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-							SetTextRightJustify(true)
-							SetTextWrap(0.0,x+0.015)        
-							WriteText(4,need,0.3,255,255,255,255,x+0.01,y+0.01)
-						else
-							DrawSprite("lsm","item",x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-							DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-							SetTextRightJustify(true)
-							SetTextWrap(0.0,x+0.015)        
-							WriteText(4,need,0.3,255,255,255,255,x+0.01,y+0.01)
+				else
+				
+					while true do Wait(0)
+						inventory.highlight=0
+						pped=PlayerPedId()
+						mypos=GetEntityCoords(pped)
+						if IsControlJustPressed(0,177) or not in_radius(mypos,zone.craftpos,5) then
+							break
+						elseif IsControlJustPressed(0,175) then --right
+							if current_menu<#items_that_can_be_crafted then
+								current_menu=current_menu+1
+							else
+								current_menu=1
+							end
+						elseif IsControlJustPressed(0,174) then --left
+							if current_menu>1 then
+								current_menu=current_menu-1
+							else
+								current_menu=#items_that_can_be_crafted
+							end
+						elseif IsControlJustPressed(0,86) then --e veh horn
+							local enough=do_we_have_all_that(items_that_can_be_crafted[current_menu][3])
+							if enough then
+								-- local model=GetHashKey(zone.crafts[current_menu][1])
+								-- if not HasModelLoaded(model) then
+									-- RequestModel(model)
+									-- Wait(0)
+									-- while not HasModelLoaded(model) do Wait(0) end
+									-- enough=do_we_have_all_that(zone.crafts[current_menu][3])
+								-- end
+									-- local name=zone.crafts[current_menu][1]
+									-- local hash=GetHashKey("weapon_"..name)
+									-- if not IsWeaponValid(hash) then
+										-- hash=GetHashKey("gadget_"..name)
+										-- if not IsWeaponValid(hash) then
+											-- hash=GetHashKey(name)
+										-- end
+									-- end
+									-- if IsWeaponValid(hash) then
+										-- GiveWeaponToPed(PlayerPedId(), hash, 1, false, true)
+									--end
+								if give_item_to_inventory(items_that_can_be_crafted[current_menu][1],items_that_can_be_crafted[current_menu][2]) then
+									remove_all_that(items_that_can_be_crafted[current_menu][3])
+									Wait(0)
+								else
+									SimpleNotification("Can't fit ~a~ in inventory, drop something.",items_that_can_be_crafted[current_menu][1])
+									--SetModelAsNoLongerNeeded(model)
+								end
+							end
 						end
-                    end
-                end
-            else
+						DrawSprite("lsm","craft_background",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
+						DrawSprite("lsm","craft_icon",0.296,0.2045,0.017,0.03,0.0, 255, 255, 255, 255)
+						WriteTextNoOutline(2,"Workshop",0.4,0,0,0,255,0.307,0.19)
+						DrawRect(.3025,.28,inv_sml_x,inv_sml_y, 0, 0, 0, 255)
+						DrawSprite("lsm","item",.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+						DrawSprite("lsm",items_that_can_be_crafted[current_menu][1],.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+						WriteTextNoOutline(4,item_names[items_that_can_be_crafted[current_menu][1]] or items_that_can_be_crafted[current_menu][1],0.4,0,0,0,255,.3325,.25)
+								SetTextRightJustify(true)
+								SetTextWrap(0.0,.3025+0.015)        
+								WriteText(4,items_that_can_be_crafted[current_menu][2],0.3,255,255,255,255,.3025+0.01,.28+0.01)
+						
+						WriteTextNoOutline(2,"Ingredients",0.4,0,0,0,255,0.29,0.33)
+						
+						DrawSprite("lsm", "arrow_left",.32-0.025,0.75+0.001,0.0075*1.2,0.015*1.3,0.0, 255, 255, 255, 255)
+						DrawSprite("lsm", "Trade Button",.32,0.75,0.0255*1.2,0.0205*1.2,0.0, 255, 255, 255, 255)
+						DrawSprite("lsm", "arrow_right",.32+0.025,0.75+0.001,0.0075*1.2,0.015*1.3,0.0, 255, 255, 255, 255)
+						SetTextCentre(true)
+						WriteTextNoOutline(2,"Craft",0.3,255,255,255,255,0.32,0.75-0.011)
+						
+						
+						WriteTextNoOutline(4,{"~1~ / ~1~",current_menu,#items_that_can_be_crafted},0.3,0,0,0,255,0.42,0.75-0.011)
+						
+						-- for k,v in pairs(zone.crafts) do
+							-- if current_menu==k then
+								-- DrawRect(0.275+k*0.015,0.785,inv_sml_x*0.5,inv_sml_y*0.5, 0, 0, 0, 255)
+								-- --DrawSprite("lsm","item",0.275+k*0.015,0.785,inv_sml_x*0.5,inv_sml_y*0.5,0.0, 255, 255, 255, 255)
+							-- end
+							-- DrawSprite("lsm",v[1],0.275+k*0.015,0.785,inv_sml_x*0.5,inv_sml_y*0.5,0.0, 255, 255, 255, 255)
+						-- end
+						--WriteTextNoOutline(2,"Service",0.3,0,0,0,255,0.290,0.24)
+						--WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
+						--DrawRect(0.25,0.65,0.2,0.6,0,0,0,175)
+						--DrawRect(0.25,0.40,0.2,0.1,0,150,200,255) --blue header
+						--SetTextCentre(true)
+						--WriteText(7,"Crafting",1.0,255,255,255,255,0.25,0.375)
+						--DrawRect(0.25,0.44+current_menu*.025,0.2,0.025,255,255,255,255) --chosenline
+						-- for i=1,#zone.crafts do
+							-- local txt=zone.crafts[i][1]
+							-- if not do_we_have_all_that(zone.crafts[i][3]) then
+								-- txt="~c~"..txt
+							-- end
+							-- if zone.crafts[i][2]~=1 then
+								-- txt=txt.." ~c~x"..zone.crafts[i][2]
+							-- end
+							-- if i==current_menu then
+								-- WriteTextNoOutline(2,txt,0.35,0,0,0,255,0.16,0.428+i*.025) --chosen line text
+							-- else
+								-- WriteTextNoOutline(2,txt,0.35,255,255,255,255,0.16,0.428+i*.025) --not chosen line text
+							-- end
+						-- end
+						local item,have,need
+						for i=1,#items_that_can_be_crafted[current_menu][3],2 do
+							item=items_that_can_be_crafted[current_menu][3][i]
+							have=get_inventroy_item_amount(item)
+							need=items_that_can_be_crafted[current_menu][3][i+1]
+							local x=.28275+i*.02
+							local y=.4
+							DrawRect(x,.4,inv_sml_x,inv_sml_y, 0, 0, 0, 255)
+							if have>=need then
+								DrawSprite("lsm","equipped_item",x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+								DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+								SetTextRightJustify(true)
+								SetTextWrap(0.0,x+0.015)        
+								WriteText(4,need,0.3,255,255,255,255,x+0.01,y+0.01)
+							else
+								DrawSprite("lsm","item",x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+								DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+								SetTextRightJustify(true)
+								SetTextWrap(0.0,x+0.015)        
+								WriteText(4,need,0.3,255,255,255,255,x+0.01,y+0.01)
+							end
+						end
+					end
+				end
+			else
                 local dict="anim@gangops@facility@servers@bodysearch@"
                 local anim="player_search"
                 local model=GetHashKey("prop_cs_heist_bag_02")
