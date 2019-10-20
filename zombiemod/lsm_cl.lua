@@ -2935,6 +2935,40 @@ bodyarmor={[9]={var=13-1,tex=2-1}},
 --backpack={[5]={var=39-1,tex=1-1}},
 backpack={[5]={var=46-1,tex=1-1}},
 },
+smugglerslight_npc={
+[0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=6-1,tex=1-1}, --"torso" hands
+[4]={var=93-1,tex={16-1,19-1}}, --legs
+[5]={var=1-1,tex=1-1}, --hands "parachutes"
+[6]={var=28-1,tex=1-1}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=131-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=1-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=1-1,tex=1-1}, --decals
+[11]={var=239-1,tex={4-1,6-1}}, --additional parts for torso
+bodyarmor={[9]={var=2-1,tex=2-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+},
+smugglers_npc={
+[0]={var=range(1-1,18-1,{3-1,4-1,15-1,16-1}),tex=1-1}, --head
+[1]={var=1-1,tex=1-1}, --"beard" masks
+[2]={var=5-1,tex=range(2-1,6-1)}, --hair
+[3]={var=16-1,tex=1-1}, --"torso" hands
+[4]={var=34-1,tex=1-1}, --legs
+[5]={var=1-1,tex=1-1}, --hands "parachutes"
+[6]={var=28-1,tex=1-1}, --foot 
+[7]={var=1-1,tex=1-1}, --additional 
+[8]={var=131-1,tex=1-1}, --accesories 1 (parts of tshirts)
+[9]={var=1-1,tex=1-1}, --accesories 2 (armor)
+[10]={var=1-1,tex=1-1}, --decals
+[11]={var=248-1,tex={1-1,5-1,24-1}}, --additional parts for torso
+bodyarmor={[9]={var=13-1,tex=2-1}},
+--backpack={[5]={var=39-1,tex=1-1}},
+backpack={[5]={var=46-1,tex=1-1}},
+},
 gunrunner={
 [0]={var=1-1,tex=1-1}, --head
 [1]={var=1-1,tex=1-1}, --"beard" masks
@@ -3231,7 +3265,8 @@ quest_keys=300,
 
 local survivor_hash,bandit_hash,government_hash,raider_hash,
 neutral_hash,dawn_hash,marauder_hash,military_hash,merc_hash,
-hero_hash,vigilante_hash,guerilla_hash,outlaw_hash,renegade_hash
+hero_hash,vigilante_hash,guerilla_hash,outlaw_hash,renegade_hash,
+smugglers_hash
 
 
 local localization={
@@ -4884,18 +4919,18 @@ local safezones={
 	
 	--Smugglers base
 ----------------------------------------------------
-    {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=469,color=4,
+    {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=96,color=4,
     models={1885233650},
     name="Smugglers Camp",
     extraction={x=2232.3471679688,y=5611.4184570313,z=54.914485931396},
     tradepos={x=2221.4025878906,y=5614.6494140625,z=54.901615142822},
     factionjoinpos={x=2224.2741699219,y=5604.5356445313,z=54.927871704102},
-    factionjoin={cost=},
+    factionjoin={cost=1500},
     storagepos={x=2192.8664550781,y=5598.0258789063,z=53.746047973633},
-    storagename="",
+    storagename="smugglers",
     craftpos={x=2194.7612304688,y=5595.3881835938,z=53.762287139893},
-    weapons=weapons.mercenaries,
-    garagename="",
+    weapons=weaponsarray.mercenaries,
+    garagename="smugglers",
     garagepos={x=2202.8256835938,y=5561.177734375,z=53.95454788208},
     vehpos={x=2196.3247070313,y=5608.0581054688,z=53.495838165283}, --chopshop position
     relationship="SMUGGLERS",
@@ -6793,13 +6828,16 @@ local birds={
 -- {"weed",1},
 -- {"soda",1},
 -- }
-local deadbodiesrewards_tier1={
+
+local rewards={}
+rewards.deadbodies={
+tier1={
 {"scrapplastic",1},
 {"rags",-2},
 {"electronicscrap",-2},
 {"scrapfabrics",-2},
-}
-local deadbodiesrewards_tier2={
+},
+tier2={
 {"leadscrap",1},
 {"industrialplastic",-2},
 {"industrialscrapmetal",-2},
@@ -6811,8 +6849,8 @@ local deadbodiesrewards_tier2={
 {"gunpowder",1},
 {"cash",-20},
 {"trashfood",1},
-}
-local deadbodiesrewards_tier3={
+},
+tier3={
 {"milspecfabrics",-2},
 {"milspecmetal",-2},
 {"milspecplastic",-2},
@@ -6833,8 +6871,8 @@ local deadbodiesrewards_tier3={
 {"flaregunammo",-5},
 {"painkillers",1},
 {"fruits",-2},
-}
-local deadbodiesrewards_tier4={
+},
+tier4={
 {"pistolammo",-10},
 {"smgammo",-20},
 {"mgammo",-10},
@@ -6856,8 +6894,8 @@ local deadbodiesrewards_tier4={
 {"lowcap",1},
 {"mre",1},
 {"dawntokens",1},
-}
-local deadbodiesrewards_tier5={
+},
+tier5={
 {"clothes_marauder",1},
 {"clothes_camouflage",1},
 {"snspistol",1},
@@ -6870,8 +6908,8 @@ local deadbodiesrewards_tier5={
 {"dbshotgun",1},
 {"grenade",1},
 {"launchergrenade",1},
-}
-local deadbodiesrewards_tier6={
+},
+tier6={
 {"medkit",1},
 {"bodyarmor",1},
 {"armorplate",-2},
@@ -6895,16 +6933,18 @@ local deadbodiesrewards_tier6={
 {"scope_nightvision",1},
 {"scope_thermal",1},
 {"duffelbag",1},
+},
 }
 
-local trunkrewards_tier1={
+rewards.trunkrewards={
+tier1={
 {"scrapplastic",-5},
 {"scrapmetal",-5},
 {"electronicscrap",-2},
 {"rags",-3},
 {"scrapfabrics",-2},
-}
-local trunkrewards_tier2={
+},
+tier2={
 {"leadscrap",1},
 {"industrialplastic",-2},
 {"industrialscrapmetal",-2},
@@ -6942,8 +6982,8 @@ local trunkrewards_tier2={
 {"nightstick",1},
 {"hammer",1},
 {"bottle",1},
-}
-local trunkrewards_tier3={
+},
+tier3={
 {"milspecfabrics",-2},
 {"milspecmetal",-2},
 {"milspecplastic",-2},
@@ -6958,8 +6998,8 @@ local trunkrewards_tier3={
 {"clothes_gang",1},
 {"clothes_trucker",1},
 {"fruits",-2},
-}
-local trunkrewards_tier4={
+},
+tier4={
 {"blueprint",1},
 {"pistolammo",-30},
 {"smgammo",-40},
@@ -6982,8 +7022,8 @@ local trunkrewards_tier4={
 {"mre",-2},
 {"dawntokens",1},
 {"clothes_business",1},
-}
-local trunkrewards_tier5={
+},
+tier5={
 {"clothes_marauder",1},
 {"clothes_camouflage",1},
 {"snspistol",1},
@@ -7008,8 +7048,8 @@ local trunkrewards_tier5={
 {"sheriffkey",1},
 {"grenade",-3},
 {"launchergrenade",-4},
-}
-local trunkrewards_tier6={
+},
+tier6={
 {"clothes_loner",1},
 {"medkit",-2},
 --{"assaultshotgun",1},
@@ -7070,6 +7110,7 @@ local trunkrewards_tier6={
 {"scope_nightvision",1},
 {"scope_thermal",1},
 {"duffelbag",1},
+},
 }
 
 local deadbodiesrewards={
@@ -14603,6 +14644,7 @@ Citizen.CreateThread(function()
     _,marauder_hash=AddRelationshipGroup("MARAUDER")
     _,merc_hash=AddRelationshipGroup("MERC")
     _,military_hash=AddRelationshipGroup("MILITARY")
+    _,smugglers_hash=AddRelationshipGroup("SMUGGLERS")
 	_,hero_hash=AddRelationshipGroup("HERO")
 	_,vigilante_hash=AddRelationshipGroup("VIGILANTE")
 	_,guerilla_hash=AddRelationshipGroup("GUERILLA")
@@ -14632,6 +14674,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("COUGAR"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("COUGAR"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("COUGAR"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("COUGAR"), GetHashKey("SMUGGLERS"))
     SetRelationshipBetweenGroups(5, GetHashKey("SHARK"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("SHARK"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("SHARK"), GetHashKey("MARAUDER"))
@@ -14646,6 +14689,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("SHARK"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("SHARK"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("SHARK"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SHARK"), GetHashKey("SMUGGLERS"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("MARAUDER"))
@@ -14660,6 +14704,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("SMUGGLERS"))
 	
 	
 	
@@ -14679,6 +14724,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("SMUGGLERS"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -14695,6 +14741,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("VIGILANTE"))
     SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("OUTLAW"))
+    SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("SMUGGLERS"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("RENEGADE"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("GOVERNMENT"))
@@ -14715,6 +14762,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("SMUGGLERS"))
     
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
@@ -14735,6 +14783,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("SMUGGLERS"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -14754,6 +14803,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(3, GetHashKey("MERC"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("SMUGGLERS"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -14771,6 +14821,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("NEUTRAL"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(1, GetHashKey("NEUTRAL"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("NEUTRAL"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("SMUGGLERS"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -14788,6 +14839,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(4, GetHashKey("DAWN"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("SMUGGLERS"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("MARAUDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -14805,6 +14857,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("SMUGGLERS"))
 	
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("MILITARY"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -14822,6 +14875,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("SMUGGLERS"))
 	
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("HERO"))
@@ -14840,6 +14894,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("HERO"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(1, GetHashKey("HERO"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("HERO"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("HERO"), GetHashKey("SMUGGLERS"))
 	
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("VIGILANTE"))
@@ -14858,6 +14913,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("VIGILANTE"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(1, GetHashKey("VIGILANTE"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("VIGILANTE"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("VIGILANTE"), GetHashKey("SMUGGLERS"))
 	
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("GUERILLA"))
@@ -14876,6 +14932,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("GUERILLA"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(1, GetHashKey("GUERILLA"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("GUERILLA"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(1, GetHashKey("GUERILLA"), GetHashKey("SMUGGLERS"))
 	
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("OUTLAW"))
@@ -14894,6 +14951,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("OUTLAW"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(1, GetHashKey("OUTLAW"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("OUTLAW"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(1, GetHashKey("OUTLAW"), GetHashKey("SMUGGLERS"))
 	
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("RENEGADE"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -14911,6 +14969,25 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("RENEGADE"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(1, GetHashKey("RENEGADE"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("RENEGADE"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(5, GetHashKey("RENEGADE"), GetHashKey("SMUGGLERS"))
+	
+    SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("SMUGGLERS"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
+    SetRelationshipBetweenGroups(1, GetHashKey("SMUGGLERS"), GetHashKey("MARAUDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("BANDIT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("RAIDER"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("MERC"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("SURVIVOR"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("DAWN"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("NEUTRAL"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("MILITARY"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("HERO"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("VIGILANTE"))
+    SetRelationshipBetweenGroups(1, GetHashKey("SMUGGLERS"), GetHashKey("GUERILLA"))
+    SetRelationshipBetweenGroups(1, GetHashKey("SMUGGLERS"), GetHashKey("OUTLAW"))
+    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("RENEGADE"))
+    SetRelationshipBetweenGroups(0, GetHashKey("SMUGGLERS"), GetHashKey("SMUGGLERS"))
    
     -------------------
     
@@ -15020,7 +15097,7 @@ Citizen.CreateThread(function()
 					--SimpleNotification("~r~ERROR 69! ~s~POS: ~1~, ~1~, ~1~",pedpos.x,pedpos.y,pedpos.z)
                     DecorSetBool(ped,"raider",true)
                     if IsPedUsingAnyScenario(ped) then ClearPedTasksImmediately(ped) end
-					local fac=math.random(1,5)
+					local fac=math.random(1,6)
 					if fac==1 then
 						SetPedRelationshipGroupHash(ped,GetHashKey("BANDIT"))
                         change_clothes(ped,suits.banditgoon_npc)
@@ -15036,6 +15113,9 @@ Citizen.CreateThread(function()
 					elseif fac==5 then
 						SetPedRelationshipGroupHash(ped,GetHashKey("MILITARY"))
                         change_clothes(ped,suits.pmc_npc)
+					elseif fac==6 then
+						SetPedRelationshipGroupHash(ped,GetHashKey("SMUGGLERS"))
+                        change_clothes(ped,suits.smugglers_npc)
 					end
                     SetPedCombatAttributes(ped, 0, true)
                     SetPedCombatAttributes(ped, 1, true)
@@ -15164,6 +15244,13 @@ Citizen.CreateThread(function()
                             change_clothes(ped,suits.marauder_npc)
                         else
                             change_clothes(ped,suits.banditgoon_npc)
+                        end
+                    elseif zone.relationship==GetHashKey("SMUGGLERS") then
+                        local rand=math.random(1,100)
+                        if rand<50 then
+                            change_clothes(ped,suits.smugglers_npc)
+                        else
+                            change_clothes(ped,suits.smugglerslight_npc)
                         end
                     elseif zone.relationship==GetHashKey("MERC") then
 						change_clothes(ped,suits.combat_desert_npc)
@@ -15834,12 +15921,12 @@ Citizen.CreateThread(function()
                 local tier=(random_number%100)
                 random_number=math.floor(random_number/100)
                 local chosentier
-                if      tier>98 then    chosentier=trunkrewards_tier6
-                elseif  tier>93 then    chosentier=trunkrewards_tier5
-                elseif  tier>84 then    chosentier=trunkrewards_tier4
-                elseif  tier>60 then    chosentier=trunkrewards_tier3
-                elseif  tier>33 then    chosentier=trunkrewards_tier2
-                else                    chosentier=trunkrewards_tier1 end
+                if      tier>98 then    chosentier=rewards.trunkrewards.tier6
+                elseif  tier>93 then    chosentier=rewards.trunkrewards.tier5
+                elseif  tier>84 then    chosentier=rewards.trunkrewards.tier4
+                elseif  tier>60 then    chosentier=rewards.trunkrewards.tier3
+                elseif  tier>33 then    chosentier=rewards.trunkrewards.tier2
+                else                    chosentier=rewards.trunkrewards.tier1 end
                 
                 local reward=chosentier[random_number%#chosentier+1]
                 local item=reward[1]
@@ -15930,12 +16017,12 @@ Citizen.CreateThread(function()
                             -- 0-42 - tier1 (42%) -- scrap/rags
                             local tier=math.random(1,100)
                             local chosentier
-                            if      tier>88 then    chosentier=deadbodiesrewards_tier6
-                            elseif  tier>73 then    chosentier=deadbodiesrewards_tier5
-                            elseif  tier>44 then    chosentier=deadbodiesrewards_tier4
-                            elseif  tier>28 then    chosentier=deadbodiesrewards_tier3
-                            elseif  tier>3 then    chosentier=deadbodiesrewards_tier2
-                            else                    chosentier=deadbodiesrewards_tier1 end
+                            if      tier>88 then    chosentier=rewards.deadbodies.tier6
+                            elseif  tier>73 then    chosentier=drewards.deadbodies.tier5
+                            elseif  tier>44 then    chosentier=rewards.deadbodies.tier4
+                            elseif  tier>28 then    chosentier=rewards.deadbodies.tier3
+                            elseif  tier>3 then    chosentier=rewards.deadbodies.tier2
+                            else                    chosentier=rewards.deadbodies.tier1 end
                             reward=chosentier[math.random(1,#chosentier)] 
                             if debug_mode then
                                 SimpleNotification("Debug random loot number is: ~1~",tier)
@@ -15944,10 +16031,10 @@ Citizen.CreateThread(function()
                         else --zombie loot
                             local tier=math.random(1,100)
                             local chosentier
-                            if      tier>99 then        chosentier=deadbodiesrewards_tier4
-                            elseif  tier>98 then        chosentier=deadbodiesrewards_tier3
-                            elseif  tier>97 then        chosentier=deadbodiesrewards_tier2
-                            else                    chosentier=deadbodiesrewards_tier1 end
+                            if      tier>99 then        chosentier=rewards.deadbodies.tier4
+                            elseif  tier>98 then        chosentier=rewards.deadbodies.tier3
+                            elseif  tier>97 then        chosentier=rewards.deadbodies.tier2
+                            else                    chosentier=rewards.deadbodies.tier1 end
                             reward=chosentier[math.random(1,#chosentier)] 
                             if debug_mode then
                                 SimpleNotification("Debug random loot number is: ~1~",tier)
@@ -17738,66 +17825,35 @@ end)
 
 Citizen.CreateThread(function()
     while true do Wait(1923)
-		if not player.faction then
-			local myped=PlayerPedId()
-			local myfaction=GetPedRelationshipGroupHash(myped)
-			local result=nil
-			local maximum=-9999
+		local result=nil
+		local maximum=-9999
+		local myped=PlayerPedId()
+		if not player.faction or player.faction==0 then
 			for k,v in pairs(faction_reputation_requirements) do
 				if player.reputation>v and v>maximum then
 					result=k
 					maximum=v
 				end
 			end
-			 --player.faction=result
-			 SetPedRelationshipGroupHash(myped,result)
-			 --SimpleNotification("Setting rel to ~a~/ maximum ~1~ / rep: ~1~",tostring(result),maximum,player.reputation)
-			 
-			 -- if player.reputation<[GetHashKey("RENEGADE")] then
-				
-			 -- else
-			 
-			 -- end
-			-- if player.reputation<-100 then player.reputation=-100
-			-- elseif player.reputation>100 then player.reputation=100
-			-- end
-			
-			-- if 		player.reputation<-90 then
-				-- if myfaction~=GetHashKey("GUERILLA") then
-					-- SetPedRelationshipGroupHash(myped,GetHashKey("GUERILLA"))
-				-- end
-			-- elseif 	player.reputation<-65 then
-				-- if myfaction~=GetHashKey("OUTLAW") then
-					-- SetPedRelationshipGroupHash(myped,GetHashKey("OUTLAW"))
-				-- end
-			-- elseif 	player.reputation<-25 then
-				-- if myfaction~=GetHashKey("MARAUDER") then
-					-- SetPedRelationshipGroupHash(myped,GetHashKey("MARAUDER"))
-				-- end
-			-- elseif 	player.reputation<25 then
-				-- if myfaction~=GetHashKey("RENEGADE") then
-					-- SetPedRelationshipGroupHash(myped,GetHashKey("RENEGADE"))
-				-- end
-			-- elseif 	player.reputation<65 then
-				-- if myfaction~=GetHashKey("NEUTRAL") then
-					-- SetPedRelationshipGroupHash(myped,GetHashKey("NEUTRAL"))
-				-- end
-			-- elseif 	player.reputation<90 then
-				-- if myfaction~=GetHashKey("VIGILANTE") then
-					-- SetPedRelationshipGroupHash(myped,GetHashKey("VIGILANTE"))
-				-- end
-			-- else
-				-- if myfaction~=GetHashKey("HERO") then
-					-- SetPedRelationshipGroupHash(myped,GetHashKey("HERO"))
-				-- end
-			-- end
+			SetPedRelationshipGroupHash(myped,result)
 		else
 			local myped=PlayerPedId()
 			local myfaction=GetPedRelationshipGroupHash(myped)
 			if myfaction~=player.faction then
 				SetPedRelationshipGroupHash(myped,player.faction)
 			end
+			for k,v in pairs(faction_reputation_requirements) do
+				if player.reputation>v and v>maximum then
+					result=k
+					maximum=v
+				end
+			end
+			if GetRelationshipBetweenGroups(result,player.faction)==5 then
+				player.faction=nil
+				saving_kvp_mode.DeleteResourceKvp("player_faction")
+			end
 		end
+		--SimpleNotification("reputation: ~1~ / faction: ~a~",player.reputation,relationship_names[GetPedRelationshipGroupHash(myped)])
     end
 end)
 

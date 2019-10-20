@@ -2033,6 +2033,7 @@ clothes_combatmarauder=1,
 
 random={
 cash=1000,
+},
 }
 
 
