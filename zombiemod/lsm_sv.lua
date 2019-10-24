@@ -2,6 +2,8 @@ local devmode=(GetConvarInt("lsm_devmode",0)~=0)
 
 local event={debug="dfhjsfj"}
 
+local time_to_update_shops=2880
+
 local function range(a,b,except)
     local ret={}
     if except~=nil then
@@ -700,16 +702,18 @@ end)
 
 local trades={}
 trades.chances={}
-trades.chances[1]=1
-trades.chances[2]=2
-trades.chances[3]=3
-trades.chances[4]=4
+trades.chances[1]=2
+trades.chances[2]=3
+trades.chances[3]=4
+trades.chances[4]=5
+trades.chances[5]=2
 
 trades.tiers={}
 trades.tiers[1]={}
 trades.tiers[2]={}
 trades.tiers[3]={}
 trades.tiers[4]={}
+trades.tiers[5]={}
 
 trades.tiers[1].survivors={
    {selling="balaclava",
@@ -719,48 +723,6 @@ trades.tiers[1].survivors={
 	minprice=100*0.5,
 	maxprice=100*1.5},
 	
-   {selling="cash",
-	minhowmuch=20*0.5,
-	maxhowmuch=20*1.5,
-	itemforbuying="water",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=20*0.5,
-	maxhowmuch=20*1.5,
-	itemforbuying="canfood",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=20*0.5,
-	maxhowmuch=20*1.5,
-	itemforbuying="scrapplastic",
-	minprice=15,
-	maxprice=15},
-   {selling="cash",
-	minhowmuch=30*0.5,
-	maxhowmuch=30*1.5,
-	itemforbuying="chemicals",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=50*0.5,
-	maxhowmuch=50*1.5,
-	itemforbuying="scrapmetal",
-	minprice=5,
-	maxprice=5},
-   {selling="cash",
-	minhowmuch=35*0.5,
-	maxhowmuch=35*1.5,
-	itemforbuying="rags",
-	minprice=25,
-	maxprice=25},
-   {selling="cash",
-	minhowmuch=100*0.5,
-	maxhowmuch=100*1.5,
-	itemforbuying="gasoline",
-	minprice=25,
-	maxprice=25},
 }
 trades.tiers[2].survivors={
    {selling="gasmask",
@@ -877,6 +839,50 @@ trades.tiers[4].survivors={
 	minprice=1,
 	maxprice=2},
 }
+trades.tiers[5].survivors={
+   {selling="cash",
+	minhowmuch=20*0.5,
+	maxhowmuch=20*1.5,
+	itemforbuying="water",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=20*0.5,
+	maxhowmuch=20*1.5,
+	itemforbuying="canfood",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=20*0.5,
+	maxhowmuch=20*1.5,
+	itemforbuying="scrapplastic",
+	minprice=15,
+	maxprice=15},
+   {selling="cash",
+	minhowmuch=30*0.5,
+	maxhowmuch=30*1.5,
+	itemforbuying="chemicals",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=50*0.5,
+	maxhowmuch=50*1.5,
+	itemforbuying="scrapmetal",
+	minprice=5,
+	maxprice=5},
+   {selling="cash",
+	minhowmuch=35*0.5,
+	maxhowmuch=35*1.5,
+	itemforbuying="rags",
+	minprice=25,
+	maxprice=25},
+   {selling="cash",
+	minhowmuch=100*0.5,
+	maxhowmuch=100*1.5,
+	itemforbuying="gasoline",
+	minprice=25,
+	maxprice=25},
+}
 
 trades.tiers[1].marauders={
    {selling="tapemask",
@@ -905,48 +911,6 @@ trades.tiers[1].marauders={
 	maxprice=100*1.5},
 	
 	
-   {selling="cash",
-	minhowmuch=75*0.5,
-	maxhowmuch=75*1.5,
-	itemforbuying="weed",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=40*0.5,
-	maxhowmuch=40*1.5,
-	itemforbuying="alcohol",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=50*0.5,
-	maxhowmuch=50*1.5,
-	itemforbuying="gunpowder",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=40*0.5,
-	maxhowmuch=40*1.5,
-	itemforbuying="scrapplastic",
-	minprice=25,
-	maxprice=25},
-   {selling="cash",
-	minhowmuch=35*0.5,
-	maxhowmuch=35*1.5,
-	itemforbuying="chemicals",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=60*0.5,
-	maxhowmuch=60*1.5,
-	itemforbuying="scrapmetal",
-	minprice=5,
-	maxprice=5},
-   {selling="cash",
-	minhowmuch=35*0.5,
-	maxhowmuch=35*1.5,
-	itemforbuying="rags",
-	minprice=25,
-	maxprice=25},
 }
 trades.tiers[2].marauders={
    {selling="clothes_banditgoon",
@@ -1075,6 +1039,50 @@ trades.tiers[4].marauders={
 	minprice=4000*0.5,
 	maxprice=4000*1.5},
 }
+trades.tiers[5].marauders={
+   {selling="cash",
+	minhowmuch=75*0.5,
+	maxhowmuch=75*1.5,
+	itemforbuying="weed",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=40*0.5,
+	maxhowmuch=40*1.5,
+	itemforbuying="alcohol",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=50*0.5,
+	maxhowmuch=50*1.5,
+	itemforbuying="gunpowder",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=40*0.5,
+	maxhowmuch=40*1.5,
+	itemforbuying="scrapplastic",
+	minprice=25,
+	maxprice=25},
+   {selling="cash",
+	minhowmuch=35*0.5,
+	maxhowmuch=35*1.5,
+	itemforbuying="chemicals",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=60*0.5,
+	maxhowmuch=60*1.5,
+	itemforbuying="scrapmetal",
+	minprice=5,
+	maxprice=5},
+   {selling="cash",
+	minhowmuch=35*0.5,
+	maxhowmuch=35*1.5,
+	itemforbuying="rags",
+	minprice=25,
+	maxprice=25},
+}
 
 trades.tiers[1].military={
    {selling="tacticalglasses",
@@ -1091,30 +1099,6 @@ trades.tiers[1].military={
 	maxprice=50*1.5},
 	
 	
-   {selling="cash",
-	minhowmuch=40*0.5,
-	maxhowmuch=40*1.5,
-	itemforbuying="gunpowder",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=200*0.5,
-	maxhowmuch=200*1.5,
-	itemforbuying="dawntokens",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=30*0.5,
-	maxhowmuch=30*1.5,
-	itemforbuying="alcohol",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=60*0.5,
-	maxhowmuch=60*1.5,
-	itemforbuying="chemicals",
-	minprice=1,
-	maxprice=1},
 }
 trades.tiers[2].military={
    {selling="gasmask",
@@ -1242,8 +1226,7 @@ trades.tiers[4].military={
 	minprice=4000*0.5,
 	maxprice=4000*1.5},
 }
-	
-trades.tiers[1].mercenary={
+trades.tiers[5].military={
    {selling="cash",
 	minhowmuch=40*0.5,
 	maxhowmuch=40*1.5,
@@ -1251,17 +1234,26 @@ trades.tiers[1].mercenary={
 	minprice=1,
 	maxprice=1},
    {selling="cash",
-	minhowmuch=35*0.5,
-	maxhowmuch=35*1.5,
+	minhowmuch=200*0.5,
+	maxhowmuch=200*1.5,
+	itemforbuying="dawntokens",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=30*0.5,
+	maxhowmuch=30*1.5,
 	itemforbuying="alcohol",
 	minprice=1,
 	maxprice=1},
    {selling="cash",
-	minhowmuch=50*0.5,
-	maxhowmuch=50*1.5,
+	minhowmuch=60*0.5,
+	maxhowmuch=60*1.5,
 	itemforbuying="chemicals",
 	minprice=1,
 	maxprice=1},
+}
+	
+trades.tiers[1].mercenary={
 }
 trades.tiers[2].mercenary={
    {selling="gunstorekey",
@@ -1401,6 +1393,26 @@ trades.tiers[4].mercenary={
 	minprice=3500*0.5,
 	maxprice=3500*1.5},
 }
+trades.tiers[5].mercenary={
+   {selling="cash",
+	minhowmuch=40*0.5,
+	maxhowmuch=40*1.5,
+	itemforbuying="gunpowder",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=35*0.5,
+	maxhowmuch=35*1.5,
+	itemforbuying="alcohol",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=50*0.5,
+	maxhowmuch=50*1.5,
+	itemforbuying="chemicals",
+	minprice=1,
+	maxprice=1},
+}
 
 trades.tiers[1].government={
    {selling="bzgas",
@@ -1410,24 +1422,6 @@ trades.tiers[1].government={
 	minprice=150*0.5,
 	maxprice=150*1.5},
 	
-   {selling="cash",
-	minhowmuch=150*0.5,
-	maxhowmuch=150*1.5,
-	itemforbuying="policedocs",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=250*0.5,
-	maxhowmuch=250*1.5,
-	itemforbuying="bandits_records",
-	minprice=1,
-	maxprice=1},
-   {selling="cash",
-	minhowmuch=150*0.5,
-	maxhowmuch=150*1.5,
-	itemforbuying="dawntokens",
-	minprice=1,
-	maxprice=1},
    {selling="mre",
 	minhowmuch=45*0.5,
 	maxhowmuch=45*1.5,
@@ -1525,6 +1519,198 @@ trades.tiers[3].government={
 	maxprice=2350*1.5},
 }
 trades.tiers[4].government={
+}
+
+trades.tiers[5].government={
+   {selling="cash",
+	minhowmuch=150*0.5,
+	maxhowmuch=150*1.5,
+	itemforbuying="policedocs",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=250*0.5,
+	maxhowmuch=250*1.5,
+	itemforbuying="bandits_records",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=150*0.5,
+	maxhowmuch=150*1.5,
+	itemforbuying="dawntokens",
+	minprice=1,
+	maxprice=1},
+}
+
+
+
+trades.tiers[1].smugglers={
+   {selling="balaclava",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=100*0.5,
+	maxprice=100*1.5},
+	
+}
+trades.tiers[2].smugglers={
+   {selling="gasmask",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="weed",
+	minprice=1,
+	maxprice=3},
+   {selling="flaregun",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=250*0.5,
+	maxprice=250*1.5},
+   {selling="pistolammo",
+	minhowmuch=50*0.5,
+	maxhowmuch=50*1.5,
+	itemforbuying="cash",
+	minprice=200*0.5,
+	maxprice=200*1.5},
+   {selling="canfood",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=35*0.5,
+	maxprice=35*1.5},
+   {selling="water",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=35*0.5,
+	maxprice=35*1.5},
+   {selling="jerrycan",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=200*0.5,
+	maxprice=200*1.5},
+   {selling="gasoline",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=110*0.5,
+	maxprice=110*1.5},
+}
+trades.tiers[3].smugglers={
+   {selling="clothes_scavenger",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=750*0.5,
+	maxprice=750*1.5},
+   {selling="clothes_loner",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=1200*0.5,
+	maxprice=1200*1.5},
+   {selling="clothes_breekiscavenger",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=1500*0.5,
+	maxprice=1500*1.5},
+   {selling="cheekiheavyhelmet",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=1500*0.5,
+	maxprice=1500*1.5},
+   {selling="duffelbag",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=1000*0.5,
+	maxprice=1000*1.5},
+   {selling="snspistol_mk2",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=650*0.5,
+	maxprice=650*1.5},
+	
+   {selling="provisionkey",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=500*0.5,
+	maxprice=500*1.5},
+   {selling="gunstorekey",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="weed",
+	minprice=7*0.5,
+	maxprice=7*1.5},
+}
+trades.tiers[4].smugglers={
+   {selling="clothes_explorer",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="cash",
+	minprice=4000*0.5,
+	maxprice=4000*1.5},
+   {selling="carbinerifle",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="bandits_records",
+	minprice=1,
+	maxprice=2},
+   {selling="marksmanrifle",
+	minhowmuch=1,
+	maxhowmuch=1,
+	itemforbuying="bandits_records",
+	minprice=1,
+	maxprice=2},
+}
+trades.tiers[5].smugglers={
+   {selling="cash",
+	minhowmuch=20*0.5,
+	maxhowmuch=20*1.5,
+	itemforbuying="water",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=20*0.5,
+	maxhowmuch=20*1.5,
+	itemforbuying="canfood",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=20*0.5,
+	maxhowmuch=20*1.5,
+	itemforbuying="scrapplastic",
+	minprice=15,
+	maxprice=15},
+   {selling="cash",
+	minhowmuch=30*0.5,
+	maxhowmuch=30*1.5,
+	itemforbuying="chemicals",
+	minprice=1,
+	maxprice=1},
+   {selling="cash",
+	minhowmuch=50*0.5,
+	maxhowmuch=50*1.5,
+	itemforbuying="scrapmetal",
+	minprice=5,
+	maxprice=5},
+   {selling="cash",
+	minhowmuch=35*0.5,
+	maxhowmuch=35*1.5,
+	itemforbuying="rags",
+	minprice=25,
+	maxprice=25},
+   {selling="cash",
+	minhowmuch=100*0.5,
+	maxhowmuch=100*1.5,
+	itemforbuying="gasoline",
+	minprice=25,
+	maxprice=25},
 }
 
 trades.chopshops={}
@@ -1701,6 +1887,52 @@ trades.chopshops.survivors={
 	 },
 	},
 }
+trades.chopshops.smugglers={
+	{chance=3, --means 1 out of 3, so 33%; chance=10 means 1 out of 10, so 10%
+	vehname="imperator",
+	priceitem="cash",
+	minprice=500*0.5,
+	maxprice=500*1.5,
+	 mods={
+	 [28]=1,
+	 [48]=range(0,3),
+	 },
+	},
+	{chance=2, 
+	vehname="towtruck",
+	priceitem="cash",
+	minprice=800*0.5,
+	maxprice=800*1.5,
+	},
+	{chance=3, 
+	vehname="rumpo3",
+	priceitem="cash",
+	minprice=900*0.5,
+	maxprice=900*1.5,
+	},
+	{chance=3, 
+	vehname="gargoyle",
+	priceitem="cash",
+	minprice=800*0.5,
+	maxprice=800*1.5,
+	},
+	{chance=4, 
+	vehname="dune5",
+	priceitem="cash",
+	minprice=1500*0.5,
+	maxprice=1500*1.5,
+	},
+	{chance=4, 
+	vehname="impaler2",
+	priceitem="cash",
+	minprice=800*0.5,
+	maxprice=800*1.5,
+	 mods={
+	 [28]=1,
+	 [48]=range(0,3),
+	 },
+	},
+}
 
 local function generate_chopshop_list(faction)
 	local list={}
@@ -1757,6 +1989,9 @@ trades.mercenary.trade=generate_trade_list("mercenary")
 trades.government={}
 trades.government.trade={}
 trades.government.trade=generate_trade_list("government")
+trades.smugglers={}
+trades.smugglers.trade={}
+trades.smugglers.trade=generate_trade_list("smugglers")
 
 trades.survivors.chopshop={}
 trades.survivors.chopshop=generate_chopshop_list("survivors")
@@ -1768,33 +2003,60 @@ trades.mercenary.chopshop={}
 trades.mercenary.chopshop=generate_chopshop_list("mercenary")
 trades.government.chopshop={}
 trades.government.chopshop=generate_chopshop_list("government")
+trades.smugglers.chopshop={}
+trades.smugglers.chopshop=generate_chopshop_list("smugglers")
+
+local function update_all_trades_and_chopshops()
+		print("Updated all trade lists and veh shop lists")
+		trades.survivors.trade=generate_trade_list("survivors")
+		--print("survivors trade updated")
+		trades.marauders.trade=generate_trade_list("marauders")
+		--print("marauders trade updated")
+		trades.military.trade=generate_trade_list("military")
+		--print("military trade updated")
+		trades.mercenary.trade=generate_trade_list("mercenary")
+		--print("mercenary trade updated")
+		trades.government.trade=generate_trade_list("government")
+		--print("government trade updated")
+		trades.smugglers.trade=generate_trade_list("smugglers")
+		--print("smugglers trade updated")
+		trades.survivors.chopshop=generate_chopshop_list("survivors")
+		--print("survivors chopshop updated")
+		trades.marauders.chopshop=generate_chopshop_list("marauders")
+		--print("marauders chopshop updated")
+		trades.military.chopshop=generate_chopshop_list("military")
+		--print("military chopshop updated")
+		trades.mercenary.chopshop=generate_chopshop_list("mercenary")
+		--print("mercenary chopshop updated")
+		trades.government.chopshop=generate_chopshop_list("government")
+		--print("government chopshop updated")
+		trades.smugglers.chopshop=generate_chopshop_list("smugglers")
+		--print("smugglers chopshop updated")
+end
 
 Citizen.CreateThread(function()
-	while true do Wait(2880000)
-		trades.survivors.trade=generate_trade_list("survivors")
-		trades.marauders.trade=generate_trade_list("marauders")
-		trades.military.trade=generate_trade_list("military")
-		trades.mercenary.trade=generate_trade_list("mercenary")
-		trades.government.trade=generate_trade_list("government")
-		trades.survivors.chopshop=generate_chopshop_list("survivors")
-		trades.marauders.chopshop=generate_chopshop_list("marauders")
-		trades.military.chopshop=generate_chopshop_list("military")
-		trades.mercenary.chopshop=generate_chopshop_list("mercenary")
-		trades.government.chopshop=generate_chopshop_list("government")
+	while true do Wait(1000)
+		time_to_update_shops=time_to_update_shops-1
+		if time_to_update_shops==0 then
+			time_to_update_shops=2880
+			update_all_trades_and_chopshops()
+		end
 	end
 end)
+
+
 
 RegisterServerEvent("request_trade_table")
 AddEventHandler("request_trade_table",function(tradelistname)
 	if trades[tradelistname] and trades[tradelistname].trade then
-		TriggerClientEvent("updatetradelist",source,tradelistname,trades[tradelistname].trade)
+		TriggerClientEvent("updatetradelist",source,tradelistname,trades[tradelistname].trade,time_to_update_shops)
 	end
 end)
 
 RegisterServerEvent("request_vehshop_table")
 AddEventHandler("request_vehshop_table",function(tradelistname)
 	if trades[tradelistname] and trades[tradelistname].chopshop then
-		TriggerClientEvent("updatevehshoplist",source,tradelistname,trades[tradelistname].chopshop)
+		TriggerClientEvent("updatevehshoplist",source,tradelistname,trades[tradelistname].chopshop,time_to_update_shops)
 	end
 end)
 -- print("========================================")
@@ -1941,7 +2203,7 @@ blueprint=1,
 cash=1000,
 industrialelectronicscrap=25,
 industrialfabrics=25,
-industrialmetalscrap=25,
+industrialscrapmetal=25,
 industrialplastic=25,
 gasmask=1,
 tattookey=1,
@@ -2040,21 +2302,21 @@ cash=1000,
 local safezones={}
 
 local raids={
- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
- {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
+ {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0*0.25,t=1,maxlives=20,lives=20},
+ {x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0*0.25,t=1,maxlives=20,lives=20},
  --{x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
  --{x=1697.1645507813,y=2611.8725585938,z=45.56494140625,r=150.0,t=1,maxlives=20,lives=20},
  
- {x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=150.0,t=5,maxlives=20,lives=20},
- {x=-902.81695556641,y=5419.4990234375,z=36.243270874023,r=150.0,t=5,maxlives=20,lives=20},
+ {x=-1094.7305908203,y=4916.3178710938,z=215.40106201172,r=150.0*0.25,t=5,maxlives=20,lives=20},
+ {x=-902.81695556641,y=5419.4990234375,z=36.243270874023,r=150.0*0.25,t=5,maxlives=20,lives=20},
  
- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=3,maxlives=20,lives=20},
- {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0,t=3,maxlives=20,lives=20},
+ {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0*0.25,t=3,maxlives=20,lives=20},
+ {x=449.26019287109,y=-985.76031494141,z=30.689590454102,r=150.0*0.25,t=3,maxlives=20,lives=20},
  
-    {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=150.0,t=2,maxlives=20,lives=20},
+    {x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=150.0*0.25,t=2,maxlives=20,lives=20},
 
     --{x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
-    {x=568.62316894531,y=0.1098632813,z=18.768627166748,r=150.0,t=4,maxlives=20,lives=20},
+    {x=568.62316894531,y=0.1098632813,z=18.768627166748,r=150.0*0.25,t=4,maxlives=20,lives=20},
  
  
  --{x=0.1645507813,y=0.8725585938,z=0.56494140625,r=150.0,t=1,maxlives=3,lives=3},

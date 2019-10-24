@@ -150,6 +150,14 @@ end
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
+local time_to_update_shops=0
+Citizen.CreateThread(function()
+	while true do Wait(1000)
+		time_to_update_shops=time_to_update_shops-1
+		if time_to_update_shops<0 then time_to_update_shops=0 end
+	end
+end)
+
 
 local kerosine_vehicles={
 [782665360]=true,
@@ -3152,6 +3160,8 @@ local relationship_name={
 [GetHashKey("GUERILLA")]="Guerilla",
 [GetHashKey("OUTLAW")]="Outlaw",
 [GetHashKey("RENEGADE")]="Renegade",
+[GetHashKey("MILITARY")]="Military",
+[GetHashKey("SMUGGLERS")]="Smuggler",
 
 }
 local relationship_names={
@@ -3173,6 +3183,8 @@ local relationship_names={
 [GetHashKey("GUERILLA")]="Guerllas",
 [GetHashKey("OUTLAW")]="Outlaws",
 [GetHashKey("RENEGADE")]="Renegades",
+[GetHashKey("MILITARY")]="Military",
+[GetHashKey("SMUGGLERS")]="Smugglers",
 }
 
 local relationship_good_bad={
@@ -3187,6 +3199,9 @@ local relationship_good_bad={
 [GetHashKey("VIGILANTE")]="good",
 [GetHashKey("GUERILLA")]="bad",
 [GetHashKey("OUTLAW")]="bad",
+[GetHashKey("MILITARY")]="good",
+[GetHashKey("SMUGGLERS")]="bad",
+[GetHashKey("MERC")]="bad",
 }
 
 local relationship_requirements={
@@ -3531,6 +3546,7 @@ print("loaded player faction "..player.faction or "nil")
 player.standardweight=35.0
 player.maxweight=35.0
 player.weight=0.0
+player.storageweight=350.0
 
 local faction_reputation_requirements={
 	[GetHashKey("GUERILLA")]=-100,
@@ -4107,34 +4123,34 @@ local safezones={
 	tradelistname="survivors",
     tradespace=5,
     trade={
-        {"clothes_scavenger",1,"cash",750},
-        {"clothes_loner",1,"cash",1200},
-        {"clothes_breekiscavenger",1,"cash",1500},
-        {"clothes_explorer",1,"cash",4000},
-        {"cheekiheavyhelmet",1,"cash",1500},
-        {"balaclava",1,"cash",100},
-        {"gasmask",1,"weed",2},
-        {"duffelbag",1,"cash",1000},
-        {"flaregun",1,"cash",250},
-        {"snspistol_mk2",1,"cash",650},
-        {"pistolammo",50,"cash",200},
-        {"canfood",1,"cash",35},
-        {"water",1,"cash",35},
-        {"carbinerifle",1,"bandits_records",1},
-        {"marksmanrifle",1,"bandits_records",1},
-        {"jerrycan",1,"cash",200},
-        {"gasoline",1,"cash",110},
+        -- {"clothes_scavenger",1,"cash",750},
+        -- {"clothes_loner",1,"cash",1200},
+        -- {"clothes_breekiscavenger",1,"cash",1500},
+        -- {"clothes_explorer",1,"cash",4000},
+        -- {"cheekiheavyhelmet",1,"cash",1500},
+        -- {"balaclava",1,"cash",100},
+        -- {"gasmask",1,"weed",2},
+        -- {"duffelbag",1,"cash",1000},
+        -- {"flaregun",1,"cash",250},
+        -- {"snspistol_mk2",1,"cash",650},
+        -- {"pistolammo",50,"cash",200},
+        -- {"canfood",1,"cash",35},
+        -- {"water",1,"cash",35},
+        -- {"carbinerifle",1,"bandits_records",1},
+        -- {"marksmanrifle",1,"bandits_records",1},
+        -- {"jerrycan",1,"cash",200},
+        -- {"gasoline",1,"cash",110},
         
-        {"cash",20,"water",1},
-        {"cash",20,"canfood",1},
-        {"cash",40,"scrapplastic",15},
-        {"cash",30,"chemicals",1},
-        {"cash",50,"scrapmetal",5},
-        {"cash",35,"rags",25},
-        {"cash",100,"gasoline",25},
+        -- {"cash",20,"water",1},
+        -- {"cash",20,"canfood",1},
+        -- {"cash",40,"scrapplastic",15},
+        -- {"cash",30,"chemicals",1},
+        -- {"cash",50,"scrapmetal",5},
+        -- {"cash",35,"rags",25},
+        -- {"cash",100,"gasoline",25},
 		
-        {"provisionkey",1,"cash",500},
-        {"gunstorekey",1,"weed",7},
+        -- {"provisionkey",1,"cash",500},
+        -- {"gunstorekey",1,"weed",7},
     },
     tradepos={x=-1146.1655273438,y=4940.0942382813,z=222.26867675781},
     clothes={
@@ -4208,22 +4224,23 @@ local safezones={
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
-        {"towtruck","cash",800},
-        {"rumpo3","cash",900},
-        {"gargoyle","cash",800},
-        {"dune5","cash",1500},
-        {"imperator","cash",500,
-         mods={
-         [28]=1,
-         [48]=range(0,3),
-         },
-        },
-        {"impaler2","cash",800,
-         mods={
-         [28]=1,
-         [48]=range(0,3),
-         },
-        },
+        -- {"towtruck","cash",800},
+        -- {"rumpo3","cash",900},
+        -- {"gargoyle","cash",800},
+        -- {"dune5","cash",1500},
+        -- {"imperator","cash",500,
+         -- mods={
+         -- [28]=1,
+         -- [48]=range(0,3),
+         -- },
+        -- },
+        -- {"impaler2","cash",800,
+         -- mods={
+         -- [28]=1,
+         -- [48]=range(0,3),
+         -- },
+        -- },
+		
         -- {"deathbike","cash",1300, --(Marauders, Mercenaries)
          -- mods={
          -- [48]=1,
@@ -4375,27 +4392,27 @@ local safezones={
 	tradelistname="government",
     tradespace=4,
     trade={
-        {"clothes_riot",1,"cash",2350},
-        {"clothes_camouflage",1,"cash",1500},
-        {"clothes_rookie",1,"cash",1500},
-        {"clothes_police",1,"cash",1000},
-        {"riothelmet",1,"cash",1000},
-        {"stungun",1,"cash",500},
-        {"pistol",1,"cash",700},
-        {"pumpshotgun",1,"cash",1000},
-        {"pumpshotgun_mk2",1,"bandits_records",1},
-        {"autoshotgun",1,"bandits_records",3},
-        {"shotgunammo",30,"cash",200},
-        {"smgammo",100,"cash",250},
-        {"bzgas",1,"cash",150},
+        -- {"clothes_riot",1,"cash",2350},
+        -- {"clothes_camouflage",1,"cash",1500},
+        -- {"clothes_rookie",1,"cash",1500},
+        -- {"clothes_police",1,"cash",1000},
+        -- {"riothelmet",1,"cash",1000},
+        -- {"stungun",1,"cash",500},
+        -- {"pistol",1,"cash",700},
+        -- {"pumpshotgun",1,"cash",1000},
+        -- {"pumpshotgun_mk2",1,"bandits_records",1},
+        -- {"autoshotgun",1,"bandits_records",3},
+        -- {"shotgunammo",30,"cash",200},
+        -- {"smgammo",100,"cash",250},
+        -- {"bzgas",1,"cash",150},
 		
-        {"cash",150,"policedocs",1},
-        {"cash",250,"bandits_records",1},
-        {"cash",150,"dawntokens",1},
-        {"cash",45,"mre",1},
-        {"cash",20,"soda",1},
+        -- {"cash",150,"policedocs",1},
+        -- {"cash",250,"bandits_records",1},
+        -- {"cash",150,"dawntokens",1},
+        -- {"cash",45,"mre",1},
+        -- {"cash",20,"soda",1},
 		
-        {"barberkey",1,"cash",650},
+        -- {"barberkey",1,"cash",650},
     },
 	factionjoinpos={x=447.4147644043,y=-975.54663085938,z=30.68959236145},
 	factionjoin={cost=1500},
@@ -4470,11 +4487,12 @@ local safezones={
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
-        {"phantom","cash",800},
-        {"riot2","cash",1800},
-        {"policet","cash",1000},
-        {"riot","cash",1500},
-        {"police","cash",700},
+        -- {"phantom","cash",800},
+        -- {"riot2","cash",1800},
+        -- {"policet","cash",1000},
+        -- {"riot","cash",1500},
+        -- {"police","cash",700},
+		
         -- {"imperator","cash",500,
          -- mods={
          -- [28]=1,
@@ -4729,39 +4747,39 @@ local safezones={
     tradespace=4,
 	tradelistname="marauders",
     trade={
-        {"clothes_banditgoon",1,"cash",750},
-        {"clothes_marauder",1,"cash",1200},
-        {"clothes_toughguy",1,"cash",4000},
-        {"clothes_banditmercenary",1,"cash",4000},
-        {"maraudercombathelmet",1,"cash",2000},
-        {"tapemask",1,"cash",100},
-        {"halfmask",1,"cash",100},
-        {"duffelbag",1,"cash",1000},
-        {"gasmask",1,"weed",2},
-        {"compactrifle",1,"cash",1200},
-        {"assaultrifle",1,"bandits_records",1},
-        {"musket",1,"cash",500},
-        {"sawnoffshotgun",1,"cash",700},
-        {"vintagepistol",1,"cash",900},
-        {"compactlauncher",1,"policedocs",2},
-        {"launchergrenade",1,"weed",1},
-        {"minismg",1,"cash",650},
-        {"machinepistol",1,"policedocs",1},
-        {"smgammo",100,"cigarettes",1},
-        {"shotgunammo",30,"cash",350},
-        {"jerrycan",1,"cash",200},
-        {"molotov",1,"cash",100},
+        -- {"clothes_banditgoon",1,"cash",750},
+        -- {"clothes_marauder",1,"cash",1200},
+        -- {"clothes_toughguy",1,"cash",4000},
+        -- {"clothes_banditmercenary",1,"cash",4000},
+        -- {"maraudercombathelmet",1,"cash",2000},
+        -- {"tapemask",1,"cash",100},
+        -- {"halfmask",1,"cash",100},
+        -- {"duffelbag",1,"cash",1000},
+        -- {"gasmask",1,"weed",2},
+        -- {"compactrifle",1,"cash",1200},
+        -- {"assaultrifle",1,"bandits_records",1},
+        -- {"musket",1,"cash",500},
+        -- {"sawnoffshotgun",1,"cash",700},
+        -- {"vintagepistol",1,"cash",900},
+        -- {"compactlauncher",1,"policedocs",2},
+        -- {"launchergrenade",1,"weed",1},
+        -- {"minismg",1,"cash",650},
+        -- {"machinepistol",1,"policedocs",1},
+        -- {"smgammo",100,"cigarettes",1},
+        -- {"shotgunammo",30,"cash",350},
+        -- {"jerrycan",1,"cash",200},
+        -- {"molotov",1,"cash",100},
 		
-        {"cash",75,"weed",1},
-        {"cash",40,"alcohol",1},
-        {"cash",50,"gunpowder",1},
-        {"cash",40,"scrapplastic",25},
-        {"cash",35,"chemicals",1},
-        {"cash",60,"scrapmetal",5},
-        {"cash",35,"rags",25},
+        -- {"cash",75,"weed",1},
+        -- {"cash",40,"alcohol",1},
+        -- {"cash",50,"gunpowder",1},
+        -- {"cash",40,"scrapplastic",25},
+        -- {"cash",35,"chemicals",1},
+        -- {"cash",60,"scrapmetal",5},
+        -- {"cash",35,"rags",25},
 		
-        {"gunstorekey",1,"dawntokens",5},
-        {"tattookey",1,"cash",650},
+        -- {"gunstorekey",1,"dawntokens",5},
+        -- {"tattookey",1,"cash",650},
     },
 	factionjoinpos={x=1689.2509765625,y=2529.2553710938,z=45.56485748291},
 	factionjoin={cost=1000},
@@ -4865,27 +4883,28 @@ local safezones={
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
-        {"towtruck","cash",800},
-        {"wastelander","cash",1000},
-        --{"technical2","cash",2500},
-        {"tornado6","cash",1000},
-        -- {"imperator","cash",500,
+        -- {"towtruck","cash",800},
+        -- {"wastelander","cash",1000},
+        -- --{"technical2","cash",2500},
+        -- {"tornado6","cash",1000},
+        -- -- {"imperator","cash",500,
+         -- -- mods={
+         -- -- [28]=1,
+         -- -- [48]=range(0,3),
+         -- -- },
+        -- -- },
+        -- {"impaler2","cash",800,
          -- mods={
          -- [28]=1,
          -- [48]=range(0,3),
          -- },
         -- },
-        {"impaler2","cash",800,
-         mods={
-         [28]=1,
-         [48]=range(0,3),
-         },
-        },
-        {"deathbike","cash",1300, --(Marauders, Mercenaries)
-         mods={
-         [48]=1,
-         },
-        },
+        -- {"deathbike","cash",1300, --(Marauders, Mercenaries)
+         -- mods={
+         -- [48]=1,
+         -- },
+        -- },
+		
         -- {"zr380","cash",2000, -- (Government, Marauders, Mercenaries, Military)
          -- mods={
          -- [48]=2,
@@ -4919,11 +4938,14 @@ local safezones={
 	
 	--Smugglers base
 ----------------------------------------------------
-    {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=96,color=4,
+    {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=102,color=4,
     models={1885233650},
     name="Smugglers Camp",
     extraction={x=2232.3471679688,y=5611.4184570313,z=54.914485931396},
+	tradelistname="smugglers",
     tradepos={x=2221.4025878906,y=5614.6494140625,z=54.901615142822},
+	trade={},
+	factionname="Smugglers",
     factionjoinpos={x=2224.2741699219,y=5604.5356445313,z=54.927871704102},
     factionjoin={cost=1500},
     storagepos={x=2192.8664550781,y=5598.0258789063,z=53.746047973633},
@@ -4933,7 +4955,54 @@ local safezones={
     garagename="smugglers",
     garagepos={x=2202.8256835938,y=5561.177734375,z=53.95454788208},
     vehpos={x=2196.3247070313,y=5608.0581054688,z=53.495838165283}, --chopshop position
+	vehshop={},
     relationship="SMUGGLERS",
+	chopshop={
+	{"repair","cash",1},
+	{"refill","cash",20},
+	{"rearm","cash",1}, --(Government, Mercenaries, Military)
+	},
+	upgrades={
+		{vehicle="imperator",sprite="armorplating",name="Armor Plating",mods={[5]=0},resource="cash",amount=2100},
+		{vehicle="imperator",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
+		--{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
+		--{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
+		--{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		
+		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
+		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
+		--{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		--{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
+		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		
+		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
+		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
+		--{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="zr380",sprite="supercharger",name="Supercharger",mods={[7]=4,[4]=1},resource="cash",amount=1500},
+		--{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
+		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		
+		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
+		--{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		--{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
+		
+		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
+		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
+		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		--{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
+		
+		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
+		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
+		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		--{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
+		--{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
+	},
     },
 	
 	---military base
@@ -4945,35 +5014,35 @@ local safezones={
     tradelistname="military",
 	tradespace=4,
     trade={
-        {"clothes_pmc",1,"cash",4000},
-        {"gasmask",1,"cash",650},
-        {"bodyarmor",1,"cash",500},
-        {"armorplate",1,"cash",300},
-        {"blackopstacticalhelmet",1,"cash",2000},
-        {"specopscommsgear",1,"cash",500},
-        {"tacticalglasses",1,"cash",100},
-        {"pmccap",1,"cash",50},
-        {"carbinerifle_mk2",1,"cash",1000},
-        {"smg_mk2",1,"cash",750},
-        {"heavypistol",1,"cash",600},
-        {"sniperrifle",1,"cash",1500},
-        {"combatmg",1,"dawntokens",3},
-        {"grenadelauncher",1,"bandits_records",3},
-        {"mgammo",100,"cash",350},
-        {"launchergrenade",1,"cash",400},
-        {"grenade",1,"cash",250},
-        {"ammo",50,"cash",250},
-        {"heavyrifleammo",50,"cash",400},
-        {"heavybarrel",1,"cash",600},
-        {"grip",1,"cash",500},
-        {"scope_advanced",1,"cash",400},
+        -- {"clothes_pmc",1,"cash",4000},
+        -- {"gasmask",1,"cash",650},
+        -- {"bodyarmor",1,"cash",500},
+        -- {"armorplate",1,"cash",300},
+        -- {"blackopstacticalhelmet",1,"cash",2000},
+        -- {"specopscommsgear",1,"cash",500},
+        -- {"tacticalglasses",1,"cash",100},
+        -- {"pmccap",1,"cash",50},
+        -- {"carbinerifle_mk2",1,"cash",1000},
+        -- {"smg_mk2",1,"cash",750},
+        -- {"heavypistol",1,"cash",600},
+        -- {"sniperrifle",1,"cash",1500},
+        -- {"combatmg",1,"dawntokens",3},
+        -- {"grenadelauncher",1,"bandits_records",3},
+        -- {"mgammo",100,"cash",350},
+        -- {"launchergrenade",1,"cash",400},
+        -- {"grenade",1,"cash",250},
+        -- {"ammo",50,"cash",250},
+        -- {"heavyrifleammo",50,"cash",400},
+        -- {"heavybarrel",1,"cash",600},
+        -- {"grip",1,"cash",500},
+        -- {"scope_advanced",1,"cash",400},
 		
-        {"cash",40,"gunpowder",1},
-        {"cash",200,"dawntokens",1},
-        {"cash",30,"alcohol",1},
-        {"cash",60,"chemicals",1},
+        -- {"cash",40,"gunpowder",1},
+        -- {"cash",200,"dawntokens",1},
+        -- {"cash",30,"alcohol",1},
+        -- {"cash",60,"chemicals",1},
 		
-        {"gunstorekey",1,"cash",1000},
+        -- {"gunstorekey",1,"cash",1000},
     },
 	factionjoinpos={x=-2353.9616699219,y=3264.3430175781,z=32.810764312744},
 	factionjoin={cost=2000},
@@ -5110,10 +5179,11 @@ local safezones={
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
-		{"buzzard2","cash",15000},
-		{"buzzard","cash",10000},
-		{"barrage","cash",2400},
-		{"dune3","cash",2000},
+		-- {"buzzard2","cash",15000},
+		-- {"buzzard","cash",10000},
+		-- {"barrage","cash",2400},
+		-- {"dune3","cash",2000},
+		
         -- {"imperator","cash",500,
          -- mods={
          -- [28]=1,
@@ -5172,33 +5242,33 @@ local safezones={
     tradespace=4,
 	tradelistname="mercenary",
     trade={
-        {"clothes_combat_desert",1,"cash",4500},
-        {"clothes_combat_green",1,"cash",4500},
-        {"clothes_mercexperimental",1,"cash",3500},
-        {"clothes_merclight",1,"cash",1500},
-        {"bodyarmor",1,"cash",500},
-        {"armorplate",1,"cash",300},
-        {"merctacticalhelmet",1,"cash",1800},
-        {"gasmask",1,"cash",600},
-        {"bullpuprifle_mk2",1,"cash",1800},
-        {"specialcarbine",1,"dawntokens",10},
-        {"heavyshotgun",1,"cigarettes",20},
-        {"grenade",1,"cash",250},
-        {"mg",1,"cash",2600},
-        {"rpg",1,"dawntokens",7},
-        {"assaultsmg",1,"cash",750},
-        {"ammo",50,"cash",250},
-        {"mgammo",100,"cash",350},
-        {"rocket",1,"cash",650},
-        {"suppressor_2",1,"cash",600},
-        {"grip",1,"cash",500},
-        {"scope_advanced",1,"cash",400},
+        -- {"clothes_combat_desert",1,"cash",4500},
+        -- {"clothes_combat_green",1,"cash",4500},
+        -- {"clothes_mercexperimental",1,"cash",3500},
+        -- {"clothes_merclight",1,"cash",1500},
+        -- {"bodyarmor",1,"cash",500},
+        -- {"armorplate",1,"cash",300},
+        -- {"merctacticalhelmet",1,"cash",1800},
+        -- {"gasmask",1,"cash",600},
+        -- {"bullpuprifle_mk2",1,"cash",1800},
+        -- {"specialcarbine",1,"dawntokens",10},
+        -- {"heavyshotgun",1,"cigarettes",20},
+        -- {"grenade",1,"cash",250},
+        -- {"mg",1,"cash",2600},
+        -- {"rpg",1,"dawntokens",7},
+        -- {"assaultsmg",1,"cash",750},
+        -- {"ammo",50,"cash",250},
+        -- {"mgammo",100,"cash",350},
+        -- {"rocket",1,"cash",650},
+        -- {"suppressor_2",1,"cash",600},
+        -- {"grip",1,"cash",500},
+        -- {"scope_advanced",1,"cash",400},
 		
-        {"cash",40,"gunpowder",1},
-        {"cash",35,"alcohol",1},
-        {"cash",50,"chemicals",1},
+        -- {"cash",40,"gunpowder",1},
+        -- {"cash",35,"alcohol",1},
+        -- {"cash",50,"chemicals",1},
 		
-        {"gunstorekey",1,"cash",1000},
+        -- {"gunstorekey",1,"cash",1000},
     },
 	factionjoinpos={x=-484.63958740234,y=-1730.4544677734,z=19.549257278442},
 	factionjoin={cost=2000},
@@ -6472,7 +6542,7 @@ milspecmetal="An assortment of military grade metals. Useful for crafting items.
 milspecplasticscrap="An assortment of military grade plastics. Useful for crafting items.",
 industrialelectronicscrap="An assorted bunch of military grade broken electronics. Useful for crafting items.",
 milspecelectronicscrap="An assorted bunch of high grade broken electronics. Useful for crafting items.",
-industrialmetalscrap="An assortment of high grade metals. Useful for crafting items.",
+industrialscrapmetal="An assortment of high grade metals. Useful for crafting items.",
 minigun="A large caliber rotary machine gun. Kills things fairly quickly.",
 }
 
@@ -7261,7 +7331,7 @@ repair_box={
 },
 explosives_box={
     {"leadscrap",-10},
-    {"industrialmetalscrap",-10},
+    {"industrialscrapmetal",-10},
     {"industrialelectronicscrap",-10},
     {"milspecelectronicscrap",-10},
     {"milspecfabrics",-10},
@@ -7644,7 +7714,7 @@ local function give_item_to_storage(storage,storagename,add_name,add_amount,anyw
             return false
         end
     end
-    SimpleNotification("You stored ~g~~1~ ~a~~s~.",add_amount,(item_names[add_name] or add_name))
+    --SimpleNotification("You stored ~g~~1~ ~a~~s~.",add_amount,(item_names[add_name] or add_name))
     --inventory.highlight=500
     return true
 end
@@ -7652,6 +7722,9 @@ end
 local function give_item_to_inventory(add_name,add_amount,anyway)
     if add_name==nil then
         SimpleNotification("~r~ERROR! ~s~Tried to give item to inventory but name is nil")
+	elseif add_name=="blueprint" then
+		local randomchosenitem=math.random(1,#normal_crafts)
+		add_name="blueprint_"..normal_crafts[randomchosenitem][1]
     end
     if add_amount==nil then
         SimpleNotification("~r~ERROR! ~s~Tried to give item to inventory but amount is nil")
@@ -9411,18 +9484,11 @@ Citizen.CreateThread(function()
 					end
                     WriteText(2,{"~c~Alignment ~s~~a~",relationship_name[result]},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y)
                 end
-				if player.faction then
-					local factionname
-					local myrel=GetPedRelationshipGroupHash(myped)
-					for k,zone in pairs(safezones) do
-						if zone.relationship==myrel then
-							if zone.factionname then
-								factionname=zone.factionname
-								WriteText(2,{"~c~Faction ~s~~a~",factionname},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y-0.02)
-							end
-						end
-					end
-                end
+				if player.faction and player.faction~=0 then
+					WriteText(2,{"~c~Faction ~s~~a~",relationship_name[player.faction]},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y-0.02)
+				else
+					WriteText(2,{"~c~Faction ~s~None",},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y-0.02)
+				end
 				SetTextRightJustify(true)
                 SetTextWrap(inventory_up_x_left,inventory_up_x_right)
                 local g_b=255
@@ -12046,49 +12112,56 @@ Citizen.CreateThread(function()
 								end
 								return false
 							end
-							local cost=zone.vehshop[current_trade][3]
-							local slot=get_inventory_item_slot(zone.vehshop[current_trade][2])
-							if vehshop_chechprice(slot,cost) then
-								local model=GetHashKey(zone.vehshop[current_trade][1])
-								if (not IsModelValid(model)) or (not IsModelAVehicle(model)) then --or not IsVehicleModel(model) then
-									SimpleNotification("invalid vehicle ~a~",zone.vehshop[current_trade][1])
-								end
-								RequestModel(model)
-								if not HasModelLoaded(model) then
-									SimpleNotification("Loading model, try again.")
-								elseif vehshop_chechprice(slot,cost) then
-									local veh=CreateVehicle(model,zone.vehpos.x,zone.vehpos.y,zone.vehpos.z,zone.vehpos.angle,true,false)
-									if veh~=nil and veh~=0 then
-										vehshop_pay(slot,cost)
-										DecorSetBool(veh,"zm_looted",true)
-										--DecorSetBool(veh,"post_apoc_car",true)
-										SetEntityMaxHealth(veh,1020)
-										DecorSetFloat(veh,"zm_fuel",20.0)
-										SetPedIntoVehicle(pped,veh,-1)
-										SetVehicleAsNoLongerNeeded(veh)
-										SetModelAsNoLongerNeeded(model)
-										if zone.vehshop[current_trade].mods then
-											--print("max="..#(zone.vehshop[current_trade].mods))
-											for k,v in pairs(zone.vehshop[current_trade].mods) do
-												if type(v)=="table" then
-													local rnd=math.random(1,#v)
-													SetVehicleMod(veh,k,v[rnd])
-												else
-													SetVehicleMod(veh,k,v)
+							if zone.vehshop and zone.vehshop[current_trade] then
+								local cost=zone.vehshop[current_trade][3]
+								local slot=get_inventory_item_slot(zone.vehshop[current_trade][2])
+								if vehshop_chechprice(slot,cost) then
+									local model=GetHashKey(zone.vehshop[current_trade][1])
+									if (not IsModelValid(model)) or (not IsModelAVehicle(model)) then --or not IsVehicleModel(model) then
+										SimpleNotification("invalid vehicle ~a~",zone.vehshop[current_trade][1])
+									end
+									RequestModel(model)
+									if not HasModelLoaded(model) then
+										SimpleNotification("Loading model, try again.")
+									elseif vehshop_chechprice(slot,cost) then
+										local veh=CreateVehicle(model,zone.vehpos.x,zone.vehpos.y,zone.vehpos.z,zone.vehpos.angle,true,false)
+										if veh~=nil and veh~=0 then
+											vehshop_pay(slot,cost)
+											DecorSetBool(veh,"zm_looted",true)
+											--DecorSetBool(veh,"post_apoc_car",true)
+											SetEntityMaxHealth(veh,1020)
+											DecorSetFloat(veh,"zm_fuel",20.0)
+											SetPedIntoVehicle(pped,veh,-1)
+											SetVehicleAsNoLongerNeeded(veh)
+											SetModelAsNoLongerNeeded(model)
+											if zone.vehshop[current_trade].mods then
+												--print("max="..#(zone.vehshop[current_trade].mods))
+												for k,v in pairs(zone.vehshop[current_trade].mods) do
+													if type(v)=="table" then
+														local rnd=math.random(1,#v)
+														SetVehicleMod(veh,k,v[rnd])
+													else
+														SetVehicleMod(veh,k,v)
+													end
 												end
 											end
+											Wait(0)
+											break
 										end
-										Wait(0)
-										break
+									else
+										SetModelAsNoLongerNeeded(model)
 									end
-								else
-									SetModelAsNoLongerNeeded(model)
 								end
 							end
                         end
                         DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
                         DrawSprite("lsm","trading_icon",0.296,0.1945,0.017,0.03,0.0, 255, 255, 255, 255)
                         WriteTextNoOutline(2,"Chopshop",0.4,0,0,0,255,0.307,0.18)
+						local hours=math.floor(time_to_update_shops/120)
+						local minutes=math.floor((time_to_update_shops-hours*120)/2)
+						if hours<10 then hours="0"..hours end
+						if minutes<10 then minutes="0"..minutes end
+                        WriteTextNoOutline(4,{"New Shipment in ~a~:~a~",tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
                         WriteTextNoOutline(2,"Service",0.3,0,0,0,255,0.290,0.24)
                         WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
 						
@@ -12286,16 +12359,17 @@ Citizen.CreateThread(function()
                         local trade_scroll_bkg_size_y=0.55
                         local trade_scroll_y=trade_scroll_bkg_y
                         local trade_scrollsize_x=0.003
-                        
-                        for j=1,inventory.total do
-                            if inventory[j].item==zone.trade[current_trade][3] then
-                                youhaveamount_price=inventory[j].amount
-                                inv_index_price=j
-                            elseif inventory[j].item==zone.trade[current_trade][1] then
-                                youhaveamount_goods=inventory[j].amount
-                                inv_index_goods=j
-                            end
-                        end
+                        if zone.trade and zone.trade[current_trade] then
+							for j=1,inventory.total do
+								if inventory[j].item==zone.trade[current_trade][3] then
+									youhaveamount_price=inventory[j].amount
+									inv_index_price=j
+								elseif inventory[j].item==zone.trade[current_trade][1] then
+									youhaveamount_goods=inventory[j].amount
+									inv_index_goods=j
+								end
+							end
+						end
                         mypos=GetEntityCoords(PlayerPedId())
                         if IsControlJustPressed(0,177) or not in_radius(mypos,zone.tradepos,3) then
                             break
@@ -12320,7 +12394,7 @@ Citizen.CreateThread(function()
                                 scroll=current_trade-maxtradesinmenu+1
 								if scroll<1 then scroll=1 end
                             end
-                        elseif IsControlJustPressed(0,86) then --e veh horn
+                        elseif IsControlJustPressed(0,86) and zone.trade and zone.trade[current_trade] then --e veh horn
                             --print(zone.trade[current_trade][4].." you have:"..youhaveamount_price)
                             if zone.trade[current_trade][4]<youhaveamount_price then
                                 if give_item_to_inventory(zone.trade[current_trade][1],zone.trade[current_trade][2]) then
@@ -12343,6 +12417,11 @@ Citizen.CreateThread(function()
                         DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
                         DrawSprite("lsm","trading_icon",0.296,0.1945,0.017,0.03,0.0, 255, 255, 255, 255)
                         WriteTextNoOutline(2,"Trading post",0.4,0,0,0,255,0.307,0.18)
+						local hours=math.floor(time_to_update_shops/120)
+						local minutes=math.floor((time_to_update_shops-hours*120)/2)
+						if hours<10 then hours="0"..hours end
+						if minutes<10 then minutes="0"..minutes end
+                        WriteTextNoOutline(4,{"New Shipment in ~a~:~a~",tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
                         WriteTextNoOutline(2,"Item",0.3,0,0,0,255,0.290,0.24)
                         WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
                         
@@ -12799,14 +12878,19 @@ Citizen.CreateThread(function()
             elseif zone~=nil and zone.storagepos~=nil and zone.storagename~=nil and in_radius(mypos,zone.storagepos,1) then 
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 					if player.faction==zone.relationship then
+						local howlongenterhasbeenhold=0
 						--storage
-						inventory.current=nil
-						zone.storage=zone.storage or {}
 						local storage=zone.storage
-						storage.rows=4
-						storage.lines=5
-						storage.scroll=storage.scroll or 0
-						storage.current=storage.current or storage.scroll*storage.rows
+						if storage and storage.total and storage.total>0 then
+							inventory.current=nil
+							storage.rows=4
+							storage.lines=5
+							storage.scroll=storage.scroll or 0
+							storage.current=storage.current or storage.scroll*storage.rows
+						else
+							storage={total=0,rows=4,lines=5,scroll=0}
+							zone.storage=storage
+						end
 						-- for k,v in pairs(inventory) do
 							-- if type(v)=='table' then
 								-- zone.storage[k]={}
@@ -12818,13 +12902,20 @@ Citizen.CreateThread(function()
 							-- end
 						-- end
 						while true do Wait(0)
+							pped=PlayerPedId()
+							mypos=GetEntityCoords(pped)
+							if not in_radius(mypos,zone.storagepos,1) then
+								goto endofwhileforstorage
+							end
 							if storage.scroll<0 then storage.scroll=0 end
-							WriteHint(16,"scroll storage: "..storage.scroll.." inv scroll: "..inventory.scroll)
+							--WriteHint(16,"scroll storage: "..storage.scroll.." inv scroll: "..inventory.scroll)
 							if IsControlJustPressed(0,175) then --right
 								if storage.current~=nil then
 									if storage.current%storage.rows==0 or storage.current==zone.storage.total then
-										storage.current=nil
-										inventory.current=inventory.scroll*inventory.rows+1
+										if inventory.total>0 then
+											storage.current=nil
+											inventory.current=inventory.scroll*inventory.rows+1
+										end
 									-- elseif 
 										-- storage.current=1
 										-- storage.scroll=0
@@ -12848,11 +12939,13 @@ Citizen.CreateThread(function()
 									end
 								elseif inventory.current~=nil then
 									if inventory.current%inventory.rows==1 then
-										inventory.current=nil
-										storage.current=storage.scroll*storage.rows+1
-									elseif inventory.current==1 then
-										inventory.current=nil
-										storage.current=storage.scroll*storage.rows+1
+										if storage.total>0 then
+											inventory.current=nil
+											storage.current=storage.scroll*storage.rows+1
+										end
+									-- elseif inventory.current==1 then
+										-- inventory.current=nil
+										-- storage.current=storage.scroll*storage.rows+1
 									else
 										inventory.current=inventory.current-1
 									end
@@ -12900,41 +12993,70 @@ Citizen.CreateThread(function()
 									opinv.scroll=opinv.scroll+1
 								--print("scroll="..storage.scroll)
 								end
-							elseif IsControlJustPressed(0,191) then --enter
-								if storage.current~=nil then
-									if zone.storage[storage.current] then
-										if zone.storage[storage.current].amount>1 then
-											give_item_to_inventory(zone.storage[storage.current].item,1)
-											zone.storage[storage.current].amount=zone.storage[storage.current].amount-1
-										else
-											give_item_to_inventory(zone.storage[storage.current].item,1)
-											table.remove(zone.storage,storage.current)
-											zone.storage.total=zone.storage.total-1
-											if storage.current>zone.storage.total then
-												storage.current=zone.storage.total
+							elseif IsControlPressed(0,191) then --enter
+								local amounttomove
+								howlongenterhasbeenhold=howlongenterhasbeenhold+1
+								if howlongenterhasbeenhold<=1 or howlongenterhasbeenhold>=45 then
+									amounttomove=1
+									if howlongenterhasbeenhold>300 then amounttomove=50 
+									elseif howlongenterhasbeenhold>200 then amounttomove=10 
+									elseif howlongenterhasbeenhold>100 then amounttomove=5 end
+									if storage.current~=nil then
+										if zone.storage[storage.current] then
+											if zone.storage[storage.current].amount>amounttomove then
+												give_item_to_inventory(zone.storage[storage.current].item,amounttomove)
+												zone.storage[storage.current].amount=zone.storage[storage.current].amount-amounttomove
+											else
+												amounttomove=zone.storage[storage.current].amount
+												give_item_to_inventory(zone.storage[storage.current].item,amounttomove)
+												table.remove(zone.storage,storage.current)
+												howlongenterhasbeenhold=2
+												zone.storage.total=zone.storage.total-1
+												if zone.storage.total==0 then
+													storage.current=nil
+													inventory.current=inventory.scroll*inventory.rows+1
+												elseif storage.current>zone.storage.total then
+													storage.current=zone.storage.total
+												end
 											end
 										end
-									end
-								elseif inventory.current~=nil then
-									if inventory[inventory.current] then
-										if inventory[inventory.current].amount>1 then
-											give_item_to_storage(storage,zone.storagename,inventory[inventory.current].item,1)
-											inventory[inventory.current].amount=inventory[inventory.current].amount-1
-										else
-											give_item_to_storage(storage,zone.storagename,inventory[inventory.current].item,1)
-											table.remove(inventory,inventory.current)
-											inventory.total=inventory.total-1
-											if inventory.current>inventory.total then
-												inventory.current=inventory.total
+									elseif inventory.current~=nil then
+										if inventory[inventory.current] then
+											local weightleft=player.storageweight-zone.storage.weight
+											local itemweight=(item_weight[inventory[inventory.current].item] or 0.0)
+											if weightleft>=itemweight then
+												if weightleft<itemweight*amounttomove then
+													amounttomove=math.floor(weightleft/itemweight)
+												end
+												if inventory[inventory.current].amount>amounttomove then
+													give_item_to_storage(storage,zone.storagename,inventory[inventory.current].item,amounttomove)
+													inventory[inventory.current].amount=inventory[inventory.current].amount-amounttomove
+												else
+													amounttomove=inventory[inventory.current].amount
+													give_item_to_storage(storage,zone.storagename,inventory[inventory.current].item,amounttomove)
+													table.remove(inventory,inventory.current)
+													howlongenterhasbeenhold=2
+													inventory.total=inventory.total-1
+													if inventory.total==0 then
+														inventory.current=nil
+														storage.current=storage.scroll*storage.rows+1
+													elseif inventory.current>inventory.total then
+														inventory.current=inventory.total
+													end
+												end
+											--else
+												--FlashMinimapDisplay()
+												--SimpleNotification("Storage ~y~weight limit ~s~is ~r~reached~s~!")
 											end
 										end
 									end
 								end
 							elseif IsControlJustPressed(0,177) then --backspace / rmb / esc
 								goto endofwhileforstorage
+							else
+								howlongenterhasbeenhold=0
 							end
 							myped=PlayerPedId()
-							mypos=GetEntityCoords(pped)
 							inventory.highlight=255
 							if HasStreamedTextureDictLoaded("lsm") then
 								DrawSprite("lsm","stash",.35,.525,0.25,0.6,0.0, 255, 255, 255, 255)
@@ -13007,7 +13129,7 @@ Citizen.CreateThread(function()
 									local sprite="item"
 									if storage.current==k then sprite="selected_item" end
 									DrawSprite("lsm",sprite,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-									DrawSprite("lsm",v.item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+									DrawItem("lsm",v.item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
 									
 									
 									SetTextRightJustify(true)
@@ -13030,12 +13152,18 @@ Citizen.CreateThread(function()
 								if zone.storage.total>0 then
 									local v=zone.storage[storage.current]
 									if v~=nil then
-										WriteText(4,{"~a~",item_names[v.item] or v.item},0.3,255,255,255,255,0.27,0.6925)
+										local itemname=v.item
+										if string.find(itemname,"+") then
+											parts=split_text(itemname,"+")
+											itemname=parts[1]
+											parts[1]=nil
+										end
+										WriteText(4,{"~a~",item_names[itemname] or v.item},0.3,255,255,255,255,0.27,0.6925)
 										SetTextWrap(0.0,0.4)
-										WriteText(4,{"~a~",item_descriptions[v.item] or v.item},0.3,155,155,155,155,0.27,0.7175)
+										WriteText(4,{"~a~",item_descriptions[itemname] or v.item},0.3,155,155,155,155,0.27,0.7175)
 										
 										DrawSprite("lsm","selected_item",0.415,0.745,inv_sml_x*1.1,inv_sml_y*1.1,0.0, 255, 255, 255, 255)
-										DrawSprite("lsm",v.item,0.415,0.745,inv_sml_x*1.1,inv_sml_y*1.1,0.0, 255, 255, 255, 255)
+										DrawItem("lsm",v.item,0.415,0.745,inv_sml_x*1.1,inv_sml_y*1.1,0.0, 255, 255, 255, 255)
 									end
 								else
 									WriteText(2,"Empty",0.3,255,255,255,255,0.27,0.6925)
@@ -13048,7 +13176,7 @@ Citizen.CreateThread(function()
 							if zone.storage.weight==nil then zone.storage.weight=0 end
 							SetTextRightJustify(true)
 							SetTextWrap(0.0,0.43)
-							WriteText(4,{"~c~WEIGHT ~s~~1~ ~c~KG",zone.storage.weight},0.3,255,255,255,255,0.395,0.26)
+							WriteText(4,{"~c~WEIGHT ~s~~1~~c~/~s~~1~ ~c~KG",zone.storage.weight,player.storageweight},0.3,255,255,255,255,0.395,0.26)
 						end
 						::endofwhileforstorage::
 						if inventory.current==nil then
@@ -16018,7 +16146,7 @@ Citizen.CreateThread(function()
                             local tier=math.random(1,100)
                             local chosentier
                             if      tier>88 then    chosentier=rewards.deadbodies.tier6
-                            elseif  tier>73 then    chosentier=drewards.deadbodies.tier5
+                            elseif  tier>73 then    chosentier=rewards.deadbodies.tier5
                             elseif  tier>44 then    chosentier=rewards.deadbodies.tier4
                             elseif  tier>28 then    chosentier=rewards.deadbodies.tier3
                             elseif  tier>3 then    chosentier=rewards.deadbodies.tier2
@@ -16786,6 +16914,7 @@ if devmode then
 	RegisterCommand('changerep',function(source,args,raw)
 		if args[1]~=nil then
 			player.reputation=tonumber(args[1])
+			saving_kvp_mode.SetResourceKvpInt("reputation",player.reputation)
 		end
 	end,false)
 	RegisterCommand('kvp',function(source,args,raw)
@@ -18141,6 +18270,7 @@ Citizen.CreateThread(function()
     while true do Wait(0)
         --WriteTextNoOutline(4,"Drakeling Labs",0.4,200,200,200,255,0.025,0.007) 
         DrawSprite("lsm", "dlabs", 0.045,0.02   ,0.065*1.3,0.025*1.05,   0.0, 255, 255, 255, 255)
+        WriteTextNoOutline(0,GetPlayerName(PlayerId()),0.4,200,200,200,55,0.005,0.035) 
         --WriteText(4,"Your character will not be saved if you disconnect without extracting. \nUse extraction points to save your character safely.",0.2,200,200,200,255,0.165,0.975) --status
     end
 end)
@@ -19063,7 +19193,8 @@ end)
 
 
 RegisterNetEvent("updatetradelist")
-AddEventHandler("updatetradelist",function(zonetradename,list)
+AddEventHandler("updatetradelist",function(zonetradename,list,timetoupdate)
+	time_to_update_shops=timetoupdate
     for k,v in pairs(safezones) do 
 		if v.tradelistname==zonetradename then
 			v.trade=list
@@ -19072,7 +19203,8 @@ AddEventHandler("updatetradelist",function(zonetradename,list)
 end)
 
 RegisterNetEvent("updatevehshoplist")
-AddEventHandler("updatevehshoplist",function(zonetradename,list)
+AddEventHandler("updatevehshoplist",function(zonetradename,list,timetoupdate)
+	time_to_update_shops=timetoupdate
     for k,v in pairs(safezones) do 
 		if v.tradelistname==zonetradename then
 			v.vehshop=list
