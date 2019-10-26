@@ -2088,8 +2088,8 @@ proxmine=-1356724057,
 ball=-6986138,
 stickybomb=1411692055,
 rocketammo=1742569970,
-guidedammo=2568293933,
-vulcanammo=2680539266,
+guidedammo=-1726673363,
+vulcanammo=-1614428030,
 }
 local ammo_name={}
 for k,v in pairs(ammo_types) do
@@ -3162,6 +3162,7 @@ local relationship_name={
 [GetHashKey("RENEGADE")]="Renegade",
 [GetHashKey("MILITARY")]="Military",
 [GetHashKey("SMUGGLERS")]="Smuggler",
+[GetHashKey("MERC")]="Mercenary",
 
 }
 local relationship_names={
@@ -3185,6 +3186,7 @@ local relationship_names={
 [GetHashKey("RENEGADE")]="Renegades",
 [GetHashKey("MILITARY")]="Military",
 [GetHashKey("SMUGGLERS")]="Smugglers",
+[GetHashKey("MERC")]="Mercenaries",
 }
 
 local relationship_good_bad={
@@ -3546,7 +3548,7 @@ print("loaded player faction "..player.faction or "nil")
 player.standardweight=35.0
 player.maxweight=35.0
 player.weight=0.0
-player.storageweight=350.0
+player.storageweight=100.0
 
 local faction_reputation_requirements={
 	[GetHashKey("GUERILLA")]=-100,
@@ -4387,7 +4389,7 @@ local safezones={
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
     name="Government Checkpoint~s~",
-	extraction={x=455.85806274414,y=-984.05700683594,z=43.691688537598,r=3.0},
+	extraction={x=459.5085144043,y=-991.00109863281,z=30.689584732056,r=3.0},
     friends=true,
 	tradelistname="government",
     tradespace=4,
@@ -4941,16 +4943,16 @@ local safezones={
     {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=102,color=4,
     models={1885233650},
     name="Smugglers Camp",
-    extraction={x=2232.3471679688,y=5611.4184570313,z=54.914485931396},
+    extraction={x=2181.6948242188,y=5559.578125,z=53.782318115234},
 	tradelistname="smugglers",
     tradepos={x=2221.4025878906,y=5614.6494140625,z=54.901615142822},
 	trade={},
 	factionname="Smugglers",
     factionjoinpos={x=2224.2741699219,y=5604.5356445313,z=54.927871704102},
     factionjoin={cost=1500},
-    storagepos={x=2192.8664550781,y=5598.0258789063,z=53.746047973633},
+    storagepos={x=2232.5539550781,y=5611.2514648438,z=54.913997650146},
     storagename="smugglers",
-    craftpos={x=2194.7612304688,y=5595.3881835938,z=53.762287139893},
+    craftpos={x=2214.2390136719,y=5585.4921875,z=53.851406097412},
     weapons=weaponsarray.mercenaries,
     garagename="smugglers",
     garagepos={x=2202.8256835938,y=5561.177734375,z=53.95454788208},
@@ -5044,14 +5046,14 @@ local safezones={
 		
         -- {"gunstorekey",1,"cash",1000},
     },
-	factionjoinpos={x=-2353.9616699219,y=3264.3430175781,z=32.810764312744},
+	factionjoinpos={x=-2348.80078125,y=3269.0895996094,z=32.81075668335},
 	factionjoin={cost=2000},
 	factionname="Military",
-	storagepos={x=-2349.1213378906,y=3269.6791992188,z=32.810752868652},
+	storagepos={x=-2352.4301757813,y=3333.2145996094,z=32.97435760498},
 	storagename="Military",
     --questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
-    tradepos={x=-2350.1860351563,y=3266.0002441406,z=32.810726165771},
-    craftpos={x=-2356.0583496094,y=3255.7592773438,z=32.810718536377},
+    tradepos={x=-2309.3557128906,y=3313.4895019531,z=32.994052886963},
+    craftpos={x=-2409.9697265625,y=3267.3103027344,z=32.977767944336},
         crafts={
     {"bodyarmor",1,
         {"milspecfabrics",2,
@@ -5130,8 +5132,8 @@ local safezones={
 	},
     weapons=weaponsarray.military,    
 	garagename="militaryoutpost",
-    garagepos={x=-2318.4704589844,y=3256.7749023438,z=32.15510559082,angle=148.75523376465},
-    vehpos={x=-2344.7902832031,y=3245.9658203125,z=32.119369506836,angle=329.71496582031},
+    garagepos={x=-1850.2165527344,y=2987.7575683594,z=32.279628753662,angle=148.75523376465},
+    vehpos={x=-2149.6794433594,y=3236.2963867188,z=32.279331207275,angle=329.71496582031},
 	chopshop={
 	{"repair","cash",1},
 	{"refill","cash",20},
@@ -5495,32 +5497,6 @@ local safezones={
 --local crafts_blueprints={}
 
 
-for _,z in pairs(safezones) do
-	-- if zone.crafts then
-		-- for k,v in pairs(zone.crafts) do
-			-- normal_crafts[v[1]]={amount=v[2],requirements=v[3]}
-			-- item_names["blueprint_"..v[1]]="Blueprint ("..item_names[v[1]]..")"
-			-- item_descriptions[v[1]]="Blueprint to craft "..item_names[v[1]]
-			-- item_weight[v[1]]=0.05
-		-- end
-	-- end
-	if z.storagepos and z.storagename then
-		local inventory=z.storage
-		if inventory==nil then
-			inventory={}
-			z.storage=inventory
-		end
-		local name="st_"..z.storagename
-		inventory.total=GetResourceKvpInt(name.."_total")
-		inventory.current=GetResourceKvpInt(name.."_current")
-		inventory.highlight=500
-		inventory.scroll=0
-
-		for i=1,inventory.total do
-			inventory[i]={item=GetResourceKvpString(name.."_item_"..i),amount=GetResourceKvpInt(name.."_amount_"..i)}
-		end
-	end
-end
 
 for _,z in pairs(safezones) do
     if z.relationship and type(z.relationship)~="number" then
@@ -6094,6 +6070,7 @@ fruits=0.4,
 trashfood=0.6,
 }
 local item_names={
+jerrycan="Jerry Can",
 hatchet="Hatchet",
 golfclub="Golfclub",
 switchblade="Switchblade",
@@ -6868,6 +6845,33 @@ if inventory.current>inventory.total then
     inventory.current=inventory.total
 elseif inventory.current<1 then
     inventory.current=((inventory.total>0) and 1 or 0)
+end
+
+for _,z in pairs(safezones) do
+	-- if zone.crafts then
+		-- for k,v in pairs(zone.crafts) do
+			-- normal_crafts[v[1]]={amount=v[2],requirements=v[3]}
+			-- item_names["blueprint_"..v[1]]="Blueprint ("..item_names[v[1]]..")"
+			-- item_descriptions[v[1]]="Blueprint to craft "..item_names[v[1]]
+			-- item_weight[v[1]]=0.05
+		-- end
+	-- end
+	if z.storagepos and z.storagename then
+		local inventory=z.storage
+		if inventory==nil then
+			inventory={}
+			z.storage=inventory
+		end
+		local name="st_"..z.storagename
+		inventory.total=GetResourceKvpInt(name.."_total")
+		inventory.current=GetResourceKvpInt(name.."_current")
+		inventory.highlight=500
+		inventory.scroll=0
+
+		for i=1,inventory.total do
+			inventory[i]={item=GetResourceKvpString(name.."_item_"..i),amount=GetResourceKvpInt(name.."_amount_"..i)}
+		end
+	end
 end
 -- inventory[1]={item="water",amount=5}
 -- inventory[2]={item="fish",amount=5}
@@ -10894,7 +10898,7 @@ function player_extraction(v)
 	for _,zone in pairs(safezones) do
 		if zone.storagepos and zone.storagename then
 			local name="st_"..zone.storagename
-			local inventory=name
+			local inventory=zone.storage
 			SetResourceKvpInt(name.."_total",inventory.total)
 			SetResourceKvpInt(name.."_current",inventory.current)
 			local imax=0
@@ -12890,6 +12894,9 @@ Citizen.CreateThread(function()
 						else
 							storage={total=0,rows=4,lines=5,scroll=0}
 							zone.storage=storage
+							if inventory.total>0 and inventory.current==0 then
+								inventory.current=1
+							end
 						end
 						-- for k,v in pairs(inventory) do
 							-- if type(v)=='table' then
