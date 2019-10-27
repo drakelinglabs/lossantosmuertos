@@ -6293,8 +6293,16 @@ clothes_ordinary="Ordinary Clothes",
 clothes_gang="Gang Clothes",
 fruits="Fruits",
 trashfood="Leftover food",
+vulcanammo="Vulcan Ammunition"
+rocketammo="Explosive Rocket"
+guidedammo="Guided Rocket"
+scrapfabrics="Fabrics"
 }
 local item_descriptions={
+scrapfabrics="A collection of assorted fabric scraps. Useful for crafting items."
+vulcanammo="Large caliber belt fed ammunition, typically used in military grade weapons (such as miniguns.)"
+guidedammo="A guided explosive rocket, used in advanced launcher weapons"
+rocketammo="An explosive rocket, used in launcher weapons."
 hatchet="A typical household hammer. Useful for causing blunt trauma.",
 golfclub="A fancy golf club. Useful for inflicting blunt trauma.",
 switchblade="A small retracting knife.",
