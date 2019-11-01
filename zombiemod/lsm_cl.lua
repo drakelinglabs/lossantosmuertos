@@ -6881,6 +6881,10 @@ inventory.scroll=0
 
 for i=1,inventory.total do
     inventory[i]={item=GetResourceKvpString("inventory_item_"..i),amount=GetResourceKvpInt("inventory_amount_"..i)}
+	if inventory[i].item==nil or inventory[i].amount==nil or inventory[i].item==0 or inventory[i].amount==0 then
+		inventory[i].item="rags"
+		inventory[i].amount=1
+	end
 end
 if inventory.current>inventory.total then
     inventory.current=inventory.total
