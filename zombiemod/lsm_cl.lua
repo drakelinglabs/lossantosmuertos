@@ -3189,21 +3189,31 @@ local relationship_names={
 [GetHashKey("MERC")]="Mercenaries",
 }
 
-local relationship_good_bad={
-[GetHashKey("SURVIVOR")]="good",
-[GetHashKey("NEUTRAL")]="good",
-[GetHashKey("MARAUDER")]="bad",
-[GetHashKey("BANDIT")]="bad",
-[GetHashKey("GOVERNMENT")]="good",
-[GetHashKey("DAWN")]="good",
-[GetHashKey("RAIDER")]="bad", --"neutral"
-[GetHashKey("HERO")]="good",
-[GetHashKey("VIGILANTE")]="good",
-[GetHashKey("GUERILLA")]="bad",
-[GetHashKey("OUTLAW")]="bad",
-[GetHashKey("MILITARY")]="good",
-[GetHashKey("SMUGGLERS")]="bad",
-[GetHashKey("MERC")]="bad",
+local relationship_reputation_changes={}
+relationship_reputation_changes.npc={
+[GetHashKey("MARAUDER")]=1,
+[GetHashKey("BANDIT")]=1,
+[GetHashKey("SURVIVOR")]=-1,
+[GetHashKey("NEUTRAL")]=-1,
+[GetHashKey("SMUGGLERS")]=3,
+[GetHashKey("GOVERNMENT")]=-3,
+[GetHashKey("MERC")]=5,
+[GetHashKey("MILITARY")]=-5,
+}
+relationship_reputation_changes.player={
+[GetHashKey("RENEGADE")]=0,
+[GetHashKey("MARAUDER")]=5,
+[GetHashKey("NEUTRAL")]=-5,
+[GetHashKey("OUTLAW")]=7,
+[GetHashKey("VIGILANTE")]=-7,
+[GetHashKey("GUERILLA")]=10,
+[GetHashKey("HERO")]=-10,
+[GetHashKey("BANDIT")]=10,
+[GetHashKey("SURVIVOR")]=-10,
+[GetHashKey("SMUGGLERS")]=15,
+[GetHashKey("GOVERNMENT")]=-15,
+[GetHashKey("MERC")]=25,
+[GetHashKey("MILITARY")]=-25,
 }
 
 local relationship_requirements={
@@ -3550,8 +3560,13 @@ player.maxweight=35.0
 player.weight=0.0
 player.storageweight=100.0
 
+local function change_reputation(howmuch)
+    saving_kvp_mode.SetResourceKvpInt("reputation",player.reputation+howmuch)
+    player.reputation=player.reputation+howmuch
+end
+
 local faction_reputation_requirements={
-	[GetHashKey("GUERILLA")]=-100,
+	[GetHashKey("GUERILLA")]=-101,
 	[GetHashKey("OUTLAW")]=-90,
 	[GetHashKey("MARAUDER")]=-65,
 	[GetHashKey("RENEGADE")]=-25,
@@ -3922,9 +3937,9 @@ local normal_crafts={
 		"scrapmetal",1,
 		},
     },
-    -- {"tshirtmask",1,
-        -- {"rags",5},
-    -- },
+    {"tshirtmask",1,
+        {"rags",5},
+    },
     -- {"molotov",1,
         -- {"gasoline",1,
         -- "alcohol",1,
@@ -5857,6 +5872,24 @@ local vehicles_ammo={
 }
 
 local item_weight={
+blueprint=0.1,
+milspecplastic=0.35,
+industrialplastic=0.15,
+milspecmetal=1.4,
+industrialscrapmetal=1.2,
+packofheroin=1.0,
+packofcocaine=1.0,
+leadscrap=1.0,
+milspecfabrics=0.5,
+industrialfabrics=0.3,
+scrapfabrics=0.4,
+milspecelectronicscrap=0.3,
+electronicscrap=0.2,
+industrialelectronicscrap=0.1,
+level3plates=0.5,
+level3asoftplate=0.3,
+riothelmet=0.6,
+machinegun=6.0,
 hatchet=0.56,
 golfclub=0.43,
 switchblade=0.15,
@@ -6293,16 +6326,16 @@ clothes_ordinary="Ordinary Clothes",
 clothes_gang="Gang Clothes",
 fruits="Fruits",
 trashfood="Leftover food",
-vulcanammo="Vulcan Ammunition"
-rocketammo="Explosive Rocket"
-guidedammo="Guided Rocket"
-scrapfabrics="Fabrics"
+vulcanammo="Vulcan Ammunition",
+rocketammo="Explosive Rocket",
+guidedammo="Guided Rocket",
+scrapfabrics="Fabrics",
 }
 local item_descriptions={
-scrapfabrics="A collection of assorted fabric scraps. Useful for crafting items."
-vulcanammo="Large caliber belt fed ammunition, typically used in military grade weapons (such as miniguns.)"
-guidedammo="A guided explosive rocket, used in advanced launcher weapons"
-rocketammo="An explosive rocket, used in launcher weapons."
+scrapfabrics="A collection of assorted fabric scraps. Useful for crafting items.",
+vulcanammo="Large caliber belt fed ammunition, typically used in military grade weapons (such as miniguns.)",
+guidedammo="A guided explosive rocket, used in advanced launcher weapons",
+rocketammo="An explosive rocket, used in launcher weapons.",
 hatchet="A typical household hammer. Useful for causing blunt trauma.",
 golfclub="A fancy golf club. Useful for inflicting blunt trauma.",
 switchblade="A small retracting knife.",
@@ -6524,7 +6557,7 @@ industrialfabrics="An assortment of high grade fabrics. Useful for crafting item
 leadscrap="An assortment of lead based metal scrap. Useful for crafting items.",
 industrialplastic="An assortment of high grade plastics. Useful for crafting items.",
 milspecmetal="An assortment of military grade metals. Useful for crafting items.",
-milspecplasticscrap="An assortment of military grade plastics. Useful for crafting items.",
+milspecplastic="An assortment of military grade plastics. Useful for crafting items.",
 industrialelectronicscrap="An assorted bunch of military grade broken electronics. Useful for crafting items.",
 milspecelectronicscrap="An assorted bunch of high grade broken electronics. Useful for crafting items.",
 industrialscrapmetal="An assortment of high grade metals. Useful for crafting items.",
@@ -6871,6 +6904,7 @@ for _,z in pairs(safezones) do
 			z.storage=inventory
 		end
 		local name="st_"..z.storagename
+		--SetResourceKvpInt(name.."_total",0)
 		inventory.total=GetResourceKvpInt(name.."_total")
 		inventory.current=GetResourceKvpInt(name.."_current")
 		inventory.highlight=500
@@ -6918,6 +6952,8 @@ tier1={
 {"rags",-2},
 {"electronicscrap",-2},
 {"scrapfabrics",-2},
+{"cash",-20},
+{"scrapfabrics",1},
 },
 tier2={
 {"leadscrap",1},
@@ -7348,7 +7384,7 @@ explosives_box={
     {"milspecelectronicscrap",-10},
     {"milspecfabrics",-10},
     {"milspecmetal",-10},
-    {"milspecplasticscrap",-10},
+    {"milspecplastic",-10},
     {"gunpowder",-10},
 },
 }
@@ -7709,17 +7745,23 @@ local function give_item_to_storage(storage,storagename,add_name,add_amount,anyw
     if add_to_slot then
         --print("add_to_slot _ true")
         storage[add_to_slot].amount=storage[add_to_slot].amount+add_amount
-        SetResourceKvpInt("st_"..storagename.."_amount_"..add_to_slot,storage[add_to_slot].amount)
+        saving_kvp_mode.SetResourceKvpInt("st_"..storagename.."_amount_"..add_to_slot,storage[add_to_slot].amount)
+		print("saved to kvp: updated slot["..add_to_slot.."]="..storage[add_to_slot].amount.." "..(storage[add_to_slot].item or "nil"))
         -- TriggerServerEvent("updateplayeritem",add_name,storage[add_to_slot].amount)
         --print("set kvp int")
     else
 		if storage.max==nil or storage.total<storage.max or (anyway and anyway=="anyway") then
             storage.total=storage.total+1
             storage[storage.total]={item=add_name,amount=add_amount}
-            -- SetResourceKvp("st_"..storagename.."_item_"..inventory.total,inventory[inventory.total].item)
-            -- SetResourceKvpInt("st_"..storagename.."_amount_"..inventory.total,inventory[inventory.total].amount)
-            -- SetResourceKvpInt(("st_"..storagename.."_total",inventory.total)
-            -- SetResourceKvpInt(("st_"..storagename.."_current",inventory.current)
+            saving_kvp_mode.SetResourceKvp("st_"..storagename.."_item_"..storage.total,add_name)
+            saving_kvp_mode.SetResourceKvpInt("st_"..storagename.."_amount_"..storage.total,add_amount)
+            saving_kvp_mode.SetResourceKvpInt("st_"..storagename.."_total",storage.total)
+            saving_kvp_mode.SetResourceKvpInt("st_"..storagename.."_current",storage.current)
+			print("storage="..tostring(storage).."("..storagename..")")
+			print("storage.total="..(tostring(storage.total) or "nil"))
+			print("saved to kvp: created slot["..(storage.total or "nil")..
+			"]="..(storage[storage.total].amount or "nil")..
+			" "..(storage[storage.total].item or "nil"))
             -- TriggerServerEvent("updateplayeritem",add_name,add_amount)
         else
             SimpleNotification("You ~r~don't have ~s~storage slots for that item!")
@@ -9165,6 +9207,10 @@ local function clothes_hash(ped)
 end
 
 local function DrawItem(dict,item,x,y,s1,s2,angle,r,g,b,a)
+	if not item then
+		WriteHint(25,"~r~ERROR! ~s~Couldn't draw item")
+		return "nil"
+	end
 	local drawname=item
 	local components
 	if string.find(item,"+") then
@@ -9500,7 +9546,10 @@ Citizen.CreateThread(function()
 					WriteText(2,{"~c~Faction ~s~~a~",relationship_name[player.faction]},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y-0.02)
 				else
 					WriteText(2,{"~c~Faction ~s~None",},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y-0.02)
-				end
+				end				
+				SetTextRightJustify(true)
+                SetTextWrap(inventory_up_x_left,inventory_up_x_right)
+				WriteText(4,{"~c~REPUTATION ~s~~1~",player.reputation},inventory_font_size,255,255,255,255,inventory_up_x_right,inventory_up_y-0.02)
 				SetTextRightJustify(true)
                 SetTextWrap(inventory_up_x_left,inventory_up_x_right)
                 local g_b=255
@@ -12423,7 +12472,7 @@ Citizen.CreateThread(function()
                                 give_item_to_inventory(zone.trade[current_trade][1],zone.trade[current_trade][2])
                                 inventory.highlight=255
                             else
-                                SimpleNotification("Not enough ~g~~a~~s~!",zone.trade[current_trade][3])
+                                SimpleNotification("Not enough ~g~~a~~s~!",item_names[zone.trade[current_trade][3]] or zone.trade[current_trade][3])
                             end
                         end
                         DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
@@ -12481,7 +12530,16 @@ Citizen.CreateThread(function()
                                     DrawSprite("lsm", "Trade Selected",trade_button_x,y,0.0255,0.0205,0.0, 255, 255, 255, 255)
                                     DrawSprite("lsm", "arrow_left",trade_arrow_x,y,0.0075,0.015,0.0, 255, 255, 255, 255)
                                 end
-                                WriteTextNoOutline(2,"Trade",0.25,color,color,color,255,trade_button_x,y-0.009)
+								local textonbutton="Trade"
+								if zone.trade[i][1]=="cash" then
+									textonbutton="Sell"
+								elseif zone.trade[i][3]=="cash" then
+									textonbutton="Buy"
+								end
+								local alpha=80
+								local itemslot=get_inventory_item_slot(zone.trade[i][3])
+								if itemslot and inventory[itemslot].amount>=zone.trade[i][4] then alpha=255 end
+                                WriteTextNoOutline(2,textonbutton,0.25,color,color,color,alpha,trade_button_x,y-0.009)
                         end
                     end
                 elseif GetRelationshipBetweenGroups(myfaction,zone.relationship)~=5 then
@@ -13021,10 +13079,17 @@ Citizen.CreateThread(function()
 											if zone.storage[storage.current].amount>amounttomove then
 												give_item_to_inventory(zone.storage[storage.current].item,amounttomove)
 												zone.storage[storage.current].amount=zone.storage[storage.current].amount-amounttomove
+												saving_kvp_mode.SetResourceKvp("st_"..zone.storagename.."_item_"..storage.current,zone.storage[storage.current].item)
+												saving_kvp_mode.SetResourceKvpInt("st_"..zone.storagename.."_amount_"..storage.current,zone.storage[storage.current].amount)
 											else
 												amounttomove=zone.storage[storage.current].amount
 												give_item_to_inventory(zone.storage[storage.current].item,amounttomove)
 												table.remove(zone.storage,storage.current)
+												saving_kvp_mode.DeleteResourceKvp("st_"..zone.storagename.."_item_"..zone.storage.total)
+												for i=storage.current,zone.storage.total-1 do
+													saving_kvp_mode.SetResourceKvp("st_"..zone.storagename.."_item_"..i,zone.storage[i+1].item)
+													saving_kvp_mode.SetResourceKvpInt("st_"..zone.storagename.."_amount_"..i,zone.storage[i+1].amount)
+												end
 												howlongenterhasbeenhold=2
 												zone.storage.total=zone.storage.total-1
 												if zone.storage.total==0 then
@@ -13046,7 +13111,9 @@ Citizen.CreateThread(function()
 												if inventory[inventory.current].amount>amounttomove then
 													give_item_to_storage(storage,zone.storagename,inventory[inventory.current].item,amounttomove)
 													inventory[inventory.current].amount=inventory[inventory.current].amount-amounttomove
+													TriggerServerEvent("updateplayeritem",inventory[inventory.current].item,inventory[inventory.current].amount)
 												else
+													TriggerServerEvent("updateplayeritem",inventory[inventory.current].item,nil)
 													amounttomove=inventory[inventory.current].amount
 													give_item_to_storage(storage,zone.storagename,inventory[inventory.current].item,amounttomove)
 													table.remove(inventory,inventory.current)
@@ -13144,6 +13211,7 @@ Citizen.CreateThread(function()
 									local sprite="item"
 									if storage.current==k then sprite="selected_item" end
 									DrawSprite("lsm",sprite,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+									--print("total"..zone.storage.total.." k"..k)
 									DrawItem("lsm",v.item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
 									
 									
@@ -13168,7 +13236,9 @@ Citizen.CreateThread(function()
 									local v=zone.storage[storage.current]
 									if v~=nil then
 										local itemname=v.item
-										if string.find(itemname,"+") then
+										if itemname==nil then
+											itemname="nil"
+										elseif string.find(itemname,"+") then
 											parts=split_text(itemname,"+")
 											itemname=parts[1]
 											parts[1]=nil
@@ -13341,11 +13411,11 @@ Citizen.CreateThread(function()
 								SetTextWrap(0.0,x+0.015)        
 								WriteText(4,need,0.3,255,255,255,255,x+0.01,y+0.01)
 							else
-								DrawSprite("lsm","item",x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-								DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
+								DrawSprite("lsm","item",x,y,inv_sml_x,inv_sml_y,0.0, 150, 150, 150, 255)
+								DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 150, 150, 150, 255)
 								SetTextRightJustify(true)
 								SetTextWrap(0.0,x+0.015)        
-								WriteText(4,need,0.3,255,255,255,255,x+0.01,y+0.01)
+								WriteText(4,need,0.3,150,150,150,255,x+0.01,y+0.01)
 							end
 						end
 					end
@@ -13914,7 +13984,11 @@ Citizen.CreateThread(function()
                             inventory[inventory.current].amount=inventory[inventory.current].amount-1
                             check_inv_slot_for_zero_amount()
                         end
-                    elseif inventory[inventory.current].item=="rags" then
+                    elseif inventory[inventory.current].item=="rags" 
+					or	inventory[inventory.current].item=="scrapfabrics" 
+					or	inventory[inventory.current].item=="industrialfabrics" 
+					or	inventory[inventory.current].item=="milspecfabrics" 
+					then
                             if player.bleeding>0 then 
                                 player.bleeding=player.bleeding-1
                                 inventory[inventory.current].amount=inventory[inventory.current].amount-1
@@ -16306,7 +16380,7 @@ Citizen.CreateThread(function()
             else
                 Wait(500)
             end
-        elseif IsControlJustPressed(0,86) and not IsPedDeadOrDying(ped) and not is_in_safe_zone(mypos.x,mypos.y,mypos.z) then
+        elseif IsControlJustPressed(0,86) and not IsPedDeadOrDying(ped) then
             pos=GetEntityCoords(ped)
             local obj
             local empty=false
@@ -16315,10 +16389,13 @@ Citizen.CreateThread(function()
             for k,v in pairs(weapon_model_to_hash) do
                 obj=GetClosestObjectOfType(pos.x,pos.y,pos.z, 1.3, k, false, false, false)
                 if obj~=0 then --and not NetworkGetEntityIsNetworked(obj) then
+					--print("~y~There is an weapon entity near by")
                     local attached=GetEntityAttachedTo(obj)
-                    if not IsEntityAPed(attached) or IsPedDeadOrDying(attached) then
+                    if not IsEntityAPed(attached) or IsEntityDead(attached) then
+						--print("~y~Weapon not attached to ped or ped is dead")
 						local item=item_index_to_name[v]
 						if give_item_to_inventory(item,1) then
+							--print("~y~Succesfully given weapon to inventory")
 							local weapon_hash=GetHashKey("weapon_"..item)
 							local ammo_type=GetPedAmmoTypeFromWeapon(ped,weapon_hash)
 							for k,v in pairs(ammo_types) do
@@ -16328,69 +16405,73 @@ Citizen.CreateThread(function()
 							end
 							SetEntityAsMissionEntity(obj)
 							DeleteObject(obj)
+							--print("~y~Deleted weapon in world")
+						end
+					end
+					--print("~y~End of process")
+				end
+			end
+			if not is_in_safe_zone(mypos.x,mypos.y,mypos.z) then
+				for k,v in pairs(pickups_objects) do
+					obj=GetClosestObjectOfType(pos.x,pos.y,pos.z, 1.3, k, false, false, false)
+					if obj~=0 then --and not NetworkGetEntityIsNetworked(obj) then
+						local attached=GetEntityAttachedTo(obj)
+						if not IsEntityAPed(attached) or IsPedDeadOrDying(attached) then
+							if (v.solid or v.exp) and DecorExistOn(obj,"zm_looted") then
+								empty=true
+							elseif v.spoiled then
+								spoiled=true
+							else
+								if type(v[1])=="table" then v=v[1][math.random(1,#v[1])] end
+								local took_something=false
+								local local_spoiled=false
+								for i=1,5,2 do
+									if v[i]==nil then
+										break
+									end
+									if (inventory_items_chances[v[i]]==nil) or (math.random(1,100)<inventory_items_chances[v[i]].chance) then
+										print("trying to pickup "..v[i])
+										local amount=v[i+1]
+										if amount<0 then amount=math.random(1,-amount) end
+										if give_item_to_inventory(v[i],amount) then took_something=true end
+									else
+										SimpleNotification(inventory_items_chances[v[i]].text)
+										local_spoiled=true
+									end
+								end
+								if took_something or local_spoiled then
+									local objpos=GetEntityCoords(obj)
+									if DecorExistOn(obj,"zm_dword") then
+										looted_array[DecorGetInt(obj,"zm_dword")]=current_date
+									else
+										looted_array[coords_to_dword(objpos.x,objpos.y,objpos.z)]=current_date
+									end
+									if v.exp then
+										DecorSetBool(obj,"zm_looted",true)
+										local objpos=GetEntityCoords(obj)
+										AddExplosion(objpos.x, objpos.y, objpos.z, 16, v.exp, false, true, false, true)
+									elseif v.solid then
+										DecorSetBool(obj,"zm_looted",true)
+									else
+										SetEntityAsMissionEntity(obj)
+										DeleteObject(obj)
+									end
+								end
+								found=true
+								break
+							end
 						end
 					end
 				end
+				if not found then
+					if empty then
+						SimpleNotification("This container is ~r~empty~s~.")
+					end
+					if spoiled then
+						SimpleNotification("This food is ~r~spoiled~s~.")
+					end
+				end
 			end
-            for k,v in pairs(pickups_objects) do
-                obj=GetClosestObjectOfType(pos.x,pos.y,pos.z, 1.3, k, false, false, false)
-                if obj~=0 then --and not NetworkGetEntityIsNetworked(obj) then
-                    local attached=GetEntityAttachedTo(obj)
-                    if not IsEntityAPed(attached) or IsPedDeadOrDying(attached) then
-                        if (v.solid or v.exp) and DecorExistOn(obj,"zm_looted") then
-                            empty=true
-                        elseif v.spoiled then
-                            spoiled=true
-                        else
-                            if type(v[1])=="table" then v=v[1][math.random(1,#v[1])] end
-                            local took_something=false
-                            local local_spoiled=false
-                            for i=1,5,2 do
-                                if v[i]==nil then
-                                    break
-                                end
-                                if (inventory_items_chances[v[i]]==nil) or (math.random(1,100)<inventory_items_chances[v[i]].chance) then
-                                    print("trying to pickup "..v[i])
-									local amount=v[i+1]
-									if amount<0 then amount=math.random(1,-amount) end
-                                    if give_item_to_inventory(v[i],amount) then took_something=true end
-                                else
-                                    SimpleNotification(inventory_items_chances[v[i]].text)
-                                    local_spoiled=true
-                                end
-                            end
-                            if took_something or local_spoiled then
-                                local objpos=GetEntityCoords(obj)
-								if DecorExistOn(obj,"zm_dword") then
-									looted_array[DecorGetInt(obj,"zm_dword")]=current_date
-								else
-									looted_array[coords_to_dword(objpos.x,objpos.y,objpos.z)]=current_date
-								end
-                                if v.exp then
-                                    DecorSetBool(obj,"zm_looted",true)
-                                    local objpos=GetEntityCoords(obj)
-                                    AddExplosion(objpos.x, objpos.y, objpos.z, 16, v.exp, false, true, false, true)
-                                elseif v.solid then
-                                    DecorSetBool(obj,"zm_looted",true)
-                                else
-                                    SetEntityAsMissionEntity(obj)
-                                    DeleteObject(obj)
-                                end
-                            end
-                            found=true
-                            break
-                        end
-                    end
-                end
-            end
-            if not found then
-                if empty then
-                    SimpleNotification("This container is ~r~empty~s~.")
-                end
-                if spoiled then
-                    SimpleNotification("This food is ~r~spoiled~s~.")
-                end
-            end
             -- if health~=maxhealth then
                 -- obj=GetClosestObjectOfType(pos.x,pos.y,pos.z, 1.1, -509973344, false, false, false) --medkit
                 -- if obj~=0 then
@@ -16741,7 +16822,7 @@ AddEventHandler('populationPedCreating', function(x, y, z, model, setters)
     elseif birds[model]==nil then
         local zone=is_in_safe_zone(x,y,z)
         if zone~=nil then
-            print("populationPedCreating in zone "..zone.zonetype)
+            --print("populationPedCreating in zone "..zone.zonetype)
         end
         local newmodel
         if zone~=nil and zone.models~=nil then
@@ -16758,8 +16839,16 @@ AddEventHandler('populationPedCreating', function(x, y, z, model, setters)
         end
         if newmodel~=nil then
             if HasModelLoaded(newmodel) then
-                setters.setModel(0xFFFFFFFF&newmodel)
-                setters.setPosition(x, y, z + 1.0)
+				local myped=PlayerPedId()
+				local mypos=GetEntityCoords(myped)
+				local theirpos={x=x,y=y,z=z}
+				if square_dist(mypos,theirpos)<2500 then
+					CancelEvent()
+					return
+				else				
+					setters.setModel(0xFFFFFFFF&newmodel)
+					setters.setPosition(x, y, z + 1.0)
+				end
             else
                 RequestModel(newmodel)
                 CancelEvent()
@@ -17707,6 +17796,22 @@ death_event=function()
         if total>0 then
             TriggerServerEvent("imdead",pos.x,pos.y,pos.z+1-h,loot)
         end
+		local killer=GetPedSourceOfDeath(ped)
+		if killer and killer~=0 and IsEntityAPed(killer) and killer~=ped then
+			local killerfaction=GetPedRelationshipGroupHash(killer)
+			local myfaction=GetPedRelationshipGroupHash(ped)
+			
+			local myfaction_cost=relationship_reputation_changes.player[myfaction]
+			local killerfaction_cost=relationship_reputation_changes.player[killerfaction]
+			
+			if false==(myfaction_cost==0 or killerfaction_cost==0) then
+				if (myfaction_cost~killerfaction_cost)<0 then -- means it's either - and + or + and -
+					change_reputation(myfaction_cost)
+					SimpleNotification("~r~You got killed by enemy player and your reputation has changed.")
+				end
+			end
+		end
+		
         inventory.total=0
         inventory.current=0
         inventory.scroll=0
@@ -17717,8 +17822,8 @@ death_event=function()
             DeleteResourceKvp("inventory_item_"..i)
             DeleteResourceKvp("inventory_amount_"..i)
         end
-		player.faction=nil
-		saving_kvp_mode.DeleteResourceKvp("player_faction")
+		-- player.faction=nil
+		-- saving_kvp_mode.DeleteResourceKvp("player_faction")
 end
 
 RegisterNetEvent("zonestatus")
@@ -18116,16 +18221,13 @@ end)
     -- end
 -- end)
 
-local function change_reputation(howmuch)
-    saving_kvp_mode.SetResourceKvpInt("reputation",player.reputation+howmuch)
-    player.reputation=player.reputation+howmuch
-end
 
 Citizen.CreateThread(function()
     local checkeddeadbodies={}
     local loop,handle,npc
     while true do Wait(0)
         local myped=PlayerPedId()
+		local mypos=GetEntityCoords(myped)
         handle,npc=FindFirstPed()
         loop=(handle~=-1)
         npcslimiter.current=0
@@ -18136,40 +18238,74 @@ Citizen.CreateThread(function()
             if not isaplayer then
                 npcslimiter.current=npcslimiter.current+1
             end
-            if IsPedDeadOrDying(npc) and (DecorExistOn(npc,"raider") or isaplayer) and GetPedSourceOfDeath(npc)==myped then
+            if IsPedDeadOrDying(npc) and (DecorExistOn(npc,"raider") or isaplayer) and GetPedSourceOfDeath(npc)==myped and npc~=myped then
                 if not checkeddeadbodies[npc] then
                     local gametimer=GetGameTimer()
                     checkeddeadbodies[npc]=gametimer
                     local theirfaction=GetPedRelationshipGroupHash(npc)
                     local myfaction=GetPedRelationshipGroupHash(myped)
-                    if relationship_good_bad[theirfaction]=="bad" then
-						plusorminus="plus"
-						if isaplayer then
-							change_reputation(10)
-						else
-							change_reputation(1)
+					if isaplayer then
+						if relationship_reputation_changes.player[theirfaction] then
+							local repchange=relationship_reputation_changes.player[theirfaction]
+							local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
+							if zone and zone.trade then
+								repchange=repchange*2
+							end
+							change_reputation(repchange)
+							if repchange>0 then
+								SimpleNotification("~g~You gained ~1~ reputation for killing ~a~.",repchange,relationship_name[theirfaction])
+							elseif repchange<0 then
+								SimpleNotification("~r~You lost ~1~ reputation for killing ~a~.",(repchange*-1),relationship_name[theirfaction])
+							end
+							
+							-- local myfactionposition=relationship_reputation_changes.player[myfaction]
+							-- local theirfactionposition=relationship_reputation_changes.player[theirfaction]
+							
+							
 						end
-                        SimpleNotification("You have ~g~gained reputation ~s~for killing a ~r~~a~",relationship_name[theirfaction])
-                    elseif relationship_good_bad[theirfaction]=="neutral" then
-                        SimpleNotification("You don't gain ~y~reputation ~s~for killing ~y~~a~",relationship_names[theirfaction])
-                    elseif relationship_good_bad[theirfaction]=="good" then
-						plusorminus="minus"
-						if isaplayer then
-							change_reputation(-10)
-						else
-							change_reputation(-1)
+					else
+						if relationship_reputation_changes.npc[theirfaction] then
+							local repchange=relationship_reputation_changes.npc[theirfaction]
+							local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
+							if zone and zone.trade then
+								repchange=repchange*2
+							end
+							change_reputation(repchange)
+							if repchange>0 then
+								SimpleNotification("You gained ~g~~1~ ~s~reputation for killing ~r~~a~.",repchange,relationship_name[theirfaction])
+							elseif repchange<0 then
+								SimpleNotification("You lost ~r~~1~ ~s~reputation for killing ~g~~a~.",(repchange*-1),relationship_name[theirfaction])
+							end
 						end
-                        SimpleNotification("You have ~r~lost reputation ~s~for killing a ~g~~a~",relationship_name[theirfaction])
-                    end
-					
-					if theirfaction==myfaction then
-						if plusorminus=="plus" then change_reputation(50) 
-						elseif plusorminus=="minus" then change_reputation(-50) end
-						SimpleNotification("~r~You've killed ~a~ and got expelled from your faction.",relationship_name[theirfaction])
-						player.faction=nil
-						saving_kvp_mode.DeleteResourceKvp("player_faction")
-						
 					end
+                    -- if relationship_good_bad[theirfaction]=="bad" then
+						-- plusorminus="plus"
+						-- if isaplayer then
+							-- change_reputation(10)
+						-- else
+							-- change_reputation(1)
+						-- end
+                        -- SimpleNotification("You have ~g~gained reputation ~s~for killing a ~r~~a~",relationship_name[theirfaction])
+                    -- elseif relationship_good_bad[theirfaction]=="neutral" then
+                        -- SimpleNotification("You don't gain ~y~reputation ~s~for killing ~y~~a~",relationship_names[theirfaction])
+                    -- elseif relationship_good_bad[theirfaction]=="good" then
+						-- plusorminus="minus"
+						-- if isaplayer then
+							-- change_reputation(-10)
+						-- else
+							-- change_reputation(-1)
+						-- end
+                        -- SimpleNotification("You have ~r~lost reputation ~s~for killing a ~g~~a~",relationship_name[theirfaction])
+                    -- end
+					
+					-- if theirfaction==myfaction then
+						-- if plusorminus=="plus" then change_reputation(50) 
+						-- elseif plusorminus=="minus" then change_reputation(-50) end
+						-- SimpleNotification("~r~You've killed ~a~ and got expelled from your faction.",relationship_name[theirfaction])
+						-- player.faction=nil
+						-- saving_kvp_mode.DeleteResourceKvp("player_faction")
+						
+					-- end
                     
                     local npcpos=GetEntityCoords(npc)
                     local npcrel=GetPedRelationshipGroupHash(npc)
