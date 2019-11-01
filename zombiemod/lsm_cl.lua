@@ -6912,6 +6912,10 @@ for _,z in pairs(safezones) do
 
 		for i=1,inventory.total do
 			inventory[i]={item=GetResourceKvpString(name.."_item_"..i),amount=GetResourceKvpInt(name.."_amount_"..i)}
+			if inventory[i].item==nil or inventory[i].amount==nil or inventory[i].item==0 or inventory[i].amount==0 then
+				inventory[i].item="rags"
+				inventory[i].amount=1
+			end
 		end
 	end
 end
@@ -7776,12 +7780,14 @@ end
 local function give_item_to_inventory(add_name,add_amount,anyway)
     if add_name==nil then
         SimpleNotification("~r~ERROR! ~s~Tried to give item to inventory but name is nil")
+		return false
 	elseif add_name=="blueprint" then
 		local randomchosenitem=math.random(1,#normal_crafts)
 		add_name="blueprint_"..normal_crafts[randomchosenitem][1]
     end
     if add_amount==nil then
         SimpleNotification("~r~ERROR! ~s~Tried to give item to inventory but amount is nil")
+		return false
     end
     local add_to_slot=get_inventory_item_slot(add_name)
     --print("add_to_slot is")
@@ -9250,6 +9256,7 @@ local function DrawItem(dict,item,x,y,s1,s2,angle,r,g,b,a)
 end
 
 local function get_name_from_item_name(inventoryitem)
+	if not inventoryitem then return "name not found" end
 	local finalname
 	if string.find(inventoryitem,"+") then
 		local array=split_text(inventoryitem,"+")
@@ -12955,8 +12962,8 @@ Citizen.CreateThread(function()
 							inventory.current=nil
 							storage.rows=4
 							storage.lines=5
-							storage.scroll=storage.scroll or 0
-							storage.current=storage.current or storage.scroll*storage.rows
+							storage.scroll=0
+							storage.current=1
 						else
 							storage={total=0,rows=4,lines=5,scroll=0}
 							zone.storage=storage
@@ -12964,6 +12971,8 @@ Citizen.CreateThread(function()
 								inventory.current=1
 							end
 						end
+						if inventory.total>0 then inventory.current=1 storage.current=nil inventory.scroll=0
+						elseif storage.total>0 then storage.current=1 inventory.current=nil storage.scroll=0 end
 						-- for k,v in pairs(inventory) do
 							-- if type(v)=='table' then
 								-- zone.storage[k]={}
@@ -13076,7 +13085,9 @@ Citizen.CreateThread(function()
 									elseif howlongenterhasbeenhold>100 then amounttomove=5 end
 									if storage.current~=nil then
 										if zone.storage[storage.current] then
-											if zone.storage[storage.current].amount>amounttomove then
+											if zone.storage[storage.current].item==nil or zone.storage[storage.current].amount==nil then 
+												SimpleNotification("~r~ ERROR: invalid item")
+											elseif zone.storage[storage.current].amount>amounttomove then
 												give_item_to_inventory(zone.storage[storage.current].item,amounttomove)
 												zone.storage[storage.current].amount=zone.storage[storage.current].amount-amounttomove
 												saving_kvp_mode.SetResourceKvp("st_"..zone.storagename.."_item_"..storage.current,zone.storage[storage.current].item)
@@ -13084,12 +13095,12 @@ Citizen.CreateThread(function()
 											else
 												amounttomove=zone.storage[storage.current].amount
 												give_item_to_inventory(zone.storage[storage.current].item,amounttomove)
-												table.remove(zone.storage,storage.current)
 												saving_kvp_mode.DeleteResourceKvp("st_"..zone.storagename.."_item_"..zone.storage.total)
 												for i=storage.current,zone.storage.total-1 do
 													saving_kvp_mode.SetResourceKvp("st_"..zone.storagename.."_item_"..i,zone.storage[i+1].item)
 													saving_kvp_mode.SetResourceKvpInt("st_"..zone.storagename.."_amount_"..i,zone.storage[i+1].amount)
 												end
+												table.remove(zone.storage,storage.current)
 												howlongenterhasbeenhold=2
 												zone.storage.total=zone.storage.total-1
 												if zone.storage.total==0 then
