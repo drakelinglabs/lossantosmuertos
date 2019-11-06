@@ -8196,7 +8196,7 @@ local function check_clothes(pped) if disable_changing_clothes then return true 
                 override[k]=v
             end
         end
-        if player.mask and masks[player.mask].blockhat and not player.hat and s.hood then
+        if player.mask and masks[player.mask].blockhat and not player.hat and s.hood and s.hat then
             for k,v in pairs(s.hat) do
                 override[k]=v
             end
@@ -17844,7 +17844,7 @@ death_event=function()
 			local myfaction_cost=relationship_reputation_changes.player[myfaction]
 			local killerfaction_cost=relationship_reputation_changes.player[killerfaction]
 			
-			if false==(myfaction_cost==0 or killerfaction_cost==0) then
+			if myfaction_cost~=nil and killerfaction_cost~=nil and myfaction_cost~=0 and killerfaction_cost~=0 then
 				if (myfaction_cost~killerfaction_cost)<0 then -- means it's either - and + or + and -
 					change_reputation(myfaction_cost)
 					SimpleNotification("~r~You got killed by enemy player and your reputation has changed.")
