@@ -4418,7 +4418,7 @@ local safezones={
     
     
     --LSPD station
-    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=50.0,blip=88,color=3,
+    {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=85.0,blip=88,color=3,
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
     name="Government Checkpoint~s~",
@@ -12979,7 +12979,7 @@ Citizen.CreateThread(function()
 						SimpleNotification("You cannot use faction extraction point.")
 					end
 				else
-					SimpleNotification("You can not use enemy extraction points storages.")
+					SimpleNotification("You can not use enemy extraction points.")
 				end
             elseif zone~=nil and zone.storagepos~=nil and zone.storagename~=nil and in_radius(mypos,zone.storagepos,1) then 
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then

@@ -2221,7 +2221,8 @@ local function generate_trade_list(faction)
 	end
 	local blacklist={}
 	for k,v in pairs(list) do
-		blacklist[list[1]]=true
+		blacklist[v[1]]=true
+		--print("added ~a~ to blacklist",v[1])
 	end
 	for k,v in pairs(trades.buying) do
 		if math.random(1,#trades.buying)<=10 then
