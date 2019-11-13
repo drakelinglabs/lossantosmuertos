@@ -20,7 +20,7 @@ you_finished_quest="~g~You've finished quest.",
 --HINT MESSAGES
 encountered_radioactive_fallout="You have encountered ~r~RADIOACTIVE FALLOUT~s~! Equip a gasmask!",
 press_to_open_helpmenu="~c~Press ~s~PAGE UP ~c~to open help menu",
-press_to_close_helpmenu="~c~Press ~s~PAGE DOWN ~c~to close help menu",
+press_to_close_helpmenu="~c~Press ~s~BACKSPACE ~c~to close help menu",
 press_e_to_open_inventory="~c~Press ~s~ENTER ~c~to open inventory",
 press_backspace_to_close_inventory="~c~Press ~s~BACKSPACE ~c~to close inventory",
 press_arrows_to_navigate_inventory="~c~Press ~s~ARROW KEYS ~c~to navigate inventory",
@@ -3626,7 +3626,7 @@ Citizen.CreateThread(function()
     while true do Wait(0)
 		if IsControlJustPressed(0,208) then
 			help_menu=1
-		elseif IsControlJustPressed(0,207) then
+		elseif IsControlJustPressed(0,177) then
 			help_menu=false
 		end
 		if help_menu then
@@ -3637,7 +3637,7 @@ Citizen.CreateThread(function()
 			end
 			if help_menu<1 then help_menu=1 elseif help_menu>maxpages then help_menu=5 end
 			WriteHint(4379,messages.press_to_close_helpmenu)
-			DrawSprite("lsm",tostring("Page-"..help_menu),0.5,0.5,0.5*(9/16),0.67,0.0,255,255,255,255)
+			DrawSprite("lsm",tostring("Page-"..help_menu),.35,.525,0.5*(9/16),0.67,0.0,255,255,255,255)
 		else
 			WriteHint(4379,messages.press_to_open_helpmenu)
 		end
