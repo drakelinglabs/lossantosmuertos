@@ -1,15 +1,24 @@
 local devmode=(GetConvarInt("lsm_devmode",0)~=0)
 
 local messages={
-encountered_radioactive_fallout="You have encountered ~r~RADIOACTIVE FALLOUT~s~! Equip a gasmask!",
-press_e_to_loot_corpse="~c~Press ~s~E ~c~to loot corpse",
-press_e_to_pickup_two_items="~c~Press ~s~E ~c~to pick up ~g~~a~~c~ and ~g~~a~",
-press_e_to_seach_for_items="~c~Press ~s~E ~c~to search for items",
-press_e_to_pickup="~c~Press ~s~E ~c~to pick up ~g~~a~",
+
+--DEPRECIATED MESSAGES
 press_e_to_talk="~c~Press ~g~E ~c~to talk",
-press_e_to_trade="~c~Press ~s~E ~c~to trade",
 search_the_area_for_car="~c~Search the area for car",
 you_can_leave_server_now="~g~You can leave server now",
+this_trailer_tank_has_x_gasoline="~c~This trailer tank has ~o~~1~ gasoline",
+this_trailer_tank_has_no_gasoline="~c~This trailer tank has ~o~no gasoline ~c~inside",
+inventory_full_cant_take_anything="Your ~r~inventory is full~s~, you can't take anything.",
+blood_loss_caused_faster_dehydration="~c~You've lost some blood and now dehydrating faster",
+cant_fit_itemname_in_inventory="Can't fit ~a~ in inventory, drop something.",
+become_enemy_to_raid_base_warehouse="This is base warehouse. Become enemy with faction to start raid.",
+you_started_safezone_raid="You started safezone raid.",
+press_e_to_give_required_items="Press ~g~E ~s~to give required items.",
+e_to_talk="~g~E ~s~to talk",
+you_finished_quest="~g~You've finished quest.",
+
+--HINT MESSAGES
+encountered_radioactive_fallout="You have encountered ~r~RADIOACTIVE FALLOUT~s~! Equip a gasmask!",
 press_to_open_helpmenu="~c~Press ~s~PAGE UP ~c~to open help menu",
 press_to_close_helpmenu="~c~Press ~s~PAGE DOWN ~c~to close help menu",
 press_e_to_open_inventory="~c~Press ~s~ENTER ~c~to open inventory",
@@ -18,20 +27,15 @@ press_arrows_to_navigate_inventory="~c~Press ~s~ARROW KEYS ~c~to navigate invent
 press_to_deattach_upgrades="~c~Press ~s~INSERT ~c~to deattach weapon upgrades",
 press_enter_to_use_item="~c~Press ~s~ENTER ~c~to use item",
 press_delete_to_drop_item="~c~Press ~s~DELETE ~c~to drop item",
-press_e_to_interact="~c~Press ~s~E ~c~to interact",
-press_e_to_join_faction_for_cash="~c~Press ~s~E ~c~to join ~s~~a~ ~c~for ~g~$~1~",
-youre_in_friendly_territory="You're in ~g~FRIENDLY TERRITORY~s~.",
-youre_in_enemy_territory="You are in ~r~ENEMY TERRITORY~s~! Defend yourself!",
-youre_in_neutral_territory="You are in ~y~NEUTRAL TERRITORY~s~! Holster your weapons.",
+
+--HEALTH
 youre_dying_dehydration="~s~You are dying of ~r~DEHYDRATION~s~! Drink something!",
 youre_dying_starvation="~s~You are dying of ~r~STARVATION~s~! Eat something!",
 youre_overencumbered="~s~You are ~r~OVER ENCUMBERED~s~! Your HYDRATION and NOURISHMENT is now draining faster!",
-this_trailer_tank_has_x_gasoline="~c~This trailer tank has ~o~~1~ gasoline",
-this_trailer_tank_has_no_gasoline="~c~This trailer tank has ~o~no gasoline ~c~inside",
-vehicle_out_of_fuel="~c~This vehicle is out of fuel",
-fuel_level_low="~c~Fuel level is low, use gasoline to refill vehicle",
 you_have_bleeding_wound="You have ~r~1 BLEEDING WOUND~s~! Stop the bleeding with bandages, rags, or a medical kit!",
 you_have_x_bleeding_wounds="You have ~r~~1~ BLEEDING WOUNDS~s~! Stop the bleeding with bandages, rags, or a medical kit!",
+
+--PATROLS
 encountered_marauder_patrol="You have encountered a ~r~MARAUDER ~s~patrol of ~1~ ~r~MARAUDERS~s~.",
 encountered_scavenger_patrol="You have encountered a ~y~SCAVENGER ~s~patrol of ~1~ ~y~SCAVENGERS~s~.",
 encountered_mercenary_patrol="You have encountered a ~r~MERCENARY ~s~patrol of ~1~ ~r~MERCENARIES~s~.",
@@ -41,59 +45,79 @@ encountered_government_patrol="You have encountered a ~y~GOVERNMENT ~s~patrol of
 encountered_marauder_base="You have encountered a ~r~MARAUDER ~s~stronghold.",
 encountered_scavenger_base="You have encountered a ~y~SCAVENGER ~s~stronghold.",
 encountered_government_base="You have encountered a ~y~GOVERNMENT ~s~stronghold.",
-press_e_to_save_and_quit="~g~Press E to save and quit",
-you_dont_have_storage_slots_for_that_item="You ~r~don't have ~s~storage slots for that item!",
-e_to_take_fuel="~g~E ~s~to take fuel",
-e_to_take_engine_parts="~g~E ~s~to take engine parts",
-e_to_take_one_item="~g~E ~s~to take ~b~~1~ ~a~",
-e_to_take_item="~g~E ~s~to take ~b~~a~",
-e_to_search_for_items="~g~E ~s~to search for items",
-empty="empty",
-nothing_selected="Nothing selected",
-e_to_talk="~g~E ~s~to talk",
-trade="Trade",--торговля
+patrol_eliminated="Patrol has been ~r~eliminated~s~.",
+
+--FACTIONS
+youre_in_friendly_territory="You're in ~g~FRIENDLY TERRITORY~s~.",
+youre_in_enemy_territory="You are in ~r~ENEMY TERRITORY~s~! Defend yourself!",
+youre_in_neutral_territory="You are in ~y~NEUTRAL TERRITORY~s~! Holster your weapons.",
+press_e_to_trade="~c~Press ~s~E ~c~to trade",
+press_e_to_join_faction_for_cash="~c~Press ~s~E ~c~to join ~s~~a~ ~c~for ~g~$~1~",
+already_in_this_faction="You are already in this faction.",
+you_joined_factionname="~g~You've joined ~a~",
+you_joined_faction="You have joined faction.",
+
+--GARAGE
 vehiclename_saved_in_garage="~g~~a~ ~s~saved in garage.",
 you_have_to_be_in_this_faction_to_use_garage="You have to be in this faction to use this garage.",
 you_cannot_use_enemy_garages="You can not use enemy garages.",
 you_took_vehiclename_from_garage="You took ~g~~a~ ~s~from your garage.",
 dont_have_anything_in_your_garage="You don't have anything in your garage.",
-new_shipment_in_strH_strM="New Shipment in ~a~:~a~",
-inventory_full_cant_take_anything="Your ~r~inventory is full~s~, you can't take anything.",
-not_enough_itemname="Not enough ~g~~a~~s~!",
+
+--TRADING
 need_to_be_in_this_faction_to_trade="You need to be in this faction in order to trade.",
-become_enemy_to_raid_base_warehouse="This is base warehouse. Become enemy with faction to start raid.",
-you_started_safezone_raid="You started safezone raid.",
-press_e_to_give_required_items="Press ~g~E ~s~to give required items.",
-you_joined_factionname="~g~You've joined ~a~",
-you_joined_faction="You have joined faction.",
+new_shipment_in_strH_strM="New Shipment in ~a~:~a~",
 not_enough_cash="Not enough cash.",
-already_in_this_faction="You are already in this faction.",
-cant_use_faction_extraction_point="You can not use faction extraction point.",
-cant_use_enemy_extraction_points="You can not use enemy extraction points.",
-you_finished_quest="~g~You've finished quest.",
-you_dont_have_required_items="You don't have required items.",
-you_need_number_more_reputation="You need to have ~1~ more reputation.",
-you_changed_clothes="You changed your clothes.",
+trade="Trade",--торговля
+
+--CRAFTING & STORAGE
 have_nothing_in_your_storage="You have nothing in your storage",
 you_have_to_be_in_this_faction_to_use_this_storage="You have to be in this faction to use this storage.",
 cant_use_enemy_storages="You can not use enemy storages.",
 you_dont_have_any_blueprints="You don't have any blueprints.",
-cant_fit_itemname_in_inventory="Can't fit ~a~ in inventory, drop something.",
+you_dont_have_storage_slots_for_that_item="You ~r~don't have ~s~storage slots for that item!",
+
+--VEHICLES
+vehicle_out_of_fuel="~c~This vehicle is out of fuel",
+fuel_level_low="~c~Fuel level is low, use gasoline to refill vehicle",
+cant_repair_aircraft_engine_with_this_kit="You can not repair aircraft engine with this kit.",
+engine_in_perfect_condition="Vehicle engine is in perfect condition.",
 you_must_be_in_driver_seat_to_refuel="You must be in driver seat to refuel vehicle.",
 you_must_be_in_driver_seat_to_repair="You must be in driver seat to repair vehicle.",
 you_need_aircraft_fuel_for_that_vehicle="You need aircraft fuel for that vehicle.",
-this_fuel_can_be_used_only_in_aircraft="This fuel can be used only in aircraft.",
-cant_repair_aircraft_engine_with_this_kit="You can not repair aircraft engine with this kit.",
-engine_in_perfect_condition="Vehicle engine is in perfect condition.",
-you_need_bodyarmor_to_insert_armor_plate_in="You need bodyarmor to insert armor plate in.",
+this_fuel_can_be_used_only_in_aircraft="This fuel can only be used for aircraft",
+
+--LOOTING
+e_to_take_fuel="~g~E ~s~to take fuel",
+e_to_take_engine_parts="~g~E ~s~to take engine parts",
+e_to_take_one_item="~g~E ~s~to take ~b~~1~ ~a~",
+e_to_take_item="~g~E ~s~to take ~b~~a~",
+e_to_search_for_items="~g~E ~s~to search for items",
+press_e_to_loot_corpse="~c~Press ~s~E ~c~to loot corpse",
+press_e_to_pickup_two_items="~c~Press ~s~E ~c~to pick up ~g~~a~~c~ and ~g~~a~",
+press_e_to_seach_for_items="~c~Press ~s~E ~c~to search for items",
+press_e_to_pickup="~c~Press ~s~E ~c~to pick up ~g~~a~",
 this_container_is_empty="This container is ~r~empty~s~.",
 this_food_is_spoiled="This food is ~r~spoiled~s~.",
-blood_loss_caused_faster_dehydration="~c~You've lost some blood and now dehydrating faster",
-you_got_killed_and_reputation_changed="~r~You got killed by enemy player and your reputation has changed.",
+
+--EXTRACTION
+cant_use_faction_extraction_point="This extraction point can only be used by allied faction members.",
+cant_use_enemy_extraction_points="This extraction point can only be used by allied faction members.",
+press_e_to_save_and_quit="~g~Press E to save your character, and quit the server.",
+
+--MISC
+empty="empty",
+nothing_selected="Nothing selected",
+not_enough_itemname="Not enough ~g~~a~~s~!",
+you_dont_have_required_items="You don't have the required items",
+you_need_number_more_reputation="You need to have ~1~ more reputation",
+you_need_bodyarmor_to_insert_armor_plate_in="You cannot equip armor plates without body armor!",
+cant_find_itemname_in_inventory="Can't find ~a~ in inventory",
+
+--REPUTATION
+you_got_killed_and_reputation_changed="~r~An enemy ~a~ has killed you! You have lost ~1~ reputation for dying by their hands.",
 you_gained_num_retutation_for_killing_str="~g~You gained ~1~ reputation for killing ~a~.",
 you_lost_num_retutation_for_killing_str="~r~You lost ~1~ reputation for killing ~a~.",
-patrol_eliminated="Patrol has been ~r~eliminated~s~.",
-cant_find_itemname_in_inventory="Can't find ~a~ in inventory",
 }
 
 
@@ -6474,7 +6498,7 @@ guidedammo="Guided Rocket",
 scrapfabrics="Fabrics",
 }
 local item_descriptions={
-scrapfabrics="A collection of assorted fabric scraps. Useful for crafting items.",
+scrapfabrics="A collection of assorted fabric scraps. Useful for crafting items. Can also stop bleeding.",
 vulcanammo="Large caliber belt fed ammunition, typically used in military grade weapons (such as miniguns.)",
 guidedammo="A guided explosive rocket, used in advanced launcher weapons",
 rocketammo="An explosive rocket, used in launcher weapons.",
@@ -6582,7 +6606,7 @@ cash="Traditional paper currency. Still valuable among some factions.",
 cigarettes="A pack of cigarettes. A rare and valuable commodity among survivors.",
 scrapmetal="A collection of assorted metalic pieces. Useful when crafting items.",
 scrapplastic="Some crumpled chunks of common plastic. Useful when crafting items.",
-rags="A few strips of clean cloth. Useful when cleaning wounds or crafting items.",
+rags="A few strips of torn cloth. Not useful for much... but can be used to stop bleeding.",
 gasmask="An industrial grade gas mask. Protects against radioactive and toxic pollutants.",
 tattookey="Manager's key to a small tattoo parlor.",
 barberkey="Manager's key to a small barber shop.",
@@ -6694,8 +6718,8 @@ level3asoftplate="A set of civilian grade armor plates. These offer limited prot
 level3plates="A set of high grade armor plates. These offer expanded protection.",
 armorplate="A set of military grade armor plates. These offer maximum protection.",
 extinguisher="A standard fire extinguisher. Can be used to put out fires.",
-milspecfabrics="An assortment of military grade fabrics. Useful for crafting items.",
-industrialfabrics="An assortment of high grade fabrics. Useful for crafting items.",
+milspecfabrics="An assortment of military grade fabrics. Useful for crafting items. Can also stop bleeding.",
+industrialfabrics="An assortment of high grade fabrics. Useful for crafting items. Can also stop bleeding.",
 leadscrap="An assortment of lead based metal scrap. Useful for crafting items.",
 industrialplastic="An assortment of high grade plastics. Useful for crafting items.",
 milspecmetal="An assortment of military grade metals. Useful for crafting items.",
