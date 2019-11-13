@@ -11,7 +11,7 @@ press_e_to_trade="~c~Press ~s~E ~c~to trade",
 search_the_area_for_car="~c~Search the area for car",
 you_can_leave_server_now="~g~You can leave server now",
 press_to_open_helpmenu="~c~Press ~s~PAGE UP ~c~to open help menu",
-press_to_close_helpmenu="~c~Press ~s~PAGE DOWN ~c~to close help menu",
+press_to_close_helpmenu="~c~Press ~s~BACKSPACE ~c~to close help menu",
 press_e_to_open_inventory="~c~Press ~s~ENTER ~c~to open inventory",
 press_backspace_to_close_inventory="~c~Press ~s~BACKSPACE ~c~to close inventory",
 press_arrows_to_navigate_inventory="~c~Press ~s~ARROW KEYS ~c~to navigate inventory",
@@ -3602,7 +3602,7 @@ Citizen.CreateThread(function()
     while true do Wait(0)
 		if IsControlJustPressed(0,208) then
 			help_menu=1
-		elseif IsControlJustPressed(0,207) then
+		elseif IsControlJustPressed(0,177) then
 			help_menu=false
 		end
 		if help_menu then
@@ -3613,7 +3613,7 @@ Citizen.CreateThread(function()
 			end
 			if help_menu<1 then help_menu=1 elseif help_menu>maxpages then help_menu=5 end
 			WriteHint(4379,messages.press_to_close_helpmenu)
-			DrawSprite("lsm",tostring("Page-"..help_menu),0.5,0.5,0.5*(9/16),0.67,0.0,255,255,255,255)
+			DrawSprite("lsm",tostring("Page-"..help_menu),.35,.525,0.5*(9/16),0.67,0.0,255,255,255,255)
 		else
 			WriteHint(4379,messages.press_to_open_helpmenu)
 		end
