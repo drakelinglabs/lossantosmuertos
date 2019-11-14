@@ -4086,7 +4086,7 @@ local normal_crafts={
 		},
     },
     {"duffelbag",1,
-        {"industrialfabrics",1,
+        {"milspecfabrics",1,
 		"scrapfabrics",5,
 		"industrialfabrics",10,
 		},
