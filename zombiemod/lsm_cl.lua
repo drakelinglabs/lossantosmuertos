@@ -53,7 +53,8 @@ youre_in_enemy_territory="You are in ~r~ENEMY TERRITORY~s~! Defend yourself!",
 youre_in_neutral_territory="You are in ~y~NEUTRAL TERRITORY~s~! Holster your weapons.",
 press_e_to_trade="~c~Press ~s~E ~c~to trade",
 press_e_to_join_faction_for_cash="~c~Press ~s~E ~c~to join ~s~~a~ ~c~for ~g~$~1~",
-already_in_this_faction="You are already in this faction.",
+already_in_this_faction="You are already in this faction. Press ~g~E ~s~again ~y~to leave faction~s~.",
+you_left_faction="You left faction.",
 you_joined_factionname="~g~You've joined ~a~",
 you_joined_faction="You have joined faction.",
 
@@ -4026,7 +4027,7 @@ local normal_crafts={
 		},
     },
     {"rocket",1,
-        {"militarygradeexplosivematerials",1,
+        {"gunpowder",1,
 		"milspecelectronicscrap",1,
 		"industrialplastic",1,
 		},
@@ -4038,13 +4039,13 @@ local normal_crafts={
 		},
     },
     {"launchergrenade",1,
-        {"militarygradeexplosivematerials",1,
+        {"gunpowder",1,
 		"gunpowder",1,
 		"milspecmetal",1,
 		},
     },
     {"proxmine",1,
-        {"militarygradeexplosivematerials",1,
+        {"gunpowder",1,
 		"milspecelectronicscrap",1,
 		"industrialscrapmetal",1,
 		},
@@ -4335,7 +4336,9 @@ local safezones={
         -- {"provisionkey",1,"cash",500},
         -- {"gunstorekey",1,"weed",7},
     },
+    selltrade={},
     tradepos={x=-1146.1655273438,y=4940.0942382813,z=222.26867675781},
+	sellpos={x=-1134.1072998047,y=4948.662109375,z=222.26872253418},
     clothes={
     {"a_m_y_hiker_01",
         {"cash",10},
@@ -4597,12 +4600,14 @@ local safezones={
 		
         -- {"barberkey",1,"cash",650},
     },
+    selltrade={},
 	factionjoinpos={x=447.4147644043,y=-975.54663085938,z=30.68959236145},
 	factionjoin={cost=1500},
 	factionname="Government",
 	storagepos={x=449.82238769531,y=-991.33294677734,z=30.689582824707},
 	storagename="Government",
     tradepos={x=452.37100219727,y=-980.07110595703,z=30.689582824707},
+	sellpos={x=452.42147827148,y=-982.48474121094,z=30.689598083496},
     clothes={
     {"s_m_y_cop_01",
         {"cash",500},
@@ -4964,6 +4969,7 @@ local safezones={
         -- {"gunstorekey",1,"dawntokens",5},
         -- {"tattookey",1,"cash",650},
     },
+    selltrade={},
 	factionjoinpos={x=1689.2509765625,y=2529.2553710938,z=45.56485748291},
 	factionjoin={cost=1000},
 	factionname="Marauders",
@@ -4971,6 +4977,7 @@ local safezones={
 	storagename="Marauders",
     --questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
     tradepos={x=1682.52734375,y=2476.2099609375,z=45.823303222656},
+	sellpos={x=1703.0198974609,y=2476.7287597656,z=45.777526855469},
     craftpos={x=1689.4483642578,y=2552.2507324219,z=45.56485748291},
     crafts={
     {"clothes_marauder",1,
@@ -5127,7 +5134,9 @@ local safezones={
     extraction={x=2181.6948242188,y=5559.578125,z=53.782318115234},
 	tradelistname="smugglers",
     tradepos={x=2221.4025878906,y=5614.6494140625,z=54.901615142822},
+	sellpos={x=2194.3837890625,y=5589.5336914063,z=53.533321380615},
 	trade={},
+    selltrade={},
 	factionname="Smugglers",
     factionjoinpos={x=2224.2741699219,y=5604.5356445313,z=54.927871704102},
     factionjoin={cost=1500},
@@ -5227,6 +5236,7 @@ local safezones={
 		
         -- {"gunstorekey",1,"cash",1000},
     },
+    selltrade={},
 	factionjoinpos={x=-2348.80078125,y=3269.0895996094,z=32.81075668335},
 	factionjoin={cost=2000},
 	factionname="Military",
@@ -5234,6 +5244,7 @@ local safezones={
 	storagename="Military",
     --questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
     tradepos={x=-2309.3557128906,y=3313.4895019531,z=32.994052886963},
+	sellpos={x=-2294.19140625,y=3318.2646484375,z=32.826801300049},
     craftpos={x=-2409.9697265625,y=3267.3103027344,z=32.977767944336},
         crafts={
     {"bodyarmor",1,
@@ -5293,13 +5304,13 @@ local safezones={
 		},
     },
     {"launchergrenade",1,
-        {"militarygradeexplosivematerials",1,
+        {"gunpowder",1,
 		"gunpowder",2,
 		"milspecmetal",1,
 		},
     },
     {"proxmine",1,
-        {"militarygradeexplosivematerials",1,
+        {"gunpowder",1,
 		"milspecelectronicscrap",1,
 		"industrialscrapmetal",1,
 		},
@@ -5453,6 +5464,7 @@ local safezones={
 		
         -- {"gunstorekey",1,"cash",1000},
     },
+    selltrade={},
 	factionjoinpos={x=-484.63958740234,y=-1730.4544677734,z=19.549257278442},
 	factionjoin={cost=2000},
 	factionname="Mercenaries",
@@ -5525,7 +5537,7 @@ local safezones={
 		},
     },
     {"rocket",1,
-        {"militarygradeexplosivematerials",1,
+        {"gunpowder",1,
 		"milspecelectronicscrap",1,
 		"industrialplastic",1,
 		},
@@ -12582,14 +12594,33 @@ Citizen.CreateThread(function()
                 else
                     SimpleNotification("You can not receive new free provision yet.")
                 end
-            elseif zone~=nil and not zone.raided and zone.tradepos~=nil and in_radius(mypos,zone.tradepos,3) then
+            elseif (zone~=nil and not zone.raided and zone.tradepos~=nil and in_radius(mypos,zone.tradepos,3)) or
+				   (zone~=nil and not zone.raided and zone.sellpos~=nil and in_radius(mypos,zone.sellpos,3))
+			then
                 --trade
-                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
+				local current_trading
+				
+				local relationship_req=4
+				
+				TriggerServerEvent("request_trade_table",zone.tradelistname)
+				
+				if in_radius(mypos,zone.tradepos,3) then 
+					current_trading=zone.trade or {}
+					relationship_req=0
+					--SimpleNotification("BUY POS #index ~1~"..#current_trading)
+					
+				elseif in_radius(mypos,zone.sellpos,3) then 
+					current_trading=zone.selltrade or {} 
+					relationship_req=4
+					--SimpleNotification("SELL POS #index ~1~"..#current_trading)
+				end 
+				
+				
+                if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=relationship_req) then
                     --print("trade open")
                     inventory.highlight=255
                     local current_trade=1
                     local scroll=1
-					TriggerServerEvent("request_trade_table",zone.tradelistname)
                     while true do Wait(0)
                         local inv_index_price=0
                         local inv_index_goods=0
@@ -12603,22 +12634,22 @@ Citizen.CreateThread(function()
                         local trade_scroll_bkg_size_y=0.55
                         local trade_scroll_y=trade_scroll_bkg_y
                         local trade_scrollsize_x=0.003
-                        if zone.trade and zone.trade[current_trade] then
+                        if current_trading and current_trading[current_trade] then
 							for j=1,inventory.total do
-								if inventory[j].item==zone.trade[current_trade][3] then
+								if inventory[j].item==current_trading[current_trade][3] then
 									youhaveamount_price=inventory[j].amount
 									inv_index_price=j
-								elseif inventory[j].item==zone.trade[current_trade][1] then
+								elseif inventory[j].item==current_trading[current_trade][1] then
 									youhaveamount_goods=inventory[j].amount
 									inv_index_goods=j
 								end
 							end
 						end
                         mypos=GetEntityCoords(PlayerPedId())
-                        if IsControlJustPressed(0,177) or not in_radius(mypos,zone.tradepos,3) then
+                        if IsControlJustPressed(0,177) or (not in_radius(mypos,zone.tradepos,3) and (not in_radius(mypos,zone.sellpos,3))) then
                             break
                         elseif IsControlJustPressed(0,173) then --down
-                            if current_trade<#zone.trade then
+                            if current_trade<#current_trading then
                                 current_trade=current_trade+1
                                 if (current_trade-scroll)>=maxtradesinmenu then
                                     scroll=scroll+1
@@ -12634,28 +12665,28 @@ Citizen.CreateThread(function()
                                     scroll=scroll-1
                                 end
                             else
-                                current_trade=#zone.trade
+                                current_trade=#current_trading
                                 scroll=current_trade-maxtradesinmenu+1
 								if scroll<1 then scroll=1 end
                             end
-                        elseif IsControlJustPressed(0,86) and zone.trade and zone.trade[current_trade] then --e veh horn
-                            --print(zone.trade[current_trade][4].." you have:"..youhaveamount_price)
-                            if zone.trade[current_trade][4]<youhaveamount_price then
-                                if give_item_to_inventory(zone.trade[current_trade][1],zone.trade[current_trade][2]) then
-                                    inventory[inv_index_price].amount=youhaveamount_price-zone.trade[current_trade][4]
+                        elseif IsControlJustPressed(0,86) and current_trading and current_trading[current_trade] then --e veh horn
+                            --print(current_trading[current_trade][4].." you have:"..youhaveamount_price)
+                            if current_trading[current_trade][4]<youhaveamount_price then
+                                if give_item_to_inventory(current_trading[current_trade][1],current_trading[current_trade][2]) then
+                                    inventory[inv_index_price].amount=youhaveamount_price-current_trading[current_trade][4]
                                     inventory.current=inv_index_price --important for check_inv_slot_for_zero_amount()
                                     check_inv_slot_for_zero_amount() --to save
                                     inventory.highlight=255
-                                    --SimpleNotification("Bought ~g~"..zone.trade[current_trade][1].."~s~.")
+                                    --SimpleNotification("Bought ~g~"..current_trading[current_trade][1].."~s~.")
                                 end
-                            elseif zone.trade[current_trade][4]==youhaveamount_price then
+                            elseif current_trading[current_trade][4]==youhaveamount_price then
                                 inventory[inv_index_price].amount=0
                                 inventory.current=inv_index_price --important for check_inv_slot_for_zero_amount()
                                 check_inv_slot_for_zero_amount()
-                                give_item_to_inventory(zone.trade[current_trade][1],zone.trade[current_trade][2])
+                                give_item_to_inventory(current_trading[current_trade][1],current_trading[current_trade][2])
                                 inventory.highlight=255
                             else
-                                SimpleNotification(messages.not_enough_itemname,item_names[zone.trade[current_trade][3]] or zone.trade[current_trade][3])
+                                SimpleNotification(messages.not_enough_itemname,item_names[current_trading[current_trade][3]] or current_trading[current_trade][3])
                             end
                         end
                         DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
@@ -12675,7 +12706,7 @@ Citizen.CreateThread(function()
                         
                         DrawRect(trade_scroll_bkg_x,trade_scroll_bkg_y,trade_scroll_bkg_size_x,trade_scroll_bkg_size_y,0,0,0,175)
                         
-                        local totalscrolls=#zone.trade-maxtradesinmenu
+                        local totalscrolls=#current_trading-maxtradesinmenu
                         if totalscrolls>0 then
                             local newscrollsizey=trade_scroll_bkg_size_y/(totalscrolls+1)
                             local uppos=trade_scroll_bkg_y-trade_scroll_bkg_size_y/2+newscrollsizey/2
@@ -12693,18 +12724,18 @@ Citizen.CreateThread(function()
                         -- WriteHint("tradescroll="..scroll)
                         -- WriteHint("totalscroll="..totalscrolls)
                         
-                        for i=scroll,math.min(scroll+(maxtradesinmenu-1),#zone.trade) do
+                        for i=scroll,math.min(scroll+(maxtradesinmenu-1),#current_trading) do
                             local y=(i-scroll)*.08+.3
-                                DrawSprite("lsm", zone.trade[i][1],0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
+                                DrawSprite("lsm", current_trading[i][1],0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextWrap(0.325,trade_arrow_x-0.005)
-                                local name=zone.trade[i][1]
+                                local name=current_trading[i][1]
                                 WriteTextNoOutline(4,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
                                 SetTextCentre(true)
-                                WriteTextNoOutline(2,{"x ~1~",zone.trade[i][2]},0.25,0,0,0,255,0.305,y+0.02)
+                                WriteTextNoOutline(2,{"x ~1~",current_trading[i][2]},0.25,0,0,0,255,0.305,y+0.02)
                                 
-                                DrawSprite("lsm", zone.trade[i][3],price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
+                                DrawSprite("lsm", current_trading[i][3],price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
-                                WriteTextNoOutline(2,{"x ~1~",zone.trade[i][4]},0.25,0,0,0,255,price_items_x,y+0.02)
+                                WriteTextNoOutline(2,{"x ~1~",current_trading[i][4]},0.25,0,0,0,255,price_items_x,y+0.02)
                                 DrawSprite("lsm", "Trade Button",trade_button_x,y,0.0255,0.0205,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
                                 local color=255
@@ -12714,14 +12745,14 @@ Citizen.CreateThread(function()
                                     DrawSprite("lsm", "arrow_left",trade_arrow_x,y,0.0075,0.015,0.0, 255, 255, 255, 255)
                                 end
 								local textonbutton="Trade"
-								if zone.trade[i][1]=="cash" then
+								if current_trading[i][1]=="cash" then
 									textonbutton="Sell"
-								elseif zone.trade[i][3]=="cash" then
+								elseif current_trading[i][3]=="cash" then
 									textonbutton="Buy"
 								end
 								local alpha=80
-								local itemslot=get_inventory_item_slot(zone.trade[i][3])
-								if itemslot and inventory[itemslot].amount>=zone.trade[i][4] then alpha=255 end
+								local itemslot=get_inventory_item_slot(current_trading[i][3])
+								if itemslot and inventory[itemslot].amount>=current_trading[i][4] then alpha=255 end
                                 WriteTextNoOutline(2,textonbutton,0.25,color,color,color,alpha,trade_button_x,y-0.009)
                         end
                     end
@@ -12729,7 +12760,7 @@ Citizen.CreateThread(function()
                     SimpleNotification(messages.need_to_be_in_this_faction_to_trade)
                 else--if GetRelationshipBetweenGroups(myfaction,zone.relationship)==5 then
                     --zone.raided=true
-                    --TriggerServerEvent("zoneraided",zone.tradepos.x,zone.tradepos.y,zone.tradepos.z,zone.name,zone.trade,zone.relationship)
+                    --TriggerServerEvent("zoneraided",zone.tradepos.x,zone.tradepos.y,zone.tradepos.z,zone.name,current_trading,zone.relationship)
                     SimpleNotification(messages.need_to_be_in_this_faction_to_trade)
                     
                     Wait(300)
@@ -13102,6 +13133,16 @@ Citizen.CreateThread(function()
 					local cashslot=get_inventory_item_slot("cash")
 					if player.faction==zone.relationship then
 						SimpleNotification(messages.already_in_this_faction)
+						while in_radius(mypos,zone.factionjoinpos,1) do
+							mypos=GetEntityCoords(PlayerPedId())
+							Wait(0)
+							if IsControlJustPressed(0,86) then
+								player.faction=nil
+								FlashMinimapDisplay()
+								SimpleNotification(messages.you_left_faction)
+								break;
+							end
+						end
 					elseif cashslot and inventory[cashslot].amount>=zone.factionjoin.cost then
 						inventory[cashslot].amount=inventory[cashslot].amount-zone.factionjoin.cost
 						check_inv_slot_for_zero_amount(cashslot)
@@ -14679,6 +14720,7 @@ end)
 Citizen.CreateThread(function()
     local oldzone
     local traderblip
+    local selltraderblip
     local ransackblip
     local joinfactionblip
 	local extractionblip
@@ -14723,6 +14765,17 @@ Citizen.CreateThread(function()
 						SetBlipDisplay(traderblip,5)
                         SetBlipColour(traderblip,2)
                         if enemybase then SetBlipColour(traderblip,55) end
+                    end
+                end
+                if zone.sellpos~=nil and not zone.raided then
+                    if selltraderblip~=nil then
+                        SetBlipCoords(selltraderblip,zone.sellpos.x,zone.sellpos.y,zone.sellpos.z)
+                    else
+                        selltraderblip=AddBlipForCoord(zone.sellpos.x,zone.sellpos.y,zone.sellpos.z)
+                        SetBlipSprite(selltraderblip,108)
+						SetBlipDisplay(selltraderblip,5)
+                        SetBlipColour(selltraderblip,3)
+                        if enemybase then SetBlipColour(selltraderblip,55) end
                     end
                 end
                 if zone.ransack~=nil and not zone.raided then
@@ -14958,6 +15011,14 @@ Citizen.CreateThread(function()
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, 1.0, --scl
                     100, 255, 100, 200, 
+                    true, false, 2, true, 0, 0, false);
+                end
+                if zone.sellpos~=nil and not zone.raided and not enemybase then
+                    DrawMarker(29, zone.sellpos.x, zone.sellpos.y, zone.sellpos.z, 
+                    0.0, 0.0, 0.0, --dir
+                    0.0, 0.0, 0.0, --rot
+                    1.0, 1.0, 1.0, --scl
+                    100, 100, 255, 200, 
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.ransack~=nil and not zone.raided and enemybase then
@@ -17567,6 +17628,9 @@ Citizen.CreateThread(function()
             if zone.tradepos~=nil and in_radius(mypos,zone.tradepos,1) then
                 WriteHint(6,messages.press_e_to_trade)
 			end
+            if zone.sellpos~=nil and in_radius(mypos,zone.sellpos,1) then
+                WriteHint(6,messages.press_e_to_trade)
+			end
             if zone.name~=nil then
                 local rel=GetRelationshipBetweenGroups(GetPedRelationshipGroupHash(myped),zone.relationship)
                 if rel==0 then
@@ -19537,7 +19601,22 @@ AddEventHandler("updatetradelist",function(zonetradename,list,timetoupdate)
 	time_to_update_shops=timetoupdate
     for k,v in pairs(safezones) do 
 		if v.tradelistname==zonetradename then
-			v.trade=list
+			v.trade={}
+			v.selltrade={}
+			local ti,si=0,0
+			for k2,v2 in pairs(list) do
+				if v2[3]=="cash" then
+					ti=ti+1
+					v.trade[ti]=v2
+					--print("added "..v2[1].." to buy menu")
+				else
+					si=si+1
+					v.selltrade[si]=v2
+					--print("added "..v2[3].." to sell menu")
+				end
+			end
+			print("Got trade list. Buy list items: "..#v.trade..". Sell buy items: "..#v.selltrade..".")
+			--v.trade=list
 		end
 	end
 end)
