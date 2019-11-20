@@ -2,7 +2,7 @@ local devmode=(GetConvarInt("lsm_devmode",0)~=0)
 
 local event={debug="dfhjsfj"}
 
-local time_to_update_shops=2880
+local time_to_update_shops=3600
 
 local function range(a,b,except)
     local ret={}

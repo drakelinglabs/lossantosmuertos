@@ -18,6 +18,7 @@ e_to_talk="~g~E ~s~to talk",
 you_finished_quest="~g~You've finished quest.",
 
 --HINT MESSAGES
+press_e_to_interact="~c~Press ~g~E ~c~to interact",
 encountered_radioactive_fallout="You have encountered ~r~RADIOACTIVE FALLOUT~s~! Equip a gasmask!",
 press_to_open_helpmenu="~c~Press ~s~PAGE UP ~c~to open help menu",
 press_to_close_helpmenu="~c~Press ~s~BACKSPACE ~c~to close help menu",
@@ -57,6 +58,7 @@ already_in_this_faction="You are already in this faction. Press ~g~E ~s~again ~y
 you_left_faction="You left faction.",
 you_joined_factionname="~g~You've joined ~a~",
 you_joined_faction="You have joined faction.",
+leave_faction_before_joining_new_one="You need to leave current faction first.",
 
 --GARAGE
 vehiclename_saved_in_garage="~g~~a~ ~s~saved in garage.",
@@ -5429,7 +5431,7 @@ local safezones={
 
 	---merc base
 ----------------------------------------------------
-    {x=-477.89663696289,y=-1708.9427490234,z=18.171932220459,r=100.0,blip=94,color=4,
+    {x=512.15368652344,y=-3190.0910644531,z=6.0692586898804,r=100.0,blip=94,color=4,
     models={1885233650},
     name="Mercenary Base~s~",
 	extraction={x=-441.30157470703,y=-1695.2406005859,z=19.008533477783,r=3.0},
@@ -5465,14 +5467,15 @@ local safezones={
         -- {"gunstorekey",1,"cash",1000},
     },
     selltrade={},
-	factionjoinpos={x=-484.63958740234,y=-1730.4544677734,z=19.549257278442},
+	factionjoinpos={x=468.79162597656,y=-3205.8356933594,z=6.0695614814758},
 	factionjoin={cost=2000},
 	factionname="Mercenaries",
-	storagepos={x=-428.57766723633,y=-1728.2624511719,z=19.783836364746},
+	storagepos={x=503.66717529297,y=-3122.1413574219,z=6.0697917938232},
 	storagename="Mercenaries",
     --questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
-    tradepos={x=-453.69293212891,y=-1736.0633544922,z=16.235605239868},
-    craftpos={x=-481.33041381836,y=-1707.9306640625,z=18.713914871216},
+    tradepos={x=467.56372070313,y=-3220.5288085938,z=7.0569982528687},
+	sellpose={x=467.57586669922,y=-3212.478515625,z=7.0569972991943},
+    craftpos={x=579.96868896484,y=-3113.1203613281,z=6.0692543983459},
     crafts={
     {"bodyarmor",1,
         {"milspecfabrics",2,
@@ -5551,8 +5554,8 @@ local safezones={
 	},
     weapons=weaponsarray.mercenaries,    
 	garagename="mercenarybase",
-    garagepos={x=-464.06307983398,y=-1693.1469726563,z=18.242547988892,angle=233.35702514648},
-    vehpos={x=-466.63320922852,y=-1719.5106201172,z=17.95788192749,angle=304.90985107422},
+    garagepos={x=499.67074584961,y=-3366.6574707031,z=6.1382756233215,angle=358.4967956543},
+    vehpos={x=499.44024658203,y=-3307.7868652344,z=6.1395635604858,angle=180.82667541504},
 	chopshop={
 	{"repair","cash",1},
 	{"refill","cash",20},
@@ -10131,7 +10134,7 @@ Citizen.CreateThread(function()
                 local myhealth=GetEntityHealth(myped)
                 if myhealth<150 then
                     SetEntityHealth(myped,myhealth+1)
-                    Wait(1500)
+                    Wait(6000)
                 end
             end
 			local ps=player.suit or "DEFAULT"
@@ -13143,6 +13146,8 @@ Citizen.CreateThread(function()
 								break;
 							end
 						end
+					elseif player.faction then
+						SimpleNotification(messages.leave_faction_before_joining_new_one)
 					elseif cashslot and inventory[cashslot].amount>=zone.factionjoin.cost then
 						inventory[cashslot].amount=inventory[cashslot].amount-zone.factionjoin.cost
 						check_inv_slot_for_zero_amount(cashslot)
@@ -13946,15 +13951,28 @@ Citizen.CreateThread(function()
                                 if GetPedInVehicleSeat(pveh,-1)==pped then
                                     if NetworkHasControlOfEntity(pveh) then
                                         local fuel=DecorGetFloat(pveh,"zm_fuel")
-                                        if fuel<80.0 then
+										local fuel_inv=inventory[inventory.current].amount
+                                        if fuel<80.0 and fuel_inv>0 then
                                             if fuel<5.0 then
-                                                fuel=5.9+.1
+												if 75<fuel_inv then
+													fuel_inv=fuel_inv-75
+													fuel=79.5+.5
+												else
+													fuel=4.5+.5+fuel_inv
+													fuel_inv=0
+												end
                                             else
-                                                fuel=fuel+(.9+.1)
+												if 80<fuel+fuel_inv then
+													fuel_inv=math.floor(fuel_inv-80+fuel)
+													fuel=79.5+.5
+												else
+													fuel=fuel+fuel_inv
+													fuel_inv=0
+												end
                                             end
                                             SetVehicleFuelLevel(pveh,fuel)
                                             DecorSetFloat(pveh,"zm_fuel",fuel)
-                                            inventory[inventory.current].amount=inventory[inventory.current].amount-1
+                                            inventory[inventory.current].amount=fuel_inv
                                             check_inv_slot_for_zero_amount()
                                             SetVehicleFuelLevel(pveh,fuel)
                                         end
@@ -13972,17 +13990,24 @@ Citizen.CreateThread(function()
                         if IsPedInAnyVehicle(pped) then
                             local pveh=GetVehiclePedIsIn(pped)
 							local vehclass=GetVehicleClass(pveh)
-							if pveh==15 or pveh==16 then
-                                SimpleNotification(messages.cant_repair_aircraft_with_this_kit)
-                            elseif GetPedInVehicleSeat(pveh,-1)==pped then
+                                --SimpleNotification(messages.cant_repair_aircraft_with_this_kit)
+                            if GetPedInVehicleSeat(pveh,-1)==pped then
                                 if NetworkHasControlOfEntity(pveh) then
-                                    if GetVehicleEngineHealth(pveh)<1000.0 then
-                                        SetVehicleEngineHealth(pveh,GetVehicleEngineHealth(pveh)+100.0)
-                                        inventory[inventory.current].amount=inventory[inventory.current].amount-1
-                                        check_inv_slot_for_zero_amount()
+									if vehclass==15 or vehclass==16 then
+										if IsVehicleDamaged(pveh) then
+											SetVehicleFixed(pveh)
+											inventory[inventory.current].amount=inventory[inventory.current].amount-1
+											check_inv_slot_for_zero_amount()
+										else
+											SimpleNotification(messages.engine_in_perfect_condition)
+										end
+                                    elseif GetVehicleEngineHealth(pveh)<1000.0 then
+                                        SetVehicleEngineHealth(pveh,1000.0)
+										inventory[inventory.current].amount=inventory[inventory.current].amount-1
+										check_inv_slot_for_zero_amount()
                                     else
                                         SimpleNotification(messages.engine_in_perfect_condition)
-                                    end
+									end
                                 else
                                     NetworkRequestControlOfEntity(pveh)
                                 end
@@ -15184,7 +15209,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(3, GetHashKey("SURVIVOR"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(3, GetHashKey("SURVIVOR"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("MARAUDER"))
-    SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("MILITARY"))
+    SetRelationshipBetweenGroups(3, GetHashKey("SURVIVOR"), GetHashKey("MILITARY"))
     SetRelationshipBetweenGroups(3, GetHashKey("SURVIVOR"), GetHashKey("HERO"))
     SetRelationshipBetweenGroups(2, GetHashKey("SURVIVOR"), GetHashKey("VIGILANTE"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("GUERILLA"))
@@ -15198,7 +15223,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("RAIDER"))
-    SetRelationshipBetweenGroups(4, GetHashKey("BANDIT"), GetHashKey("MERC"))
+    SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("MARAUDER"))
@@ -15222,7 +15247,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(3, GetHashKey("GOVERNMENT"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("MARAUDER"))
-    SetRelationshipBetweenGroups(4, GetHashKey("GOVERNMENT"), GetHashKey("MILITARY"))
+    SetRelationshipBetweenGroups(3, GetHashKey("GOVERNMENT"), GetHashKey("MILITARY"))
     SetRelationshipBetweenGroups(2, GetHashKey("GOVERNMENT"), GetHashKey("HERO"))
     SetRelationshipBetweenGroups(2, GetHashKey("GOVERNMENT"), GetHashKey("VIGILANTE"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("GUERILLA"))
@@ -15255,7 +15280,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(0, GetHashKey("MERC"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("SURVIVOR"))
-    SetRelationshipBetweenGroups(4, GetHashKey("MERC"), GetHashKey("BANDIT"))
+    SetRelationshipBetweenGroups(3, GetHashKey("MERC"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("COP"))
     SetRelationshipBetweenGroups(5, GetHashKey("COP"), GetHashKey("MERC"))
@@ -15267,9 +15292,9 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("HERO"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("VIGILANTE"))
     SetRelationshipBetweenGroups(3, GetHashKey("MERC"), GetHashKey("GUERILLA"))
-    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("OUTLAW"))
+    SetRelationshipBetweenGroups(3, GetHashKey("MERC"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("RENEGADE"))
-    SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("SMUGGLERS"))
+    SetRelationshipBetweenGroups(3, GetHashKey("MERC"), GetHashKey("SMUGGLERS"))
     
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -15329,10 +15354,10 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("MARAUDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("BANDIT"))
-    SetRelationshipBetweenGroups(4, GetHashKey("MILITARY"), GetHashKey("GOVERNMENT"))
+    SetRelationshipBetweenGroups(3, GetHashKey("MILITARY"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("MERC"))
-    SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("SURVIVOR"))
+    SetRelationshipBetweenGroups(3, GetHashKey("MILITARY"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(0, GetHashKey("MILITARY"), GetHashKey("MILITARY"))
@@ -15439,8 +15464,8 @@ Citizen.CreateThread(function()
 	
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("SMUGGLERS"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
-    SetRelationshipBetweenGroups(1, GetHashKey("SMUGGLERS"), GetHashKey("MARAUDER"))
-    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("BANDIT"))
+    SetRelationshipBetweenGroups(3, GetHashKey("SMUGGLERS"), GetHashKey("MARAUDER"))
+    SetRelationshipBetweenGroups(3, GetHashKey("SMUGGLERS"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("MERC"))
@@ -19605,13 +19630,13 @@ AddEventHandler("updatetradelist",function(zonetradename,list,timetoupdate)
 			v.selltrade={}
 			local ti,si=0,0
 			for k2,v2 in pairs(list) do
-				if v2[3]=="cash" then
+				if v2[1]=="cash" then
 					ti=ti+1
-					v.trade[ti]=v2
+					v.selltrade[ti]=v2
 					--print("added "..v2[1].." to buy menu")
 				else
 					si=si+1
-					v.selltrade[si]=v2
+					v.trade[si]=v2
 					--print("added "..v2[3].." to sell menu")
 				end
 			end
