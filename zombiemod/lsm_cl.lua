@@ -5988,11 +5988,22 @@ local quest_items_corpses={
 "quest_disc",
 "quest_keys",
 }
+local vehicle_weapons_controls={
+	13,	18,	24,	69,	92,	106,	122,	135,	142,	144,	176,	223,	229,	237,	239,	240,	257,	329,	346,	402,	403,	404,	405,	406,	407,	408,	409,	410,	411,	412,	413
+}
+
 
 local vehicles_ammo={
+	["cost"]={
+	["Turret_hud"]=1,
+	["Rocket_hud"]=50,
+	["Cannon_hud"]=50,
+	["Grenade_hud"]=20,
+	["Mine_hud"]=50,
+	},
   [-1281684762]={--lazer
-	[3800181289]={"zm_health",100},--mg
-	[3473446624]={"zm_dying",6},--rockets
+	[-494786007]={pool="Turret_hud","zm_health",100},--mg
+	[-821520672]={pool="Rocket_hud","zm_dying",6},--rockets
   },
   [970385471]={--hydra
 	[3800181289]={"zm_health",100},--mg
@@ -6016,8 +6027,8 @@ local vehicles_ammo={
   },
   [GetHashKey("Valkyrie")]={ --valkyrie
 	multiseat=true,
-	[1097917585]={"zm_health",100,{69,92}},--cannon
-	[2756787765]={"zm_dying",2000,{24,257}},--mg
+	[1097917585]={pool="Cannon_hud","zm_health",100,{69,92}},--cannon
+	[2756787765]={pool="Turret_hud","zm_dying",2000,{24,257}},--mg
   },
   [GetHashKey("Valkyrie2")]={ --valkyrie
 	multiseat=true,
@@ -6026,11 +6037,11 @@ local vehicles_ammo={
   },
   [GetHashKey("buzzard")]={ --buzzard
 	multiseat=true,
-	[1186503822]={"zm_health",200},--mg
-	[4171469727]={"zm_dying",16},--rockets
+	[1186503822]={pool="Turret_hud","zm_health",200},--mg
+	[-123497569]={pool="Rocket_hud","zm_dying",16},--rockets
   },
   [782665360]={--rhino
-	[1945616459]={"zm_health",50,{69}},--cannon
+	[1945616459]={pool="Rocket_hud","zm_health",50,{69}},--cannon
   },
   [GetHashKey("impaler2")]={--
 	[1599495177]={"zm_health",500,{24,69,92,257,114,68}},--minigun
@@ -6283,6 +6294,20 @@ tirerepair=1.0,
 fruits=0.4,
 trashfood=0.6,
 }
+local function get_item_weight(itemname)
+	local itemweight=0.0
+	if string.find(itemname,"+") then
+		local parts={}
+		local itemname=itemname
+		parts=split_text(itemname,"+")
+		for k,v in pairs(parts) do
+			itemweight=itemweight+(item_weight[v] or 0.0)
+		end
+	else
+		itemweight=item_weight[itemname] or 0.0
+	end
+	return itemweight
+end
 local item_names={
 jerrycan="Jerry Can",
 hatchet="Hatchet",
@@ -7262,7 +7287,7 @@ tier2={
 {"alcohol",-2},
 {"chemicals",-3},
 {"bandage",-2},
-{"engineparts",-5},
+{"engineparts",-1},
 {"tirerepair",1},
 {"switchblade",1},
 {"knife",1},
@@ -7564,8 +7589,11 @@ body_armor={
     {"bodyarmor",1},
 },
 repair_box={
-    {"tirerepair",-2},
-    {"engineparts",-7},
+    {"scrapmetal",-10},
+    {"industrialscrapmetal",-5},
+    {"leadscrap",-5},
+    {"tirerepair",-1},
+    {"engineparts",1},
 },
 explosives_box={
     {"leadscrap",-10},
@@ -9770,7 +9798,7 @@ Citizen.CreateThread(function()
                     else
                         WriteText(4,item_descriptions[main_item_name],inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
                     end
-					local weight=item_weight[main_item_name]
+					local weight=get_item_weight(main_item_name)
                     if weight then WriteText(4,{"~1~ KG (~1~ KG)",weight,weight*inventory[curitem].amount},inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc+0.07) end
                 else
                     WriteText(2,messages.empty,inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
@@ -10217,37 +10245,37 @@ Citizen.CreateThread(function()
         if inventory.total>0 then
             local itemweight
             for i=1,inventory.total do
-                itemweight=item_weight[inventory[i].item]
+                itemweight=get_item_weight(inventory[i].item)
                 if itemweight then
                     sumweight=sumweight+(itemweight*(inventory[i].amount))
                 end
             end
             if player.hat then
-                itemweight=item_weight[player.hat]
+                itemweight=get_item_weight(player.hat)
                 if itemweight then
                     sumweight=sumweight-itemweight
                 end
             end
             if player.mask then
-                itemweight=item_weight[player.mask]
+                itemweight=get_item_weight(player.mask)
                 if itemweight then
                     sumweight=sumweight-itemweight
                 end
             end
             if player.suit then
-                itemweight=item_weight["clothes_"..player.suit]
+                itemweight=get_item_weight("clothes_"..player.suit)
                 if itemweight then
                     sumweight=sumweight-itemweight
                 end
             end
             if player.backpack then
-                itemweight=item_weight["duffelbag"]
+                itemweight=get_item_weight("duffelbag")
                 if itemweight then
                     sumweight=sumweight-itemweight
                 end
             end
             if player.bodyarmor then
-                itemweight=item_weight["bodyarmor"]
+                itemweight=get_item_weight("bodyarmor")
                 if itemweight then
                     sumweight=sumweight-itemweight
                 end
@@ -11589,7 +11617,7 @@ Citizen.CreateThread(function()
 			end
             local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
             if IsPedInAnyVehicle(pped) then
-				if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and false then
+				if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and false then --and devmode then
                     --sell car
                     local myveh=GetVehiclePedIsIn(pped)
                     local current_menu=0
@@ -11773,14 +11801,26 @@ Citizen.CreateThread(function()
                         
                     end
                 end
-                if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and zone.chopshop and true then
+                if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and zone.chopshop then -- and not devmode then
 					if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 						--sell car
-						local myveh=GetVehiclePedIsIn(pped)
+						local myped=PlayerPedId()
+						local myveh=GetVehiclePedIsIn(myped)
 						local myvehmodel=GetEntityModel(myveh)
 						local function chopshop_getcost(myveh,option)
 							local name=option.name
 							local price=option.amount
+							
+							local model=GetEntityModel(myveh)
+							local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
+							if vehicles_ammo[model] and vehicles_ammo[model][weapon] then
+								local pool=vehicles_ammo[model][weapon].pool
+								if pool then
+									price=vehicles_ammo.cost[pool]*option.amount
+									--WriteNotification(vehicles_ammo[model][weapon].pool)
+								end
+							end
+							
 							local cost=0
 							if name=="repair" then
 								local enginehp=GetVehicleEngineHealth(myveh)
@@ -12597,26 +12637,40 @@ Citizen.CreateThread(function()
                 else
                     SimpleNotification("You can not receive new free provision yet.")
                 end
-            elseif (zone~=nil and not zone.raided and zone.tradepos~=nil and in_radius(mypos,zone.tradepos,3)) or
-				   (zone~=nil and not zone.raided and zone.sellpos~=nil and in_radius(mypos,zone.sellpos,3))
+            elseif zone~=nil and not zone.raided
+			    and ((zone.tradepos~=nil and in_radius(mypos,zone.tradepos,3)) or (zone.sellpos~=nil and in_radius(mypos,zone.sellpos,3)))
 			then
                 --trade
 				local current_trading
-				
+				local selling_or_buying
 				local relationship_req=4
 				
 				TriggerServerEvent("request_trade_table",zone.tradelistname)
 				
-				if in_radius(mypos,zone.tradepos,3) then 
-					current_trading=zone.trade or {}
-					relationship_req=0
-					--SimpleNotification("BUY POS #index ~1~"..#current_trading)
-					
-				elseif in_radius(mypos,zone.sellpos,3) then 
-					current_trading=zone.selltrade or {} 
-					relationship_req=4
-					--SimpleNotification("SELL POS #index ~1~"..#current_trading)
-				end 
+				if zone.tradepos~=nil and zone.sellpos~=nil then
+					local dxs,dys=mypos.x-zone.sellpos.x,mypos.y-zone.sellpos.y
+					local dxt,dyt=mypos.x-zone.tradepos.x,mypos.y-zone.tradepos.y
+					if dxt*dxt+dyt*dyt<dxs*dxs+dys*dys then 
+						current_trading=zone.trade or {}
+						relationship_req=0
+						sellingorbuying="buying"
+						--SimpleNotification("BUY POS #index ~1~"..#current_trading)
+						
+					else
+						current_trading=zone.selltrade or {} 
+						relationship_req=4
+						sellingorbuying="selling"
+						--SimpleNotification("SELL POS #index ~1~"..#current_trading)
+					end
+				elseif zone.tradepos~=nil then
+						current_trading=zone.trade or {}
+						sellingorbuying="buying"
+						relationship_req=0
+				else
+						current_trading=zone.selltrade or {} 
+						sellingorbuying="selling"
+						relationship_req=4
+				end
 				
 				
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=relationship_req) then
@@ -12729,23 +12783,40 @@ Citizen.CreateThread(function()
                         
                         for i=scroll,math.min(scroll+(maxtradesinmenu-1),#current_trading) do
                             local y=(i-scroll)*.08+.3
-                                DrawSprite("lsm", current_trading[i][1],0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
+															
+								local name=current_trading[i][1]
+								local amount_on_left=2
+								local amount_on_right=4
+								local sprite_on_left=1
+								local sprite_on_right=3
+								
+								if sellingorbuying=="selling" then 
+									name=current_trading[i][3] 
+									amount_on_left=4
+									amount_on_right=2
+									sprite_on_left=3
+									sprite_on_right=1
+								end
+								
+                                DrawSprite("lsm", current_trading[i][sprite_on_left],0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextWrap(0.325,trade_arrow_x-0.005)
-                                local name=current_trading[i][1]
+                                
                                 WriteTextNoOutline(4,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
                                 SetTextCentre(true)
-                                WriteTextNoOutline(2,{"x ~1~",current_trading[i][2]},0.25,0,0,0,255,0.305,y+0.02)
+                                WriteTextNoOutline(2,{"x ~1~",current_trading[i][amount_on_left]},0.25,0,0,0,255,0.305,y+0.02)
                                 
-                                DrawSprite("lsm", current_trading[i][3],price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
+                                DrawSprite("lsm", current_trading[i][sprite_on_right],price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
-                                WriteTextNoOutline(2,{"x ~1~",current_trading[i][4]},0.25,0,0,0,255,price_items_x,y+0.02)
+                                WriteTextNoOutline(2,{"x ~1~",current_trading[i][amount_on_right]},0.25,0,0,0,255,price_items_x,y+0.02)
                                 DrawSprite("lsm", "Trade Button",trade_button_x,y,0.0255,0.0205,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
                                 local color=255
                                 if current_trade==i then
                                     color=0
                                     DrawSprite("lsm", "Trade Selected",trade_button_x,y,0.0255,0.0205,0.0, 255, 255, 255, 255)
-                                    DrawSprite("lsm", "arrow_left",trade_arrow_x,y,0.0075,0.015,0.0, 255, 255, 255, 255)
+									local arrowtype="arrow_left"
+									if sellingorbuying=="selling" then arrowtype="arrow_right" end
+                                    DrawSprite("lsm", arrowtype,trade_arrow_x,y,0.0075,0.015,0.0, 255, 255, 255, 255)
                                 end
 								local textonbutton="Trade"
 								if current_trading[i][1]=="cash" then
@@ -13146,7 +13217,7 @@ Citizen.CreateThread(function()
 								break;
 							end
 						end
-					elseif player.faction then
+					elseif player.faction~=0 and player.faction~=nil then
 						SimpleNotification(messages.leave_faction_before_joining_new_one)
 					elseif cashslot and inventory[cashslot].amount>=zone.factionjoin.cost then
 						inventory[cashslot].amount=inventory[cashslot].amount-zone.factionjoin.cost
@@ -13337,7 +13408,7 @@ Citizen.CreateThread(function()
 									elseif inventory.current~=nil then
 										if inventory[inventory.current] then
 											local weightleft=player.storageweight-zone.storage.weight
-											local itemweight=(item_weight[inventory[inventory.current].item] or 0.0)
+											local itemweight=get_item_weight(inventory[inventory.current].item)
 											if weightleft>=itemweight then
 												if weightleft<itemweight*amounttomove then
 													amounttomove=math.floor(weightleft/itemweight)
@@ -13434,9 +13505,7 @@ Citizen.CreateThread(function()
 								zone.storage.weight=0
 								for k=1,zone.storage.total do
 									local v=zone.storage[k]
-									if item_weight[v.item] then
-										zone.storage.weight=zone.storage.weight+item_weight[v.item]*v.amount
-									end
+										zone.storage.weight=zone.storage.weight+get_item_weight(v.item)*v.amount
 								end
 								local x=0.29
 								local y=0.33
@@ -14942,6 +15011,10 @@ Citizen.CreateThread(function()
                 if traderblip~=nil then
                     RemoveBlip(traderblip)
                     traderblip=nil
+                end
+                if selltraderblip~=nil then
+                    RemoveBlip(selltraderblip)
+                    selltraderblip=nil
                 end
                 if ransackblip~=nil then
                     RemoveBlip(ransackblip)
@@ -17295,6 +17368,15 @@ if devmode then
 			saving_kvp_mode.SetResourceKvpInt("reputation",player.reputation)
 		end
 	end,false)
+	RegisterCommand('rearm',function(source,args,raw)		
+		local myped=PlayerPedId()
+		local myveh=GetVehiclePedIsIn(myped)								
+		local model=GetEntityModel(myveh)
+		local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
+		if using_vehicle_weapon and vehicles_ammo[model] and vehicles_ammo[model][weapon] then
+			DecorSetInt(myveh,vehicles_ammo[model][weapon][1],vehicles_ammo[model][weapon][2])
+		end
+	end,false)
 	RegisterCommand('kvp',function(source,args,raw)
 		if args[1]==nil or args[1]=="help" or args[1]=="?" then
 			print("/kvp del key")
@@ -18831,9 +18913,13 @@ Citizen.CreateThread(function()-- if true then return end
 		local myped=PlayerPedId()
 		--player.weapon=GetHashKey("weapon_assaultrifle")
 		--local secondary=GetHashKey("weapon_pistol")
-		BlockWeaponWheelThisFrame() --cant switch weapons but weapon wheel is active 
 		HideHudComponentThisFrame(2) --ammo counter
-		DisableControlAction(0,37,true) --hide weapon wheel
+		if IsPedInAnyVehicle(myped) and DoesVehicleHaveWeapons(GetVehiclePedIsIn(myped)) then
+			DisableControlAction(0,37,false) --enable weapon wheel
+		else
+			DisableControlAction(0,37,true) --hide weapon wheel
+			BlockWeaponWheelThisFrame() --cant switch weapons but weapon wheel is active 
+		end
 		--SetPedCanSwitchWeapon(myped,false) --cant switch weapons even automatically when entering car
 		
 		if false and IsDisabledControlJustPressed(0,15) then
@@ -19411,32 +19497,41 @@ Citizen.CreateThread(function()
                                             if ammo<=0 then
                                                 if ped==myped then
                                                     local controls=weapondata[3]
-                                                    if controls==nil then
-                                                        DisableControlAction(0,114,true)
-                                                    else
-                                                        for _,v in pairs(controls) do
-                                                            DisableControlAction(0,v,true)
+                                                    --if controls==nil then
+                                                        --DisableControlAction(0,114,true)
+														for k,v in pairs(controls or vehicle_weapons_controls) do
+															DisableControlAction(0,v,true)
                                                         end
-                                                    end
+                                                    --end
                                                 end
                                             elseif IsPedShooting(ped) then
                                                 DecorSetInt(veh,decor,ammo-1)
                                             end
                                             if ped==myped then
-												if HasStreamedTextureDictLoaded("lsm") then
-													DrawSprite("lsm", "ammometer", 0.921,0.97,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
+												local id=0
+												for _,weapon in pairs(vehdata) do
+													if type(weapon)=="table" then
+														local decor,maxammo=weapon[1],weapon[2]
+														local ammo=DecorGetInt(veh,decor)
+														DrawRect(0.921-(0.018*id),0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
+														DrawSprite("lsm", "gradient", 0.921-(0.018*id),0.9,0.013,0.175,0.0, 255, 255, 255, 255)
+														DrawRect(0.921-(0.018*id),0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) --
+														
+														if HasStreamedTextureDictLoaded("lsm") then
+															DrawSprite("lsm", weapon.pool, 0.921-(0.018*id),0.97,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
+														end
+														id=id+1
+													end
 												end
-												DrawRect(0.921,0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
-												DrawSprite("lsm", "gradient", 0.921,0.9,0.013,0.175,0.0, 255, 255, 255, 255)
-												DrawRect(0.921,0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) --
-                                                --TextCommandDisplayText(.75,.75,"ammunition "..ammo.."/"..maxammo)
+												--TextCommandDisplayText(.75,.75,"ammunition "..ammo.."/"..maxammo)
                                             end
                                         else
                                             --DecorSetInt(veh,decor,maxammo)
                                             DecorSetInt(veh,decor,0)
                                             --drawtext(decor,.75,.75)
                                         end
-                                    else --TextCommandDisplayText(.75,.6,"seat "..seat.." is using "..weapon)
+                                    else 
+										--WriteHint(356,"~y~DEBUG: no weapondata")
                                     end
                                 end
                             end
@@ -19467,7 +19562,7 @@ Citizen.CreateThread(function()
 									DrawSprite("lsm", "gradient", 0.921,0.9,0.013,0.175,0.0, 255, 255, 255, 255)
 									DrawRect(0.921,0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a)
 									if HasStreamedTextureDictLoaded("lsm") then
-										DrawSprite("lsm", "ammometer", 0.921,0.97,0.0166666667*0.7,0.0296296296*0.7,0.0, 255, 255, 255, 255)
+										DrawSprite("lsm", weapondata.pool, 0.921,0.97,0.0166666667*0.7,0.0296296296*0.7,0.0, 255, 255, 255, 255)
 									end
 								else
                                     --DecorSetInt(veh,decor,maxammo)

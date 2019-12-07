@@ -218,7 +218,7 @@ Citizen.CreateThread(function()
         local file,err = io.open(filename,"r")
         if file then
          for line in file:lines() do
-          tabl[line]='banned forever for hacks'
+          tabl[line]='Banned for violating server policy'
          end
          file:close()
         else
@@ -232,7 +232,7 @@ Citizen.CreateThread(function()
 		   if tabl[identifier]~=nil then
 			print("anticheat: "..identifier.." was already in "..filename)
 		   else
-			tabl[identifier]='banned forever for hacks'
+			tabl[identifier]='Banned for violating server policy'
 			local file,err = io.open(filename,"a")
 			if file then
 			 file:write(identifier.."\n")
@@ -296,9 +296,9 @@ Citizen.CreateThread(function()
 
     local function kick(source)
 		if devmode then
-			TriggerClientEvent("anticheat:notification",source,"~r~Hacks detected. Banning user.")
+			TriggerClientEvent("anticheat:notification",source,"~r~Banned for violating server policy")
 		else
-			kick_queue[source]="^1Hacks detected. Banning user."
+			kick_queue[source]="^1Banned for violating server policy"
 		end
         --DropPlayer(source,"^1Hacks detected. Banning user.")
     end
@@ -1953,8 +1953,8 @@ trades.buying={
 	add_wanted_trade(100,"clothes_gang"),
 	add_wanted_trade(30,"fruits"),
 	add_wanted_trade(6,"trashfood"),
-	add_wanted_trade(200,"vulcanammo",100),
-	add_wanted_trade(150,"rocketammo"),
+	--add_wanted_trade(200,"vulcanammo",100),
+	--add_wanted_trade(150,"rocketammo"),
 	add_wanted_trade(250,"guidedammo"),
 	add_wanted_trade(15,"scrapfabrics"),
 }
@@ -2867,7 +2867,7 @@ Citizen.CreateThread(function()
 			local locked=false
 			for player,pos in pairs(players_pos) do
 				--print((pos.x or "nil").."pos.x "..(pos.y or "nil").."pos.y "..(door.x or "nil").."door.x "..(door.y or "nil").."door.y ")
-				if (math.abs(pos.x-door.x)+math.abs(pos.y-door.y))<300 then
+				if (math.abs(pos.x-door.x)+math.abs(pos.y-door.y))<300000 then --300 and it locks
 					locked=true
 					break
 				end
