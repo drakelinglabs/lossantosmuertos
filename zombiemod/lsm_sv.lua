@@ -2010,7 +2010,7 @@ trades.chopshops.mercenary={
 	minprice=2500*0.5,
 	maxprice=2500*1.5,
 	},
-	{chance=2, 
+	{--chance=2, 
 	vehname="scarab",
 	priceitem="cash",
 	minprice=3500*0.5,
@@ -2068,7 +2068,7 @@ trades.chopshops.marauders={
 	minprice=1000*0.5,
 	maxprice=1000*1.5,
 	},
-	{chance=2, 
+	{--chance=2, 
 	vehname="impaler2",
 	priceitem="cash",
 	minprice=800*0.5,
@@ -2078,7 +2078,7 @@ trades.chopshops.marauders={
 	 [48]=range(0,3),
 	 },
 	},
-	{chance=2, 
+	{--chance=2, 
 	vehname="deathbike",
 	priceitem="cash",
 	minprice=1300*0.5,
@@ -2090,7 +2090,7 @@ trades.chopshops.marauders={
 }
 
 trades.chopshops.survivors={
-	{chance=3, --means 1 out of 3, so 33%; chance=10 means 1 out of 10, so 10%
+	{--chance=3, --means 1 out of 3, so 33%; chance=10 means 1 out of 10, so 10%
 	vehname="imperator",
 	priceitem="cash",
 	minprice=500*0.5,
@@ -2124,7 +2124,7 @@ trades.chopshops.survivors={
 	minprice=1500*0.5,
 	maxprice=1500*1.5,
 	},
-	{chance=4, 
+	{--chance=4, 
 	vehname="impaler2",
 	priceitem="cash",
 	minprice=800*0.5,
@@ -2136,7 +2136,7 @@ trades.chopshops.survivors={
 	},
 }
 trades.chopshops.smugglers={
-	{chance=3, --means 1 out of 3, so 33%; chance=10 means 1 out of 10, so 10%
+	{--chance=3, --means 1 out of 3, so 33%; chance=10 means 1 out of 10, so 10%
 	vehname="imperator",
 	priceitem="cash",
 	minprice=500*0.5,
@@ -2170,7 +2170,7 @@ trades.chopshops.smugglers={
 	minprice=1500*0.5,
 	maxprice=1500*1.5,
 	},
-	{chance=4, 
+	{--chance=4, 
 	vehname="impaler2",
 	priceitem="cash",
 	minprice=800*0.5,
@@ -2186,7 +2186,7 @@ local function generate_chopshop_list(faction)
 	local list={}
 	local index=0
 	for k,v in pairs(trades.chopshops[faction]) do
-		if math.random(1,v.chance)==1 then
+		if not v.chance or math.random(1,v.chance)==1 then
 			index=index+1
 			list[index]={
 			[1]=v.vehname,
@@ -2773,8 +2773,8 @@ Citizen.CreateThread(function()
 end)
 
 local heists={ --,t="raiders" r=150
-{x=3090.9416503906,y=-4717.8530273438,z=15.262616157532,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --carrier
-{x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --military bunker base
+--{x=3090.9416503906,y=-4717.8530273438,z=15.262616157532,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --carrier
+--{x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --military bunker base
 {x=445.91668701172,y=5572.1088867188,z=781.18475341797,r=0,health=30,content="military",b=568,t="raiders",name="Military Weapons Cache"}, --mountain top
 {x=3536.2355957031,y=3665.2844238281,z=28.121892929077,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --research labs
 {x=2746.4077148438,y=1487.2686767578,z=30.791791915894,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --power plant
@@ -2795,8 +2795,8 @@ local heists={ --,t="raiders" r=150
 {x=2940.3942871094,y=4623.1337890625,z=48.720832824707,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --shitty train station
 {x=1716.3363037109,y=3322.0368652344,z=41.22350692749,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --airport hanger
 {x=-507.38482666016,y=-672.91925048828,z=11.808968544006,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --subway terminal
-{x=-1125.8520507813,y=4896.5424804688,z=218.47247314453,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --survivor base
-{x=1694.9357910156,y=2552.8166503906,z=45.564903259277,r=0,health=30,content="marauderweapons",b=568,t="raiders",name="Marauder Weapons Cache"}, --marauder base
+--{x=-1125.8520507813,y=4896.5424804688,z=218.47247314453,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --survivor base
+--{x=1694.9357910156,y=2552.8166503906,z=45.564903259277,r=0,health=30,content="marauderweapons",b=568,t="raiders",name="Marauder Weapons Cache"}, --marauder base
 }
 
 local signals={}

@@ -3625,7 +3625,7 @@ end
 
 Citizen.CreateThread(function()
 	local help_menu=false
-	local maxpages=5
+	local maxpages=8
     while true do Wait(0)
 		if IsControlJustPressed(0,208) then
 			help_menu=1
@@ -3638,7 +3638,7 @@ Citizen.CreateThread(function()
 			elseif IsControlJustPressed(0,172) or IsControlJustPressed(0,175) then --up
 				help_menu=help_menu+1
 			end
-			if help_menu<1 then help_menu=1 elseif help_menu>maxpages then help_menu=5 end
+			if help_menu<1 then help_menu=1 elseif help_menu>maxpages then help_menu=maxpages end
 			WriteHint(4379,messages.press_to_close_helpmenu)
 			DrawSprite("lsm",tostring("Page-"..help_menu),.35,.525,0.5*(9/16),0.67,0.0,255,255,255,255)
 		else
@@ -3875,22 +3875,22 @@ Citizen.CreateThread(function()
                         SetBlipAsShortRange(v.blip,true)
                         SetBlipDisplay(v.blip,2)
                         if v.relationship==GetHashKey("SURVIVOR") then
-							SetBlipDisplay(v.blip,8)
+							SetBlipDisplay(v.blip,5)
                             SetBlipSprite(v.blip,77)
                             --SetBlipName(v.blip,"Survivor Scavenging Party")
                         elseif v.relationship==GetHashKey("BANDIT") then
-							SetBlipDisplay(v.blip,8)
+							SetBlipDisplay(v.blip,5)
                             SetBlipSprite(v.blip,79)
                             --SetBlipName(v.blip,"Marauder Death Squad")
                         elseif v.relationship==GetHashKey("GOVERNMENT") then
-							SetBlipDisplay(v.blip,8)
+							SetBlipDisplay(v.blip,5)
                             SetBlipSprite(v.blip,84)
                             --SetBlipName(v.blip,"Government Peacekeeper Patrol")
                         elseif v.relationship==GetHashKey("MILITARY") then
-							SetBlipDisplay(v.blip,8)
+							SetBlipDisplay(v.blip,5)
 							SetBlipSprite(v.blip,90)
                         elseif v.relationship==GetHashKey("MERC") then
-							SetBlipDisplay(v.blip,8)
+							SetBlipDisplay(v.blip,5)
 							SetBlipSprite(v.blip,89)
                         end
                         SetBlipScale(v.blip,1.0)
@@ -4374,41 +4374,41 @@ local safezones={
 		{vehicle="imperator",sprite="armorplating",name="Armor Plating",mods={[5]=0},resource="cash",amount=2100},
 		{vehicle="imperator",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
 		{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
-		--{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
-		--{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
-		--{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="zr380",sprite="supercharger",name="Supercharger",mods={[7]=4,[4]=1},resource="cash",amount=1500},
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
-		--{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
-		--{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
-		--{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
-		--{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
 		
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
-		--{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
@@ -4638,42 +4638,42 @@ local safezones={
 	upgrades={
 		{vehicle="imperator",sprite="armorplating",name="Armor Plating",mods={[5]=0},resource="cash",amount=2100},
 		{vehicle="imperator",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
-		--{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
-		--{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="zr380",sprite="supercharger",name="Supercharger",mods={[7]=4,[4]=1},resource="cash",amount=1500},
-		--{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
-		--{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
 		
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
@@ -5036,18 +5036,18 @@ local safezones={
 	upgrades={
 		{vehicle="imperator",sprite="armorplating",name="Armor Plating",mods={[5]=0},resource="cash",amount=2100},
 		{vehicle="imperator",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
-		--{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
-		--{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
@@ -5055,22 +5055,22 @@ local safezones={
 		{vehicle="zr380",sprite="supercharger",name="Supercharger",mods={[7]=4,[4]=1},resource="cash",amount=1500},
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
-		--{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
 		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
-		--{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
+		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
-		--{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
 		
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
-		--{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
+		{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
@@ -5159,42 +5159,42 @@ local safezones={
 	upgrades={
 		{vehicle="imperator",sprite="armorplating",name="Armor Plating",mods={[5]=0},resource="cash",amount=2100},
 		{vehicle="imperator",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
-		--{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
-		--{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="zr380",sprite="supercharger",name="Supercharger",mods={[7]=4,[4]=1},resource="cash",amount=1500},
-		--{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
-		--{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
 		
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     },
@@ -5336,42 +5336,42 @@ local safezones={
 	upgrades={
 		{vehicle="imperator",sprite="armorplating",name="Armor Plating",mods={[5]=0},resource="cash",amount=2100},
 		{vehicle="imperator",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
-		--{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
-		--{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="zr380",sprite="supercharger",name="Supercharger",mods={[7]=4,[4]=1},resource="cash",amount=1500},
-		--{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
-		--{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
+		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
 		
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
@@ -5564,22 +5564,22 @@ local safezones={
 	upgrades={
 		{vehicle="imperator",sprite="armorplating",name="Armor Plating",mods={[5]=0},resource="cash",amount=2100},
 		{vehicle="imperator",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="imperator",sprite="decoration",name="Scavenger Regalia",mods={[6]=1,[35]=0},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="imperator",sprite="decoration",name="Marauder Regalia",mods={[6]=2,[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
-		--{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
-		--{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
-		--{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="zr380",sprite="supercharger",name="Supercharger",mods={[7]=4,[4]=1},resource="cash",amount=1500},
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
@@ -5593,13 +5593,13 @@ local safezones={
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
 		
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		--{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
-		--{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
+		{vehicle="dominator4",sprite="decoration",name="Scavenger Regalia",mods={[35]=5},resource="cash",amount=200}, -- (Scavengers Only)
+		{vehicle="dominator4",sprite="decoration",name="Marauder Regalia",mods={[35]=5,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     vehshop={
@@ -5989,9 +5989,71 @@ local quest_items_corpses={
 "quest_keys",
 }
 local vehicle_weapons_controls={
-	13,	18,	24,	69,	92,	106,	122,	135,	142,	144,	176,	223,	229,	237,	239,	240,	257,	329,	346,	402,	403,	404,	405,	406,	407,	408,	409,	410,	411,	412,	413
+	13
+,	18
+,	24
+,	69
+,	92
+,	106
+,	122
+,	135
+,	142
+,	144
+,	176
+,	223
+,	229
+,	237
+,	239
+,	240
+,	257
+,	329
+,	346
+,	402
+,	403
+,	404
+,	405
+,	406
+,	407
+,	408
+,	409
+,	410
+,	411
+,	412
+,	413
+,25
+,68
+,70
+,91
+,114
+,177
+,222
+,225
+,238
+,240
+,330
+,331
+,347
+,402
+,403
+,404
+,405
+,406
+,407
+,408
+,409
+,410
+,411
+,412
+,413
 }
 
+local vehicles_ammo_names={
+	["Turret_hud"]="Turret",
+	["Rocket_hud"]="Rockets",
+	["Cannon_hud"]="Cannon",
+	["Grenade_hud"]="Grenades",
+	["Mine_hud"]="Mines",
+}
 
 local vehicles_ammo={
 	["cost"]={
@@ -6001,40 +6063,6 @@ local vehicles_ammo={
 	["Grenade_hud"]=20,
 	["Mine_hud"]=50,
 	},
-  [-1281684762]={--lazer
-	[-494786007]={pool="Turret_hud","zm_health",100},--mg
-	[-821520672]={pool="Rocket_hud","zm_dying",6},--rockets
-  },
-  [970385471]={--hydra
-	[3800181289]={"zm_health",100},--mg
-	[4171469727]={"zm_dying",6},--rockets
-  },
-  [GetHashKey("strikeforce")]={--b11
-	[955522731]={"zm_health",150},--mg
-	[519052682]={"zm_dying",6},--rockets homing
-	[968648323]={"zm_armor",14},--salvo
-  },
-  [GetHashKey("savage")]={--savage
-	[1638077257]={"zm_health",250},--mg
-	[4171469727]={"zm_dying",56},--rockets
-  },
-  [GetHashKey("hunter")]={ --hunter
-	multiseat=true,
-	[785467445]={"zm_health",14},--salvo
-	[153396725]={"zm_dying",8},--homing
-	[704686874]={"zm_armor",150},--cannon
-	[1119518887]={"zm_lastbone",300},--cannon
-  },
-  [GetHashKey("Valkyrie")]={ --valkyrie
-	multiseat=true,
-	[1097917585]={pool="Cannon_hud","zm_health",100,{69,92}},--cannon
-	[2756787765]={pool="Turret_hud","zm_dying",2000,{24,257}},--mg
-  },
-  [GetHashKey("Valkyrie2")]={ --valkyrie
-	multiseat=true,
-	--[1097917585]={"zm_health",100,{69,92}},--cannon
-	[2756787765]={"zm_dying",2000,{24,257}},--mg
-  },
   [GetHashKey("buzzard")]={ --buzzard
 	multiseat=true,
 	[1186503822]={pool="Turret_hud","zm_health",200},--mg
@@ -6044,22 +6072,220 @@ local vehicles_ammo={
 	[1945616459]={pool="Rocket_hud","zm_health",50,{69}},--cannon
   },
   [GetHashKey("impaler2")]={--
-	[1599495177]={"zm_health",500,{24,69,92,257,114,68}},--minigun
+	[1599495177]={pool="Turret_hud","zm_health",500,{24,69,92,257,114,68}},--minigun
   },
   [GetHashKey("dominator4")]={--
-	[-133391601]={"zm_health",500,{24,69,92,257,114,68}},--minigun
+	[-133391601]={pool="Turret_hud","zm_health",500,{24,69,92,257,114,68}},--minigun
   },
   [GetHashKey("deathbike")]={--
-	[490982948]={"zm_health",500,{24,69,92,257,114,68}},--minigun
+	[490982948]={pool="Turret_hud","zm_health",500,{24,69,92,257,114,68}},--minigun
   },
   [GetHashKey("zr380")]={--
-	[1790524546]={"zm_health",500,{24,69,92,257,114,68}},--machinegun
+	[1790524546]={pool="Turret_hud","zm_health",500,{24,69,92,257,114,68}},--machinegun
   },
   [GetHashKey("scarab")]={--
-	[562032424]={"zm_health",500,{24,69,92,257,114,68}},--machinegun
+	[562032424]={pool="Turret_hud","zm_health",500,{24,69,92,257,114,68}},--machinegun
   },
   [GetHashKey("imperator")]={--
-	[-1235040645]={"zm_health",500,{24,69,92,257,114,68}},--machinegun
+	[-1235040645]={pool="Turret_hud","zm_health",500,{24,69,92,257,114,68}},--machinegun
+  },
+  [GetHashKey("barrage")]={--
+	[1200179045]={pool="Turret_hud","zm_health",500},--machinegun
+  },
+  [GetHashKey("lazer")]={--
+	[-494786007]={pool="Turret_hud","zm_health",500},
+	[-821520672]={pool="Rocket_hud","zm_dying",20},
+  },
+  [GetHashKey("ANNIHL")]={
+	[1186503822]={pool="Turret_hud","zm_health",3000},
+  },
+  [GetHashKey("SAVAGE")]={
+	[1638077257]={pool="Turret_hud","zm_health",3000},
+	[-123497569]={pool="Rocket_hud","zm_dying",60},
+  },
+  [GetHashKey("VALKYRIE")]={
+	[-1538179531]={pool="Turret_hud","zm_health",2000},
+	[1097917585]={pool="Grenade_hud","zm_dying",50},
+  },
+  [GetHashKey("TECHNICAL")]={
+	[2144528907]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("HYDRA")]={
+	[-494786007]={pool="Turret_hud","zm_health",200},
+	[-123497569]={pool="Rocket_hud","zm_dying",30},
+  },
+  [GetHashKey("INSURGENT")]={
+	[1155224728]={pool="Turret_hud","zm_health",1500},
+  },
+  [GetHashKey("LIMO2")]={
+	[729375873]={pool="Turret_hud","zm_health",700},
+  },
+  [GetHashKey("RUINER2")]={
+	[50118905]={pool="Turret_hud","zm_health",300},
+	[84788907]={pool="Rocket_hud","zm_dying",10},
+  },
+  [GetHashKey("BLAZER5")]={
+	[-335937730]={pool="Turret_hud","zm_health",300},
+  },
+  [GetHashKey("TECHNICAL2")]={
+	[2144528907]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("BOXVILLE5")]={
+	[-1253095144]={pool="Turret_hud","zm_health",5000},
+  },
+  [GetHashKey("TRSMALL2")]={
+	[1192341548]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("APC")]={
+	[190244068]={pool="Turret_hud","zm_health",1000},
+	[328167896]={pool="Cannon_hud","zm_dying",30},
+  },
+  [GetHashKey("HALFTRACK")]={
+	[1331922171]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("OPPRESSOR")]={
+	[-651022627]={pool="Turret_hud","zm_health",100},
+  },
+  [GetHashKey("TAMPA3")]={
+	[-624592211]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("DUNE3")]={
+	[-787150897]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("NIGHTSHARK")]={
+	[-1508194956]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("ARDENT")]={
+	[-1001503935]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("HAVOK")]={
+	[855547631]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("STARLING")]={
+	[1595421922]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("ROGUE")]={
+	[158495693]={pool="Turret_hud","zm_health",1000},
+	[-416629822]={pool="Turret_hud","zm_health",1000},
+	[1820910717]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("TULA")]={
+	[1100844565]={pool="Turret_hud","zm_health",1000},
+	[1217122433]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("microlight")]={
+	[-991944340]={pool="Turret_hud","zm_health",500},
+  },
+  [GetHashKey("MOLOTOK")]={
+	[1595421922]={pool="Turret_hud","zm_health",500},
+	[-901318531]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("BOMBUSHKA")]={
+	[-666617255]={pool="Turret_hud","zm_health",10000},
+  },
+  [GetHashKey("MOGUL")]={
+	[-437014993]={pool="Turret_hud","zm_health",1000},
+	[-166158518]={pool="Turret_hud","zm_health",1000},
+	[-486730914]={pool="Turret_hud","zm_health",1000},
+	[-1171817471]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("PYRO")]={
+	[1595421922]={pool="Turret_hud","zm_health",1000},
+	[-901318531]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("VIGILANTE")]={
+	[-200835353]={pool="Turret_hud","zm_health",1000},
+	[-200835353]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("SEABREEZE")]={
+	[1371067624]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("NOKOTA")]={
+	[1595421922]={pool="Turret_hud","zm_health",1000},
+	[-901318531]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("HUNTER")]={
+	[153396725]={pool="Rocket_hud","zm_dying",50},
+	[785467445]={pool="Rocket_hud","zm_dying",50},
+	[1119518887]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("COMET4")]={
+	[-358074893]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("AKULA")]={
+	[431576697]={pool="Rocket_hud","zm_dying",50},
+	[2092838988]={pool="Rocket_hud","zm_dying",50},
+	[476907586]={pool="Turret_hud","zm_health",1000},
+	[-1246512723]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("VOLATOL")]={
+	[1150790720]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("BARRAGE")]={
+	[-146175596]={pool="Turret_hud","zm_health",1000},
+	[1000258817]={pool="Turret_hud","zm_health",1000},
+	[1200179045]={pool="Turret_hud","zm_health",1000},
+	[525623141]={pool="Turret_hud","zm_health",1000},
+	[-1538514291]={pool="Grenade_hud","zm_dying",100},
+  },
+  [GetHashKey("KHANJALI")]={
+	[711953949]={pool="Turret_hud","zm_health",1000},
+	[507170720]={pool="Cannon_hud","zm_dying",50},
+	[-2088013459]={pool="Cannon_hud","zm_dying",50},
+	[394659298]={pool="Grenade_hud","zm_armor",100},
+	[394659298]={pool="Grenade_hud","zm_armor",100},
+  },
+  [GetHashKey("STROMBERG")]={
+	[1176362416]={pool="Turret_hud","zm_health",1000},
+	[-729187314]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("DELUXO")]={
+	[-1694538890]={pool="Turret_hud","zm_health",1000},
+	[-1258723020]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("THRUSTER")]={
+	[1697521053]={pool="Turret_hud","zm_health",1000},
+	[1177935125]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("AVENGER")]={
+	[-1738072005]={pool="Cannon_hud","zm_health",50},
+	[-1738072005]={pool="Cannon_hud","zm_health",50},
+  },
+  [GetHashKey("SAVESTRA")]={
+	[-348002226]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("VISERIS")]={
+	[-2019545594]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("REVOLTER")]={
+	[-1117887894]={pool="Turret_hud","zm_health",1000},
+  },
+  [GetHashKey("CARACARA")]={
+	[1338760315]={pool="Turret_hud","zm_health",1000},
+	[1338760315]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("SPARROW")]={
+	[855547631]={pool="Turret_hud","zm_health",1000},
+	[-123497569]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("STRIKEFORCE")]={
+	[955522731]={pool="Turret_hud","zm_health",1000},
+	[519052682]={pool="Rocket_hud","zm_dying",50},
+	[968648323]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("OPPRESSOR2")]={
+	[-498786858]={pool="Turret_hud","zm_health",300},
+	[-699583383]={pool="Grenade_hud","zm_dying",20},
+	[1966766321]={pool="Rocket_hud","zm_armor",20},
+  },
+  [GetHashKey("SCRAMJET")]={
+	[231629074]={pool="Turret_hud","zm_health",1000},
+	[-1125578533]={pool="Rocket_hud","zm_dying",50},
+  },
+  [GetHashKey("MENACER")]={
+	[-540346204]={pool="Turret_hud","zm_health",1000},
+	[1155224728]={pool="Turret_hud","zm_health",1000},
+	[-1433899528]={pool="Turret_hud","zm_health",1000},
   },
 }
 
@@ -11617,7 +11843,7 @@ Citizen.CreateThread(function()
 			end
             local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
             if IsPedInAnyVehicle(pped) then
-				if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and false then --and devmode then
+				if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and  false then--devmode then
                     --sell car
                     local myveh=GetVehiclePedIsIn(pped)
                     local current_menu=0
@@ -11801,7 +12027,7 @@ Citizen.CreateThread(function()
                         
                     end
                 end
-                if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and zone.chopshop then -- and not devmode then
+                if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and zone.chopshop then
 					if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 						--sell car
 						local myped=PlayerPedId()
@@ -12117,9 +12343,28 @@ Citizen.CreateThread(function()
 							
 							for i=scroll,math.min(scroll+(maxtradesinmenu-1),#chopshopwithupgrades) do
 								local y=(i-scroll)*.08+.3
+									local hud_type
+									local myped=PlayerPedId()
+									local myveh=GetVehiclePedIsIn(myped)
+									local myvehmodel
+									local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
+									if myveh then
+										myvehmodel=GetEntityModel(myveh)
+									end
+									if using_vehicle_weapon and myvehmodel and weapon and vehicles_ammo[myvehmodel][weapon] then
+										hud_type=vehicles_ammo[myvehmodel][weapon].pool
+									end
+									
 									DrawSprite("lsm", chopshopwithupgrades[i].sprite or "bottle",0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
+									-- if hud_type and chopshopwithupgrades[i].sprite=="rearm" then
+										-- DrawSprite("lsm", "selected_item",0.305,y,(inv_new.item_scl_x)*0.875*0.5,(inv_new.item_scl_y)*0.875*0.5,0.0, 255, 255, 255, 255)
+										-- DrawSprite("lsm", hud_type or "bottle",0.305,y,(inv_new.item_scl_x)*0.875*0.5,(inv_new.item_scl_y)*0.875*0.5,0.0, 255, 255, 255, 255)
+									-- end
 									SetTextWrap(0.325,trade_arrow_x-0.005)
 									local name=chopshopwithupgrades[i].name
+									if using_vehicle_weapon then
+										name=name.." "..vehicles_ammo_names[vehicles_ammo[myvehmodel][weapon].pool]
+									end
 									WriteTextNoOutline(2,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
 									SetTextCentre(true)
 									--WriteTextNoOutline(2,{"x ~1~",chopshopwithupgrades[i][3]},0.25,0,0,0,255,0.305,y+0.02)
@@ -19487,7 +19732,15 @@ Citizen.CreateThread(function()
                             ped=GetPedInVehicleSeat(veh,seat)
                             if ped~=0 then
                                 local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(ped)
-                                if using_vehicle_weapon then
+                                --if using_vehicle_weapon then
+									if vehicles_ammo[model] then
+										--WriteHint(356,"~y~DEBUG: 123")
+										for k,v in pairs(vehicles_ammo[model]) do
+											if v.pool then
+												weapon=k
+											end
+										end
+									end
                                     local weapondata=vehdata[weapon]
                                     if weapondata~=nil then
                                         local decor,maxammo=weapondata[1],weapondata[2]
@@ -19509,18 +19762,22 @@ Citizen.CreateThread(function()
                                             end
                                             if ped==myped then
 												local id=0
+												local ammotypesinuse={}
 												for _,weapon in pairs(vehdata) do
 													if type(weapon)=="table" then
 														local decor,maxammo=weapon[1],weapon[2]
-														local ammo=DecorGetInt(veh,decor)
-														DrawRect(0.921-(0.018*id),0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
-														DrawSprite("lsm", "gradient", 0.921-(0.018*id),0.9,0.013,0.175,0.0, 255, 255, 255, 255)
-														DrawRect(0.921-(0.018*id),0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) --
-														
-														if HasStreamedTextureDictLoaded("lsm") then
-															DrawSprite("lsm", weapon.pool, 0.921-(0.018*id),0.97,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
+														if not ammotypesinuse[decor] then
+															local ammo=DecorGetInt(veh,decor)
+															ammotypesinuse[decor]=true
+															DrawRect(0.921-(0.018*id),0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
+															DrawSprite("lsm", "gradient", 0.921-(0.018*id),0.9,0.013,0.175,0.0, 255, 255, 255, 255)
+															DrawRect(0.921-(0.018*id),0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) --
+															
+															if HasStreamedTextureDictLoaded("lsm") then
+																DrawSprite("lsm", weapon.pool, 0.921-(0.018*id),0.97,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
+															end
+															id=id+1
 														end
-														id=id+1
 													end
 												end
 												--TextCommandDisplayText(.75,.75,"ammunition "..ammo.."/"..maxammo)
@@ -19533,12 +19790,22 @@ Citizen.CreateThread(function()
                                     else 
 										--WriteHint(356,"~y~DEBUG: no weapondata")
                                     end
-                                end
+                                --end
                             end
                         end
                     else
                         local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(ped)
-                        if using_vehicle_weapon then
+                        --if using_vehicle_weapon then
+							if vehicles_ammo[model] then
+								--WriteHint(356,"~y~DEBUG: 123")
+								if not using_vehicle_weapon then
+									for k,v in pairs(vehicles_ammo[model]) do
+										if v.pool then
+											weapon=k
+										end
+									end
+								end
+							end
                             local weapondata=vehdata[weapon]
                             --drawtext(weapon,.75,.6)
                             if weapondata~=nil then
@@ -19547,22 +19814,33 @@ Citizen.CreateThread(function()
                                     local ammo=DecorGetInt(veh,decor)
                                     if ammo<=0 then
                                         local controls=weapondata[3]
-                                        if controls==nil then
-                                            DisableControlAction(0,114,true)
-                                        else
-                                            for _,v in pairs(controls) do
+                                        -- if controls==nil then
+                                            -- DisableControlAction(0,114,true)
+                                        -- else
+                                            for _,v in pairs(controls or vehicle_weapons_controls) do
                                                 DisableControlAction(0,v,true)
                                             end
-                                        end
+                                        --end
                                     elseif IsPedShooting(ped) then
                                         DecorSetInt(veh,decor,ammo-1)
                                     end
-                                    --TextCommandDisplayText(.75,.75,"ammunition "..ammo.."/"..maxammo)
-									DrawRect(0.921,0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
-									DrawSprite("lsm", "gradient", 0.921,0.9,0.013,0.175,0.0, 255, 255, 255, 255)
-									DrawRect(0.921,0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a)
-									if HasStreamedTextureDictLoaded("lsm") then
-										DrawSprite("lsm", weapondata.pool, 0.921,0.97,0.0166666667*0.7,0.0296296296*0.7,0.0, 255, 255, 255, 255)
+									local id=0
+									local ammotypesinuse={}
+									for _,weapon in pairs(vehdata) do
+										local decor,maxammo=weapon[1],weapon[2]
+										if not ammotypesinuse[decor] then
+											local ammo=DecorGetInt(veh,decor)
+											ammotypesinuse[decor]=true
+											--TextCommandDisplayText(.75,.75,"ammunition "..ammo.."/"..maxammo)
+											DrawRect(0.921-(0.018*id),0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
+											DrawSprite("lsm", "gradient", 0.921-(0.018*id),0.9,0.013,0.175,0.0, 255, 255, 255, 255)
+											DrawRect(0.921-(0.018*id),0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) --
+											
+											if HasStreamedTextureDictLoaded("lsm") then
+												DrawSprite("lsm", weapon.pool, 0.921-(0.018*id),0.97,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
+											end
+											id=id+1
+										end
 									end
 								else
                                     --DecorSetInt(veh,decor,maxammo)
@@ -19571,7 +19849,7 @@ Citizen.CreateThread(function()
                                 end
                             else --TextCommandDisplayText(.75,.6,tostring(weapon))
                             end
-                        end
+                        --end
                     end
                 end
             end
