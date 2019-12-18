@@ -136,6 +136,11 @@ local function square_dist(v1,v2)
 	return dx*dx+dy*dy+dz*dz
 end
 
+local function square_dist_2d(v1,v2)
+	local dx,dy=v1.x-v2.x,v1.y-v2.y
+	return dx*dx+dy*dy
+end
+
 local function sqrt_dist(v1,v2)
 	local dx,dy,dz=v1.x-v2.x,v1.y-v2.y,v1.z-v2.z
 	return math.sqrt(dx*dx+dy*dy+dz*dz)
@@ -2088,6 +2093,7 @@ nightstick="melee",
 proxmine="throwable",
 stickybomb="throwable",
 hammer="melee",
+parachute="back",
 }
 local all_weapon_slots={
 "primary","secondary","melee","throwable"
@@ -2187,10 +2193,12 @@ extinguisher=1,
 nightstick=1,
 proxmine=1,
 hammer=1,
+parachute=1,
 }
 for k,v in pairs(weapons) do
 	weapons[k]=GetHashKey("weapon_"..k)
 end
+weapons.parachute=GetHashKey("gadget_parachute")
 
 local weapon_model_to_hash={}
 for _,v in pairs(WEAPON) do
@@ -4362,8 +4370,9 @@ local safezones={
     --provisionpos={ x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
     --questpos={x=-1098.6478271484,y=4893.4716796875,z=216.06663513184},
     weapons={"pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
-	garagename="survivorsettlement",
-    garagepos={x=-1126.0074462891,y=4955.5366210938,z=220.08460998535,angle=195.63282775879},
+    garages={
+		{name="survivorsettlement",x=-1126.0074462891,y=4955.5366210938,z=220.08460998535,angle=195.63282775879},
+	},
     vehpos={x=-1094.43,y=4946.27,z=217.82,angle=342.98559570313},
 	chopshop={
 	{"repair","cash",1},
@@ -4626,10 +4635,12 @@ local safezones={
     },
     --provisionpos={x=447.22109985352,y=-975.54309082031,z=30.689596176147},
     --questpos={x=447.22109985352,y=-975.54309082031,z=30.689596176147},
-    weapons={"pistol","pumpshotgun"},	
-	garagename="governmentcheckpoint",
-    garagepos={x=476.40460205078,y=-1022.2955932617,z=28.060018539429,angle=278.39999389648},
-    vehpos={x=449.607,y=-1020.99,z=27.88,angle=27.88},
+    weapons={"pistol","pumpshotgun"},
+    garages={
+		{name="governmentcheckpoint",x=449.85470581055,y=-1013.0065917969,z=28.491781234741,angle=183.24914550781},
+		{name="governmentcheckpoint2",x=434.23724365234,y=-1014.2998657227,z=28.755540847778,angle=178.62237548828},
+	},
+    vehpos={x=476.50698852539,y=-1022.0641479492,z=28.054815292358,angle=273.52792358398},
 	chopshop={
 	{"repair","cash",1},
 	{"refill","cash",20},
@@ -5024,9 +5035,10 @@ local safezones={
 		},
     },
 	},
-    weapons=weaponsarray.bandit,   
-	garagename="marauderfortress",
-    garagepos={x=1720.63671875,y=2599.8291015625,z=45.913063049316,angle=358.78060913086},
+    weapons=weaponsarray.bandit,
+    garages={
+		{name="marauderfortress",x=1720.63671875,y=2599.8291015625,z=45.913063049316,angle=358.78060913086},
+	},
     vehpos={x=1673.43,y=2604.79,z=45.03,angle=27.88},
 	chopshop={
 	{"repair","cash",1},
@@ -5146,8 +5158,10 @@ local safezones={
     storagename="smugglers",
     craftpos={x=2214.2390136719,y=5585.4921875,z=53.851406097412},
     weapons=weaponsarray.mercenaries,
-    garagename="smugglers",
-    garagepos={x=2202.8256835938,y=5561.177734375,z=53.95454788208},
+    garages={
+		{name="smugglers",x=2203.1770019531,y=5561.4799804688,z=53.922260284424,angle=354.91766357422},
+		{name="smugglers2",x=2259.6228027344,y=5613.9360351563,z=54.597011566162,angle=130.56204223633},
+	},
     vehpos={x=2196.3247070313,y=5608.0581054688,z=53.495838165283}, --chopshop position
 	vehshop={},
     relationship="SMUGGLERS",
@@ -5325,9 +5339,12 @@ local safezones={
     },
 	},
     weapons=weaponsarray.military,    
-	garagename="militaryoutpost",
-    garagepos={x=-1850.2165527344,y=2987.7575683594,z=32.279628753662,angle=148.75523376465},
-    vehpos={x=-2149.6794433594,y=3236.2963867188,z=32.279331207275,angle=329.71496582031},
+	garages={
+		{name="militaryoutpost",x=-2015.5277099609,y=2944.7358398438,z=32.809864044189,angle=326.25524902344},
+		{name="militaryoutpost2",x=-2144.2985839844,y=3019.703125,z=32.826580047607,angle=327.27267456055},
+		{name="militaryoutpost3",x=-1828.6223144531,y=2975.2268066406,z=32.278957366943,angle=60.625129699707},
+	},
+    vehpos={x=-2137.9235839844,y=3256.8903808594,z=32.81029510498,angle=147.38447570801},
 	chopshop={
 	{"repair","cash",1},
 	{"refill","cash",20},
@@ -5431,7 +5448,7 @@ local safezones={
 
 	---merc base
 ----------------------------------------------------
-    {x=512.15368652344,y=-3190.0910644531,z=6.0692586898804,r=100.0,blip=94,color=4,
+    {x=512.15368652344,y=-3190.0910644531,z=6.0692586898804,r=250.0,blip=94,color=4,
     models={1885233650},
     name="Mercenary Base~s~",
 	extraction={x=-441.30157470703,y=-1695.2406005859,z=19.008533477783,r=3.0},
@@ -5553,9 +5570,13 @@ local safezones={
     },
 	},
     weapons=weaponsarray.mercenaries,    
-	garagename="mercenarybase",
-    garagepos={x=499.67074584961,y=-3366.6574707031,z=6.1382756233215,angle=358.4967956543},
-    vehpos={x=499.44024658203,y=-3307.7868652344,z=6.1395635604858,angle=180.82667541504},
+	garages={
+		{name="mercenarybase",x=467.41119384766,y=-3191.4245605469,z=6.0695595741272,angle=266.50952148438},
+		{name="mercenarybase2",x=466.86489868164,y=-3235.412109375,z=6.0695567131042,angle=267.56420898438},
+		{name="mercenarybase3",x=478.34823608398,y=-3370.0886230469,z=6.0699133872986,angle=178.25700378418},
+		{name="mercenarybase4",x=570.47326660156,y=-3160.8044433594,z=1.0691429376602,angle=179.04460144043},
+	},
+    vehpos={x=477.85247802734,y=-3300.9567871094,z=6.0692639350891,angle=268.39370727539},
 	chopshop={
 	{"repair","cash",1},
 	{"refill","cash",20},
@@ -9243,6 +9264,25 @@ Citizen.CreateThread(function()
                 brightness=255
             end
             mypos=GetEntityCoords(pped)
+			for k,v in pairs(signals) do
+				if v.z~=nil then
+					if square_dist(mypos,v)<25.0 then
+						local not_on_screen,x,y=N_0xf9904d11f1acbec3(v.x,v.y,v.z+1)
+						if not not_on_screen then
+							WriteHint(2,{messages.press_e_to_pickup,"loot"})
+							WriteText(font,{messages.press_e_to_pickup,"loot"},size,brightness,brightness,brightness,alpha,x,y)
+						end
+					end
+				else
+					if square_dist(mypos,{x=v.x,y=v.y,z=mypos.z})<25.0 then
+						local not_on_screen,x,y=N_0xf9904d11f1acbec3(v.x,v.y,mypos.z)
+						if not not_on_screen then
+							WriteHint(2,{messages.press_e_to_pickup,"loot"})
+							WriteText(font,{messages.press_e_to_pickup,"loot"},size,brightness,brightness,brightness,alpha,x,y)
+						end
+					end
+				end
+			end
             handle,veh=FindFirstVehicle()
             loop=(handle~=-1)
             while loop do
@@ -9324,12 +9364,20 @@ Citizen.CreateThread(function()
             
             handle,ped=FindFirstPed()
             loop=(handle~=-1)
+			local corpse_hint_shown=false --to prevent hint spam
             while loop do
                 local pedpos=GetEntityCoords(ped)
                 if IsPedDeadOrDying(ped) then
                     if square_dist(mypos,pedpos)<(1.5*1.5) and not DecorExistOn(ped,"zm_looted") then
-                        WriteHint(2,messages.press_e_to_loot_corpse)
-                        break;
+						if not corpse_hint_shown then
+							WriteHint(2,messages.press_e_to_loot_corpse)
+							corpse_hint_shown=true
+						end
+                        --break;
+						local not_on_screen,x,y=N_0xf9904d11f1acbec3(pedpos.x,pedpos.y,pedpos.z)
+                        if not not_on_screen then
+							WriteText(font,messages.press_e_to_loot_corpse,size,255,255,255,alpha,x,y)
+						end
                     end
                 end
                 loop,ped=FindNextPed(handle)
@@ -9504,6 +9552,19 @@ local function dist_to_closest_point(a,t)
     return mindist
 end
 
+local function dist_to_closest_point_2d(a,t)
+    local mindist=400000000
+    local dx,dy,sq
+    for k,v in pairs(a) do
+        dx,dy=v.x-t.x,v.y-t.y
+        sq=dx*dx+dy*dy
+        if sq<mindist then
+            mindist=sq
+        end
+    end
+    return mindist
+end
+
 
 Citizen.CreateThread(function()
     local loop,handle,veh,rand,ped,class,vmhealth,vpos
@@ -9516,8 +9577,35 @@ Citizen.CreateThread(function()
 			--if not DecorExistOn(veh,"post_apoc_car") then
 			vmhealth=GetEntityMaxHealth(veh)
 			if vmhealth~=1020 then
-				if (class==15 or class==16) and IsEntityInAir(veh) then
-					local vehpos=GetEntityCoords(veh)
+				local vehpos=GetEntityCoords(veh)
+				local zone=is_in_safe_zone(vehpos.x,vehpos.y,vehpos.z)
+				if zone and (zone.garages or zone.vehpos) then
+					if (zone.garages and (dist_to_closest_point_2d(zone.garages,vehpos)<225)) or (zone.vehpos and (square_dist_2d(vehpos,zone.vehpos)<225)) then
+						--225 is 15 squared, means 15 meters
+						SetEntityAsMissionEntity(veh)
+						DeleteEntity(veh)
+						goto toNextVehicle
+					else
+						SmashVehicleWindow(veh,0)
+						SmashVehicleWindow(veh,1)
+						SmashVehicleWindow(veh,2)
+						SmashVehicleWindow(veh,3)
+						SetEntityRenderScorched(veh,true)
+						SetEntityInvincible(veh,true)
+						--DecorSetBool(veh,"scorched",true)
+						if GetVehicleEngineHealth(veh)>-3999.9 then
+							SetVehicleEngineHealth(veh,-3999.99)
+						end
+						SetVehicleFuelLevel(veh,.1-.1)
+						DecorSetFloat(veh,"zm_fuel",.1-.1)
+						DecorSetBool(veh,"zm_looted",true)
+						SetVehicleEngineOn(veh, false, true, false)
+						SetVehicleHalt(veh, 0.1, 1, false)
+						SetEntityMaxHealth(veh,1020)
+						goto toNextVehicle
+					end
+				elseif (class==15 or class==16) and IsEntityInAir(veh) then
+					--local vehpos=GetEntityCoords(veh) --moved above
 					print("air vehicle deleted")
 					SetEntityAsMissionEntity(veh)
 					SetEntityCoords(veh,vehpos.x,vehpos.y,-250.1)
@@ -11560,31 +11648,31 @@ Citizen.CreateThread(function()
         end
         waiting_for_server_resonse=false
     end)
-    local function try_to_load_garage(zone)
-        if zone.vehiclesave==nil or zone.vehiclesave.model==nil then
-            local kvp_car_model=GetResourceKvpInt("garage_"..zone.garagename.."_model")
+    local function try_to_load_garage(garage)
+        if garage.vehiclesave==nil or garage.vehiclesave.model==nil then
+            local kvp_car_model=GetResourceKvpInt("garage_"..garage.name.."_model")
             if kvp_car_model~=nil and kvp_car_model~=0 then
-                zone.vehiclesave={}
-                zone.vehiclesave.model=kvp_car_model
-                zone.vehiclesave.enginehp=GetResourceKvpFloat("garage_"..zone.garagename.."_enginehp")
-                zone.vehiclesave.fuellevel=GetResourceKvpFloat("garage_"..zone.garagename.."_fuel")
-                zone.vehiclesave.doors=GetResourceKvpInt("garage_"..zone.garagename.."_doors")
-                zone.vehiclesave.tyres=GetResourceKvpInt("garage_"..zone.garagename.."_tyres")
-                local colors=GetResourceKvpInt("garage_"..zone.garagename.."_colors")
+                garage.vehiclesave={}
+                garage.vehiclesave.model=kvp_car_model
+                garage.vehiclesave.enginehp=GetResourceKvpFloat("garage_"..garage.name.."_enginehp")
+                garage.vehiclesave.fuellevel=GetResourceKvpFloat("garage_"..garage.name.."_fuel")
+                garage.vehiclesave.doors=GetResourceKvpInt("garage_"..garage.name.."_doors")
+                garage.vehiclesave.tyres=GetResourceKvpInt("garage_"..garage.name.."_tyres")
+                local colors=GetResourceKvpInt("garage_"..garage.name.."_colors")
                 local colors8=(colors>>8)
                 local colors16=(colors>>16)
                 local colors24=(colors>>24)
                 
-                zone.vehiclesave.colors={colors&0xFF,colors8&0xFF,colors16&0xFF,colors24&0xFF}
-                zone.vehiclesave.total_mods=GetResourceKvpInt("garage_"..zone.garagename.."_total_mods")
-                zone.vehiclesave.mods={}
-                local modstring=GetResourceKvpString("garage_"..zone.garagename.."_modstring")
+                garage.vehiclesave.colors={colors&0xFF,colors8&0xFF,colors16&0xFF,colors24&0xFF}
+                garage.vehiclesave.total_mods=GetResourceKvpInt("garage_"..garage.name.."_total_mods")
+                garage.vehiclesave.mods={}
+                local modstring=GetResourceKvpString("garage_"..garage.name.."_modstring")
                 if modstring~=nil then
                     --SimpleNotification("loading "..#modstring)
                     for i=1,#modstring,2 do
                         local k,v=string.byte(modstring,i,i+1)
                         k,v=k-1,v-1
-                        zone.vehiclesave.mods[k]=v
+                        garage.vehiclesave.mods[k]=v
                     end
                 end
             end
@@ -12412,18 +12500,19 @@ Citizen.CreateThread(function()
 						end
 					end
                 end
-                if zone~=nil and not zone.raided and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
+                if zone~=nil and not zone.raided and zone.garages~=nil and (dist_to_closest_point(zone.garages,mypos)<25) then --25 is 5 squared, that's 5 meters
                     if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 						if player.faction==zone.relationship then
-							try_to_load_garage(zone)
-							if zone.vehiclesave~=nil and zone.vehiclesave.model~=nil then
-								SimpleNotification("You already have ~g~~a~ ~s~in garage.",GetDisplayNameFromVehicleModel(zone.vehiclesave.model))
+							local current_garage=zone.garages[closest_point(zone.garages,mypos)]
+							try_to_load_garage(current_garage)
+							if current_garage.vehiclesave~=nil and current_garage.vehiclesave.model~=nil then
+								SimpleNotification("You already have ~g~~a~ ~s~in garage.",GetDisplayNameFromVehicleModel(current_garage.vehiclesave.model))
 							else
 								-- place in garage
 								local flags=0
 								local myped=PlayerPedId()
 								local myveh=GetVehiclePedIsIn(myped)
-								zone.vehiclesave={
+								current_garage.vehiclesave={
 								model=GetEntityModel(myveh),
 								enginehp=GetVehicleEngineHealth(myveh),
 								fuellevel=GetVehicleFuelLevel(myveh),
@@ -12432,21 +12521,21 @@ Citizen.CreateThread(function()
 								for i=0,7 do
 									if IsVehicleDoorDamaged(myveh,i) then flags=flags|(1<<i) end
 								end
-								zone.vehiclesave.doors=flags
-								zone.vehiclesave.colors={}
-								zone.vehiclesave.colors[1],zone.vehiclesave.colors[2]=GetVehicleColours(myveh)
-								zone.vehiclesave.colors[3],zone.vehiclesave.colors[4]=GetVehicleExtraColours(myveh)
-								zone.vehiclesave.modkit=GetVehicleModKit(myveh)
+								current_garage.vehiclesave.doors=flags
+								current_garage.vehiclesave.colors={}
+								current_garage.vehiclesave.colors[1],current_garage.vehiclesave.colors[2]=GetVehicleColours(myveh)
+								current_garage.vehiclesave.colors[3],current_garage.vehiclesave.colors[4]=GetVehicleExtraColours(myveh)
+								current_garage.vehiclesave.modkit=GetVehicleModKit(myveh)
 								local mod
-								zone.vehiclesave.mods={}
-								zone.vehiclesave.total_mods=0
+								current_garage.vehiclesave.mods={}
+								current_garage.vehiclesave.total_mods=0
 								for i=0,200 do
 									mod=GetVehicleMod(myveh,i)
 									if mod~=-1 then
-										zone.vehiclesave.total_mods=zone.vehiclesave.total_mods+1
-										zone.vehiclesave.mods[i]=mod
+										current_garage.vehiclesave.total_mods=current_garage.vehiclesave.total_mods+1
+										current_garage.vehiclesave.mods[i]=mod
 									else
-										zone.vehiclesave.mods[i]=nil
+										current_garage.vehiclesave.mods[i]=nil
 									end
 								end
 								flags=0
@@ -12460,40 +12549,40 @@ Citizen.CreateThread(function()
 								if IsVehicleTyreBurst(myveh, 7, false) then flags=flags|128 end
 								if IsVehicleTyreBurst(myveh, 45, false) then flags=flags|256 end
 								if IsVehicleTyreBurst(myveh, 47, false) then flags=flags|512 end
-								zone.vehiclesave.tyres=flags
+								current_garage.vehiclesave.tyres=flags
 								
-								SimpleNotification(messages.vehiclename_saved_in_garage,GetDisplayNameFromVehicleModel(zone.vehiclesave.model))
+								SimpleNotification(messages.vehiclename_saved_in_garage,GetDisplayNameFromVehicleModel(current_garage.vehiclesave.model))
 								
 								if DecorExistOn(myveh,"zm_health") then
-									saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_ammo_1",DecorGetInt(myveh,"zm_health"))
+									saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_ammo_1",DecorGetInt(myveh,"zm_health"))
 								else
-									saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_1")
+									saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_1")
 								end
 								if DecorExistOn(myveh,"zm_dying") then
-									saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_ammo_2",DecorGetInt(myveh,"zm_dying"))
+									saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_ammo_2",DecorGetInt(myveh,"zm_dying"))
 								else
-									saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_2")
+									saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_2")
 								end
 								if DecorExistOn(myveh,"zm_armor") then
-									saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_ammo_3",DecorGetInt(myveh,"zm_armor"))
+									saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_ammo_3",DecorGetInt(myveh,"zm_armor"))
 								else
-									saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_3")
+									saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_3")
 								end
 								if DecorExistOn(myveh,"zm_lastbone") then
-									saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_ammo_4",DecorGetInt(myveh,"zm_lastbone"))
+									saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_ammo_4",DecorGetInt(myveh,"zm_lastbone"))
 								else
-									saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_4")
+									saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_4")
 								end
 								SetEntityAsMissionEntity(myveh)
 								DeleteEntity(myveh)
-								saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_model",zone.vehiclesave.model)
-								saving_kvp_mode.SetResourceKvpFloat("garage_"..zone.garagename.."_enginehp",zone.vehiclesave.enginehp)
-								saving_kvp_mode.SetResourceKvpFloat("garage_"..zone.garagename.."_fuel",zone.vehiclesave.fuellevel)
-								saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_doors",zone.vehiclesave.doors)
-								saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_tyres",zone.vehiclesave.tyres)
-								local colors=zone.vehiclesave.colors[1]|(zone.vehiclesave.colors[2]<<8)|(zone.vehiclesave.colors[3]<<16)|(zone.vehiclesave.colors[4]<<24)
-								saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_colors",colors)
-								saving_kvp_mode.SetResourceKvpInt("garage_"..zone.garagename.."_total_mods",zone.vehiclesave.total_mods)
+								saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_model",current_garage.vehiclesave.model)
+								saving_kvp_mode.SetResourceKvpFloat("garage_"..current_garage.name.."_enginehp",current_garage.vehiclesave.enginehp)
+								saving_kvp_mode.SetResourceKvpFloat("garage_"..current_garage.name.."_fuel",current_garage.vehiclesave.fuellevel)
+								saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_doors",current_garage.vehiclesave.doors)
+								saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_tyres",current_garage.vehiclesave.tyres)
+								local colors=current_garage.vehiclesave.colors[1]|(current_garage.vehiclesave.colors[2]<<8)|(current_garage.vehiclesave.colors[3]<<16)|(current_garage.vehiclesave.colors[4]<<24)
+								saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_colors",colors)
+								saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_total_mods",current_garage.vehiclesave.total_mods)
 								-- local mod_index=0
 								-- for k,v in pairs(zone.vehiclesave.mods) then
 									-- mod_index=mod_index+1
@@ -12501,11 +12590,11 @@ Citizen.CreateThread(function()
 								-- end
 								
 								local modstring=""
-								for k,v in pairs(zone.vehiclesave.mods) do
+								for k,v in pairs(current_garage.vehiclesave.mods) do
 									modstring=modstring..string.char(k+1,v+1)
 								end
 								--SimpleNotification("saving "..#modstring)
-								saving_kvp_mode.SetResourceKvp("garage_"..zone.garagename.."_modstring",modstring)
+								saving_kvp_mode.SetResourceKvp("garage_"..current_garage.name.."_modstring",modstring)
 							end
 						else
 							SimpleNotification(messages.you_have_to_be_in_this_faction_to_use_garage)
@@ -12514,13 +12603,14 @@ Citizen.CreateThread(function()
                         SimpleNotification(messages.you_cannot_use_enemy_garages)
                     end
                 end
-            elseif zone~=nil and not zone.raided and zone.garagepos~=nil and in_radius(mypos,zone.garagepos,5) then
+            elseif zone~=nil and not zone.raided and zone.garages~=nil and (dist_to_closest_point(zone.garages,mypos)<25) then --25 is 5 squared. means 5 meters
                 -- load car from garage
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 					if player.faction==zone.relationship then
-						try_to_load_garage(zone)
-						if zone.vehiclesave~=nil and zone.vehiclesave.model~=nil then
-							local vs=zone.vehiclesave
+						local current_garage=zone.garages[closest_point(zone.garages,mypos)]
+						try_to_load_garage(current_garage)
+						if current_garage.vehiclesave~=nil and current_garage.vehiclesave.model~=nil then
+							local vs=current_garage.vehiclesave
 							local flags=0
 							local myped=PlayerPedId()
 							local mypos=GetEntityCoords(myped)
@@ -12533,7 +12623,7 @@ Citizen.CreateThread(function()
 										WriteText(2,"Loading vehicle",1.0,255,255,255,255,0.5,0.5)
 									end
 								end
-								local myveh=CreateVehicle(vs.model, mypos.x, mypos.y, mypos.z, zone.garagepos.angle, true, false)
+								local myveh=CreateVehicle(vs.model, mypos.x, mypos.y, mypos.z, current_garage.angle, true, false)
 								if myveh~=0 then
 									DecorSetBool(myveh,"zm_looted",true)                
 									--DecorSetBool(myveh,"post_apoc_car",true)
@@ -12573,29 +12663,29 @@ Citizen.CreateThread(function()
 									if (flags&128)~=0 then SetVehicleTyreBurst(myveh, 7, false, 1000.1-.1) end
 									if (flags&256)~=0 then SetVehicleTyreBurst(myveh, 45, false, 1000.1-.1) end
 									if (flags&512)~=0 then SetVehicleTyreBurst(myveh, 47, false, 1000.1-.1) end
-									local ammo_1=GetResourceKvpInt("garage_"..zone.garagename.."_ammo_1")
-									local ammo_2=GetResourceKvpInt("garage_"..zone.garagename.."_ammo_2")
-									local ammo_3=GetResourceKvpInt("garage_"..zone.garagename.."_ammo_3")
-									local ammo_4=GetResourceKvpInt("garage_"..zone.garagename.."_ammo_4")
+									local ammo_1=GetResourceKvpInt("garage_"..current_garage.name.."_ammo_1")
+									local ammo_2=GetResourceKvpInt("garage_"..current_garage.name.."_ammo_2")
+									local ammo_3=GetResourceKvpInt("garage_"..current_garage.name.."_ammo_3")
+									local ammo_4=GetResourceKvpInt("garage_"..current_garage.name.."_ammo_4")
 									if ammo_1~=nil and ammo_1~=0 then
 										DecorSetInt(myveh,"zm_health",ammo_1)
-										saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_1")
+										saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_1")
 									end
 									if ammo_2~=nil and ammo_2~=0 then
 										DecorSetInt(myveh,"zm_dying",ammo_2)
-										saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_2")
+										saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_2")
 									end
 									if ammo_3~=nil and ammo_3~=0 then
 										DecorSetInt(myveh,"zm_armor",ammo_3)
-										saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_3")
+										saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_3")
 									end
 									if ammo_4~=nil and ammo_4~=0 then
 										DecorSetInt(myveh,"zm_lastbone",ammo_4)
-										saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_ammo_4")
+										saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_ammo_4")
 									end
 									SimpleNotification(messages.you_took_vehiclename_from_garage,GetDisplayNameFromVehicleModel(vs.model))
-									zone.vehiclesave=nil
-									saving_kvp_mode.DeleteResourceKvp("garage_"..zone.garagename.."_model")
+									current_garage.vehiclesave=nil
+									saving_kvp_mode.DeleteResourceKvp("garage_"..current_garage.name.."_model")
 								else
 									SimpleNotification("Can't spawn vehicle, try again.")
 								end
@@ -13968,7 +14058,7 @@ Citizen.CreateThread(function()
 						end
 					end
 				end
-			else
+			elseif false then --disabled client side loot bags
                 local dict="anim@gangops@facility@servers@bodysearch@"
                 local anim="player_search"
                 local model=GetHashKey("prop_cs_heist_bag_02")
@@ -15064,7 +15154,7 @@ Citizen.CreateThread(function()
     local joinfactionblip
 	local extractionblip
     local vehblip
-    local garageblip
+    local garageblips --table
     local clothesblip
     local changingroomblip
     local provisionblip
@@ -15161,16 +15251,19 @@ Citizen.CreateThread(function()
                         if enemybase then SetBlipColour(vehblip,55) end
                     end
                 end
-                if zone.garagepos~=nil and not zone.raided then
-                    if garageblip~=nil then
-                        SetBlipCoords(garageblip,zone.garagepos.x,zone.garagepos.y,zone.garagepos.z)
-                    else
-                        garageblip=AddBlipForCoord(zone.garagepos.x,zone.garagepos.y,zone.garagepos.z)
-                        SetBlipSprite(garageblip,357)
-						SetBlipDisplay(garageblip,5)
-                        SetBlipColour(garageblip,4)
-                        if enemybase then SetBlipColour(garageblip,55) end
-                    end
+                if zone.garages~=nil and not zone.raided then
+					garageblips=zone.garages
+					for k,v in pairs(zone.garages) do
+						if v.blip~=nil then
+							SetBlipCoords(v.blip,v.x,v.y,v.z)
+						else
+							v.blip=AddBlipForCoord(v.x,v.y,v.z)
+							SetBlipSprite(v.blip,357)
+							SetBlipDisplay(v.blip,5)
+							SetBlipColour(v.blip,4)
+							if enemybase then SetBlipColour(v.blip,55) end
+						end
+					end
                 end
                 if zone.craftpos~=nil then
                     if craftblip~=nil then
@@ -15277,9 +15370,14 @@ Citizen.CreateThread(function()
                     RemoveBlip(vehblip)
                     vehblip=nil
                 end
-                if garageblip~=nil then
-                    RemoveBlip(garageblip)
-                    garageblip=nil
+                if garageblips~=nil then
+					for k,v in pairs(garageblips) do
+						if v.blip then
+							RemoveBlip(v.blip)
+							v.blip=nil
+						end
+					end
+					garageblips=nil
                 end
                 if craftblip~=nil then
                     RemoveBlip(craftblip)
@@ -15324,13 +15422,15 @@ Citizen.CreateThread(function()
                     100, 150, 255, 200, 
                     true, false, 2, true, 0, 0, false);
                 end
-                if zone.garagepos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(20, zone.garagepos.x, zone.garagepos.y, zone.garagepos.z, 
-                    0.0, 0.0, 0.0, --dir
-                    0.0, 0.0, 0.0, --rot
-                    1.0, 1.0, -1.0, --scl
-                    100, 150, 255, 200, 
-                    true, false, 2, true, 0, 0, false);
+                if zone.garages~=nil and not zone.raided and not enemybase then
+					for k,v in pairs(zone.garages) do
+						DrawMarker(20, v.x, v.y, v.z, 
+						0.0, 0.0, 0.0, --dir
+						0.0, 0.0, 0.0, --rot
+						1.0, 1.0, -1.0, --scl
+						100, 150, 255, 200, 
+						true, false, 2, true, 0, 0, false)
+					end
                 end
                 if zone.craftpos~=nil then
                     DrawMarker(20, zone.craftpos.x, zone.craftpos.y, zone.craftpos.z, 
@@ -15786,7 +15886,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(3, GetHashKey("SMUGGLERS"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("RAIDER"))
-    SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("MERC"))
+    SetRelationshipBetweenGroups(3, GetHashKey("SMUGGLERS"), GetHashKey("MERC"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("NEUTRAL"))
@@ -17968,7 +18068,7 @@ Citizen.CreateThread(function()
             if zone.craftpos~=nil and in_radius(mypos,zone.craftpos,1)
             or zone.clothespos~=nil and in_radius(mypos,zone.clothespos,1)
             or zone.changingroompos~=nil and in_radius(mypos,zone.changingroompos,1)
-            or zone.garagepos~=nil and in_radius(mypos,zone.garagepos,1)
+            or zone.garages~=nil and (dist_to_closest_point(zone.garages,mypos)<225)
             or zone.vehpos~=nil and in_radius(mypos,zone.vehpos,1)
             or zone.storagepos~=nil and in_radius(mypos,zone.storagepos,1)
             then 

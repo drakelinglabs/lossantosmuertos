@@ -464,7 +464,7 @@ Citizen.CreateThread(function()
       else
         out=out..", "..suspect.stp.."m max"
       end
-      tell_everyone(out)
+      --tell_everyone(out)
       if suspect.tp_details==nil then suspect.tp_details={} end
       table.insert(suspect.tp_details,details)
       if suspect.tp_count==nil then
@@ -1989,6 +1989,12 @@ trades.chopshops.government={
 	minprice=1500*0.5,
 	maxprice=1500*1.5,
 	},
+	{ 
+	vehname="zr380",
+	priceitem="cash",
+	minprice=2500*0.5,
+	maxprice=2500*1.5,
+	},
 	{chance=2, 
 	vehname="police",
 	priceitem="cash",
@@ -2045,6 +2051,15 @@ trades.chopshops.military={
 	priceitem="cash",
 	minprice=15000*0.5,
 	maxprice=15000*1.5,
+	},
+	{--chance=2, 
+	vehname="scarab",
+	priceitem="cash",
+	minprice=3500*0.5,
+	maxprice=3500*1.5,
+	 mods={
+	 [48]=1,
+	 },
 	},
 }
 
