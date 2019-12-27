@@ -2348,6 +2348,8 @@ end)
 RegisterServerEvent("request_trade_table")
 AddEventHandler("request_trade_table",function(tradelistname)
 	if trades[tradelistname] and trades[tradelistname].trade then
+		-- local source=source
+		-- Wait(1000)
 		TriggerClientEvent("updatetradelist",source,tradelistname,trades[tradelistname].trade,time_to_update_shops)
 	end
 end)

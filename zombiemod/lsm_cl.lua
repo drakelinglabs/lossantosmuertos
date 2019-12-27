@@ -22,6 +22,7 @@ press_e_to_interact="~c~Press ~g~E ~c~to interact",
 encountered_radioactive_fallout="You have encountered ~r~RADIOACTIVE FALLOUT~s~! Equip a gasmask!",
 press_to_open_helpmenu="~c~Press ~s~PAGE UP ~c~to open help menu",
 press_to_close_helpmenu="~c~Press ~s~BACKSPACE ~c~to close help menu",
+press_to_turn_pages="~c~Press ~s~ARROW KEYS ~c~to turn pages",
 press_e_to_open_inventory="~c~Press ~s~ENTER ~c~to open inventory",
 press_backspace_to_close_inventory="~c~Press ~s~BACKSPACE ~c~to close inventory",
 press_arrows_to_navigate_inventory="~c~Press ~s~ARROW KEYS ~c~to navigate inventory",
@@ -3648,6 +3649,7 @@ Citizen.CreateThread(function()
 			end
 			if help_menu<1 then help_menu=1 elseif help_menu>maxpages then help_menu=maxpages end
 			WriteHint(4379,messages.press_to_close_helpmenu)
+			WriteHint(4379,messages.press_to_turn_pages)
 			DrawSprite("lsm",tostring("Page-"..help_menu),.35,.525,0.5*(9/16),0.67,0.0,255,255,255,255)
 		else
 			WriteHint(4379,messages.press_to_open_helpmenu)
@@ -3814,6 +3816,24 @@ local modelgroups={
     1885233650,
     },
 }
+
+local function GetBlipFromFaction(faction)
+	if faction==GetHashKey("BANDIT") then
+		return 79
+	elseif faction==GetHashKey("SURVIVOR") then
+		return 77
+	elseif faction==GetHashKey("GOVERNMENT") then
+		return 84
+	elseif faction==GetHashKey("MILITARY") then
+		return 90
+	elseif faction==GetHashKey("MERC") then
+		return 89
+	elseif faction==GetHashKey("SMUGGLERS") then
+		return 96
+	else
+		return nil
+	end
+end
 
 local raids={}
 Citizen.CreateThread(function()
@@ -4311,6 +4331,23 @@ local safezones={
     --Altruists camp
     {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=85,color=2,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
+	border={
+		{
+			{x=-1043.67,y=4918.80,z=208.30},
+			{x=-1041.50,y=4934.52,z=206.56},
+			{x=-1048.74,y=4951.33,z=208.97},
+			{x=-1060.97,y=4973.48,z=206.63},
+			{x=-1083.72,y=4976.52,z=207.31},
+			{x=-1146.46,y=4970.70,z=220.31},
+			{x=-1181.24,y=4928.51,z=223.10},
+			{x=-1180.33,y=4893.23,z=212.65},
+			{x=-1167.69,y=4881.50,z=212.35},
+			{x=-1102.37,y=4852.55,z=217.09},
+			{x=-1088.89,y=4873.59,z=217.37},
+			{x=-1039.45,y=4905.33,z=208.78},
+		},
+	},
+	storageweight=100.0,
     name="Scavenger Settlement~s~",
 	extraction={x=-1111.5900878906,y=4937.0,z=218.38917541504,r=3.0},
     friends=true,
@@ -4584,6 +4621,16 @@ local safezones={
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
     models={1885233650},--
     name="Government Checkpoint~s~",
+	border={
+		{
+			{x=415.65,y=-964.81,z=29.46},
+			{x=415.41,y=-1032.34,z=29.22},
+			{x=490.88,y=-1024.82,z=28.14},
+			{x=489.85,y=-963.50,z=27.28},
+			{x=448.16,y=-961.94,z=28.73},
+		},
+	},
+	storageweight=300.0,
 	extraction={x=459.5085144043,y=-991.00109863281,z=30.689584732056,r=3.0},
     friends=true,
 	tradelistname="government",
@@ -4944,6 +4991,22 @@ local safezones={
     {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=86,color=5,
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Marauder Fortress~s~",
+	border={
+		{
+			{x=1860.08,y=2625.98,z=44.96},
+			{x=1852.30,y=2715.68,z=45.22},
+			{x=1774.11,y=2771.39,z=45.17},
+			{x=1650.52,y=2768.43,z=45.19},
+			{x=1559.77,y=2684.49,z=45.19},
+			{x=1522.21,y=2590.19,z=45.21},
+			{x=1529.71,y=2467.99,z=45.18},
+			{x=1647.71,y=2386.67,z=45.19},
+			{x=1764.51,y=2399.31,z=45.17},
+			{x=1847.21,y=2485.77,z=45.20},
+			{x=1859.39,y=2594.68,z=44.96},
+		},
+	},
+	storageweight=100.0,
 	extraction={x=1690.7955322266,y=2646.1235351563,z=54.579902648926,r=3.0},
     tradespace=4,
 	tradelistname="marauders",
@@ -5145,6 +5208,7 @@ local safezones={
     {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=102,color=4,
     models={1885233650},
     name="Smugglers Camp",
+	storageweight=300.0,
     extraction={x=2181.6948242188,y=5559.578125,z=53.782318115234},
 	tradelistname="smugglers",
     tradepos={x=2221.4025878906,y=5614.6494140625,z=54.901615142822},
@@ -5218,6 +5282,35 @@ local safezones={
     {x=-2079.6791992188,y=3112.3244628906,z=32.28897857666,r=500.0,blip=93,color=2,
     models={1657546978,-220552467,1702441027,-265970301,1490458366,1925237458},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Military Outpost~s~",
+	border={
+		{
+			{x=-2329.51,y=3402.43,z=29.70},
+			{x=-2392.56,y=3433.23,z=30.11},
+			{x=-2497.97,y=3381.45,z=36.83},
+			{x=-2541.64,y=3046.34,z=59.00},
+			{x=-2503.19,y=2918.58,z=48.60},
+			{x=-2382.45,y=2928.02,z=44.55},
+			{x=-2300.65,y=2922.06,z=44.84},
+			{x=-2167.32,y=2836.86,z=42.64},
+			{x=-2142.27,y=2801.56,z=43.56},
+			{x=-2013.36,y=2798.84,z=41.82},
+			{x=-1836.94,y=2756.23,z=44.79},
+			{x=-1793.56,y=2802.57,z=44.19},
+			{x=-1720.91,y=2805.63,z=40.55},
+			{x=-1669.25,y=2866.86,z=39.71},
+			{x=-1590.94,y=2772.09,z=24.69},
+			{x=-1575.35,y=2810.30,z=34.07},
+			{x=-1654.78,y=2941.14,z=39.42},
+			{x=-1695.39,y=3142.63,z=37.50},
+			{x=-1658.22,y=3231.50,z=40.74},
+			{x=-1953.55,y=3413.54,z=52.24},
+			{x=-2039.71,y=3353.92,z=57.83},
+			{x=-2123.63,y=3380.01,z=47.92},
+			{x=-2263.69,y=3393.88,z=47.76},
+			{x=-2326.10,y=3408.03,z=31.84},
+		}
+	},
+	storageweight=400.0,
 	extraction={x=-2345.5778808594,y=3232.2980957031,z=34.742935180664,r=3.0},
     tradelistname="military",
 	tradespace=4,
@@ -5451,7 +5544,8 @@ local safezones={
     {x=512.15368652344,y=-3190.0910644531,z=6.0692586898804,r=250.0,blip=94,color=4,
     models={1885233650},
     name="Mercenary Base~s~",
-	extraction={x=-441.30157470703,y=-1695.2406005859,z=19.008533477783,r=3.0},
+	storageweight=400.0,
+	extraction={x=468.52130126953,y=-3205.6555175781,z=9.7939548492432,r=3.0},
     tradespace=4,
 	tradelistname="mercenary",
     trade={
@@ -5484,14 +5578,14 @@ local safezones={
         -- {"gunstorekey",1,"cash",1000},
     },
     selltrade={},
-	factionjoinpos={x=468.79162597656,y=-3205.8356933594,z=6.0695614814758},
+	factionjoinpos={x=484.42178344727,y=-3058.9604492188,z=6.2263550758362},
 	factionjoin={cost=2000},
 	factionname="Mercenaries",
 	storagepos={x=503.66717529297,y=-3122.1413574219,z=6.0697917938232},
 	storagename="Mercenaries",
     --questpos={x=1775.5057373047,y=2551.951171875,z=45.564979553223},
     tradepos={x=467.56372070313,y=-3220.5288085938,z=7.0569982528687},
-	sellpose={x=467.57586669922,y=-3212.478515625,z=7.0569972991943},
+	sellpos={x=473.43850708008,y=-3084.4770507813,z=6.0700540542603},
     craftpos={x=579.96868896484,y=-3113.1203613281,z=6.0692543983459},
     crafts={
     {"bodyarmor",1,
@@ -5741,20 +5835,43 @@ local function in_radius(p1,p2,r)
     local dx,dy,dz=p1.x-p2.x,p1.y-p2.y,p1.z-p2.z
     return dx*dx+dy*dy+dz*dz<r*r
 end
+
+local function is_in_polygons(x,y,areas)
+	local c=false
+	for _,array in pairs(areas) do
+		local j=#array
+		local b,d=false,(array[j].y>y)
+		for i=1,#array do
+		  b=(array[i].y>y)
+		  if ((b~=d) and (x-array[i].x)<(array[j].x-array[i].x)*(y-array[i].y)/(array[j].y-array[i].y))
+			 then c=not c end
+		  j=i
+		  d=b
+		end
+	end
+    return c
+end
+
 local function is_in_safe_zone(x,y,z)
     local dx,dy
     for k,v in pairs(safezones) do
         if not v.raided then
-            dx=v.x-x
-            if math.abs(dx)<v.r then
-                dy=v.y-y
-                if math.abs(dy)<v.r then
-                    if dx*dx+dy*dy<v.r*v.r then
-                        v.zonetype="safezone"
-                        return v
-                    end
-                end
-            end
+			if v.border then
+				if is_in_polygons(x,y,v.border) then
+					return v
+				end
+			else
+				dx=v.x-x
+				if math.abs(dx)<v.r then
+					dy=v.y-y
+					if math.abs(dy)<v.r then
+						if dx*dx+dy*dy<v.r*v.r then
+							v.zonetype="safezone"
+							return v
+						end
+					end
+				end
+			end
         end
     end
     for k,v in pairs(raids) do
@@ -5795,19 +5912,23 @@ end
 
 local function is_in_patrol(x,y,z,rel)
     for k,v in pairs(raids) do
-        dx=v.x-x
-        if math.abs(dx)<v.r then
-            dy=v.y-y
-            if math.abs(dy)<v.r then
-                if (dx*dx+dy*dy<v.r*v.r) and v.t and v.t~=72 and rel==v.relationship then
-                    --WriteNotification("raid:"..v.."/r:"..v.r.."xyz:"..x..y..z)
-                        v.zonetype="raid"
-                        v.name="Patrol"
-                    return k,v
-                end
-            end
+        if v.t and v.t~=72 and rel==v.relationship then
+			local r=v.r*1.5
+			local dx=v.x-x
+			if math.abs(dx)<r then
+				local dy=v.y-y
+				if math.abs(dy)<r then
+					if (dx*dx+dy*dy<r*r) then
+						--WriteNotification("raid:"..v.."/r:"..v.r.."xyz:"..x..y..z)
+							v.zonetype="raid"
+							v.name="Patrol"
+						return k,v
+					end
+				end
+			end
         end
     end
+	return nil
 end
 
 local function coords_to_dword(x,y,z)
@@ -6046,7 +6167,7 @@ local vehicle_weapons_controls={
 ,70
 ,91
 ,114
-,177
+--,177 --backspace
 ,222
 ,225
 ,238
@@ -6085,7 +6206,7 @@ local vehicles_ammo={
 	["Mine_hud"]=50,
 	},
   [GetHashKey("buzzard")]={ --buzzard
-	multiseat=true,
+	--multiseat=true,
 	[1186503822]={pool="Turret_hud","zm_health",200},--mg
 	[-123497569]={pool="Rocket_hud","zm_dying",16},--rockets
   },
@@ -6180,26 +6301,26 @@ local vehicles_ammo={
 	[-1001503935]={pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("HAVOK")]={
-	[855547631]={pool="Turret_hud","zm_health",1000},
+	[855547631]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("STARLING")]={
 	[1595421922]={pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("ROGUE")]={
-	[158495693]={pool="Turret_hud","zm_health",1000},
-	[-416629822]={pool="Turret_hud","zm_health",1000},
-	[1820910717]={pool="Rocket_hud","zm_dying",50},
+	[158495693]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
+	[-416629822]={upgrade={10,1},pool="Turret_hud","zm_health",1000},
+	[1820910717]={upgrade={5,0},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("TULA")]={
 	[1100844565]={pool="Turret_hud","zm_health",1000},
 	[1217122433]={pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("microlight")]={
-	[-991944340]={pool="Turret_hud","zm_health",500},
+	[-991944340]={upgrade={10,0},pool="Turret_hud","zm_health",500},
   },
   [GetHashKey("MOLOTOK")]={
 	[1595421922]={pool="Turret_hud","zm_health",500},
-	[-901318531]={pool="Rocket_hud","zm_dying",50},
+	[-901318531]={upgrade={10,0},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("BOMBUSHKA")]={
 	[-666617255]={pool="Turret_hud","zm_health",10000},
@@ -6212,18 +6333,18 @@ local vehicles_ammo={
   },
   [GetHashKey("PYRO")]={
 	[1595421922]={pool="Turret_hud","zm_health",1000},
-	[-901318531]={pool="Rocket_hud","zm_dying",50},
+	[-901318531]={upgrade={10,0},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("VIGILANTE")]={
 	[-200835353]={pool="Turret_hud","zm_health",1000},
-	[-200835353]={pool="Rocket_hud","zm_dying",50},
+	[-200835353]={upgrade={10,0},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("SEABREEZE")]={
-	[1371067624]={pool="Turret_hud","zm_health",1000},
+	[1371067624]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("NOKOTA")]={
 	[1595421922]={pool="Turret_hud","zm_health",1000},
-	[-901318531]={pool="Rocket_hud","zm_dying",50},
+	[-901318531]={upgrade={10,0},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("HUNTER")]={
 	[153396725]={pool="Rocket_hud","zm_dying",50},
@@ -6231,11 +6352,11 @@ local vehicles_ammo={
 	[1119518887]={pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("COMET4")]={
-	[-358074893]={pool="Turret_hud","zm_health",1000},
+	[-358074893]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("AKULA")]={
-	[431576697]={pool="Rocket_hud","zm_dying",50},
-	[2092838988]={pool="Rocket_hud","zm_dying",50},
+	[431576697]={upgrade={5,0},pool="Rocket_hud","zm_dying",50},
+	[2092838988]={upgrade={5,1},pool="Rocket_hud","zm_dying",50},
 	[476907586]={pool="Turret_hud","zm_health",1000},
 	[-1246512723]={pool="Turret_hud","zm_health",1000},
   },
@@ -6247,47 +6368,47 @@ local vehicles_ammo={
 	[1000258817]={pool="Turret_hud","zm_health",1000},
 	[1200179045]={pool="Turret_hud","zm_health",1000},
 	[525623141]={pool="Turret_hud","zm_health",1000},
-	[-1538514291]={pool="Grenade_hud","zm_dying",100},
+	[-1538514291]={upgrade={0,1},pool="Grenade_hud","zm_dying",100},
   },
   [GetHashKey("KHANJALI")]={
 	[711953949]={pool="Turret_hud","zm_health",1000},
 	[507170720]={pool="Cannon_hud","zm_dying",50},
 	[-2088013459]={pool="Cannon_hud","zm_dying",50},
-	[394659298]={pool="Grenade_hud","zm_armor",100},
-	[394659298]={pool="Grenade_hud","zm_armor",100},
+	[394659298]={upgrade={5,0},pool="Grenade_hud","zm_armor",100},
+	[394659298]={upgrade={5,0},pool="Grenade_hud","zm_armor",100},
   },
   [GetHashKey("STROMBERG")]={
 	[1176362416]={pool="Turret_hud","zm_health",1000},
 	[-729187314]={pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("DELUXO")]={
-	[-1694538890]={pool="Turret_hud","zm_health",1000},
-	[-1258723020]={pool="Rocket_hud","zm_dying",50},
+	[-1694538890]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
+	[-1258723020]={upgrade={10,0},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("THRUSTER")]={
-	[1697521053]={pool="Turret_hud","zm_health",1000},
-	[1177935125]={pool="Rocket_hud","zm_dying",50},
+	[1697521053]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
+	[1177935125]={upgrade={10,1},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("AVENGER")]={
-	[-1738072005]={pool="Cannon_hud","zm_health",50},
-	[-1738072005]={pool="Cannon_hud","zm_health",50},
+	[-1738072005]={upgrade={10,0},pool="Cannon_hud","zm_health",50},
+	[-1738072005]={upgrade={10,1},pool="Cannon_hud","zm_health",50},
   },
   [GetHashKey("SAVESTRA")]={
-	[-348002226]={pool="Turret_hud","zm_health",1000},
+	[-348002226]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("VISERIS")]={
-	[-2019545594]={pool="Turret_hud","zm_health",1000},
+	[-2019545594]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("REVOLTER")]={
-	[-1117887894]={pool="Turret_hud","zm_health",1000},
+	[-1117887894]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
   },
   [GetHashKey("CARACARA")]={
 	[1338760315]={pool="Turret_hud","zm_health",1000},
 	[1338760315]={pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("SPARROW")]={
-	[855547631]={pool="Turret_hud","zm_health",1000},
-	[-123497569]={pool="Rocket_hud","zm_dying",50},
+	[855547631]={upgrade={10,0},pool="Turret_hud","zm_health",1000},
+	[-123497569]={upgrade={10,1},pool="Rocket_hud","zm_dying",50},
   },
   [GetHashKey("STRIKEFORCE")]={
 	[955522731]={pool="Turret_hud","zm_health",1000},
@@ -6296,8 +6417,8 @@ local vehicles_ammo={
   },
   [GetHashKey("OPPRESSOR2")]={
 	[-498786858]={pool="Turret_hud","zm_health",300},
-	[-699583383]={pool="Grenade_hud","zm_dying",20},
-	[1966766321]={pool="Rocket_hud","zm_armor",20},
+	[-699583383]={upgrade={10,0},pool="Grenade_hud","zm_dying",20},
+	[1966766321]={upgrade={10,1},pool="Rocket_hud","zm_armor",20},
   },
   [GetHashKey("SCRAMJET")]={
 	[231629074]={pool="Turret_hud","zm_health",1000},
@@ -10717,6 +10838,11 @@ Citizen.CreateThread(function()
     [970310034]="riflecasings",--assaultrifle
     [-1212426201]="riflecasings",--sniperrifle
     }
+	local function is_other_ped_in_radius(mypos,otherped,radius)
+		local otherpos=GetEntityCoords(otherped)
+		local dx,dy,dz=mypos.x-otherpos.x,mypos.y-otherpos.y,mypos.z-otherpos.z
+		return (dx*dx+dy*dy+dz*dz)<(radius*radius)
+	end
     while true do Wait(0)
         local myped=PlayerPedId()
         if player.brasscatcher then
@@ -10735,10 +10861,58 @@ Citizen.CreateThread(function()
             end
         end
         if player.radio and not IsPedDeadOrDying(myped) and get_inventory_item_slot("radio") then
-			NetworkSetTalkerProximity(math.random(7000,12000)+0.1)
+			local my_talk_see_dist=math.random(7000,12000)+0.1
+			NetworkSetTalkerProximity(my_talk_see_dist)
+			DecorSetFloat(myped,"zm_fuel",my_talk_see_dist)
+			local mypos=GetEntityCoords(myped)
+			local myrel=GetPedRelationshipGroupHash(myped)
+			for i=0,31 do
+				local otherplayer=GetPlayerPed(i)
+				if otherplayer~=myped and DecorExistOn(otherplayer,"zm_fuel") and is_other_ped_in_radius(mypos,otherped,math.min(DecorGetFloat(otherplayer,"zm_fuel"),my_talk_see_dist)) then
+					local blip=GetBlipFromEntity(otherplayer)
+					if blip==0 then
+						blip=AddBlipForEntity(otherplayer)
+					end
+					local rel=GetPedRelationshipGroupHash(otherplayer)
+					local icon=GetBlipFromFaction(rel)
+					if icon then
+						SetBlipSprite(blip,icon)
+						SetBlipScale(blip,0.7)
+					else
+						SetBlipScale(blip,0.5)
+					end
+					local rel_betweengroups=GetRelationshipBetweenGroups(rel,myrel)
+					if rel_betweengroups==0 then
+						SetBlipColour(blip,2)
+						SetBlipDisplay(blip,2) --both minimap and map
+					elseif rel_betweengroups==5 then
+						SetBlipColour(blip,1)
+						SetBlipDisplay(blip,5) --minimap
+					else
+						SetBlipColour(blip,5)
+						SetBlipDisplay(blip,5) --minimap
+					end
+				else
+					local blip=GetBlipFromEntity(otherplayer)
+					if blip~=0 then
+						RemoveBlip(blip)
+					end
+				end
+				
+			end
 		else
 			NetworkSetTalkerProximity(50.0)
 			player.radio=false
+			if DecorExistOn(myped,"zm_fuel") then
+				DecorRemove(myped,"zm_fuel")
+			end
+			for i=0,31 do
+				local otherplayer=GetPlayerPed(i)
+				local blip=GetBlipFromEntity(otherplayer)
+				if blip~=0 then
+					RemoveBlip(blip)
+				end
+			end
         end
         if player.mask and not IsPedDeadOrDying(myped) then
             local mask=player.mask
@@ -13036,6 +13210,8 @@ Citizen.CreateThread(function()
 									inv_index_goods=j
 								end
 							end
+						else
+							current_trade=#current_trading
 						end
                         mypos=GetEntityCoords(PlayerPedId())
                         if IsControlJustPressed(0,177) or (not in_radius(mypos,zone.tradepos,3) and (not in_radius(mypos,zone.sellpos,3))) then
@@ -13742,7 +13918,7 @@ Citizen.CreateThread(function()
 										end
 									elseif inventory.current~=nil then
 										if inventory[inventory.current] then
-											local weightleft=player.storageweight-zone.storage.weight
+											local weightleft=zone.storageweight-zone.storage.weight
 											local itemweight=get_item_weight(inventory[inventory.current].item)
 											if weightleft>=itemweight then
 												if weightleft<itemweight*amounttomove then
@@ -13899,7 +14075,7 @@ Citizen.CreateThread(function()
 							if zone.storage.weight==nil then zone.storage.weight=0 end
 							SetTextRightJustify(true)
 							SetTextWrap(0.0,0.43)
-							WriteText(4,{"~c~WEIGHT ~s~~1~~c~/~s~~1~ ~c~KG",zone.storage.weight,player.storageweight},0.3,255,255,255,255,0.395,0.26)
+							WriteText(4,{"~c~WEIGHT ~s~~1~~c~/~s~~1~ ~c~KG",zone.storage.weight,zone.storageweight},0.3,255,255,255,255,0.395,0.26)
 						end
 						::endofwhileforstorage::
 						if inventory.current==nil then
@@ -15172,6 +15348,10 @@ Citizen.CreateThread(function()
                 end
                 --print("you exited zone")
                 --DisplayRadar(true)
+				if oldzone.bliphandler then
+					SetBlipDisplay(oldzone.bliphandler,2)
+					--SimpleNotification("blip made visible")
+				end
                 FlashMinimapDisplay()
             end
             if zone~=nil then
@@ -15335,6 +15515,9 @@ Citizen.CreateThread(function()
                         --SimpleNotification("You entered "..zone.name..".")
                     end
                     --print("you entered zone")
+					if zone.bliphandler then
+						SetBlipDisplay(zone.bliphandler,0)
+					end
                     FlashMinimapDisplay()
                     if lsm_random_spawn==0 and zone.spawnpos.x and zone.spawnpos.y and zone.spawnpos.z then
                         SimpleNotification("Now you respawn at ~a~.",zone.name)
@@ -15344,6 +15527,7 @@ Citizen.CreateThread(function()
                         
                         SetResourceKvpInt("pedmodel",GetEntityModel(myped))
                     end
+					if zone.tradelistname then TriggerServerEvent("request_trade_table",zone.tradelistname) end
                 end
             else
                 if traderblip~=nil then
@@ -16398,6 +16582,11 @@ Citizen.CreateThread(function()
                                         SetBlipScale(blip,0.5)
                                         SetBlipDisplay(blip,5)
                                         SetBlipAsShortRange(blip,true)
+										local blip_from_faction=GetBlipFromFaction(GetPedRelationshipGroupHash(ped))
+										if blip_from_faction then
+											SetBlipScale(blip,0.7)
+											SetBlipSprite(blip,blip_from_faction)
+										end
                                     end
                                     local reldif=GetRelationshipBetweenGroups(GetPedRelationshipGroupHash(pped),GetPedRelationshipGroupHash(ped))
                                     if reldif==0 then
@@ -17905,6 +18094,97 @@ end
     -- end
 --end)
 
+local zone_name_from_char={
+AIRP="Los Santos International Airport",
+ALAMO="Alamo Sea",
+ALTA="Alta",
+ARMYB="Fort Zancudo",
+BANHAMC="Banham Canyon Dr",
+BANNING="Banning",
+BEACH="Vespucci Beach",
+BHAMCA="Banham Canyon",
+BRADP="Braddock Pass",
+BRADT="Braddock Tunnel",
+BURTON="Burton",
+CALAFB="Calafia Bridge",
+CANNY="Raton Canyon",
+CCREAK="Cassidy Creek",
+CHAMH="Chamberlain Hills",
+CHIL="Vinewood Hills",
+CHU="Chumash",
+CMSW="Chiliad Mountain State Wilderness",
+CYPRE="Cypress Flats",
+DAVIS="Davis",
+DELBE="Del Perro Beach",
+DELPE="Del Perro",
+DELSOL="La Puerta",
+DESRT="Grand Senora Desert",
+DOWNT="Downtown",
+DTVINE="Downtown Vinewood",
+EAST_V="East Vinewood",
+EBURO="El Burro Heights",
+ELGORL="El Gordo Lighthouse",
+ELYSIAN="Elysian Island",
+GALFISH="Galilee",
+GOLF="GWC and Golfing Society",
+GRAPES="Grapeseed",
+GREATC="Great Chaparral",
+HARMO="Harmony",
+HAWICK="Hawick",
+HORS="Vinewood Racetrack",
+HUMLAB="Humane Labs and Research",
+JAIL="Bolingbroke Penitentiary",
+KOREAT="Little Seoul",
+LACT="Land Act Reservoir",
+LAGO="Lago Zancudo",
+LDAM="Land Act Dam",
+LEGSQU="Legion Square",
+LMESA="La Mesa",
+LOSPUER="La Puerta",
+MIRR="Mirror Park",
+MORN="Morningwood",
+MOVIE="Richards Majestic",
+MTCHIL="Mount Chiliad",
+MTGORDO="Mount Gordo",
+MTJOSE="Mount Josiah",
+MURRI="Murrieta Heights",
+NCHU="North Chumash",
+NOOSE="N.O.O.S.E",
+OCEANA="Pacific Ocean",
+PALCOV="Paleto Cove",
+PALETO="Paleto Bay",
+PALFOR="Paleto Forest",
+PALHIGH="Palomino Highlands",
+PALMPOW="Palmer-Taylor Power Station",
+PBLUFF="Pacific Bluffs",
+PBOX="Pillbox Hill",
+PROCOB="Procopio Beach",
+RANCHO="Rancho",
+RGLEN="Richman Glen",
+RICHM="Richman",
+ROCKF="Rockford Hills",
+RTRAK="Redwood Lights Track",
+SANAND="San Andreas",
+SANCHIA="San Chianski Mountain Range",
+SANDY="Sandy Shores",
+SKID="Mission Row",
+SLAB="Stab City",
+STAD="Maze Bank Arena",
+STRAW="Strawberry",
+TATAMO="Tataviam Mountains",
+TERMINA="Terminal",
+TEXTI="Textile City",
+TONGVAH="Tongva Hills",
+TONGVAV="Tongva Valley",
+VCANA="Vespucci Canals",
+VESP="Vespucci",
+VINE="Vinewood",
+WINDF="Ron Alternates Wind Farm",
+WVINE="West Vinewood",
+ZANCUDO="Zancudo River",
+ZP_ORT="Port of South Los Santos",
+ZQ_UAR="Davis Quartz",
+},
 
 RegisterNetEvent("updatesignal")
 AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t,name)
@@ -17976,6 +18256,9 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t,name)
             signal.object=CreateObject(m, x, y, z, false, false, false)
 			if m==GetHashKey("prop_big_bag_01") then
 				SetEntityCollision(signal.object,false)
+			else --not bag so cache and need to announce
+				local zonename=GetNameOfZone(x,y,z)
+				SimpleNotification("New cache spawned at ~g~~a~~s~!",zone_name_from_char[zonename])
 			end
             FreezeEntityPosition(signal.object,true)
         else
@@ -18426,7 +18709,7 @@ Citizen.CreateThread(function()
     end
     for k,v in ipairs(safezones) do        
         v.bliphandler=AddBlipForCoord(v.x,v.y,v.z)
-		SetBlipDisplay(v.bliphandler,3)
+		SetBlipDisplay(v.bliphandler,2)
         SetBlipSprite(v.bliphandler, v.blip)
         SetBlipScale(v.bliphandler, 1.5)
         SetBlipAsShortRange(v.bliphandler,true)
@@ -18697,6 +18980,23 @@ local function check_for_people_in_raid(v,hash)
     EndFindPed(handle)
     return false
 end
+
+-- Citizen.CreateThread(function() --hide safezone blips when inside
+	-- while true do Wait(2541)
+		-- local myped=PlayerPedId()
+		-- local mypos=GetEntityCoords(myped)
+		-- local zone=is_in_safe_zone(mypos.x,mypos.y,mypos.z)
+		-- if zone and zone.blip and zone.vehpos then
+			-- SetBlipDisplay(zone.blip,0)
+		-- else
+			-- for k,v in pairs(safezones) do
+				-- if v.blip and v.vehpos then
+					-- SetBlipDisplay(v.blip,2)
+				-- end
+			-- end
+		-- end
+	-- end
+-- end)
 
 --killing zones roamers
 Citizen.CreateThread(function()
@@ -19866,7 +20166,7 @@ Citizen.CreateThread(function()
 												for _,weapon in pairs(vehdata) do
 													if type(weapon)=="table" then
 														local decor,maxammo=weapon[1],weapon[2]
-														if not ammotypesinuse[decor] then
+														if (not ammotypesinuse[decor]) and ((weapon.upgrade==nil) or (GetVehicleMod(veh,weapon.upgrade[1])==weapon.upgrade[2])) then
 															local ammo=DecorGetInt(veh,decor)
 															ammotypesinuse[decor]=true
 															DrawRect(0.921-(0.018*id),0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
@@ -19928,7 +20228,7 @@ Citizen.CreateThread(function()
 									local ammotypesinuse={}
 									for _,weapon in pairs(vehdata) do
 										local decor,maxammo=weapon[1],weapon[2]
-										if not ammotypesinuse[decor] then
+										if (not ammotypesinuse[decor]) and ((weapon.upgrade==nil) or (GetVehicleMod(veh,weapon.upgrade[1])==weapon.upgrade[2])) then
 											local ammo=DecorGetInt(veh,decor)
 											ammotypesinuse[decor]=true
 											--TextCommandDisplayText(.75,.75,"ammunition "..ammo.."/"..maxammo)
@@ -20099,18 +20399,28 @@ AddEventHandler("updatetradelist",function(zonetradename,list,timetoupdate)
 	time_to_update_shops=timetoupdate
     for k,v in pairs(safezones) do 
 		if v.tradelistname==zonetradename then
-			v.trade={}
-			v.selltrade={}
-			local ti,si=0,0
+			--v.trade={}
+			--v.selltrade={}
+			local si,ti=0,0
 			for k2,v2 in pairs(list) do
 				if v2[1]=="cash" then
-					ti=ti+1
-					v.selltrade[ti]=v2
+					si=si+1
+					v.selltrade[si]=v2
 					--print("added "..v2[1].." to buy menu")
 				else
-					si=si+1
-					v.trade[si]=v2
+					ti=ti+1
+					v.trade[ti]=v2
 					--print("added "..v2[3].." to sell menu")
+				end
+			end
+			if si<#(v.selltrade) then
+				for i=#(v.selltrade),si+1,-1 do
+					v.selltrade[i]=nil
+				end
+			end
+			if ti<#(v.trade) then
+				for i=#(v.trade),ti+1,-1 do
+					v.trade[i]=nil
 				end
 			end
 			print("Got trade list. Buy list items: "..#v.trade..". Sell buy items: "..#v.selltrade..".")
