@@ -122,6 +122,9 @@ cant_find_itemname_in_inventory="Can't find ~a~ in inventory",
 you_got_killed_and_reputation_changed="~r~An enemy ~a~ has killed you! You have lost ~1~ reputation for dying by their hands.",
 you_gained_num_retutation_for_killing_str="~g~You gained ~1~ reputation for killing ~a~.",
 you_lost_num_retutation_for_killing_str="~r~You lost ~1~ reputation for killing ~a~.",
+
+--CACHE
+cache_spawned="New cache spawned at ~g~~a~~s~!",
 }
 
 
@@ -18258,7 +18261,7 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t,name)
 				SetEntityCollision(signal.object,false)
 			else --not bag so cache and need to announce
 				local zonename=GetNameOfZone(x,y,z)
-				SimpleNotification("New cache spawned at ~g~~a~~s~!",zone_name_from_char[zonename])
+				SimpleNotification(messages.cache_spawned,zone_name_from_char[zonename])
 			end
             FreezeEntityPosition(signal.object,true)
         else
