@@ -12982,7 +12982,7 @@ Citizen.CreateThread(function()
 						local minutes=math.floor((time_to_update_shops-hours*120)/2)
 						if hours<10 then hours="0"..hours end
 						if minutes<10 then minutes="0"..minutes end
-                        WriteTextNoOutline(4,{messages.new_shipment_in_strH_strM,tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
+                        WriteTextNoOutline(4,{messages.new_shipment_in_str_D_strH_strM,tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
                         WriteTextNoOutline(2,"Service",0.3,0,0,0,255,0.290,0.24)
                         WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
 						
@@ -19574,6 +19574,8 @@ Citizen.CreateThread(function()-- if true then return end
 		--player.weapon=GetHashKey("weapon_assaultrifle")
 		--local secondary=GetHashKey("weapon_pistol")
 		HideHudComponentThisFrame(2) --ammo counter
+		HideHudComponentThisFrame(3) --cash
+		HideHudComponentThisFrame(4) --mp cash
 		if IsPedInAnyVehicle(myped) and DoesVehicleHaveWeapons(GetVehiclePedIsIn(myped)) then
 			DisableControlAction(0,37,false) --enable weapon wheel
 		else
