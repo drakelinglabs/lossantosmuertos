@@ -70,7 +70,7 @@ dont_have_anything_in_your_garage="You don't have anything in your garage.",
 
 --TRADING
 need_to_be_in_this_faction_to_trade="You need to be in this faction in order to trade.",
-new_shipment_in_strH_strM="New Shipment in ~a~:~a~",
+new_shipment_in_str_D_strH_strM="New Shipment in ~a~d ~a~h ~a~m",
 not_enough_cash="Not enough cash.",
 trade="Trade",--торговля
 
@@ -4335,7 +4335,6 @@ local safezones={
     {x=-1096.5206298828,y=4914.2548828125,z=215.85502624512,r=125.0,blip=85,color=2,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
 	border={
-		{
 			{x=-1043.67,y=4918.80,z=208.30},
 			{x=-1041.50,y=4934.52,z=206.56},
 			{x=-1048.74,y=4951.33,z=208.97},
@@ -4348,7 +4347,6 @@ local safezones={
 			{x=-1102.37,y=4852.55,z=217.09},
 			{x=-1088.89,y=4873.59,z=217.37},
 			{x=-1039.45,y=4905.33,z=208.78},
-		},
 	},
 	storageweight=100.0,
     name="Scavenger Settlement~s~",
@@ -4625,13 +4623,11 @@ local safezones={
     models={1885233650},--
     name="Government Checkpoint~s~",
 	border={
-		{
 			{x=415.65,y=-964.81,z=29.46},
 			{x=415.41,y=-1032.34,z=29.22},
 			{x=490.88,y=-1024.82,z=28.14},
 			{x=489.85,y=-963.50,z=27.28},
 			{x=448.16,y=-961.94,z=28.73},
-		},
 	},
 	storageweight=300.0,
 	extraction={x=459.5085144043,y=-991.00109863281,z=30.689584732056,r=3.0},
@@ -4995,7 +4991,6 @@ local safezones={
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Marauder Fortress~s~",
 	border={
-		{
 			{x=1860.08,y=2625.98,z=44.96},
 			{x=1852.30,y=2715.68,z=45.22},
 			{x=1774.11,y=2771.39,z=45.17},
@@ -5007,7 +5002,6 @@ local safezones={
 			{x=1764.51,y=2399.31,z=45.17},
 			{x=1847.21,y=2485.77,z=45.20},
 			{x=1859.39,y=2594.68,z=44.96},
-		},
 	},
 	storageweight=100.0,
 	extraction={x=1690.7955322266,y=2646.1235351563,z=54.579902648926,r=3.0},
@@ -5210,6 +5204,15 @@ local safezones={
 ----------------------------------------------------
     {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=102,color=4,
     models={1885233650},
+	border={
+		{x=2253.1826171875,y=5549.2319335938,z=55.666862487793},
+		{x=2183.22265625,y=5537.0903320313,z=49.720500946045},
+		{x=2170.6606445313,y=5562.701171875,z=53.349781036377},
+		{x=2181.3469238281,y=5603.4755859375,z=56.793056488037},
+		{x=2220.5747070313,y=5637.3227539063,z=54.966381072998},
+		{x=2270.4658203125,y=5637.0126953125,z=58.069721221924},
+		{x=2263.1437988281,y=5579.7114257813,z=51.794902801514},
+	},
     name="Smugglers Camp",
 	storageweight=300.0,
     extraction={x=2181.6948242188,y=5559.578125,z=53.782318115234},
@@ -5286,7 +5289,6 @@ local safezones={
     models={1657546978,-220552467,1702441027,-265970301,1490458366,1925237458},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
     name="Military Outpost~s~",
 	border={
-		{
 			{x=-2329.51,y=3402.43,z=29.70},
 			{x=-2392.56,y=3433.23,z=30.11},
 			{x=-2497.97,y=3381.45,z=36.83},
@@ -5311,7 +5313,6 @@ local safezones={
 			{x=-2123.63,y=3380.01,z=47.92},
 			{x=-2263.69,y=3393.88,z=47.76},
 			{x=-2326.10,y=3408.03,z=31.84},
-		}
 	},
 	storageweight=400.0,
 	extraction={x=-2345.5778808594,y=3232.2980957031,z=34.742935180664,r=3.0},
@@ -5547,6 +5548,12 @@ local safezones={
     {x=512.15368652344,y=-3190.0910644531,z=6.0692586898804,r=250.0,blip=94,color=4,
     models={1885233650},
     name="Mercenary Base~s~",
+	border={
+		{x=620.51544189453,y=-3040.2231445313,z=6.0654625892639},
+		{x=619.21020507813,y=-3377.0178222656,z=6.0644769668579},
+		{x=440.99142456055,y=-3407.04296875,z=6.0654625892639},
+		{x=427.18029785156,y=-3035.3391113281,z=6.0645241737366},
+	},
 	storageweight=400.0,
 	extraction={x=468.52130126953,y=-3205.6555175781,z=9.7939548492432,r=3.0},
     tradespace=4,
@@ -5839,9 +5846,9 @@ local function in_radius(p1,p2,r)
     return dx*dx+dy*dy+dz*dz<r*r
 end
 
-local function is_in_polygons(x,y,areas)
+local function is_in_polygon(x,y,array)
 	local c=false
-	for _,array in pairs(areas) do
+	--for _,array in pairs(areas) do
 		local j=#array
 		local b,d=false,(array[j].y>y)
 		for i=1,#array do
@@ -5851,7 +5858,7 @@ local function is_in_polygons(x,y,areas)
 		  j=i
 		  d=b
 		end
-	end
+	--end
     return c
 end
 
@@ -5860,7 +5867,7 @@ local function is_in_safe_zone(x,y,z)
     for k,v in pairs(safezones) do
         if not v.raided then
 			if v.border then
-				if is_in_polygons(x,y,v.border) then
+				if is_in_polygon(x,y,v.border) then
 					return v
 				end
 			else
@@ -6139,15 +6146,15 @@ local vehicle_weapons_controls={
 ,	24
 ,	69
 ,	92
-,	106
-,	122
-,	135
+--,	106 --INPUT_VEH_MOUSE_CONTROL_OVERRIDE 
+--,	122 --INPUT_VEH_FLY_MOUSE_CONTROL_OVERRIDE
+--,	135 --INPUT_VEH_SUB_MOUSE_CONTROL_OVERRIDE
 ,	142
 ,	144
-,	176
-,	223
-,	229
-,	237
+--,	176 --INPUT_CELLPHONE_SELECT
+--,	223 --INPUT_SCRIPT_RDOWN
+--,	229 --INPUT_SCRIPT_RT
+--,	237 --INPUT_CURSOR_ACCEPT
 ,	239
 ,	240
 ,	257
@@ -12302,16 +12309,6 @@ Citizen.CreateThread(function()
 							local name=option.name
 							local price=option.amount
 							
-							local model=GetEntityModel(myveh)
-							local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
-							if vehicles_ammo[model] and vehicles_ammo[model][weapon] then
-								local pool=vehicles_ammo[model][weapon].pool
-								if pool then
-									price=vehicles_ammo.cost[pool]*option.amount
-									--WriteNotification(vehicles_ammo[model][weapon].pool)
-								end
-							end
-							
 							local cost=0
 							if name=="repair" then
 								local enginehp=GetVehicleEngineHealth(myveh)
@@ -12326,28 +12323,26 @@ Citizen.CreateThread(function()
 								else
 									cost=math.ceil(75*price)
 								end
-							elseif name=="rearm" then
-								local model=GetEntityModel(myveh)
-								local myped=PlayerPedId()
-								local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
-								if vehicles_ammo[model] and vehicles_ammo[model][weapon] then
-									local decor=vehicles_ammo[model][weapon][1]
-									local maxammo=vehicles_ammo[model][weapon][2]
-									if DecorExistOn(myveh,decor) then
-										cost=math.ceil((maxammo-DecorGetInt(myveh,decor))*price)
-										--WriteHint(315,{"part price=~a~ maxammo=~a~ decor=~a~ cost=~a~",tostring(price),tostring(maxammo),tostring(DecorGetInt(myveh,decor)),tostring(cost)})
-									else
-										cost=maxammo*price
-										--WriteHint(315,"full")
-									end
+							elseif option.ammo_data~=nil then
+								local pool=option.ammo_data.pool
+								price=vehicles_ammo.cost[pool]*option.amount
+								local decor=option.ammo_data[1]
+								local maxammo=option.ammo_data[2]
+								if DecorExistOn(myveh,decor) then
+									cost=math.ceil((maxammo-DecorGetInt(myveh,decor))*price)
+									--WriteHint(315,{"part price=~a~ maxammo=~a~ decor=~a~ cost=~a~",tostring(price),tostring(maxammo),tostring(DecorGetInt(myveh,decor)),tostring(cost)})
 								else
-									--WriteHint(315,"0000")
-									cost=0
+									cost=maxammo*price
+									--WriteHint(315,"full")
 								end
 							else
 								cost=option.amount
 							end
-							if cost<0 then cost=0 end
+							if cost then
+								if cost<0 then cost=0 end
+							else
+								cost=6666
+							end
 							return cost
 						end
 						local current_menu=0
@@ -12397,7 +12392,27 @@ Citizen.CreateThread(function()
 							v.resource=v[2]
 							v.amount=v[3]
 							v.name=v[1]
-							table.insert(chopshopwithupgrades,v)
+							if v.name=="rearm" then
+								if vehicles_ammo[myvehmodel] then
+									local usedtypes={}
+									for _,wpn_info_from_veh_model in pairs(vehicles_ammo[myvehmodel]) do
+										if not usedtypes[wpn_info_from_veh_model.pool] then
+											if wpn_info_from_veh_model.upgrade==nil or GetVehicleMod(myveh,wpn_info_from_veh_model.upgrade[1])==wpn_info_from_veh_model.upgrade[2] then
+												local newtable={}
+												newtable.sprite=v[1]
+												newtable.resource=v[2]
+												newtable.amount=vehicles_ammo.cost[wpn_info_from_veh_model.pool]
+												newtable.name="rearm "..vehicles_ammo_names[wpn_info_from_veh_model.pool]
+												newtable.ammo_data=wpn_info_from_veh_model
+												table.insert(chopshopwithupgrades,newtable)
+												usedtypes[wpn_info_from_veh_model.pool]=true
+											end
+										end
+									end
+								end
+							else
+								table.insert(chopshopwithupgrades,v)
+							end
 						end
 						for k,v in pairs(zone.upgrades) do
 							if GetHashKey(v.vehicle)==myvehmodel then
@@ -12521,13 +12536,8 @@ Citizen.CreateThread(function()
 									elseif chopshopwithupgrades[current_trade].name=="refill" and (cost==0 or chopshop_pay(slot,cost)) then
 										DecorSetFloat(myveh,"zm_fuel",80.5-.5)
 										SetVehicleFuelLevel(myveh,80.5-.5)
-									elseif chopshopwithupgrades[current_trade].name=="rearm" and (cost==0 or chopshop_pay(slot,cost)) then
-										local model=GetEntityModel(myveh)
-										local myped=PlayerPedId()
-										local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
-										if using_vehicle_weapon and vehicles_ammo[model] and vehicles_ammo[model][weapon] then
-											DecorSetInt(myveh,vehicles_ammo[model][weapon][1],vehicles_ammo[model][weapon][2])
-										end
+									elseif chopshopwithupgrades[current_trade].ammo_data~=nil and (cost==0 or chopshop_pay(slot,cost)) then
+										DecorSetInt(myveh,chopshopwithupgrades[current_trade].ammo_data[1],chopshopwithupgrades[current_trade].ammo_data[2])
 									else
 										if chopshopwithupgrades[current_trade].mods and checkifmodneeded(myveh,chopshopwithupgrades[current_trade].mods) and (cost==0 or chopshop_pay(slot,cost)) then
 											for k,v in pairs(chopshopwithupgrades[current_trade].mods) do
@@ -13263,11 +13273,12 @@ Citizen.CreateThread(function()
                         DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
                         DrawSprite("lsm","trading_icon",0.296,0.1945,0.017,0.03,0.0, 255, 255, 255, 255)
                         WriteTextNoOutline(2,"Trading post",0.4,0,0,0,255,0.307,0.18)
-						local hours=math.floor(time_to_update_shops/120)
-						local minutes=math.floor((time_to_update_shops-hours*120)/2)
+						local days=math.floor(time_to_update_shops/(120*24))
+						local hours=math.floor((time_to_update_shops-days*(120*24))/120)
+						local minutes=math.floor((time_to_update_shops-days*(120*24)-hours*120)/2)
 						if hours<10 then hours="0"..hours end
 						if minutes<10 then minutes="0"..minutes end
-                        WriteTextNoOutline(4,{messages.new_shipment_in_strH_strM,tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
+                        WriteTextNoOutline(4,{messages.new_shipment_in_str_D_strH_strM,tostring(days),tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
                         WriteTextNoOutline(2,"Item",0.3,0,0,0,255,0.290,0.24)
                         WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
                         
@@ -15127,8 +15138,9 @@ Citizen.CreateThread(function()
 						local founddoors={}
 						while loop do
 							local model=GetEntityModel(obj)
-							local coords=GetEntityCoords(obj)
-							if doormodels[model] then
+							local door_key=doormodels[model]
+							if door_key and door_key==inventory[inventory.current].item then
+								local coords=GetEntityCoords(obj)
 								local dx,dy,dz=math.abs(coords.x-mypos.x),math.abs(coords.y-mypos.y),math.abs(coords.z-mypos.z)
 								if (dx<5.0 and dy<5.0 and dz<5.0) then
 									local dword=coords_to_dword(coords.x,coords.y,coords.z)

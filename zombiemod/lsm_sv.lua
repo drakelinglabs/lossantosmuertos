@@ -1955,7 +1955,7 @@ trades.buying={
 	add_wanted_trade(6,"trashfood"),
 	--add_wanted_trade(200,"vulcanammo",100),
 	--add_wanted_trade(150,"rocketammo"),
-	add_wanted_trade(250,"guidedammo"),
+	--add_wanted_trade(250,"guidedammo"),
 	add_wanted_trade(15,"scrapfabrics"),
 }
 
@@ -2337,7 +2337,7 @@ Citizen.CreateThread(function()
 	while true do Wait(1000)
 		time_to_update_shops=time_to_update_shops-1
 		if time_to_update_shops==0 then
-			time_to_update_shops=2880
+			time_to_update_shops=86400 -- day
 			update_all_trades_and_chopshops()
 		end
 	end
@@ -2412,8 +2412,8 @@ shotgunammo=100,
 smgammo=200,
 mgammo=200,
 launchergrenade=10,
-rocketammo=10,
-vulcanammo=200,
+--rocketammo=10,
+--vulcanammo=200,
 level3asoftplate=10,
 level3plates=10,
 armorplate=10,
