@@ -12618,17 +12618,17 @@ Citizen.CreateThread(function()
 							
 							for i=scroll,math.min(scroll+(maxtradesinmenu-1),#chopshopwithupgrades) do
 								local y=(i-scroll)*.08+.3
-									local hud_type
+									--local hud_type
 									local myped=PlayerPedId()
 									local myveh=GetVehiclePedIsIn(myped)
 									local myvehmodel
-									local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
+									--local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
 									if myveh then
 										myvehmodel=GetEntityModel(myveh)
 									end
-									if using_vehicle_weapon and myvehmodel and weapon and vehicles_ammo[myvehmodel][weapon] then
-										hud_type=vehicles_ammo[myvehmodel][weapon].pool
-									end
+									-- if using_vehicle_weapon and myvehmodel and weapon and vehicles_ammo[myvehmodel][weapon] then
+										-- hud_type=vehicles_ammo[myvehmodel][weapon].pool
+									-- end
 									
 									DrawSprite("lsm", chopshopwithupgrades[i].sprite or "bottle",0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
 									-- if hud_type and chopshopwithupgrades[i].sprite=="rearm" then
@@ -12637,9 +12637,9 @@ Citizen.CreateThread(function()
 									-- end
 									SetTextWrap(0.325,trade_arrow_x-0.005)
 									local name=chopshopwithupgrades[i].name
-									if using_vehicle_weapon then
-										name=name.." "..vehicles_ammo_names[vehicles_ammo[myvehmodel][weapon].pool]
-									end
+									-- if using_vehicle_weapon then
+										-- name=name.." "..vehicles_ammo_names[vehicles_ammo[myvehmodel][weapon].pool]
+									-- end
 									WriteTextNoOutline(2,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
 									SetTextCentre(true)
 									--WriteTextNoOutline(2,{"x ~1~",chopshopwithupgrades[i][3]},0.25,0,0,0,255,0.305,y+0.02)
@@ -20165,7 +20165,7 @@ Citizen.CreateThread(function()
                                             local ammo=DecorGetInt(veh,decor)
                                             --drawtext("ped "..ped.." in seat "..seat.." is using "..weapon.." "..ammo.."/"..maxammo,.75,.6+seat*.15)
                                             if ammo<=0 then
-                                                if ped==myped then
+                                                if ped==myped and using_vehicle_weapon then
                                                     local controls=weapondata[3]
                                                     --if controls==nil then
                                                         --DisableControlAction(0,114,true)
@@ -20229,7 +20229,7 @@ Citizen.CreateThread(function()
                                 local decor,maxammo=weapondata[1],weapondata[2]
                                 if DecorExistOn(veh,decor) then
                                     local ammo=DecorGetInt(veh,decor)
-                                    if ammo<=0 then
+                                    if ammo<=0 and using_vehicle_weapon then
                                         local controls=weapondata[3]
                                         -- if controls==nil then
                                             -- DisableControlAction(0,114,true)
