@@ -124,7 +124,7 @@ you_gained_num_retutation_for_killing_str="~g~You gained ~1~ reputation for kill
 you_lost_num_retutation_for_killing_str="~r~You lost ~1~ reputation for killing ~a~.",
 
 --CACHE
-cache_spawned="New cache spawned at ~g~~a~~s~!",
+cache_spawned="A new supply drop has been dropped at ~g~~a~~s~! Retrieve it before other survivors do!",
 }
 
 
@@ -19448,14 +19448,10 @@ end)
 
 Citizen.CreateThread(function()
     while true do 
-        Wait(10000)
+        Wait(30000)
         SimpleNotification("Welcome to Los Santos Muertos! We humbly request that unauthorized streamers refrain from broadcasting from this server without permission. Violators of this policy may be removed. Thank you!")
-        Wait(300000)
-		SimpleNotification("Thanks for playing Los Santos Muertos! If you enjoy our server, and want to support development... consider donating at ~b~https://donorbox.org/lossantosmuertos")
-		Wait(300000)
+		Wait(10000)
         SimpleNotification("Your character will not be saved if you disconnect without extracting. Use extraction points to save your character safely.")
-        Wait(300000)
-        SimpleNotification("Join the Los Santos Muertos Discord community! Use our invite link at ~b~discord.gg/w9mZMqJ")
     end
 end)
 
