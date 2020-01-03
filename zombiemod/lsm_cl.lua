@@ -124,7 +124,7 @@ you_gained_num_retutation_for_killing_str="~g~You gained ~1~ reputation for kill
 you_lost_num_retutation_for_killing_str="~r~You lost ~1~ reputation for killing ~a~.",
 
 --CACHE
-cache_spawned="A new supply drop has been dropped at ~g~~a~~s~! Retrieve it before other survivors do!",
+cache_spawned="New cache spawned at ~g~~a~~s~!",
 }
 
 
@@ -10891,16 +10891,20 @@ Citizen.CreateThread(function()
 					else
 						SetBlipScale(blip,0.5)
 					end
+					--SetBlipName(blip,"Player")
 					local rel_betweengroups=GetRelationshipBetweenGroups(rel,myrel)
 					if rel_betweengroups==0 then
 						SetBlipColour(blip,2)
-						SetBlipDisplay(blip,2) --both minimap and map
+						SetBlipDisplay(blip,5) --both minimap and map
+						SetBlipName(blip,"Friendly player")
 					elseif rel_betweengroups==5 then
 						SetBlipColour(blip,1)
 						SetBlipDisplay(blip,5) --minimap
+						SetBlipAsShortRange(blip,true)
 					else
 						SetBlipColour(blip,5)
 						SetBlipDisplay(blip,5) --minimap
+						SetBlipAsShortRange(blip,true)
 					end
 				else
 					local blip=GetBlipFromEntity(otherplayer)
@@ -12978,11 +12982,12 @@ Citizen.CreateThread(function()
                         DrawSprite("lsm","Notebook",.35,.5,0.25,0.7,0.0, 255, 255, 255, 255)
                         DrawSprite("lsm","trading_icon",0.296,0.1945,0.017,0.03,0.0, 255, 255, 255, 255)
                         WriteTextNoOutline(2,"Chopshop",0.4,0,0,0,255,0.307,0.18)
-						local hours=math.floor(time_to_update_shops/120)
-						local minutes=math.floor((time_to_update_shops-hours*120)/2)
+						local days=math.floor(time_to_update_shops/(120*24))
+						local hours=math.floor((time_to_update_shops-days*(120*24))/120)
+						local minutes=math.floor((time_to_update_shops-days*(120*24)-hours*120)/2)
 						if hours<10 then hours="0"..hours end
 						if minutes<10 then minutes="0"..minutes end
-                        WriteTextNoOutline(4,{messages.new_shipment_in_str_D_strH_strM,tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
+                        WriteTextNoOutline(4,{messages.new_shipment_in_str_D_strH_strM,tostring(days),tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
                         WriteTextNoOutline(2,"Service",0.3,0,0,0,255,0.290,0.24)
                         WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
 						
@@ -13760,6 +13765,7 @@ Citizen.CreateThread(function()
 				end
 					
 			elseif zone~=nil and zone.extraction~=nil and in_radius(mypos,zone.extraction,1) then 
+				local myped=PlayerPedId()
 				local myfaction=GetPedRelationshipGroupHash(myped)
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 					if player.faction==zone.relationship then
@@ -19448,10 +19454,14 @@ end)
 
 Citizen.CreateThread(function()
     while true do 
-        Wait(30000)
+        Wait(10000)
         SimpleNotification("Welcome to Los Santos Muertos! We humbly request that unauthorized streamers refrain from broadcasting from this server without permission. Violators of this policy may be removed. Thank you!")
-		Wait(10000)
+        Wait(300000)
+		SimpleNotification("Thanks for playing Los Santos Muertos! If you enjoy our server, and want to support development... consider donating at ~b~https://donorbox.org/lossantosmuertos")
+		Wait(300000)
         SimpleNotification("Your character will not be saved if you disconnect without extracting. Use extraction points to save your character safely.")
+        Wait(300000)
+        SimpleNotification("Join the Los Santos Muertos Discord community! Use our invite link at ~b~discord.gg/w9mZMqJ")
     end
 end)
 
