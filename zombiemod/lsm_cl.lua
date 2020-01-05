@@ -117,6 +117,7 @@ you_dont_have_required_items="You don't have the required items",
 you_need_number_more_reputation="You need to have ~1~ more reputation",
 you_need_bodyarmor_to_insert_armor_plate_in="You cannot equip armor plates without body armor!",
 cant_find_itemname_in_inventory="Can't find ~a~ in inventory",
+friendly_player="Friendly player",
 
 --REPUTATION
 you_got_killed_and_reputation_changed="~r~An enemy ~a~ has killed you! You have lost ~1~ reputation for dying by their hands.",
@@ -125,6 +126,7 @@ you_lost_num_retutation_for_killing_str="~r~You lost ~1~ reputation for killing 
 
 --CACHE
 cache_spawned="New cache spawned at ~g~~a~~s~!",
+press_e_to_search_cache="Press ~g~e ~s~to search",
 }
 
 
@@ -9398,10 +9400,11 @@ Citizen.CreateThread(function()
 			for k,v in pairs(signals) do
 				if v.z~=nil then
 					if square_dist(mypos,v)<25.0 then
-						local not_on_screen,x,y=N_0xf9904d11f1acbec3(v.x,v.y,v.z+1)
+						local not_on_screen,x,y=N_0xf9904d11f1acbec3(v.x,v.y,v.z)
 						if not not_on_screen then
 							WriteHint(2,{messages.press_e_to_pickup,"loot"})
-							WriteText(font,{messages.press_e_to_pickup,"loot"},size,brightness,brightness,brightness,alpha,x,y)
+							SetTextCentre(true)
+							WriteText(font,{messages.press_e_to_search_cache,"loot"},size,brightness,brightness,brightness,alpha,x,y)
 						end
 					end
 				else
@@ -9409,7 +9412,8 @@ Citizen.CreateThread(function()
 						local not_on_screen,x,y=N_0xf9904d11f1acbec3(v.x,v.y,mypos.z)
 						if not not_on_screen then
 							WriteHint(2,{messages.press_e_to_pickup,"loot"})
-							WriteText(font,{messages.press_e_to_pickup,"loot"},size,brightness,brightness,brightness,alpha,x,y)
+							SetTextCentre(true)
+							WriteText(font,{messages.press_e_to_search_cache,"loot"},size,brightness,brightness,brightness,alpha,x,y)
 						end
 					end
 				end
@@ -9507,6 +9511,7 @@ Citizen.CreateThread(function()
                         --break;
 						local not_on_screen,x,y=N_0xf9904d11f1acbec3(pedpos.x,pedpos.y,pedpos.z)
                         if not not_on_screen then
+							SetTextCentre(true)
 							WriteText(font,messages.press_e_to_loot_corpse,size,255,255,255,alpha,x,y)
 						end
                     end
@@ -9533,12 +9538,15 @@ Citizen.CreateThread(function()
 									local name1=item_names[prop[1]] or localization[prop[1]] or prop[1]
                                     if prop[3] then
 										local name3=item_names[prop[3]] or localization[prop[3]] or prop[3]
+										SetTextCentre(true)
                                         WriteText(font,{"~g~E ~s~to pick up ~g~~a~~s~ and ~g~~a~",name1,name3},size,255,255,255,alpha,x,y)
                                         WriteHint(2,{messages.press_e_to_pickup_two_items,name1,name3})
                                     elseif type(prop[1])=="table" then
+										SetTextCentre(true)
                                         WriteText(font,{"~g~E ~s~to search for items",name1},size,255,255,255,alpha,x,y)
                                         WriteHint(2,{messages.press_e_to_seach_for_items,name1})
                                     else
+										SetTextCentre(true)	
                                         WriteText(font,{"~g~E ~s~to pick up ~g~~a~",name1},size,255,255,255,alpha,x,y)
                                         WriteHint(2,{messages.press_e_to_pickup,name1})
                                     end
@@ -10896,7 +10904,7 @@ Citizen.CreateThread(function()
 					if rel_betweengroups==0 then
 						SetBlipColour(blip,2)
 						SetBlipDisplay(blip,5) --both minimap and map
-						SetBlipName(blip,"Friendly player")
+						SetBlipName(blip,messages.friendly_player)
 					elseif rel_betweengroups==5 then
 						SetBlipColour(blip,1)
 						SetBlipDisplay(blip,5) --minimap
