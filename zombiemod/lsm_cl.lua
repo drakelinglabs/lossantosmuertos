@@ -125,7 +125,7 @@ you_gained_num_retutation_for_killing_str="~g~You gained ~1~ reputation for kill
 you_lost_num_retutation_for_killing_str="~r~You lost ~1~ reputation for killing ~a~.",
 
 --CACHE
-cache_spawned="New cache spawned at ~g~~a~~s~!",
+cache_spawned="A new supply drop has been dropped at ~g~~a~~s~! Retrieve it before other survivors do!",
 press_e_to_search_cache="Press ~g~e ~s~to search",
 }
 
@@ -301,7 +301,7 @@ local kerosine_vehicles={
 }
 
 WEAPON={
-UNARMED=0xFFFFFFFFA2719263, 
+UNARMED=0xFFFFFFFFA2719263,
 KNIFE=0xFFFFFFFF99B507EA, --2578778090	--0x99B507EA
 NIGHTSTICK=1737195953,	--0x678B81B1
 HAMMER=1317494643,	--0x4E875F73
@@ -873,7 +873,7 @@ local code_veh=1000000
         VEHICLE_BULLET=33,
         GAS_TANK=34,
         --BIRD_CRAP=35,
-        
+
         FIREWORK = 35,
         SNOWBALL = 36,
         PROXMINE = 37,
@@ -888,12 +888,12 @@ local code_veh=1000000
     --[782665360]=true,--rhino tank
     [-1881846085]=true,--anti air trailer
     }
-    
+
     local cars_with_armor={--vehicle rewards
     [-1205689942]=100,--riot
     [GetHashKey("insurgent7")]=100,--custom insurgent
     }
-    
+
     local banned_peds={
     --[307287994]=true,--puma
     --[1885233650]=true,--freemode
@@ -991,7 +991,7 @@ local code_veh=1000000
         local camera=GetRenderingCam()
         local timestamp=GetGameTimer()
         local attached=false
-        
+
         if inveh then
             vehmodel=GetEntityModel(veh)
             if GetPedInVehicleSeat(veh,-1)==ped then
@@ -1122,7 +1122,7 @@ local code_veh=1000000
             guard_health_timestamp=timestamp
             --if guard_debug then print(timestamp..":DETECTED health="..health) end
         end
-        
+
         if guard_z>-192.0 and not attached then
             local dx,dy,dz=guard_x-pos.x,guard_y-pos.y,guard_z-pos.z
             local delta=math.sqrt(dx*dx+dy*dy+dz*dz)
@@ -1349,7 +1349,7 @@ local code_veh=1000000
         if banned_peds~=nil then
             local peds=0
             local loop,handle,ped
-            
+
             handle,ped=FindFirstPed()
             loop=(handle~=-1)
             while loop do
@@ -1365,7 +1365,7 @@ local code_veh=1000000
                 loop,ped=FindNextPed(handle)
             end
             EndFindPed(handle)
-            
+
             if guard_peds~=peds then
                 guard_peds=peds
                 --if guard_debug then print(GetGameTimer()..":DETECTED peds="..peds) end
@@ -1375,7 +1375,7 @@ local code_veh=1000000
         if banned_objects~=nil then
             local objects=0
             local loop,handle,obj
-            
+
             handle,obj=FindFirstObject()
             loop=(handle~=-1)
             while loop do
@@ -1400,7 +1400,7 @@ local code_veh=1000000
         if banned_vehicles~=nil then
             local vehicles=0
             local loop,handle,veh
-            
+
             handle,veh=FindFirstVehicle()
             loop=(handle~=-1)
             while loop do
@@ -1425,7 +1425,7 @@ local code_veh=1000000
             end
         end
         guard_last_check=timestamp
-        
+
         if guard_debug then
             SetTextOutline()
             SetTextFont(4)
@@ -1439,7 +1439,7 @@ local code_veh=1000000
             SetTextFont(4)
             SetTextScale(.3,.3)
             TextCommandDisplayText(.5,.86,"max_wanted=~1~",guard_max_wanted)
-            
+
             -- SetTextOutline()
             -- SetTextFont(4)
             -- SetTextScale(.3,.3)
@@ -1519,7 +1519,7 @@ if guard_remove_pickups then Citizen.CreateThread(function()
         local n=0
         local delet_this={}
         local loop,handle,pickup
-        
+
         handle,pickup=FindFirstPickup()
         loop=(handle~=-1)
         while loop do
@@ -2367,8 +2367,8 @@ standard={
 [3]={var=1-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=2-1,tex=range(1-1,16-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=2-1,tex=range(1-1,16-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2384,8 +2384,8 @@ bandit={
 [3]={var=6-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=4-1,tex=range(1-1,8-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=4-1,tex=range(1-1,8-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2401,8 +2401,8 @@ vigilante={
 [3]={var=9-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=4-1,tex=range(1-1,16-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=4-1,tex=range(1-1,16-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2418,8 +2418,8 @@ hero={
 [3]={var=7-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=4-1,tex=range(1-1,16-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=4-1,tex=range(1-1,16-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2435,8 +2435,8 @@ guerilla={
 [3]={var=1-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=4-1,tex=range(1-1,8-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=4-1,tex=range(1-1,8-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2452,8 +2452,8 @@ renegade={
 [3]={var=6-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=4-1,tex=range(1-1,8-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=4-1,tex=range(1-1,8-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2469,8 +2469,8 @@ outlaw={
 [3]={var=12-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{8-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=4-1,tex=range(1-1,8-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=4-1,tex=range(1-1,8-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2486,8 +2486,8 @@ trucker={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=4-1,tex=range(1-1,16-1)}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=4-1,tex=range(1-1,16-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=4-1,tex=range(1-1,16-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=1-1,tex=range(2-1,5-1)}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2503,8 +2503,8 @@ business={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=11-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=11-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=11-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=4-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2520,8 +2520,8 @@ ordinary={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=2-1,tex=range(1-1,16-1)}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=2-1,tex=range(1-1,16-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=2-1,tex=range(1-1,16-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=1-1,tex=range(2-1,5-1)}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2537,8 +2537,8 @@ gang={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=8-1,tex=range(1-1,16-1)}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=2-1,tex=range(1-1,16-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=2-1,tex=range(1-1,16-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2554,8 +2554,8 @@ marauder={
 [3]={var=21-1,tex=1-1}, --"torso" hands
 [4]={var=10-1,tex=range(1-1,16-1,{5-1,6-1,9-1,16-1})}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2571,8 +2571,8 @@ marauder_npc={
 [3]={var=21-1,tex=1-1}, --"torso" hands
 [4]={var=10-1,tex=range(1-1,16-1,{5-1,6-1,9-1,16-1})}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2588,8 +2588,8 @@ camouflage={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=32-1,tex=5-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2605,8 +2605,8 @@ camouflage_npc={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=32-1,tex=5-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2622,8 +2622,8 @@ backpack={[5]={var=46-1,tex=1-1}},
 -- [3]={var=2-1,tex=1-1}, --"torso" hands
 -- [4]={var=8-1,tex=5-1}, --legs
 -- [5]={var=1-1,tex=1-1}, --"hands" parachutes
--- [6]={var=12-1,tex=13-1}, --foot 
--- [7]={var=1-1,tex=1-1}, --additional 
+-- [6]={var=12-1,tex=13-1}, --foot
+-- [7]={var=1-1,tex=1-1}, --additional
 -- [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 -- [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 -- [10]={var=0-1,tex=1-1}, --decals
@@ -2639,8 +2639,8 @@ offdutysheriff={
 [3]={var=7-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=64-1,tex={2-1,5-1}}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=64-1,tex={2-1,5-1}}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2656,8 +2656,8 @@ offdutysheriff_npc={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=8-1,tex=5-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=12-1,tex=13-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=12-1,tex=13-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2672,8 +2672,8 @@ explorer={
 [3]={var=19-1,tex=1-1}, --"torso" hands
 [4]={var=99-1,tex=range(1-1,5-1)}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=72-1,tex=range(1-1,5-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=72-1,tex=range(1-1,5-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2691,8 +2691,8 @@ scavenger={
 [3]={var=19-1,tex=range(1-1,5-1)}, --"torso" hands
 [4]={var=60-1,tex=range(1-1,10-1,{3-1,4-1,9-1})}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=76-1,tex=range(1-1,8-1)}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2709,8 +2709,8 @@ scavenger_npc={
 [3]={var=19-1,tex=range(1-1,5-1)}, --"torso" hands
 [4]={var=60-1,tex=range(1-1,10-1,{3-1,4-1,9-1})}, --legs
 [5]={var=67-1,tex=1-1}, --"hands" parachutes
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=76-1,tex=range(1-1,8-1)}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2727,8 +2727,8 @@ mercenary={
 [3]={var=55-1,tex=1-1}, --"torso" hands
 [4]={var=108-1,tex=2-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=85-1,tex=2-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=85-1,tex=2-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2744,8 +2744,8 @@ banditgoon={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=6-1,tex={3-1,11-1}}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=13-1,tex=7-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=13-1,tex=7-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=15-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2761,8 +2761,8 @@ banditgoon_npc={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=6-1,tex={3-1,11-1}}, --legs
 [5]={var=52-1,tex=1-1}, --"hands" parachutes
-[6]={var=13-1,tex=7-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=13-1,tex=7-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=15-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2778,8 +2778,8 @@ banditauthority={
 [3]={var=20-1,tex=1-1}, --"torso" hands
 [4]={var=32-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=3-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2795,8 +2795,8 @@ dawn={
 [3]={var=166-1,tex=18-1}, --"torso" hands
 [4]={var=99-1,tex=24-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=76-1,tex=26-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=76-1,tex=26-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2812,8 +2812,8 @@ dawn_npc={
 [3]={var=166-1,tex=18-1}, --"torso" hands
 [4]={var=99-1,tex=24-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=76-1,tex=26-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=76-1,tex=26-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2829,8 +2829,8 @@ banditauthority_npc={
 [3]={var=20-1,tex=1-1}, --"torso" hands
 [4]={var=32-1,tex=1-1}, --legs
 [5]={var=67-1,tex=1-1}, --"hands" parachutes
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=3-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2846,8 +2846,8 @@ police={
 [3]={var=1-1,tex=1-1}, --"torso" hands
 [4]={var=36-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=59-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2863,8 +2863,8 @@ banditmercenary={
 [3]={var=55-1,tex=1-1}, --"torso" hands
 [4]={var=108-1,tex=2-1}, --legs
 [5]={var=1-1,tex=1-1}, --"hands" parachutes
-[6]={var=85-1,tex=2-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=85-1,tex=2-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=0-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=0-1,tex=1-1}, --decals
@@ -2880,8 +2880,8 @@ trash={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=76-1,tex=range(1-1,8-1)}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2897,8 +2897,8 @@ backpack={[5]={var=46-1,tex=1-1}},
 -- [3]={var=18-1,tex=range(1-1,5-1)}, --"torso" hands
 -- [4]={var=1-1,tex=range(1-1,15-1,{8-1,12-1,14-1})}, --legs
 -- [5]={var=1-1,tex=1-1}, --hands "parachutes"
--- [6]={var=26-1,tex=1-1}, --foot 
--- [7]={var=113-1,tex=1-1}, --additional 
+-- [6]={var=26-1,tex=1-1}, --foot
+-- [7]={var=113-1,tex=1-1}, --additional
 -- [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 -- [9]={var=17-1,tex=range(1-1,3-1)}, --accesories 2 (armor)
 -- [10]={var=1-1,tex=1-1}, --decals
@@ -2914,8 +2914,8 @@ pmc={
 [3]={var=12-1,tex=1-1}, --"torso" hands
 [4]={var=48-1,tex={1-1,2-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=64-1,tex=range(1-1,5-1)}, --foot 
-[7]={var=113-1,tex=range(1-1,3-1)}, --additional 
+[6]={var=64-1,tex=range(1-1,5-1)}, --foot
+[7]={var=113-1,tex=range(1-1,3-1)}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=17-1,tex=range(1-1,3-1)}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2931,8 +2931,8 @@ pmc_npc={
 [3]={var=18-1,tex=range(1-1,5-1)}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,15-1,{8-1,12-1,14-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=26-1,tex=1-1}, --foot 
-[7]={var=113-1,tex=1-1}, --additional 
+[6]={var=26-1,tex=1-1}, --foot
+[7]={var=113-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=17-1,tex=range(1-1,3-1)}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2948,8 +2948,8 @@ combat_desert_npc={
 [3]={var=18-1,tex=4-1}, --"torso" hands
 [4]={var=47-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=16-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2967,8 +2967,8 @@ combat_green={
 [3]={var=18-1,tex=5-1}, --"torso" hands
 [4]={var=47-1,tex=2-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=16-1,tex=2-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -2986,8 +2986,8 @@ combat_desert={
 [3]={var=18-1,tex=4-1}, --"torso" hands
 [4]={var=47-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=16-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3005,8 +3005,8 @@ loner={
 [3]={var=19-1,tex=1-1}, --"torso" hands
 [4]={var=1-1,tex=range(1-1,13-1,{3-1,4-1,6-1,8-1,11-1,6-1})}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=56-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3022,8 +3022,8 @@ riot={
 [3]={var=111-1,tex=4-1}, --"torso" hands
 [4]={var=34-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=59-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3039,8 +3039,8 @@ riot_npc={
 [3]={var=111-1,tex=4-1}, --"torso" hands
 [4]={var=34-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=25-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=25-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=59-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=11-1,tex=2-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3056,8 +3056,8 @@ smugglerslight={
 [3]={var=6-1,tex=1-1}, --"torso" hands
 [4]={var=93-1,tex={16-1,19-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=131-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3073,8 +3073,8 @@ smugglers={
 [3]={var=16-1,tex=1-1}, --"torso" hands
 [4]={var=34-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=131-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3090,8 +3090,8 @@ smugglerslight_npc={
 [3]={var=6-1,tex=1-1}, --"torso" hands
 [4]={var=93-1,tex={16-1,19-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=131-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3107,8 +3107,8 @@ smugglers_npc={
 [3]={var=16-1,tex=1-1}, --"torso" hands
 [4]={var=34-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=131-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3124,8 +3124,8 @@ gunrunner={
 [3]={var=5-1,tex=1-1}, --"torso" hands
 [4]={var=70-1,tex={2-1,3-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=123-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3141,8 +3141,8 @@ toughguy={
 [3]={var=23-1,tex={1-1,2-1}}, --"torso" hands
 [4]={var=34-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=116-1,tex=4-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3158,8 +3158,8 @@ rookie={
 [3]={var=1-1,tex=1-1}, --"torso" hands
 [4]={var=64-1,tex=1-1}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=62-1,tex={1-1,4-1}}, --foot 
-[7]={var=126-1,tex=1-1}, --additional 
+[6]={var=62-1,tex={1-1,4-1}}, --foot
+[7]={var=126-1,tex=1-1}, --additional
 [8]={var=131-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3175,8 +3175,8 @@ breekiscavenger={
 [3]={var=2-1,tex=1-1}, --"torso" hands
 [4]={var=98-1,tex={1-1,5-1,6-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=75-1,tex={1-1,3-1,4-1,8-1}}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3192,8 +3192,8 @@ breekicombatoutfit={
 [3]={var=1-1,tex=1-1}, --"torso" hands
 [4]={var=98-1,tex={1-1,5-1,6-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=range(1-1,16-1)}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=range(1-1,16-1)}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=75-1,tex={1-1,3-1,4-1,8-1}}, --accesories 1 (parts of tshirts)
 [9]={var=17-1,tex=3-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3210,8 +3210,8 @@ combatmarauder={
 [3]={var=16-1,tex=1-1}, --"torso" hands
 [4]={var=104-1,tex={1-1,4-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=85-1,tex={1-1,2-1}}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=85-1,tex={1-1,2-1}}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=16-1,tex={1-1,3-1,4-1,8-1}}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=3-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3227,8 +3227,8 @@ mercexperimental={
 [3]={var=148-1,tex=10-1}, --"torso" hands
 [4]={var=32-1,tex={2-1,3-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=28-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=28-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=127-1,tex=1-1}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3244,8 +3244,8 @@ merclight={
 [3]={var=6-1,tex=1-1}, --"torso" hands
 [4]={var=103-1,tex={2-1,7-1}}, --legs
 [5]={var=1-1,tex=1-1}, --hands "parachutes"
-[6]={var=26-1,tex=1-1}, --foot 
-[7]={var=1-1,tex=1-1}, --additional 
+[6]={var=26-1,tex=1-1}, --foot
+[7]={var=1-1,tex=1-1}, --additional
 [8]={var=132-1,tex={1-1,2-1}}, --accesories 1 (parts of tshirts)
 [9]={var=1-1,tex=1-1}, --accesories 2 (armor)
 [10]={var=1-1,tex=1-1}, --decals
@@ -3516,12 +3516,12 @@ if true then --disabled
     -- BeginTextCommandSetBlipName("STRING")
     -- AddTextComponentString("Trailer");
     -- EndTextCommandSetBlipName(blip)
-    
+
     -- AddTextEntry('DOLLAR_TEXT', '$~1~') -- call once
     -- BeginTextCommandDrawText('DOLLAR_TEXT')
     -- AddTextComponentInteger(5)
     -- EndTextCommandDrawText(0.0, 0.0)
-    
+
     TextCommandDisplayText=function(...)
         local args={...}
         --if args[4]==nil then
@@ -3539,7 +3539,7 @@ if true then --disabled
         add_text_function_arguments(2,args)
         EndTextCommandDisplayHelp(0,0,1,-1)
     end
-    
+
     function WriteText(font,text,scale,r,g,b,a,posx,posy)
         SetTextOutline()
         SetTextFont(font)
@@ -3780,15 +3780,15 @@ local weaponsarray={
     "pistol","snspistol","vintagepistol","combatpistol",
     "dbshotgun","doubleaction","revolver","machinepistol",
     "musket"},
-    bandit={-- 
+    bandit={--
     "pistol","snspistol","vintagepistol","combatpistol",
     "dbshotgun","compactrifle","doubleaction","revolver","machinepistol",
     "musket"},
-    survivor={-- 
+    survivor={--
     "pistol","snspistol","vintagepistol","combatpistol",
     "dbshotgun","doubleaction","revolver","machinepistol",
     "musket"},
-    government={-- 
+    government={--
     "pistol","pumpshotgun","smg","carbinerifle"},
     military={-- 2 military
     "carbinerifle","pistol","pumpshotgun","smg","sniperrifle"
@@ -3857,7 +3857,7 @@ Citizen.CreateThread(function()
         [2]=GetHashKey("MILITARY"),-- 2 military
         [3]=GetHashKey("GOVERNMENT"),-- 3 gov
         [4]=GetHashKey("MERC"),-- 4 mercenaries
-        [5]=GetHashKey("SURVIVOR"),-- 
+        [5]=GetHashKey("SURVIVOR"),--
     }
     RegisterNetEvent("raid")
     AddEventHandler("raid",function(k,x,y,r,t,maxlives,lives)
@@ -3889,7 +3889,7 @@ Citizen.CreateThread(function()
                 v.r=r
                 v.maxlives=maxlives
                 v.lives=lives
-                if v.blip==nil then 
+                if v.blip==nil then
                     if v.t==72 then
                         if v.blipadditional==nil then
                             v.blipadditional=AddBlipForRadius(x,y,0,r)
@@ -3981,7 +3981,7 @@ local inv_new={}
       inv_new.item_scl_x=0.036
       inv_new.item_scl_y=0.063
 
-            
+
 local current_date=GetResourceKvpInt("date")
 local lastprovisiontime=GetResourceKvpInt("provisiontaken")
 local respawn_time=720 --two real days
@@ -4256,7 +4256,7 @@ local safezones={
         {"alcohol",1,"cash",15},
         {"juice",1,"cash",20},
         {"food",1,"cash",25},
-        
+
         {"cash",20,"cigarettes",1},
         {"cash",50,"pistolammo",30},
         {"cash",35,"gunpowder",1},
@@ -4279,7 +4279,7 @@ local safezones={
     tradepos={x=914.97869873047,y=-1702.4061279297,z=51.258224487305},
     weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     relationship="SURVIVOR"},--Pookys
-    
+
     {x=975.88543701172,y=-119.29508972168,z=74.220664978027,r=50.0,blip=495,color=1,
     --models={275618457},
     models={1885233650},
@@ -4288,7 +4288,7 @@ local safezones={
     trade={
         {"gasoline",1,"cash",15},
         {"bandage",1,"cash",20},
-        
+
         {"cash",20,"cigarettes",1},
         {"cash",50,"pistolammo",30},
         {"cash",35,"gunpowder",1},
@@ -4300,7 +4300,7 @@ local safezones={
     tradepos={x=978.20086669922,y=-101.90658569336,z=74.845115661621},
     craftpos={x=985.07043457031,y=-125.30889892578,z=73.930976867676},
     crafts=normal_crafts,
-    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},    
+    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     garagepos={x=971.41748046875,y=-114.88080596924,z=74.353141784668,angle=228.43922424316},
     vehpos={x=973.37133789063,y=-130.03402709961,z=74.218101501465,angle=143.63526916504},
     vehshop={
@@ -4311,7 +4311,7 @@ local safezones={
         },
     },
     relationship="BANDIT"},--Lost MC
-    
+
     {x=2212.3063964844,y=5600.5561523438,z=53.88920211792,r=150.0,blip=140,color=1,
     models={1885233650},--{275618457},
     name="~r~Weed Farm~s~",
@@ -4329,7 +4329,7 @@ local safezones={
     tradepos={x=2224.767578125,y=5604.6811523438,z=54.9225730896},
     craftpos={x=2196.4743652344,y=5596.7768554688,z=53.784450531006},
     crafts=normal_crafts,
-    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},    
+    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     garagepos={x=2196.2426757813,y=5607.2358398438,z=53.513969421387,angle=349.04583740234},
     relationship="BANDIT"},--weed farm
 ]]
@@ -4374,7 +4374,7 @@ local safezones={
         -- {"marksmanrifle",1,"bandits_records",1},
         -- {"jerrycan",1,"cash",200},
         -- {"gasoline",1,"cash",110},
-        
+
         -- {"cash",20,"water",1},
         -- {"cash",20,"canfood",1},
         -- {"cash",40,"scrapplastic",15},
@@ -4382,7 +4382,7 @@ local safezones={
         -- {"cash",50,"scrapmetal",5},
         -- {"cash",35,"rags",25},
         -- {"cash",100,"gasoline",25},
-		
+
         -- {"provisionkey",1,"cash",500},
         -- {"gunstorekey",1,"weed",7},
     },
@@ -4427,14 +4427,14 @@ local safezones={
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
 		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
@@ -4442,17 +4442,17 @@ local safezones={
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
 		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
-		
+
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
@@ -4477,7 +4477,7 @@ local safezones={
          -- [48]=range(0,3),
          -- },
         -- },
-		
+
         -- {"deathbike","cash",1300, --(Marauders, Mercenaries)
          -- mods={
          -- [48]=1,
@@ -4579,46 +4579,46 @@ local safezones={
         join_name="Admission to the Survivors",
         join_text="So, want to join us, huh? Well, you know, I can't just accept some random scavenger. You need to prove that you really worth it. ",
         novice="You're now one of us. Here's your task. ",
-    
+
         {items_required={"bandits_records",2},
         items_reward={"cash",2000,"mre",3,"water",3},
         questname="Prison checkpoint records",
         text="Sneak to prison and steal bandits records with names who enter or exit prison.",
         rep_bonus=10,
         },
-        
+
         {items_required={"cues",1},
         items_reward={"cash",1500,"mre",3,"water",3},
         questname="Named cues",
         text="Marauder bosses keep their named billiard cues somewhere in bar near prison, bring them to me.",
         rep_bonus=10,
         },
-        
+
         {items_required={"mre",30,"water",30},
         items_reward={"cash",3000},
         questname="Provision for week",
         text="We need provision for a next week, bring us MREs and water. Almost every building has water cooler inside, check in there. We've looted most of the military base, but there still should be some provision crates.",
         rep_bonus=10,
         },
-        
+
         {items_required={"engineparts",100},
         items_reward={"cash",2000,"mre",3,"water",3},
         questname="Tools and parts",
         text="We need tools are parts for our vehicles. Search at workshops, should be lots of things there.",
         rep_bonus=10,
         },
-        
+
         {items_required={"ammo",300,"pistolammo",600,"shotgunammo",100,"heavyrifleammo",50},
         items_reward={"cash",3000,"mre",3,"water",3},
         questname="Ammunition",
         text="We need ammo now, here's list of what exactly we need.",
         rep_bonus=10,
         },
-        
+
     },
     relationship="SURVIVOR"},--Altruists camp
-    
-    
+
+
     --LSPD station
     {x=449.93710327148,y=-986.46514892578,z=30.437593460083,r=85.0,blip=88,color=3,
     --models={-44746786,1330042375,1032073858,850468060}, --nothing
@@ -4650,13 +4650,13 @@ local safezones={
         -- {"shotgunammo",30,"cash",200},
         -- {"smgammo",100,"cash",250},
         -- {"bzgas",1,"cash",150},
-		
+
         -- {"cash",150,"policedocs",1},
         -- {"cash",250,"bandits_records",1},
         -- {"cash",150,"dawntokens",1},
         -- {"cash",45,"mre",1},
         -- {"cash",20,"soda",1},
-		
+
         -- {"barberkey",1,"cash",650},
     },
     selltrade={},
@@ -4702,14 +4702,14 @@ local safezones={
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
 		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
@@ -4717,17 +4717,17 @@ local safezones={
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
 		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
-		
+
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
@@ -4741,7 +4741,7 @@ local safezones={
         -- {"policet","cash",1000},
         -- {"riot","cash",1500},
         -- {"police","cash",700},
-		
+
         -- {"imperator","cash",500,
          -- mods={
          -- [28]=1,
@@ -4826,7 +4826,7 @@ local safezones={
     spawnpos={x=459.48818969727,y=-994.87622070313,z=24.914867401123,angle=92.499603271484},
 
     relationship="GOVERNMENT"},--LSPD station
-    
+
     --[[
     -----------------------------------------------------
     {x=60.990127563477,y=3706.8579101563,z=39.750030517578,r=100.0,blip=495,color=1,
@@ -4837,7 +4837,7 @@ local safezones={
     trade={
         {"gasoline",1,"cash",15},
         {"bandage",1,"cash",20},
-        
+
         {"cash",20,"cigarettes",1},
         {"cash",50,"pistolammo",30},
         {"cash",35,"gunpowder",1},
@@ -4849,7 +4849,7 @@ local safezones={
     tradepos={x=75.858306884766,y=3701.2197265625,z=41.077205657959},
     craftpos={x=66.261268615723,y=3728.5979003906,z=39.927852630615},
     crafts=normal_crafts,
-    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},    
+    weapons={"dagger","knife","machete","crowbar","hatchet","bat","pistol","snspistol","vintagepistol","combatpistol","dbshotgun","pumpshotgun","marksmanrifle","sniperrifle"},
     garagepos={x=49.857131958008,y=3714.6203613281,z=39.752891540527,angle=326.10470581055},
     vehpos={x=61.290504455566,y=3687.7873535156,z=39.834293365479,angle=326.10470581055},
     vehshop={
@@ -4860,7 +4860,7 @@ local safezones={
         },
     },
     relationship="BANDIT"},--Lost MC desert
-    
+
     ----------------------------------------------------
     {x=2150.7006835938,y=4778.7612304688,z=41.016918182373,r=75.0,blip=577,color=36,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
@@ -4897,7 +4897,7 @@ local safezones={
     crafts=normal_crafts,
     spawnpos={x=2146.0759277344,y=4781.9990234375,z=40.998649597168,angle=119.87452697754},
     relationship="SURVIVOR"},--Northern hangar
-    
+
     ----------------------------------------------------
     {x=1894.6357421875,y=3922.03125,z=32.888240814209,r=50.0,blip=434,color=36,
     models={1885233650},--{-12678997,1694362237,-1105135100},--,1939545845
@@ -4938,7 +4938,7 @@ local safezones={
     crafts=normal_crafts,
     spawnpos={x=1905.4584960938,y=3922.9091796875,z=32.743022918701},
     relationship="SURVIVOR"},--Pawn Shop
-    
+
     ----------------------------------------------------
     {x=1710.7409667969,y=4751.3974609375,z=41.995300292969,r=75.0,blip=52,color=36,
     models={1885233650},--{-163714847,-1422914553},--,1939545845
@@ -4955,12 +4955,12 @@ local safezones={
         {"alcohol",1,"cash",20},
         {"chemicals",1,"cash",30},
         {"clothes_mercenary",1,"cash",5000},
-        
+
         {"cash",100,"mre",1},
         {"cash",200,"armorplate",1},
         {"cash",300,"medkit",1},
         {"cash",275,"pistolammo",50},
-        
+
     },
     tradepos={x=1712.7950439453,y=4790.521484375,z=41.990787506104},
     --clothespos={x=-1146.4151611328,y=4940.9018554688,z=222.26872253418},
@@ -4985,9 +4985,9 @@ local safezones={
     crafts=normal_crafts,
     spawnpos={x=1664.0472412109,y=4739.5366210938,z=42.010166168213,angle=288.13848876953},
     relationship="SURVIVOR"},--North Trading Post
-    
+
     ]]
-    
+
 ----------------------------------------------------
     {x=1697.1645507813,y=2611.8725585938,z=45.564865112305,r=250.0,blip=86,color=5,
     models={1885233650},--{1746653202,-44746786,1330042375,1032073858,850468060,275618457},
@@ -5032,7 +5032,7 @@ local safezones={
         -- {"shotgunammo",30,"cash",350},
         -- {"jerrycan",1,"cash",200},
         -- {"molotov",1,"cash",100},
-		
+
         -- {"cash",75,"weed",1},
         -- {"cash",40,"alcohol",1},
         -- {"cash",50,"gunpowder",1},
@@ -5040,7 +5040,7 @@ local safezones={
         -- {"cash",35,"chemicals",1},
         -- {"cash",60,"scrapmetal",5},
         -- {"cash",35,"rags",25},
-		
+
         -- {"gunstorekey",1,"dawntokens",5},
         -- {"tattookey",1,"cash",650},
     },
@@ -5115,14 +5115,14 @@ local safezones={
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
 		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
@@ -5130,17 +5130,17 @@ local safezones={
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
 		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
-		
+
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
@@ -5170,7 +5170,7 @@ local safezones={
          -- [48]=1,
          -- },
         -- },
-		
+
         -- {"zr380","cash",2000, -- (Government, Marauders, Mercenaries, Military)
          -- mods={
          -- [48]=2,
@@ -5187,7 +5187,7 @@ local safezones={
          -- mods={
          -- [48]=1,
          -- },
-        -- },  
+        -- },
     },
     --ransack={x=1661.6795654297,y=2566.5334472656,z=45.564865112305,angle=229.75936889648},
     ransack_list={
@@ -5201,7 +5201,7 @@ local safezones={
     },
 
     relationship="BANDIT"},--Prison
-	
+
 	--Smugglers base
 ----------------------------------------------------
     {x=2212.4770507813,y=5597.16015625,z=53.925220489502,r=100,blip=102,color=4,
@@ -5250,14 +5250,14 @@ local safezones={
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
 		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
@@ -5265,17 +5265,17 @@ local safezones={
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
 		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
-		
+
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
@@ -5284,7 +5284,7 @@ local safezones={
 		{vehicle="dominator4",sprite="supercharger",name="Supercharger",mods={[4]=3},resource="cash",amount=1500},
 	},
     },
-	
+
 	---military base
 ----------------------------------------------------
     {x=-2079.6791992188,y=3112.3244628906,z=32.28897857666,r=500.0,blip=93,color=2,
@@ -5343,12 +5343,12 @@ local safezones={
         -- {"heavybarrel",1,"cash",600},
         -- {"grip",1,"cash",500},
         -- {"scope_advanced",1,"cash",400},
-		
+
         -- {"cash",40,"gunpowder",1},
         -- {"cash",200,"dawntokens",1},
         -- {"cash",30,"alcohol",1},
         -- {"cash",60,"chemicals",1},
-		
+
         -- {"gunstorekey",1,"cash",1000},
     },
     selltrade={},
@@ -5437,7 +5437,7 @@ local safezones={
 		},
     },
 	},
-    weapons=weaponsarray.military,    
+    weapons=weaponsarray.military,
 	garages={
 		{name="militaryoutpost",x=-2015.5277099609,y=2944.7358398438,z=32.809864044189,angle=326.25524902344},
 		{name="militaryoutpost2",x=-2144.2985839844,y=3019.703125,z=32.826580047607,angle=327.27267456055},
@@ -5457,14 +5457,14 @@ local safezones={
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
 		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
@@ -5472,17 +5472,17 @@ local safezones={
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
 		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=150}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
-		
+
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
@@ -5495,7 +5495,7 @@ local safezones={
 		-- {"buzzard","cash",10000},
 		-- {"barrage","cash",2400},
 		-- {"dune3","cash",2000},
-		
+
         -- {"imperator","cash",500,
          -- mods={
          -- [28]=1,
@@ -5543,7 +5543,7 @@ local safezones={
     },
 
     relationship="MILITARY"},--Military base
-	
+
 
 	---merc base
 ----------------------------------------------------
@@ -5582,11 +5582,11 @@ local safezones={
         -- {"suppressor_2",1,"cash",600},
         -- {"grip",1,"cash",500},
         -- {"scope_advanced",1,"cash",400},
-		
+
         -- {"cash",40,"gunpowder",1},
         -- {"cash",35,"alcohol",1},
         -- {"cash",50,"chemicals",1},
-		
+
         -- {"gunstorekey",1,"cash",1000},
     },
     selltrade={},
@@ -5675,7 +5675,7 @@ local safezones={
 		},
     },
 	},
-    weapons=weaponsarray.mercenaries,    
+    weapons=weaponsarray.mercenaries,
 	garages={
 		{name="mercenarybase",x=467.41119384766,y=-3191.4245605469,z=6.0695595741272,angle=266.50952148438},
 		{name="mercenarybase2",x=466.86489868164,y=-3235.412109375,z=6.0695567131042,angle=267.56420898438},
@@ -5696,14 +5696,14 @@ local safezones={
 		{vehicle="imperator",sprite="supercharger",name="Supercharger",mods={[7]=6,[4]=5},resource="cash",amount=1500},
 		{vehicle="imperator",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="imperator",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="impaler2",sprite="armorplating",name="Armor Plating",mods={[0]=1,[1]=2,[2]=0,[5]=2,[10]=0},resource="cash",amount=2100},
 		{vehicle="impaler2",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="impaler2",sprite="decoration",name="Marauder Regalia",mods={[35]=1,[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="impaler2",sprite="decoration",name="Scavenger Regalia",mods={[35]=2},resource="cash",amount=200}, -- (Scavengers Only)
 		{vehicle="impaler2",sprite="supercharger",name="Supercharger",mods={[4]=0,[8]=2},resource="cash",amount=1500},
 		{vehicle="impaler2",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="zr380",sprite="armorplating",name="Armor Plating",mods={[5]=2,[8]=0,[2]=0,[1]=0},resource="cash",amount=2100},
 		{vehicle="zr380",sprite="armoredplow",name="Armored Plow",mods={[42]=0},resource="cash",amount=1300},
 		{vehicle="zr380",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
@@ -5711,17 +5711,17 @@ local safezones={
 		{vehicle="zr380",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="zr380",sprite="aerospoiler",name="Aerodynamic Spoiler",mods={[0]=3},resource="cash",amount=250},
 		{vehicle="zr380",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="deathbike",sprite="armorplating",name="Armor Plating",mods={[0]=2},resource="cash",amount=2100},
 		{vehicle="deathbike",sprite="decoration",name="Marauder Regalia",mods={[43]=0},resource="cash",amount=200}, -- (Marauders Only)
 		{vehicle="deathbike",sprite="sawblade",name="Motorized Sawblade",mods={[44]=0},resource="cash",amount=1500}, -- (Marauders, Scavengers, Smugglers, Mercenaries)
 		{vehicle="deathbike",sprite="minigun",name="minigun",mods={[45]=0},resource="cash",amount=200}, -- (Government, Military, Mercenaries)
-		
+
 		{vehicle="scarab",sprite="armorplating",name="Armor Plating",mods={[1]=4,[3]=7,[5]=2,[10]=0,[28]=5},resource="cash",amount=2100},
 		{vehicle="scarab",sprite="armoredplow",name="Armored Plow",mods={[42]=3},resource="cash",amount=1300},
 		{vehicle="scarab",sprite="machinegun",name="Machine Gun",mods={[45]=1},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
 		{vehicle="scarab",sprite="decoration",name="Marauder Regalia",mods={[43]=2,[35]=0},resource="cash",amount=200}, -- (Marauders Only)
-		
+
 		{vehicle="dominator4",sprite="armorplating",name="Armor Plating",mods={[0]=0,[1]=0,[3]=0,[5]=2,[6]=2,[7]=1},resource="cash",amount=2100},
 		{vehicle="dominator4",sprite="armoredplow",name="Armored Plow",mods={[42]=1},resource="cash",amount=1300},
 		{vehicle="dominator4",sprite="machinegun",name="Machine Gun",mods={[45]=0},resource="cash",amount=3000}, -- (Government, Military, Mercenaries)
@@ -5779,7 +5779,7 @@ local safezones={
     },
 
     relationship="MERC"},--Mercenary
-    
+
 --[[
 
     ----------------------------------------------------
@@ -5793,8 +5793,8 @@ local safezones={
         {"ammo",50,"dawntokens",5},
         {"water",1,"dawntokens",1},
         {"mre",1,"dawntokens",2},
-        
-        
+
+
     },
     tradepos={x=933.16302490234,y=-1521.5325927734,z=31.080209732056},
     questpos={x=939.69671630859,y=-1490.0218505859,z=30.226753234863},
@@ -6042,7 +6042,7 @@ local function save_data()
         local v8=(v>>8)
         local v16=(v>>16)
         local v24=(v>>24)
-        
+
         data=data..(string.char(k&255)..string.char(k8&255)..string.char(k16&255)..string.char(k24&255)..string.char(v&255)..string.char(v8&255)..string.char(v16&255)..string.char(v24&255))
     end
     SetResourceKvp("looted_props",data)
@@ -6070,7 +6070,7 @@ Citizen.CreateThread(function()
 end)
 
 
-    
+
 
 
 -- Citizen.CreateThread(function()
@@ -6148,7 +6148,7 @@ local vehicle_weapons_controls={
 ,	24
 ,	69
 ,	92
---,	106 --INPUT_VEH_MOUSE_CONTROL_OVERRIDE 
+--,	106 --INPUT_VEH_MOUSE_CONTROL_OVERRIDE
 --,	122 --INPUT_VEH_FLY_MOUSE_CONTROL_OVERRIDE
 --,	135 --INPUT_VEH_SUB_MOUSE_CONTROL_OVERRIDE
 ,	142
@@ -7038,7 +7038,7 @@ brasscatcher="A specialized weapon attachment that allows the user to reclaim sp
 casings="Spent small caliber bullet casings. Useful when crafting items.",
 gunpowder="A sealed case of smokeless gun powder. Useful when crafting items.",
 riflecasings="Spent standard caliber bullet casings. Useful when crafting items.",
-radio="A simple compact dual band radio.",
+radio="When equipped, the radio shows both the position and alignment of other radio-equipped players. Friendly faction members broadcast at longer ranges than hostile players.",
 aircraftfuel="A liter of pure unleaded naphtha kerosene. Used in high performance aircraft engines.",
 sheriffkey="Master key to a local sheriff department.",
 policedocs="A folder containing detailed records of local convicts.",
@@ -7200,7 +7200,7 @@ local weapon_upgrades_all={
 }
 
 local weapon_upgrades={
-    flashlight_small={   
+    flashlight_small={
         [GetHashKey("weapon_pistol")]=0x359B7AAE,
         [GetHashKey("weapon_combatpistol")]=0x359B7AAE,
         [GetHashKey("weapon_appistol")]=0x359B7AAE,
@@ -7215,7 +7215,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_pistol_mk2")]=0x43FD595B,
         [GetHashKey("weapon_smg_mk2")]=0x7BC4CDDC,
     },
-    flashlight_large={   
+    flashlight_large={
         [GetHashKey("weapon_assaultrifle")]=0x7BC4CDDC,
         [GetHashKey("weapon_carbinerifle")]=0x7BC4CDDC,
         [GetHashKey("weapon_advancedrifle")]=0x7BC4CDDC,
@@ -7306,7 +7306,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_carbinerifle_mk2")]=0x49B2945,
         [GetHashKey("weapon_smg")]=0x3CC6BA57,
     },
-    scope_2={   
+    scope_2={
         [GetHashKey("weapon_combatpdw")]=0xFFFFFFFFAA2C45B4,
         [GetHashKey("weapon_advancedrifle")]=0xFFFFFFFFAA2C45B4,
         [GetHashKey("weapon_bullpuprifle")]=0xFFFFFFFFAA2C45B4,
@@ -7316,7 +7316,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_bullpuprifle_mk2")]=0x3F3C8181,
         [GetHashKey("weapon_combatmg_mk2")]=0x3F3C8181,
     },
-    scope_3={   
+    scope_3={
         [GetHashKey("weapon_carbinerifle")]=0xFFFFFFFFA0D89C42,
         [GetHashKey("weapon_specialcarbine")]=0xFFFFFFFFA0D89C42,
         [GetHashKey("weapon_combatmg")]=0xFFFFFFFFA0D89C42,
@@ -7327,7 +7327,7 @@ local weapon_upgrades={
         [GetHashKey("weapon_combatmg_mk2")]=0xFFFFFFFFC66B6542,
         [GetHashKey("weapon_marksmanrifle_mk2")]=0xFFFFFFFFC66B6542,
     },
-    scope_advanced={   
+    scope_advanced={
         --[GetHashKey("weapon_heavysniper")]=0xFFFFFFFFBC54DA77,
         [GetHashKey("weapon_sniperrifle")]=0xFFFFFFFFBC54DA77,
         --[GetHashKey("weapon_heavysniper_mk2")]=0xFFFFFFFFBC54DA77,
@@ -8003,7 +8003,7 @@ local pickups_objects={
 [2085005315]={"alcohol",3}, --piswasser 12 bottles dull white
 [1661171057]={"alcohol",3}, --piswasser 12 bottles dull white 2
 [-259124142]={"alcohol",3}, --biarn... black green 12
-[898161667]={"alcohol",3}, --jackey's box dark blue 12 
+[898161667]={"alcohol",3}, --jackey's box dark blue 12
 [-1902841705]={"alcohol",3}, --logger 12
 [-1699929937]={"alcohol",3}, --benedict
 [-1551002089]={"alcohol",4}, --16 alcohol bottles
@@ -8032,7 +8032,7 @@ local pickups_objects={
 [-54719154]={"food",10,"canfood",7,exp=0.02}, -- shop 30 canned and fod on low
 [-220235377]={"soda",7,exp=0.02}, -- shop 40 soda
 [643522702]={"alcohol",7,exp=0.02}, -- shop 40 alcohol
-[1437777724]={"food",7,exp=0.02}, -- shop bread 
+[1437777724]={"food",7,exp=0.02}, -- shop bread
 [-532065181]={"food",6,"chemicals",6,exp=0.02}, -- food and chem
 [756199591]={"food",3}, -- shop gums
 [2067313593]={"food",4}, -- shop long gums
@@ -8111,7 +8111,7 @@ local pickups_objects={
 [-1020100884]={"chemicals",20}, --tatoo norm 3 floor corner
 
 --Tradeable PIckups
-[-305885281]={"weed",-3}, --weed small 
+[-305885281]={"weed",-3}, --weed small
 [452618762]={"weed",-6}, --weed high
 [-445408901]={"policedocs",1}, --sheriff PAPERS docs
 [-1130190827]={"bandits_records",1}, --plastic thing with lists
@@ -8442,7 +8442,7 @@ local function give_item_to_inventory(add_name,add_amount,anyway)
             -- end
                     -- -- if HasPedGotWeapon(ped,hash) then
                         -- -- print("you now have weapon")
-                        
+
                         -- -- return true
                     -- -- else print("failed to give weapon")
                         -- -- GiveWeaponToPed(ped, hash, 1, false, true)
@@ -8509,16 +8509,16 @@ local function use_weapon_upgrade(upgradename)
 						end
 					end
 				end
-				
+
 				local weaponslotininventory=get_inventory_item_slot(weaponnameininventory)
 				if weaponslotininventory==nil then
 					SimpleNotification("Can't find right weapon in inventory.")
 					return false
 				end
-				
+
 				--SimpleNotification("Old weapon: "..weaponnameininventory)
                 GiveWeaponComponentToPed(myped,myweapon, hash)
-				
+
 				for k,v in pairs(existing) do
 					if HasPedGotWeaponComponent(myped, myweapon, v) or give_item_to_inventory(k,1) then
 						existing[k]=nil
@@ -8545,7 +8545,7 @@ local function use_weapon_upgrade(upgradename)
 				end
 				player[slot]=weaponnameininventory
 				--SimpleNotification("New weapon: "..weaponnameininventory)
-				
+
 				if not_enough_space then
 					local leftovers=existing
 					Citizen.CreateThread(function()
@@ -8816,17 +8816,17 @@ local function check_clothes(pped) if disable_changing_clothes then return true 
 			else
 				ClearPedProp(pped,0)
 			end
-			if player.face.hair~=nil then 
-				override[2]={var=player.face.hair-1,tex=1-1} 
+			if player.face.hair~=nil then
+				override[2]={var=player.face.hair-1,tex=1-1}
 			end
 			if player.mask and masks[player.mask].removehair then
 				override[2]={var=1-1,tex=1-1}
-			end				
+			end
 			if player.hat and hats[player.hat].removehair then
 				override[2]={var=1-1,tex=1-1}
 			end
 		end
-        
+
         -- for i=0,11 do
             -- local var,tex
             -- if override[i] then
@@ -8858,7 +8858,7 @@ local function check_clothes(pped) if disable_changing_clothes then return true 
                     -- newtex=tex
                 -- end
             -- end
-            
+
             -- if newvar or newtex then
                 -- SetPedComponentVariation(pped,i,(newvar or oldvar),(newtex or oldtex),0)
             -- end
@@ -8882,29 +8882,29 @@ local function check_clothes(pped) if disable_changing_clothes then return true 
 					pf.skin1,pf.skin2,0,
 					pf.mixshape,pf.mixskin,0.0,
 					false)
-					
+
 					local facialhair=pf.facialhair
 					if facialhair<0 then facialhair=255 end
 					SetPedHeadOverlay(pped,1,facialhair,1.0)
-					
+
 					SetPedHeadOverlay(pped,2,pf.eyebrows,1.0)
-					
+
 					local ageing=pf.ageing
 					if ageing<0 then ageing=255 end
 					SetPedHeadOverlay(pped,3,ageing,pf.ageingopacity)
-					
+
 					local sundamage=pf.sundamage
 					if sundamage<0 then sundamage=255 end
 					SetPedHeadOverlay(pped,7,sundamage,1.0)
-					
+
 					local facecolor=pf.haircolor
-					
+
 					if facecolor>18 then facecolor=1 end
 					SetPedHeadOverlayColor(pped,1, 1, facecolor, facecolor)
 					SetPedHeadOverlayColor(pped,2, 1, facecolor, facecolor)
-					
-					
-					
+
+
+
 					pf.curface1=pf.face1
 					pf.curface2=pf.face2
 				end
@@ -8943,8 +8943,8 @@ local function check_clothes(pped) if disable_changing_clothes then return true 
                     newtex=tex
                 end
             end
-            
-            
+
+
             if newvar or newtex then
                 if not newvar then
                     if type(var)=="table" then
@@ -9041,8 +9041,8 @@ local function change_clothes(ped,s) --if true then return true end
                     newtex=tex
                 end
             end
-            
-            
+
+
             if newvar or newtex then
                 if not newvar then
                     if type(var)=="table" then
@@ -9108,7 +9108,7 @@ local function send_player_loot()
         local v=inventory[i]
         loot[v.item]=v.amount
     end
-    
+
     TriggerServerEvent("updateplayerloot",loot)
 end
 
@@ -9143,35 +9143,35 @@ AddEventHandler("playerSpawned",function()
     player.bleeding=0
 	local faceid=math.random(0,23)
 	if faceid>20 then faceid=faceid+22 end
-	
+
 	local faceid2=math.random(20,41)
-	
+
 	local skinid=math.random(0,51) if skinid>11 then skinid=0 end
 	local skinid2=math.random(0,51) if skinid2>11 then skinid2=0 end
-	
+
 	player.face.face1=faceid
 	player.face.face2=faceid2
 	player.face.skin1=skinid
 	player.face.skin2=skinid2
 	player.face.mixshape=math.random(0,66)*0.01
 	player.face.mixskin=math.random(0,100)*0.01
-	
+
 	player.face.hair=math.random(1,16)
 	player.face.haircolor=math.random(1,58)
-	
+
 	player.face.facialhair=math.random(-18,18)
 	player.face.eyebrows=math.random(1,33)
 	player.face.facialhairopacity=math.random(65,100)*0.01
-	
+
 	player.face.ageing=math.random(-10,14)
 	player.face.ageingopacity=math.random(0,100)*0.01
 	player.face.sundamage=math.random(-30,10)
-	
+
     SetPedRelationshipGroupHash(ped,GetHashKey("NEUTRAL"))
     StopAudioScenes()
     StartAudioScene("CHARACTER_CHANGE_IN_SKY_SCENE")
     SetPedRelationshipGroupHash(ped,GetHashKey("NEUTRAL"))
-    
+
 
     local x=GetResourceKvpFloat("x")
     local y=GetResourceKvpFloat("y")
@@ -9198,11 +9198,11 @@ AddEventHandler("playerSpawned",function()
             SetModelAsNoLongerNeeded(vehmodel)
         end
     end
-    
+
     if lsm_random_spawn==1 then
-        
+
         --SetPedRandomComponentVariation(ped)
-        
+
         local animdict="missarmenian2lamar_idles"
         local anim="idle_look_behind_left"
         RequestAnimDict(animdict)
@@ -9210,10 +9210,10 @@ AddEventHandler("playerSpawned",function()
         local duration=math.floor(GetAnimDuration(animdict, anim)*1000+.5)
         --TaskPlayAnim(PlayerPedId(), animdict, anim, 1.0, 1.0, duration, 0, .0, false, false, false);
         -- missarmenian2lamar_idles idle_look_behind_left
-        
-        
+
+
         -- local model=GetEntityModel(ped)
-        
+
         -- if model==GetHashKey("S_M_Y_HWayCop_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_NIGHTSTICK"), 0, false, true) end
         -- if model==GetHashKey("A_M_Y_DownTown_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_BAT"), 0, false, true) end
         -- if model==GetHashKey("A_M_Y_Cyclist_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_SWITCHBLADE"), 0, false, true) end
@@ -9221,7 +9221,7 @@ AddEventHandler("playerSpawned",function()
         -- if model==GetHashKey("S_M_Y_Fireman_01") then GiveWeaponToPed(ped, GetHashKey(""), 0, false, true) end
         -- if model==GetHashKey("S_M_M_UPS_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_BATTLEAXE"), 0, false, true) end
         -- if model==GetHashKey("A_F_Y_EastSA_01") then GiveWeaponToPed(ped, GetHashKey("WEAPON_KNIFE"), 0, false, true) end
-        
+
     elseif lsm_random_spawn==0 then
         local x,y,z=GetResourceKvpFloat("x"),GetResourceKvpFloat("y"),GetResourceKvpFloat("z")
         if x and y and z then SetEntityCoords(ped,x,y,z) end
@@ -9249,11 +9249,11 @@ AddEventHandler("playerSpawned",function()
 		SetPedArmour(ped,GetResourceKvpInt("armour"))
 		SetResourceKvpInt("armour",0)
 	end
-	
+
 	load_save_event()
-	
+
     disable_kvp_saving()
-    
+
     send_player_loot()
 end)
 
@@ -9262,7 +9262,7 @@ Citizen.CreateThread(function()
         EnableDispatchService(i,false)
     end
     NetworkSetTalkerProximity(50.0)
-    
+
     local sniperrifles={
     [GetHashKey("weapon_sniperrifle")]=true,
     [GetHashKey("weapon_marksmanrifle")]=true,
@@ -9270,7 +9270,7 @@ Citizen.CreateThread(function()
     [GetHashKey("weapon_heavysniper")]=true,
     [GetHashKey("weapon_heavysniper_mk2")]=true,
     }
-    
+
     SetPoliceRadarBlips(false)
     ResetAiMeleeWeaponDamageModifier()
     ResetAiWeaponDamageModifier()
@@ -9298,7 +9298,7 @@ Citizen.CreateThread(function()
         --DisableRadarThisFrame()
 
         DisablePoliceReports()
-        
+
         --local density=0.01
         --SetPedDensityMultiplierThisFrame(density)
         --SetScenarioPedDensityMultiplierThisFrame(density,density)
@@ -9381,7 +9381,7 @@ Citizen.CreateThread(function()
     local size=0.3
     local alpha=200
     local showhints=true
-    
+
     RegisterCommand("hints",function(source,args,raw)
         showhints=not showhints
     end,false)
@@ -9496,7 +9496,7 @@ Citizen.CreateThread(function()
                 loop,veh=FindNextVehicle(handle)
             end
             EndFindVehicle(handle)
-            
+
             handle,ped=FindFirstPed()
             loop=(handle~=-1)
 			local corpse_hint_shown=false --to prevent hint spam
@@ -9519,7 +9519,7 @@ Citizen.CreateThread(function()
                 loop,ped=FindNextPed(handle)
             end
             EndFindPed(handle)
-            
+
             handle,obj=FindFirstObject()
             loop=(handle~=-1)
             while loop do
@@ -9546,7 +9546,7 @@ Citizen.CreateThread(function()
                                         WriteText(font,{"~g~E ~s~to search for items",name1},size,255,255,255,alpha,x,y)
                                         WriteHint(2,{messages.press_e_to_seach_for_items,name1})
                                     else
-										SetTextCentre(true)	
+										SetTextCentre(true)
                                         WriteText(font,{"~g~E ~s~to pick up ~g~~a~",name1},size,255,255,255,alpha,x,y)
                                         WriteHint(2,{messages.press_e_to_pickup,name1})
                                     end
@@ -9774,7 +9774,7 @@ Citizen.CreateThread(function()
 						end
 					end
 					if (rand%100)<=70 then
-						DecorSetBool(veh,"zm_looted",true) 
+						DecorSetBool(veh,"zm_looted",true)
 					end
 					if (rand&800)~=0 then
 						--ExplodeVehicle(veh,false,true)
@@ -9958,7 +9958,7 @@ local hudcolor={}
 	hudcolor.new.g=168
 	hudcolor.new.b=195
 	hudcolor.new.a=225
-	
+
 Citizen.CreateThread(function()
     local color=hudcolor
     while true do Wait(0)
@@ -9985,11 +9985,11 @@ Citizen.CreateThread(function()
             end
             -- --DrawRect(0.927,0.9,0.0005,0.0975,color.barlight,color.barlight,color.barlight,200)
             -- --DrawRect(0.923,0.9,0.0005,0.0975,color.bardark,color.bardark,color.bardark,200)
-        
+
             DrawRect(0.957,0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a) -- hydration bkg
 			DrawSprite("lsm", "gradient", 0.957,0.9,0.013,0.175,0.0, 255, 255, 255, 255)
             DrawRect(0.957,0.9+0.000975*0.5*(100-player.hydration),0.001,0.000975*player.hydration,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) -- hydration bar
-            
+
             DrawRect(0.975,0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a) -- saturation bkg
 			DrawSprite("lsm", "gradient", 0.975,0.9,0.013,0.175,0.0, 255, 255, 255, 255)
             DrawRect(0.975,0.9+0.000975*0.5*(100-player.saturation),0.001,0.000975*player.saturation,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) -- saturation bar
@@ -10000,7 +10000,7 @@ Citizen.CreateThread(function()
                 end
                 DrawSprite("lsm", "hydration", 0.957,0.97,0.0166666667*0.7,0.0296296296*0.7,0.0, 255, 255, 255, 255)
                 DrawSprite("lsm", "saturation", 0.975,0.97,0.0166666667*0.7,0.0296296296*0.7,0.0, 255, 255, 255, 255)
-						-- DrawSprite("lsm", "unarmed", 
+						-- DrawSprite("lsm", "unarmed",
 						-- 0.2,
 						-- 0.95,
 						-- inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
@@ -10015,17 +10015,17 @@ Citizen.CreateThread(function()
 							-- weapon_hash=weapons[player[v]]
 						-- end
 						-- if GetSelectedPedWeapon(myped)==weapon_hash then
-							-- DrawSprite("lsm", "selected_item", 
+							-- DrawSprite("lsm", "selected_item",
 							-- x,
 							-- 0.95,
 							-- inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
 						-- else
-							-- -- DrawSprite("lsm", "item", 
+							-- -- DrawSprite("lsm", "item",
 							-- -- x,
 							-- -- 0.95,
 							-- -- inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
 						-- end
-						-- DrawItem("lsm", player[v], 
+						-- DrawItem("lsm", player[v],
 						-- x,
 						-- 0.95,
 						-- inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
@@ -10047,13 +10047,13 @@ Citizen.CreateThread(function()
             else
                 local inv_hud={}
                 local name
-                
-                
+
+
                 -- DrawSprite("lsm", "pc_mouse_middle", 0.875,0.925,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
                 -- DrawSprite("lsm", "inventory", 0.875,0.975,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
-                
+
                 --local x=0.90-i*0.05
-                
+
                 if inventory.total~=0 then
                     local temp_scale=1
                     if (inventory.total>=15) then
@@ -10064,17 +10064,17 @@ Citizen.CreateThread(function()
                             local r_color=255
                             local g_color=255
                             if masks[inventory[i].item] then
-                                if player.mask==inventory[i].item then 
-                                    r_color=50 g_color=150 
+                                if player.mask==inventory[i].item then
+                                    r_color=50 g_color=150
                                 end
                             end
                             if hats[inventory[i].item] then
-                                if player.hat==inventory[i].item then 
-                                    r_color=50 g_color=150 
+                                if player.hat==inventory[i].item then
+                                    r_color=50 g_color=150
                                 end
                             end
-                            if player.backpack and inventory[i].item=="backpack" then 
-                                r_color=50 g_color=150 
+                            if player.backpack and inventory[i].item=="backpack" then
+                                r_color=50 g_color=150
                             end
                             if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
                             if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
@@ -10084,17 +10084,17 @@ Citizen.CreateThread(function()
                             if inventory[i].item=="clothes_"..s and player.suit==s then r_color=50 g_color=150 end
                             end
                             local x=(inventory.total+1-i-i)*.025*temp_scale+.5
-							
+
 							DrawItem("lsm", inventory[i].item, x,0.90+0.02,
                             inv_sml_x*temp_scale,
                             inv_sml_y*temp_scale,
                             0.0, r_color,g_color, 255, highlight)
-                            
+
                             SetTextCentre(true)
                             if inventory[i].amount~=nil then
                                 WriteText(7,{"~1~",inventory[i].amount},0.5*temp_scale,160,160,160,highlight,x,0.93+0.02)
                             end
-                            
+
                             name=inventory[i].item
                             if name~=nil then
                                 SetTextCentre(true)
@@ -10108,17 +10108,17 @@ Citizen.CreateThread(function()
                             local r_color=255
                             local g_color=255
                             if masks[inventory[i].item] then
-                                if player.mask==inventory[i].item then 
-                                    r_color=50 g_color=150 
+                                if player.mask==inventory[i].item then
+                                    r_color=50 g_color=150
                                 end
                             end
                             if hats[inventory[i].item] then
-                                if player.hat==inventory[i].item then 
-                                    r_color=50 g_color=150 
+                                if player.hat==inventory[i].item then
+                                    r_color=50 g_color=150
                                 end
                             end
-                            if player.backpack and inventory[i].item=="backpack" then 
-                                r_color=50 g_color=150 
+                            if player.backpack and inventory[i].item=="backpack" then
+                                r_color=50 g_color=150
                             end
                             if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
                             if inventory[i].item=="radio" and player.radio then r_color=50 g_color=150 end
@@ -10128,18 +10128,18 @@ Citizen.CreateThread(function()
                             if inventory[i].item=="clothes_"..s and player.suit==s then r_color=50 g_color=150 end
                             end
                             local x=(inventory.total+1-i-i)*.025*temp_scale+.5
-                            DrawSprite("lsm", 
-                            inventory[i].item, 
+                            DrawSprite("lsm",
+                            inventory[i].item,
                             x,0.90,
                             inv_big_x*temp_scale,
                             inv_big_y*temp_scale,
                             0.0, r_color,g_color, 255, highlight)
-                            
+
                             SetTextCentre(true)
                             if inventory[i].amount~=nil then
                                 WriteText(7,{"~1~",inventory[i].amount},0.75*temp_scale,255,255,255,highlight,x,0.945)
                             end
-                            
+
                             name=inventory[i].item
                             if name~=nil then
                                 SetTextCentre(true)
@@ -10150,48 +10150,48 @@ Citizen.CreateThread(function()
             end
         elseif inventory.highlight>0 then
             --DrawRect(0.5,0.5,0.5,0.6,0,0,0,255) -- black header
-            
+
             --new inv block
                 local inventory_up_y=0.28
                 local inventory_up_x_left=0.57
                 local inventory_up_x_right=0.731
                 local inventory_font_size=0.3
-                
+
                 local inventory_down_y_name=0.69
                 local inventory_down_y_desc=0.715
                 local inventory_down_x_left=0.57
                 local inventory_down_x_right=0.69
-                
+
                 local inventory_grid_left=inventory_up_x_left
                 local inventory_grid_right=inventory_up_x_right
                 local inventory_grid_up=0.35
                 local inventory_grid_down=0.7
                 local inventory_grid_dist_x=0.042
                 local inventory_grid_dist_y=0.070
-                
-                
+
+
                 local inventory_grid_desc_pos_x=0.715
                 local inventory_grid_desc_pos_y=0.745
-                
+
                 local inventory_scroll_bkg_x=0.5627
                 local inventory_scroll_bkg_y=0.49
                 local inventory_scroll_bkg_size_x=0.004
                 local inventory_scroll_bkg_size_y=0.342
                 local inventory_scroll_y=inventory_scroll_bkg_y
                 local inventory_scrollsize_x=0.003
-                
+
             -----
             if not HasStreamedTextureDictLoaded("lsm") then
                 RequestStreamedTextureDict("lsm")
             else
                 DrawSprite("lsm","inventory_background",.65,.5,0.25,0.7,0.0, 255, 255, 255, 255)
-            
+
                 --WriteHint("invscrl: "..inventory.scroll)
                 local totalscrolls=math.max(0,math.ceil((inventory.total-(inventory.rows*inventory.lines))/inventory.rows))
                 --WriteHint("invscrlmax: "..totalscrolls)
                 if totalscrolls>0 then
                     DrawRect(inventory_scroll_bkg_x,inventory_scroll_bkg_y,inventory_scroll_bkg_size_x,inventory_scroll_bkg_size_y,0,0,0,255)
-                    
+
                     local newscrollsizey=inventory_scroll_bkg_size_y/(totalscrolls+1)
                     local uppos=inventory_scroll_bkg_y-inventory_scroll_bkg_size_y/2+newscrollsizey/2
                     local lowpos=inventory_scroll_bkg_y+inventory_scroll_bkg_size_y/2-newscrollsizey/2
@@ -10220,7 +10220,7 @@ Citizen.CreateThread(function()
 					WriteText(2,{"~c~Faction ~s~~a~",relationship_name[player.faction]},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y-0.02)
 				else
 					WriteText(2,{"~c~Faction ~s~None",},inventory_font_size,255,255,255,255,inventory_up_x_left,inventory_up_y-0.02)
-				end				
+				end
 				SetTextRightJustify(true)
                 SetTextWrap(inventory_up_x_left,inventory_up_x_right)
 				WriteText(4,{"~c~REPUTATION ~s~~1~",player.reputation},inventory_font_size,255,255,255,255,inventory_up_x_right,inventory_up_y-0.02)
@@ -10229,9 +10229,9 @@ Citizen.CreateThread(function()
                 local g_b=255
                 if (player.weight>player.maxweight) then g_b=100 end
                 WriteText(4,{"~c~WEIGHT ~s~~1~~c~/~1~ KG",player.weight,player.maxweight},inventory_font_size,255,g_b,g_b,255,inventory_up_x_right,inventory_up_y)
-                
+
                 local curitem=inventory.current
-                
+
                 DrawSprite("lsm", "selected_item", inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
                 if inventory[curitem] then
                     local main_item_name=DrawItem("lsm", inventory[curitem].item, inventory_grid_desc_pos_x,inventory_grid_desc_pos_y,inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
@@ -10239,7 +10239,7 @@ Citizen.CreateThread(function()
                     if droppingitem then
                         if item_names[main_item_name]~=nil then
                             WriteText(2,{"drop ~1~ ~a~",amounttodrop,english_name},inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
-                        else 
+                        else
                             WriteText(2,{"drop ~1~ ~r~ERROR ~s~Wrong item name",amounttodrop},inventory_font_size,255,255,255,255,inventory_down_x_left,inventory_down_y_name)
                         end
                     else
@@ -10258,7 +10258,7 @@ Citizen.CreateThread(function()
                     SetTextWrap(inventory_down_x_left,inventory_down_x_right)
                     WriteText(2,messages.nothing_selected,inventory_font_size,155,155,155,155,inventory_down_x_left,inventory_down_y_desc)
                 end
-                
+
                 local number
                 local total=(inventory.lines*inventory.rows)-1
                 if inventory.scroll>0 then
@@ -10275,11 +10275,11 @@ Citizen.CreateThread(function()
                 -- end
                 for i=math.max(1,number),math.min(number+total,inventory.total) do
                     local sprite
-                    if i==inventory.current then 
-                        sprite="selected_item" 
-                        if player.hat==inventory[i].item 
-                        or player.mask==inventory[i].item 
-                        or player.glasses==inventory[i].item 
+                    if i==inventory.current then
+                        sprite="selected_item"
+                        if player.hat==inventory[i].item
+                        or player.mask==inventory[i].item
+                        or player.glasses==inventory[i].item
                         or inventory[i].item=="brasscatcher" and player.brasscatcher
                         or inventory[i].item=="radio" and player.radio
                         or inventory[i].item=="bodyarmor" and player.bodyarmor
@@ -10294,11 +10294,11 @@ Citizen.CreateThread(function()
 								sprite="selected_equipped_item"
 							end
                         end
-                    else 
-                        sprite="item" 
-                        if player.hat==inventory[i].item 
-                        or player.mask==inventory[i].item 
-                        or player.glasses==inventory[i].item 
+                    else
+                        sprite="item"
+                        if player.hat==inventory[i].item
+                        or player.mask==inventory[i].item
+                        or player.glasses==inventory[i].item
                         or inventory[i].item=="brasscatcher" and player.brasscatcher
                         or inventory[i].item=="radio" and player.radio
                         or inventory[i].item=="bodyarmor" and player.bodyarmor
@@ -10317,16 +10317,16 @@ Citizen.CreateThread(function()
                     local inv_i=i-(inventory.scroll*inventory.rows)
                     local x=(inventory_grid_left+(inv_new.item_scl_x/2))+(((inv_i-1)%inventory.rows)*inventory_grid_dist_x)
                     local y=inventory_grid_up+(math.floor((inv_i-1)/inventory.rows)*inventory_grid_dist_y)
-                    DrawSprite("lsm", sprite, 
+                    DrawSprite("lsm", sprite,
                     x,
                     y,
                     inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
-					
-                    DrawItem("lsm", inventory[i].item, 
+
+                    DrawItem("lsm", inventory[i].item,
                     x,
                     y,
                     inv_new.item_scl_x,inv_new.item_scl_y,0.0,255,255,255,255)
-                    
+
                     SetTextRightJustify(true)
                     SetTextWrap(
                     x-(inv_new.item_scl_x/2),
@@ -10390,34 +10390,34 @@ Citizen.CreateThread(function()
                     WriteText(4,"Government",0.5,155,155,155,255,pos_x-((scale_x/2)-0.045),pos_y-0.04-(scale_y*.5))
                 end
                 WriteText(4,tostring(player.reputation),0.5,155,155,155,255,pos_x-((scale_x/2)-0.125),pos_y-0.04-(scale_y*.5))
-                
-                
+
+
                 DrawRect(pos_x,pos_y,scale_x,scale_y,0,0,0,175) -- transparent inv background
-                
+
                 if inventory.total>inventory.rows*inventory.lines or inventory.scroll~=0 then
                     local scroll_scale_x=(scale_x/40.0)
                     local scroll_pos_x=pos_x+(scale_x/2.0)+(scroll_scale_x/2)
                     DrawRect(scroll_pos_x,pos_y,scroll_scale_x,scale_y,0,0,0,175) -- inv scroll bkg
-                    
-                    
+
+
                     local scroll_bar_scale_x=scroll_scale_x*0.5 --inventory.scroll inventory.total
                     local scroll_bar_scale_y=scale_y*0.99
-                    
-                    
+
+
                     local used_lines=math.max(math.ceil(inventory.total/inventory.rows),inventory.scroll+inventory.lines)
                     local viewable_percentage=inventory.lines/used_lines
                     --local free_space=1-viewable_percentage
-                    
+
                     local scroll_pos_y=pos_y-(scroll_bar_scale_y*(inventory.scroll/used_lines+(viewable_percentage-1)*.5))
                     scroll_bar_scale_y=scroll_bar_scale_y*viewable_percentage
-                    
-                    
+
+
                     -- inventory.total
                     -- inventory.scroll*inventory.rows
                     -- inventory.lines*inventory.rows
-                    
+
                     DrawRect(scroll_pos_x,scroll_pos_y,scroll_bar_scale_x,scroll_bar_scale_y,75,75,75,255) -- inv scroll bar
-                    
+
                 end
                 for i=0,inventory.rows do
                     DrawRect(pos_x-(scale_x*.5)+i*(scale_x/inventory.rows),pos_y,v_line_width,scale_y,75,75,75,255)
@@ -10433,15 +10433,15 @@ Citizen.CreateThread(function()
                             if name~=nil then
                                 local r_color=255
                                 local g_color=255
-                                
+
                                 if masks[inventory[i].item] then
-                                    if player.mask==inventory[i].item then 
-                                        r_color=50 g_color=150 
+                                    if player.mask==inventory[i].item then
+                                        r_color=50 g_color=150
                                     end
                                 end
                                 if hats[inventory[i].item] then
-                                    if player.hat==inventory[i].item then 
-                                        r_color=50 g_color=150 
+                                    if player.hat==inventory[i].item then
+                                        r_color=50 g_color=150
                                     end
                                 end
                                 if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
@@ -10451,23 +10451,23 @@ Citizen.CreateThread(function()
                                 if s then
                                 if inventory[i].item=="clothes_"..s and player.suit==s then r_color=50 g_color=150 end
                                 end
-                                
+
                                 local x=pos_x+scale_x*.5-((math.floor((i-1)%inventory.rows)+.5)*(scale_x/inventory.rows))
                                 local y=pos_y+scale_y*.5-((math.floor((i-1)/inventory.rows)-inventory.scroll+.5)*(scale_y/inventory.lines))
                                 DrawItem("lsm", inventory[i].item, x,y,
                                 inv_sml_x,
                                 inv_sml_y,
-                                0.0, 
-                                r_color, 
-                                g_color, 
-                                255, 
+                                0.0,
+                                r_color,
+                                g_color,
+                                255,
                                 255)
-                                
+
                                 SetTextCentre(true)
                                 if inventory[i].amount~=nil then
                                     WriteText(4,{"~1~",inventory[i].amount},0.5,100,100,100,255,x,y+0.025)
                                 end
-                            
+
                                 SetTextCentre(true)
                                 WriteText(4,(get_name_from_item_name(name)),0.4,100,100,100,255,x,y-0.06)
                             end
@@ -10482,13 +10482,13 @@ Citizen.CreateThread(function()
                                 local r_color=255
                                 local g_color=255
                                 if masks[inventory[i].item] then
-                                    if player.mask==inventory[i].item then 
-                                        r_color=50 g_color=150 
+                                    if player.mask==inventory[i].item then
+                                        r_color=50 g_color=150
                                     end
                                 end
                                 if hats[inventory[i].item] then
-                                    if player.hat==inventory[i].item then 
-                                        r_color=50 g_color=150 
+                                    if player.hat==inventory[i].item then
+                                        r_color=50 g_color=150
                                     end
                                 end
                                 if inventory[i].item=="brasscatcher" and player.brasscatcher then r_color=50 g_color=150 end
@@ -10503,10 +10503,10 @@ Citizen.CreateThread(function()
                                 DrawItem("lsm", inventory[i].item, x,y,
                                 inv_big_x,
                                 inv_big_y,
-                                0.0, 
+                                0.0,
                                 r_color,
-                                g_color, 
-                                255, 
+                                g_color,
+                                255,
                                 255)
                                 if item_descriptions[inventory[i].item] then
                                     local desc_tex_x=0.73
@@ -10514,21 +10514,21 @@ Citizen.CreateThread(function()
                                     DrawItem("lsm", inventory[i].item, desc_tex_x,desc_tex_y,
                                     inv_big_x,
                                     inv_big_y,
-                                    0.0, 
+                                    0.0,
                                     r_color,
-                                    g_color, 
-                                    255, 
+                                    g_color,
+                                    255,
                                     255)
                                     SetTextRightJustify(true)
                                     SetTextWrap(desc_tex_x-inv_big_x/2,desc_tex_x+inv_big_x/2)
                                     WriteText(4,item_descriptions[inventory[i].item],0.4,150,150,150,255,desc_tex_x,desc_tex_y+0.075)
                                 end
-                                
+
                                 SetTextCentre(true)
                                 if inventory[i].amount~=nil then
                                     WriteText(4,{"~1~",inventory[i].amount},0.5,255,255,255,255,x,y+0.025)
                                 end
-                            
+
                                 SetTextCentre(true)
                                 WriteText(4,(get_name_from_item_name(name)),0.4,255,255,255,255,x,y-0.06)
                             end
@@ -10651,7 +10651,7 @@ Citizen.CreateThread(function()
     while true do Wait(0)
         local additional_weight={
         backpack=30.0,
-        
+
         banditauthority=15.0,
         banditgoon=10.0,
         banditmercenary=20.0,
@@ -10683,9 +10683,9 @@ Citizen.CreateThread(function()
         scavenger=10.0,
         trucker=5.0,
         }
-        
+
         local additionalweight=0.0
-        
+
         if player.backpack then
             additionalweight=additionalweight+additional_weight.backpack
         end
@@ -10693,7 +10693,7 @@ Citizen.CreateThread(function()
             additionalweight=additionalweight+additional_weight[player.suit]
         end
         player.maxweight=player.standardweight+additionalweight
-        
+
         local sumweight=0.0
         if inventory.total>0 then
             local itemweight
@@ -10735,9 +10735,9 @@ Citizen.CreateThread(function()
             end
             player.weight=sumweight
 
-                    -- if inventory[i].item=="clothes_"..player.suit or inventory[i].item==player.hat or inventory[i].item==player.mask then 
+                    -- if inventory[i].item=="clothes_"..player.suit or inventory[i].item==player.hat or inventory[i].item==player.mask then
                         -- sumweight=sumweight+(itemweight*(inventory[i].amount-1))
-                    -- elseif inventory[i].item=="bodyarmor" and player.bodyarmor then 
+                    -- elseif inventory[i].item=="bodyarmor" and player.bodyarmor then
                         -- sumweight=sumweight+(itemweight*(inventory[i].amount-1))
                     -- elseif player.backpack and inventory[i].item=="duffelbag" then
                         -- sumweight=sumweight+(itemweight*(inventory[i].amount-1))
@@ -10773,12 +10773,12 @@ end)
 --stats management
 Citizen.CreateThread(function()
     while true do Wait(9000)
-        if player.reputation<-100 then 
+        if player.reputation<-100 then
 			player.reputation=-100
-		elseif player.reputation>100 then 
-			player.reputation=100 
+		elseif player.reputation>100 then
+			player.reputation=100
 		end
-		
+
         local pped=PlayerPedId()
         if player.hydration>=0.01 then
             player.hydration=player.hydration-0.63
@@ -10799,7 +10799,7 @@ Citizen.CreateThread(function()
 		if player.hydration>75.0 and player.saturation>75.0 then
 			SetEntityHealth(pped,GetEntityHealth(pped)+1)
 		end
-        
+
         if player.drunk>0 then
             player.drunk=player.drunk-0.18
             SetGameplayCamShakeAmplitude(player.drunk)
@@ -10821,8 +10821,8 @@ Citizen.CreateThread(function()
         if IsPedInAnyVehicle(pped) then
             local pveh=GetVehiclePedIsIn(pped)
 			-- WriteHint(10,{"RPM: ~1~",GetVehicleCurrentRpm(pveh)})
-            -- WriteText(7,"RPM: "..GetVehicleCurrentRpm(pveh),0.4,255,255,255,255,0.7,0.500) 
-            -- WriteText(7,"Fuel: "..GetVehicleFuelLevel(pveh),0.4,255,255,255,255,0.7,0.525) 
+            -- WriteText(7,"RPM: "..GetVehicleCurrentRpm(pveh),0.4,255,255,255,255,0.7,0.500)
+            -- WriteText(7,"Fuel: "..GetVehicleFuelLevel(pveh),0.4,255,255,255,255,0.7,0.525)
             -- WriteText(7,"Oil: "..GetVehicleOilLevel(pveh),0.4,255,255,255,255,0.7,0.550)
             if --[[DecorExistOn(pveh,"scorched") or]] not DecorExistOn(pveh,"zm_fuel") then
                 SetVehicleFuelLevel(pveh,0.0)
@@ -10920,7 +10920,7 @@ Citizen.CreateThread(function()
 						RemoveBlip(blip)
 					end
 				end
-				
+
 			end
 		else
 			NetworkSetTalkerProximity(50.0)
@@ -10998,21 +10998,21 @@ local function change_lines(talkingstate,npc)
     if talking_state=="Main" then --main dialogue
         if decorrand==0 then
             npc_lines={"Need something?",}
-        
+
             my_lines={"Where can I buy...",
             "Where can I sell...",
             "Where can I get...",
             "[Exit]",}
         else
             npc_lines={"Hey, stranger, could you help me?",}
-        
+
             my_lines={"What do you need?",
             "Where can I buy...",
             "Where can I sell...",
             "Where can I get...",
             "[Exit]",}
         end
-    elseif talking_state=="What do you need?" then 
+    elseif talking_state=="What do you need?" then
         quest_type=decorrand%3
         custom_ramdom_number=math.floor(decorrand/3)
         quest_type=0 --debug
@@ -11021,17 +11021,17 @@ local function change_lines(talkingstate,npc)
                 npc_lines={"I've "..pick_random({"left","hidden"})..pick_random({" my "," a "})..item_names[quest_item].." in "..pick_random({"a","my","that"}).." car"..
                 pick_random({" when all this happened"," the other day when I was searching for supplies"," when I met these bandits"})..
                 pick_random({" and now I'm afraid to return. ",". I'm not a fighter to go there again. ",". I think bandits might be scouting the area now. "})..
-                
+
                 (quest_description[quest_item] or "")..
-                
+
                 pick_random({"I need "..pick_random({"someone","you"}).." to go there are bring "..pick_random({"me ","my ","that ","the "})..item_names[quest_item].." back.",
                 "Could you bring "..pick_random({"me ","my ","that ","the "})..item_names[quest_item].." back?",
                 "I'd be "..pick_random({"nice","great","awesome"}).." if "..pick_random({"someone","you"}).." could bring "..pick_random({"me ","my ","that ","the "})..item_names[quest_item].." back"})..
-                
+
                 pick_random({" Don't worry, I'll pay good. We're talking about $"..npc_items_pricelist[quest_item]..".",
                 " I'll pay"..pick_random({" you "," "}).."$"..npc_items_pricelist[quest_item]..".",
                 " $"..npc_items_pricelist[quest_item].." is all I can suggest."})..
-                
+
                 pick_random({" So, what do you say?",
                 " Please, I really need"..pick_random({"my ","that ","the "})..item_names[quest_item]..".",
                 " Deal?",})
@@ -11043,7 +11043,7 @@ local function change_lines(talkingstate,npc)
             quest_item="alcohol"
             npc_lines={"owo 2"}
         end
-        
+
         my_lines={"Sure","No"}
     elseif talking_state=="Sure" or talking_state=="Deal" then
         print("quest_type="..quest_type)
@@ -11108,36 +11108,36 @@ local function change_lines(talkingstate,npc)
         "Where I can buy vehicle?",
         "Where I can buy food?",
         "[Back]",}
-    elseif talking_state=="Where I can buy ammo?" then 
+    elseif talking_state=="Where I can buy ammo?" then
         npc_lines={"I've heard that police at LSPD station sells ammunition.",}
         my_lines={"Thanks",
         "[Back]"}
-    elseif talking_state=="Where I can buy medicine?" then 
+    elseif talking_state=="Where I can buy medicine?" then
         npc_lines={"Don't know any outposts where anybody sells that stuff.",}
         my_lines={"Thanks",
         "[Back]"}
-    elseif talking_state=="Where I can buy gasoline?" then 
+    elseif talking_state=="Where I can buy gasoline?" then
         npc_lines={"There are few gas stations with people barricaded themselves inside, the may still have some, but I've heard they have",
         "problems with fuel too."}
         my_lines={"Thanks",
         "[Back]"}
-    elseif talking_state=="Where I can buy firearms?" then 
+    elseif talking_state=="Where I can buy firearms?" then
         npc_lines={"Government at LSPD station sells remains of arsenal, hoping someone will fight bandits.",}
         my_lines={"Thanks",
         "[Back]"}
-    elseif talking_state=="Where I can buy armor and gear?" then 
+    elseif talking_state=="Where I can buy armor and gear?" then
         npc_lines={"Don't know any outposts where anybody sells that stuff.",}
         my_lines={"Thanks",
         "[Back]"}
-    elseif talking_state=="Where I can buy vehicle?" then 
+    elseif talking_state=="Where I can buy vehicle?" then
         npc_lines={"Old Cult Camp have some people who might help you with vehicle, as long as you bring them all resources.",}
         my_lines={"Thanks",
         "[Back]"}
-    elseif talking_state=="Where I can buy food?" then 
+    elseif talking_state=="Where I can buy food?" then
         npc_lines={"If it's more or less big outpost - I'm sure you can find food there.",}
         my_lines={"Thanks",
         "[Back]"}
-    
+
     end
 end
 
@@ -11181,8 +11181,8 @@ Citizen.CreateThread(function()
         end
     end
         --local npcblips={}
-            
-            
+
+
     while false do Wait(0)
         local myped=PlayerPedId()
         local mypos=GetEntityCoords(myped)
@@ -11193,7 +11193,7 @@ Citizen.CreateThread(function()
             local handle,npc=FindFirstPed()
             local loop=(handle~=-1)
             while loop do
-                if (not IsPedAPlayer(npc)) 
+                if (not IsPedAPlayer(npc))
                 and GetPedType(npc)~=28 --animal
                 and DecorExistOn(npc,"questnpc")
                 then
@@ -11251,7 +11251,7 @@ Citizen.CreateThread(function()
                                 end
                                 local npc_rel_hash=GetPedRelationshipGroupHash(npc)
                                 WriteText(4,relationship_name[npc_rel_hash],0.7,255,255,255,255,0.33,0.145)
-                                
+
                                 if #npc_lines>0 then
                                     for i=1,#npc_lines do
                                         SetTextWrap(0.5-(0.45/2)+0.015,0.5+(0.45/2)-0.015)
@@ -11275,23 +11275,23 @@ Citizen.CreateThread(function()
                                     change_lines(talkingstate,npc)
                                     curline=1
                                 end
-                                if talking_state=="[Back]" then 
+                                if talking_state=="[Back]" then
                                     talking_state="Main"
                                     change_lines(talkingstate,npc)
                                     curline=1
-                                elseif talking_state=="Thanks" then 
+                                elseif talking_state=="Thanks" then
                                     talking_state="Main"
                                     change_lines(talkingstate,npc)
                                     curline=1
-                                elseif talking_state=="Sorry, but no" then 
+                                elseif talking_state=="Sorry, but no" then
                                     talking_state="Main"
                                     change_lines(talkingstate,npc)
                                     curline=1
-                                elseif talking_state=="No" then 
+                                elseif talking_state=="No" then
                                     talking_state="Main"
                                     change_lines(talkingstate,npc)
                                     curline=1
-                                elseif talking_state=="[Exit]" then 
+                                elseif talking_state=="[Exit]" then
                                     talking=false
                                     curline=1
                                 end
@@ -11350,11 +11350,11 @@ Citizen.CreateThread(function()
                         d=dx*dx+dy*dy
                         if d<2500 then
                             if v.rz~=nil then
-                                DrawMarker(20, v.rx, v.ry, v.rz, 
+                                DrawMarker(20, v.rx, v.ry, v.rz,
                                 0.0, 0.0, 0.0, --dir
                                 0.0, 0.0, 0.0, --rot
                                 1.0, 1.0, -1.0, --scl
-                                100, 255, 150, 200, 
+                                100, 255, 150, 200,
                                 true, false, 2, true, 0, 0, false)
                             end
                             if d<1 and IsControlJustPressed(0,86) then
@@ -11417,7 +11417,7 @@ Citizen.CreateThread(function()
                                                         end
                                                     end
                                                     if IsControlJustPressed(0,86) then
-                                                        if d<16 then 
+                                                        if d<16 then
                                                             if give_item_to_inventory(v.i,1) then
                                                                 DecorRemove(veh,"quest_entity")
                                                                 if GetBlipFromEntity(veh)~=0 then
@@ -11451,7 +11451,7 @@ Citizen.CreateThread(function()
                                                 end
                                             end
                                         end
-                                        
+
                                         loop,veh=FindNextVehicle(handle)
                                     end
                                     EndFindVehicle(handle)
@@ -11488,7 +11488,7 @@ Citizen.CreateThread(function()
                                                             Wait(0)
                                                         end
                                                         DecorSetInt(veh,"quest_entity",v.id)
-                                                        DecorSetBool(veh,"zm_looted",true) 
+                                                        DecorSetBool(veh,"zm_looted",true)
                                                         DecorSetInt(veh,"dontdelete",GetPlayerServerId(PlayerId()))
                                                         SetEntityAsMissionEntity(veh)
                                                         v.marked=true
@@ -11603,13 +11603,13 @@ function player_extraction(v)
 	TriggerServerEvent("updateplayerloot",nil)
 	local rnd=math.random(1,#extraction_spawns)
 	enable_kvp_saving()
-	
+
 	SetResourceKvpFloat("x",extraction_spawns[rnd].x)
 	SetResourceKvpFloat("y",extraction_spawns[rnd].y)
 	SetResourceKvpFloat("z",extraction_spawns[rnd].z)
 	SetResourceKvpFloat("angle",extraction_spawns[rnd].angle)
 	SetResourceKvpInt("spawnvehmodel",276773164)
-	
+
 	-- for weapon_name,weapon_hash in pairs(weapons) do
 		-- if weapon_hash~=nil and HasPedGotWeapon(myped,weapon_hash) then
 			-- for upgrade_name,v in pairs(weapon_upgrades) do
@@ -11686,8 +11686,8 @@ function player_extraction(v)
 	end
 	local armour=GetPedArmour(myped)
 	SetResourceKvpInt("armour",armour)
-	
-	
+
+
 	for _,zone in pairs(safezones) do
 		if zone.storagepos and zone.storagename then
 			local name="st_"..zone.storagename
@@ -11708,10 +11708,10 @@ function player_extraction(v)
 			end
 		end
 	end
-	
+
 	Wait(500)
 	TriggerServerEvent("extracted")
-	
+
 	repeat Wait(0)
 		WriteHint(9,messages.you_can_leave_server_now)
 		mypos=GetEntityCoords(myped)
@@ -11858,7 +11858,7 @@ Citizen.CreateThread(function()
                 local colors8=(colors>>8)
                 local colors16=(colors>>16)
                 local colors24=(colors>>24)
-                
+
                 garage.vehiclesave.colors={colors&0xFF,colors8&0xFF,colors16&0xFF,colors24&0xFF}
                 garage.vehiclesave.total_mods=GetResourceKvpInt("garage_"..garage.name.."_total_mods")
                 garage.vehiclesave.mods={}
@@ -11883,13 +11883,13 @@ Citizen.CreateThread(function()
         if inventory.highlight>0 then
             inventory.highlight=inventory.highlight-1
         end
-        
-        if inventory.scroll<=0 or inventory.total==0 then 
-            inventory.scroll=0 
+
+        if inventory.scroll<=0 or inventory.total==0 then
+            inventory.scroll=0
         elseif inventory.scroll*inventory.rows>=inventory.total then
             inventory.scroll=inventory.scroll-1
         end
-    
+
         --dialogs start
         if false then
         --if zone~=nil and zone.relationship~=nil and zone.relationship==myfaction then
@@ -11897,7 +11897,7 @@ Citizen.CreateThread(function()
             local handle,npc=FindFirstPed()
             local loop=(handle~=-1)
             while loop do
-                if (not IsPedAPlayer(npc)) 
+                if (not IsPedAPlayer(npc))
                 and GetPedType(npc)~=28 --animal
                 and DecorExistOn(npc,"raider")
                 and not IsPedDeadOrDying(npc)
@@ -11950,7 +11950,7 @@ Citizen.CreateThread(function()
                             end
                             local npc_rel_hash=GetPedRelationshipGroupHash(npc)
                             WriteText(4,relationship_name[npc_rel_hash],0.7,255,255,255,255,0.33,0.145)
-                            
+
                             if #npc_lines>0 then
                                 for i=1,#npc_lines do
                                     SetTextWrap(0.5-(0.45/2)+0.015,0.5+(0.45/2)-0.015)
@@ -11974,23 +11974,23 @@ Citizen.CreateThread(function()
                                 change_lines(talkingstate,npc)
                                 curline=1
                             end
-                            if talking_state=="[Back]" then 
+                            if talking_state=="[Back]" then
                                 talking_state="Main"
                                 change_lines(talkingstate,npc)
                                 curline=1
-                            elseif talking_state=="Thanks" then 
+                            elseif talking_state=="Thanks" then
                                 talking_state="Main"
                                 change_lines(talkingstate,npc)
                                 curline=1
-                            elseif talking_state=="Sorry, but no" then 
+                            elseif talking_state=="Sorry, but no" then
                                 talking_state="Main"
                                 change_lines(talkingstate,npc)
                                 curline=1
-                            elseif talking_state=="No" then 
+                            elseif talking_state=="No" then
                                 talking_state="Main"
                                 change_lines(talkingstate,npc)
                                 curline=1
-                            elseif talking_state=="[Exit]" then 
+                            elseif talking_state=="[Exit]" then
                                 talking=false
                                 curline=1
                             end
@@ -12025,9 +12025,9 @@ Citizen.CreateThread(function()
             EndFindPed(handle)
         end
         --dialogs end
-        
-        
-        
+
+
+
         if IsControlJustPressed(0,86) and not IsPedDeadOrDying(pped) then
             --print("e pressed")
 			if (not IsPedInAnyVehicle(pped)) or IsPedOnAnyBike(pped) then
@@ -12135,7 +12135,7 @@ Citizen.CreateThread(function()
                     local menu_start=0
                     local menu_end=250
                     local component_name={
-                    
+
                     }
                     for i=0,250 do
                         local num=GetNumVehicleMods(myveh,i)
@@ -12165,7 +12165,7 @@ Citizen.CreateThread(function()
                         --SetVehicleMod(myveh,i,math.tointeger(mod),false)
                     end
                     local current_menu=menu_start
-                    SetEntityVelocity(myveh,0,0,0)                    
+                    SetEntityVelocity(myveh,0,0,0)
 					local current_trade=1
                     local scroll=1
                     while true do Wait(0)
@@ -12283,7 +12283,7 @@ Citizen.CreateThread(function()
                                 -- SetPedPropIndex(pped,current_menu-12,current,texture,true)
                             -- end
                         end
-                        
+
                         local txt_pos=0.08+0.025
                         for i=menu_start,menu_end do
                             local variations=GetNumVehicleMods(myveh,i)
@@ -12308,7 +12308,7 @@ Citizen.CreateThread(function()
                                 txt_pos=txt_pos+0.025
                             end
                         end
-                        
+
                     end
                 end
                 if zone~=nil and not zone.raided and zone.vehpos~=nil and in_radius(mypos,zone.vehpos,5) and zone.chopshop then
@@ -12320,7 +12320,7 @@ Citizen.CreateThread(function()
 						local function chopshop_getcost(myveh,option)
 							local name=option.name
 							local price=option.amount
-							
+
 							local cost=0
 							if name=="repair" then
 								local enginehp=GetVehicleEngineHealth(myveh)
@@ -12362,7 +12362,7 @@ Citizen.CreateThread(function()
 						--local menu_start=0
 						--local menu_end=250
 						--local component_name={
-						
+
 						--}
 						-- for i=0,250 do
 							-- local num=GetNumVehicleMods(myveh,i)
@@ -12396,8 +12396,8 @@ Citizen.CreateThread(function()
 						local current_trade=1
 						local scroll=1
 						local maxtradesinmenu=7
-						
-						
+
+
 						local chopshopwithupgrades={}
 						for k,v in pairs(zone.chopshop) do
 							v.sprite=v[1]
@@ -12591,12 +12591,12 @@ Citizen.CreateThread(function()
 							WriteTextNoOutline(2,"Chopshop",0.4,0,0,0,255,0.307,0.18)
 							WriteTextNoOutline(2,"Service",0.3,0,0,0,255,0.290,0.24)
 							WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
-							
+
 							local inv_index_price=0
 							local inv_index_goods=0
 							local youhaveamount_price=0
 							local youhaveamount_goods=0
-							
+
 							local trade_scroll_bkg_x=0.277
 							local trade_scroll_bkg_y=0.54
 							local trade_scroll_bkg_size_x=0.004
@@ -12607,9 +12607,9 @@ Citizen.CreateThread(function()
 							local trade_button_x=0.445
 							local trade_arrow_x=trade_button_x-0.06
 							local maxtradesinmenu=7
-							
+
 							DrawRect(trade_scroll_bkg_x,trade_scroll_bkg_y,trade_scroll_bkg_size_x,trade_scroll_bkg_size_y,0,0,0,175)
-							
+
 							local totalscrolls=#chopshopwithupgrades-maxtradesinmenu
 							if totalscrolls>0 then
 								local newscrollsizey=trade_scroll_bkg_size_y/(totalscrolls+1)
@@ -12624,10 +12624,10 @@ Citizen.CreateThread(function()
 								-- end
 								DrawRect(trade_scroll_bkg_x,newscrollposy,trade_scrollsize_x,newscrollsizey,255,255,255,255)
 							end
-							
+
 							-- WriteHint("tradescroll="..scroll)
 							-- WriteHint("totalscroll="..totalscrolls)
-							
+
 							for i=scroll,math.min(scroll+(maxtradesinmenu-1),#chopshopwithupgrades) do
 								local y=(i-scroll)*.08+.3
 									--local hud_type
@@ -12641,7 +12641,7 @@ Citizen.CreateThread(function()
 									-- if using_vehicle_weapon and myvehmodel and weapon and vehicles_ammo[myvehmodel][weapon] then
 										-- hud_type=vehicles_ammo[myvehmodel][weapon].pool
 									-- end
-									
+
 									DrawSprite("lsm", chopshopwithupgrades[i].sprite or "bottle",0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
 									-- if hud_type and chopshopwithupgrades[i].sprite=="rearm" then
 										-- DrawSprite("lsm", "selected_item",0.305,y,(inv_new.item_scl_x)*0.875*0.5,(inv_new.item_scl_y)*0.875*0.5,0.0, 255, 255, 255, 255)
@@ -12655,7 +12655,7 @@ Citizen.CreateThread(function()
 									WriteTextNoOutline(2,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
 									SetTextCentre(true)
 									--WriteTextNoOutline(2,{"x ~1~",chopshopwithupgrades[i][3]},0.25,0,0,0,255,0.305,y+0.02)
-									
+
 									DrawSprite("lsm", chopshopwithupgrades[i].resource or "bottle",price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
 									SetTextCentre(true)
 									local cost=chopshop_getcost(myveh,chopshopwithupgrades[i])
@@ -12670,7 +12670,7 @@ Citizen.CreateThread(function()
 									end
 									WriteTextNoOutline(2,messages.trade,0.25,color,color,color,255,trade_button_x,y-0.009)
 							end
-							
+
 							-- local txt_pos=0.428+0.025
 							-- for i=menu_start,menu_end do
 								-- local variations=GetNumVehicleMods(myveh,i)
@@ -12695,7 +12695,7 @@ Citizen.CreateThread(function()
 									-- txt_pos=txt_pos+0.025
 								-- end
 							-- end
-							
+
 						end
 					end
                 end
@@ -12749,9 +12749,9 @@ Citizen.CreateThread(function()
 								if IsVehicleTyreBurst(myveh, 45, false) then flags=flags|256 end
 								if IsVehicleTyreBurst(myveh, 47, false) then flags=flags|512 end
 								current_garage.vehiclesave.tyres=flags
-								
+
 								SimpleNotification(messages.vehiclename_saved_in_garage,GetDisplayNameFromVehicleModel(current_garage.vehiclesave.model))
-								
+
 								if DecorExistOn(myveh,"zm_health") then
 									saving_kvp_mode.SetResourceKvpInt("garage_"..current_garage.name.."_ammo_1",DecorGetInt(myveh,"zm_health"))
 								else
@@ -12787,7 +12787,7 @@ Citizen.CreateThread(function()
 									-- mod_index=mod_index+1
 									-- SetResourceKvpInt("garage_1_mod_"..mod_index,(v|(v<<16)))
 								-- end
-								
+
 								local modstring=""
 								for k,v in pairs(current_garage.vehiclesave.mods) do
 									modstring=modstring..string.char(k+1,v+1)
@@ -12824,21 +12824,21 @@ Citizen.CreateThread(function()
 								end
 								local myveh=CreateVehicle(vs.model, mypos.x, mypos.y, mypos.z, current_garage.angle, true, false)
 								if myveh~=0 then
-									DecorSetBool(myveh,"zm_looted",true)                
+									DecorSetBool(myveh,"zm_looted",true)
 									--DecorSetBool(myveh,"post_apoc_car",true)
 									SetEntityMaxHealth(myveh,1020)
 									DecorSetFloat(myveh,"zm_fuel",vs.fuellevel)
 									SetPedIntoVehicle(myped,myveh,-1)
-									
+
 									SetVehicleEngineHealth(myveh,vs.enginehp)
 									SetVehicleFuelLevel(myveh,vs.fuellevel)
-									
+
 									flags=vs.doors
 									for i=0,7 do
 										local bin=(1<<i)
 										if (flags&bin)~=0 then SetVehicleDoorBroken(myveh,i,true) end
 									end
-									
+
 									SetVehicleColours(myveh,vs.colors[1],vs.colors[2])
 									SetVehicleExtraColours(myveh,vs.colors[3],vs.colors[4])
 									SetVehicleModKit(myveh,0)--vs.modkit)
@@ -12998,13 +12998,13 @@ Citizen.CreateThread(function()
                         WriteTextNoOutline(4,{messages.new_shipment_in_str_D_strH_strM,tostring(days),tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
                         WriteTextNoOutline(2,"Service",0.3,0,0,0,255,0.290,0.24)
                         WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
-						
+
 						local inv_index_price=0
 						local inv_index_goods=0
 						local youhaveamount_price=0
 						local youhaveamount_goods=0
 						local maxtradesinmenu=7
-						
+
 						local trade_scroll_bkg_x=0.277
 						local trade_scroll_bkg_y=0.54
 						local trade_scroll_bkg_size_x=0.004
@@ -13015,9 +13015,9 @@ Citizen.CreateThread(function()
 						local trade_button_x=0.445
 						local trade_arrow_x=trade_button_x-0.06
 						local maxtradesinmenu=7
-						
+
 						DrawRect(trade_scroll_bkg_x,trade_scroll_bkg_y,trade_scroll_bkg_size_x,trade_scroll_bkg_size_y,0,0,0,175)
-						
+
 						local totalscrolls=#zone.vehshop-maxtradesinmenu
 						if totalscrolls>0 then
 							local newscrollsizey=trade_scroll_bkg_size_y/(totalscrolls+1)
@@ -13027,7 +13027,7 @@ Citizen.CreateThread(function()
 							local newscrollposy=uppos+(step*(scroll-1))
 							DrawRect(trade_scroll_bkg_x,newscrollposy,trade_scrollsize_x,newscrollsizey,255,255,255,255)
 						end
-						
+
 						for i=scroll,math.min(scroll+(maxtradesinmenu-1),#zone.vehshop) do
 							local y=(i-scroll)*.08+.3
 								DrawSprite("lsm", zone.vehshop[i][1] or "bottle",0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
@@ -13035,7 +13035,7 @@ Citizen.CreateThread(function()
 								local name=zone.vehshop[i][1]
 								WriteTextNoOutline(2,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
 								SetTextCentre(true)
-								
+
 								DrawSprite("lsm", zone.vehshop[i][2] or "bottle",price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
 								SetTextCentre(true)
 								local cost=zone.vehshop[i][3]
@@ -13179,20 +13179,20 @@ Citizen.CreateThread(function()
 				local current_trading
 				local selling_or_buying
 				local relationship_req=4
-				
+
 				TriggerServerEvent("request_trade_table",zone.tradelistname)
-				
+
 				if zone.tradepos~=nil and zone.sellpos~=nil then
 					local dxs,dys=mypos.x-zone.sellpos.x,mypos.y-zone.sellpos.y
 					local dxt,dyt=mypos.x-zone.tradepos.x,mypos.y-zone.tradepos.y
-					if dxt*dxt+dyt*dyt<dxs*dxs+dys*dys then 
+					if dxt*dxt+dyt*dyt<dxs*dxs+dys*dys then
 						current_trading=zone.trade or {}
 						relationship_req=0
 						sellingorbuying="buying"
 						--SimpleNotification("BUY POS #index ~1~"..#current_trading)
-						
+
 					else
-						current_trading=zone.selltrade or {} 
+						current_trading=zone.selltrade or {}
 						relationship_req=4
 						sellingorbuying="selling"
 						--SimpleNotification("SELL POS #index ~1~"..#current_trading)
@@ -13202,12 +13202,12 @@ Citizen.CreateThread(function()
 						sellingorbuying="buying"
 						relationship_req=0
 				else
-						current_trading=zone.selltrade or {} 
+						current_trading=zone.selltrade or {}
 						sellingorbuying="selling"
 						relationship_req=4
 				end
-				
-				
+
+
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=relationship_req) then
                     --print("trade open")
                     inventory.highlight=255
@@ -13219,7 +13219,7 @@ Citizen.CreateThread(function()
                         local youhaveamount_price=0
                         local youhaveamount_goods=0
                         local maxtradesinmenu=7
-                        
+
                         local trade_scroll_bkg_x=0.277
                         local trade_scroll_bkg_y=0.54
                         local trade_scroll_bkg_size_x=0.004
@@ -13294,13 +13294,13 @@ Citizen.CreateThread(function()
                         WriteTextNoOutline(4,{messages.new_shipment_in_str_D_strH_strM,tostring(days),tostring(hours),tostring(minutes)},0.3,0,0,0,255,0.307,0.20)
                         WriteTextNoOutline(2,"Item",0.3,0,0,0,255,0.290,0.24)
                         WriteTextNoOutline(2,"Price",0.3,0,0,0,255,0.40,0.24)
-                        
+
                         local price_items_x=0.410
                         local trade_button_x=0.445
                         local trade_arrow_x=trade_button_x-0.06
-                        
+
                         DrawRect(trade_scroll_bkg_x,trade_scroll_bkg_y,trade_scroll_bkg_size_x,trade_scroll_bkg_size_y,0,0,0,175)
-                        
+
                         local totalscrolls=#current_trading-maxtradesinmenu
                         if totalscrolls>0 then
                             local newscrollsizey=trade_scroll_bkg_size_y/(totalscrolls+1)
@@ -13315,34 +13315,34 @@ Citizen.CreateThread(function()
                             -- end
                             DrawRect(trade_scroll_bkg_x,newscrollposy,trade_scrollsize_x,newscrollsizey,255,255,255,255)
                         end
-                        
+
                         -- WriteHint("tradescroll="..scroll)
                         -- WriteHint("totalscroll="..totalscrolls)
-                        
+
                         for i=scroll,math.min(scroll+(maxtradesinmenu-1),#current_trading) do
                             local y=(i-scroll)*.08+.3
-															
+
 								local name=current_trading[i][1]
 								local amount_on_left=2
 								local amount_on_right=4
 								local sprite_on_left=1
 								local sprite_on_right=3
-								
-								if sellingorbuying=="selling" then 
-									name=current_trading[i][3] 
+
+								if sellingorbuying=="selling" then
+									name=current_trading[i][3]
 									amount_on_left=4
 									amount_on_right=2
 									sprite_on_left=3
 									sprite_on_right=1
 								end
-								
+
                                 DrawSprite("lsm", current_trading[i][sprite_on_left],0.305,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextWrap(0.325,trade_arrow_x-0.005)
-                                
+
                                 WriteTextNoOutline(4,item_names[name] or localization[name] or name,0.3,0,0,0,255,0.325,y-0.01)
                                 SetTextCentre(true)
                                 WriteTextNoOutline(2,{"x ~1~",current_trading[i][amount_on_left]},0.25,0,0,0,255,0.305,y+0.02)
-                                
+
                                 DrawSprite("lsm", current_trading[i][sprite_on_right],price_items_x,y,(inv_new.item_scl_x)*0.875,(inv_new.item_scl_y)*0.875,0.0, 255, 255, 255, 255)
                                 SetTextCentre(true)
                                 WriteTextNoOutline(2,{"x ~1~",current_trading[i][amount_on_right]},0.25,0,0,0,255,price_items_x,y+0.02)
@@ -13374,10 +13374,10 @@ Citizen.CreateThread(function()
                     --zone.raided=true
                     --TriggerServerEvent("zoneraided",zone.tradepos.x,zone.tradepos.y,zone.tradepos.z,zone.name,current_trading,zone.relationship)
                     SimpleNotification(messages.need_to_be_in_this_faction_to_trade)
-                    
+
                     Wait(300)
                 end
-            elseif zone~=nil and not zone.raided and zone.ransack~=nil and in_radius(mypos,zone.ransack,1) then 
+            elseif zone~=nil and not zone.raided and zone.ransack~=nil and in_radius(mypos,zone.ransack,1) then
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                     SimpleNotification(messages.become_enemy_to_raid_base_warehouse)
                 else
@@ -13385,7 +13385,7 @@ Citizen.CreateThread(function()
                     TriggerServerEvent("zoneraided",zone.ransack.x,zone.ransack.y,zone.ransack.z,zone.name,zone.ransack_list,zone.relationship)
                     Wait(300)
                 end
-            elseif zone~=nil and not zone.raided and zone.join_faction~=nil and in_radius(mypos,zone.join_faction,1) then 
+            elseif zone~=nil and not zone.raided and zone.join_faction~=nil and in_radius(mypos,zone.join_faction,1) then
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
                     local myped=PlayerPedId()
                     local mypos=GetEntityCoords(myped)
@@ -13398,7 +13398,7 @@ Citizen.CreateThread(function()
                         openjoinmenu=in_radius(mypos,zone.join_faction,1)
                         DrawRect(0.5,0.5,0.5,0.6,0,0,0,175)
                         SetTextCentre(true)
-                        
+
                         if zone.join_faction.rep_moreorless=="more" then
                             if player.reputation>=zone.join_faction.rep_amount then
                                 if zone.quests[questid] then
@@ -13407,18 +13407,18 @@ Citizen.CreateThread(function()
                                     else
                                         WriteText(4,zone.quests.join_name,0.55,255,255,255,255,0.5,0.225)
                                     end
-                                    SetTextWrap(0.27,0.73)  
+                                    SetTextWrap(0.27,0.73)
                                     if myfaction==zone.relationship then
                                         WriteText(4,{"~a~~a~",zone.quests.novice,zone.quests[questid].text},0.4,255,255,255,255,0.27,0.35)
                                     else
                                         WriteText(4,{"~a~~a~",zone.quests.join_text,zone.quests[questid].text},0.4,255,255,255,255,0.27,0.35)
                                     end
                                     WriteText(4,"Required items:",0.4,255,255,255,255,0.27,0.6)
-                                    SetTextWrap(0.27,0.73)  
+                                    SetTextWrap(0.27,0.73)
                                     SetTextRightJustify(true)
                                     WriteText(4,"Reward:",0.4,255,255,255,255,0.73,0.6)
                                     for i=1,#zone.quests[questid].items_reward,2 do
-                                        SetTextWrap(0.27,0.73)  
+                                        SetTextWrap(0.27,0.73)
                                         SetTextRightJustify(true)
                                         WriteText(2,{"~g~~a~ ~s~x~1~",zone.quests[questid].items_reward[i],zone.quests[questid].items_reward[i+1]},0.3,255,255,255,255,0.73,0.62+(i*0.01))
                                     end
@@ -13460,20 +13460,20 @@ Citizen.CreateThread(function()
                                         end
                                     end
                                 else
-                                    SetTextWrap(0.27,0.73)  
+                                    SetTextWrap(0.27,0.73)
                                     WriteText(4,zone.quests.textnoquest,0.4,255,255,255,255,0.27,0.35)
                                 end
                             else
-                                SetTextWrap(0.27,0.73)  
+                                SetTextWrap(0.27,0.73)
                                 WriteText(4,{messages.you_need_number_more_reputation,zone.join_faction.rep_amount-player.reputation},0.4,255,255,255,255,0.35,0.35)
                             end
                         elseif zone.join_faction.rep_moreorless=="less" then
-                        
+
                         end
                     end
                 end
-            elseif zone~=nil and not zone.raided and zone.changingroompos~=nil and in_radius(mypos,zone.changingroompos,1) then 
-                -- changing clothes 
+            elseif zone~=nil and not zone.raided and zone.changingroompos~=nil and in_radius(mypos,zone.changingroompos,1) then
+                -- changing clothes
                 local current_menu=0
                 local total_menu_count=15
                 local component_name={
@@ -13630,7 +13630,7 @@ Citizen.CreateThread(function()
                        end
                     end
                     WriteTextNoOutline(2,"invalid",0.35,0,0,0,alpha,0.16,0.428+.025+(total_menu_count+1)*.025) --chosen line text
-                    
+
                     for i=0,11 do
                         local current=GetPedDrawableVariation(pped,i)
                         local variations=GetNumberOfPedDrawableVariations(pped,i)
@@ -13670,7 +13670,7 @@ Citizen.CreateThread(function()
                         end
                     end
                 end
-            elseif zone~=nil and not zone.raided and zone.clothespos~=nil and in_radius(mypos,zone.clothespos,1) then 
+            elseif zone~=nil and not zone.raided and zone.clothespos~=nil and in_radius(mypos,zone.clothespos,1) then
                 --clothes
                 local current_menu=1
 
@@ -13771,8 +13771,8 @@ Citizen.CreateThread(function()
 						SimpleNotification(messages.not_enough_cash)
 					end
 				end
-					
-			elseif zone~=nil and zone.extraction~=nil and in_radius(mypos,zone.extraction,1) then 
+
+			elseif zone~=nil and zone.extraction~=nil and in_radius(mypos,zone.extraction,1) then
 				local myped=PlayerPedId()
 				local myfaction=GetPedRelationshipGroupHash(myped)
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
@@ -13785,7 +13785,7 @@ Citizen.CreateThread(function()
 				else
 					SimpleNotification(messages.cant_use_enemy_extraction_points)
 				end
-            elseif zone~=nil and zone.storagepos~=nil and zone.storagename~=nil and in_radius(mypos,zone.storagepos,1) then 
+            elseif zone~=nil and zone.storagepos~=nil and zone.storagename~=nil and in_radius(mypos,zone.storagepos,1) then
                 if (GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4) then
 					if player.faction==zone.relationship then
 						local howlongenterhasbeenhold=0
@@ -13831,7 +13831,7 @@ Citizen.CreateThread(function()
 											storage.current=nil
 											inventory.current=inventory.scroll*inventory.rows+1
 										end
-									-- elseif 
+									-- elseif
 										-- storage.current=1
 										-- storage.scroll=0
 									else
@@ -13869,16 +13869,16 @@ Citizen.CreateThread(function()
 								local opinv
 								if inventory.current~=nil then opinv=inventory
 								elseif storage.current~=nil then opinv=storage end
-								
+
 								if opinv.current==1 then -- first item
-									opinv.current=opinv.total 
+									opinv.current=opinv.total
 								elseif opinv.current>=1 and opinv.current<=opinv.rows then --first row
 									opinv.current=1
 									opinv.scroll=0
 								else -- any other
 									opinv.current=opinv.current-opinv.rows
 								end
-								
+
 								while opinv.current<=opinv.scroll*opinv.rows do
 									opinv.scroll=opinv.scroll-1
 								--print("scroll="..storage.scroll)
@@ -13891,7 +13891,7 @@ Citizen.CreateThread(function()
 								local opinv
 								if inventory.current~=nil then opinv=inventory
 								elseif storage.current~=nil then opinv=storage end
-								
+
 								if opinv.current==opinv.total then
 									opinv.current=1
 								elseif opinv.current>opinv.total-opinv.rows and opinv.current<=opinv.total then
@@ -13899,7 +13899,7 @@ Citizen.CreateThread(function()
 								else
 									opinv.current=opinv.current+opinv.rows
 								end
-								
+
 								while opinv.current<=opinv.scroll*opinv.rows do
 									opinv.scroll=opinv.scroll-1
 								--print("scroll="..storage.scroll)
@@ -13913,12 +13913,12 @@ Citizen.CreateThread(function()
 								howlongenterhasbeenhold=howlongenterhasbeenhold+1
 								if howlongenterhasbeenhold<=1 or howlongenterhasbeenhold>=45 then
 									amounttomove=1
-									if howlongenterhasbeenhold>300 then amounttomove=50 
-									elseif howlongenterhasbeenhold>200 then amounttomove=10 
+									if howlongenterhasbeenhold>300 then amounttomove=50
+									elseif howlongenterhasbeenhold>200 then amounttomove=10
 									elseif howlongenterhasbeenhold>100 then amounttomove=5 end
 									if storage.current~=nil then
 										if zone.storage[storage.current] then
-											if zone.storage[storage.current].item==nil or zone.storage[storage.current].amount==nil then 
+											if zone.storage[storage.current].item==nil or zone.storage[storage.current].amount==nil then
 												SimpleNotification("~r~ ERROR: invalid item")
 											elseif zone.storage[storage.current].amount>amounttomove then
 												give_item_to_inventory(zone.storage[storage.current].item,amounttomove)
@@ -13989,38 +13989,38 @@ Citizen.CreateThread(function()
 								local totalscrolls=math.max(0,math.ceil((storage.total-(storage.rows*storage.lines))/storage.rows))
 								--WriteHint("invscrlmax: "..totalscrolls)
 								if totalscrolls>0 then
-								
+
 								--new storage scroll block
 									local inventory_up_y=0.28
 									local inventory_up_x_left=0.57
 									local inventory_up_x_right=0.731
 									local inventory_font_size=0.3
-									
+
 									local inventory_down_y_name=0.69
 									local inventory_down_y_desc=0.715
 									local inventory_down_x_left=0.57
 									local inventory_down_x_right=0.69
-									
+
 									local inventory_grid_left=inventory_up_x_left
 									local inventory_grid_right=inventory_up_x_right
 									local inventory_grid_up=0.35
 									local inventory_grid_down=0.7
 									local inventory_grid_dist_x=0.042
 									local inventory_grid_dist_y=0.070
-									
-									
+
+
 									local inventory_grid_desc_pos_x=0.715
 									local inventory_grid_desc_pos_y=0.745
-									
+
 									local inventory_scroll_bkg_x=0.2675
 									local inventory_scroll_bkg_y=0.49
 									local inventory_scroll_bkg_size_x=0.004
 									local inventory_scroll_bkg_size_y=0.342
 									local inventory_scroll_y=inventory_scroll_bkg_y
 									local inventory_scrollsize_x=0.003
-									
+
 									DrawRect(inventory_scroll_bkg_x,inventory_scroll_bkg_y,inventory_scroll_bkg_size_x,inventory_scroll_bkg_size_y,0,0,0,255)
-									
+
 									local newscrollsizey=inventory_scroll_bkg_size_y/(totalscrolls+1)
 									local uppos=inventory_scroll_bkg_y-inventory_scroll_bkg_size_y/2+newscrollsizey/2
 									local lowpos=inventory_scroll_bkg_y+inventory_scroll_bkg_size_y/2-newscrollsizey/2
@@ -14055,8 +14055,8 @@ Citizen.CreateThread(function()
 									DrawSprite("lsm",sprite,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
 									--print("total"..zone.storage.total.." k"..k)
 									DrawItem("lsm",v.item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
-									
-									
+
+
 									SetTextRightJustify(true)
 									SetTextWrap(
 									x-(inv_new.item_scl_x/2),
@@ -14088,7 +14088,7 @@ Citizen.CreateThread(function()
 										WriteText(4,{"~a~",item_names[itemname] or v.item},0.3,255,255,255,255,0.27,0.6925)
 										SetTextWrap(0.0,0.4)
 										WriteText(4,{"~a~",item_descriptions[itemname] or v.item},0.3,155,155,155,155,0.27,0.7175)
-										
+
 										DrawSprite("lsm","selected_item",0.415,0.745,inv_sml_x*1.1,inv_sml_y*1.1,0.0, 255, 255, 255, 255)
 										DrawItem("lsm",v.item,0.415,0.745,inv_sml_x*1.1,inv_sml_y*1.1,0.0, 255, 255, 255, 255)
 									end
@@ -14116,8 +14116,8 @@ Citizen.CreateThread(function()
 				else
 					SimpleNotification(messages.cant_use_enemy_storages)
 				end
-				
-            elseif zone~=nil and zone.craftpos~=nil and in_radius(mypos,zone.craftpos,1) then 
+
+            elseif zone~=nil and zone.craftpos~=nil and in_radius(mypos,zone.craftpos,1) then
                 --craft
                 local current_menu=0
 				local items_that_can_be_crafted={}
@@ -14139,7 +14139,7 @@ Citizen.CreateThread(function()
 				if current_menu==0 then
 					SimpleNotification(messages.you_dont_have_any_blueprints)
 				else
-				
+
 					while true do Wait(0)
 						inventory.highlight=0
 						pped=PlayerPedId()
@@ -14196,20 +14196,20 @@ Citizen.CreateThread(function()
 						DrawSprite("lsm",items_that_can_be_crafted[current_menu][1],.3025,.28,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
 						WriteTextNoOutline(4,item_names[items_that_can_be_crafted[current_menu][1]] or items_that_can_be_crafted[current_menu][1],0.4,0,0,0,255,.3325,.25)
 								SetTextRightJustify(true)
-								SetTextWrap(0.0,.3025+0.015)        
+								SetTextWrap(0.0,.3025+0.015)
 								WriteText(4,items_that_can_be_crafted[current_menu][2],0.3,255,255,255,255,.3025+0.01,.28+0.01)
-						
+
 						WriteTextNoOutline(2,"Ingredients",0.4,0,0,0,255,0.29,0.33)
-						
+
 						DrawSprite("lsm", "arrow_left",.32-0.025,0.75+0.001,0.0075*1.2,0.015*1.3,0.0, 255, 255, 255, 255)
 						DrawSprite("lsm", "Trade Button",.32,0.75,0.0255*1.2,0.0205*1.2,0.0, 255, 255, 255, 255)
 						DrawSprite("lsm", "arrow_right",.32+0.025,0.75+0.001,0.0075*1.2,0.015*1.3,0.0, 255, 255, 255, 255)
 						SetTextCentre(true)
 						WriteTextNoOutline(2,"Craft",0.3,255,255,255,255,0.32,0.75-0.011)
-						
-						
+
+
 						WriteTextNoOutline(4,{"~1~ / ~1~",current_menu,#items_that_can_be_crafted},0.3,0,0,0,255,0.42,0.75-0.011)
-						
+
 						-- for k,v in pairs(zone.crafts) do
 							-- if current_menu==k then
 								-- DrawRect(0.275+k*0.015,0.785,inv_sml_x*0.5,inv_sml_y*0.5, 0, 0, 0, 255)
@@ -14250,13 +14250,13 @@ Citizen.CreateThread(function()
 								DrawSprite("lsm","equipped_item",x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
 								DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 255, 255, 255, 255)
 								SetTextRightJustify(true)
-								SetTextWrap(0.0,x+0.015)        
+								SetTextWrap(0.0,x+0.015)
 								WriteText(4,need,0.3,255,255,255,255,x+0.01,y+0.01)
 							else
 								DrawSprite("lsm","item",x,y,inv_sml_x,inv_sml_y,0.0, 150, 150, 150, 255)
 								DrawSprite("lsm",item,x,y,inv_sml_x,inv_sml_y,0.0, 150, 150, 150, 255)
 								SetTextRightJustify(true)
-								SetTextWrap(0.0,x+0.015)        
+								SetTextWrap(0.0,x+0.015)
 								WriteText(4,need,0.3,150,150,150,255,x+0.01,y+0.01)
 							end
 						end
@@ -14426,9 +14426,9 @@ Citizen.CreateThread(function()
                 end
             elseif IsControlJustPressed(0,177) then --backspace / rmb / esc
                 inventory.highlight=0
-            -- elseif IsControlJustPressed(0,37) then --select weapon 
+            -- elseif IsControlJustPressed(0,37) then --select weapon
                 -- inventory.highlight=500
-            elseif IsControlJustPressed(0,191) then --INPUT_FRONTEND_RDOWN 
+            elseif IsControlJustPressed(0,191) then --INPUT_FRONTEND_RDOWN
                 if inventory.highlight>0 and inventory[inventory.current]~=nil and inventory[inventory.current].amount>0 then
                     if inventory[inventory.current].item=="water" then
                         if player.hydration<100 then
@@ -14677,84 +14677,84 @@ Citizen.CreateThread(function()
                             check_inv_slot_for_zero_amount()
                         end
                     elseif inventory[inventory.current].item=="gasmask" then
-                        if player.mask=="gasmask" then 
+                        if player.mask=="gasmask" then
                             player.mask=nil
                         else
                             player.mask="gasmask"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="halfmask" then
-                        if player.mask=="halfmask" then 
+                        if player.mask=="halfmask" then
                             player.mask=nil
                         else
                             player.mask="halfmask"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="roninmask" then
-                        if player.mask=="roninmask" then 
+                        if player.mask=="roninmask" then
                             player.mask=nil
                         else
                             player.mask="roninmask"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="tapemask" then
-                        if player.mask=="tapemask" then 
+                        if player.mask=="tapemask" then
                             player.mask=nil
                         else
                             player.mask="tapemask"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="balaclava" then
-                        if player.mask=="balaclava" then 
+                        if player.mask=="balaclava" then
                             player.mask=nil
                         else
                             player.mask="balaclava"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="tshirtmask" then
-                        if player.mask=="tshirtmask" then 
+                        if player.mask=="tshirtmask" then
                             player.mask=nil
                         else
                             player.mask="tshirtmask"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="smugglersgarb" then
-                        if player.mask=="smugglersgarb" then 
+                        if player.mask=="smugglersgarb" then
                             player.mask=nil
                         else
                             player.mask="smugglersgarb"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="smugglersshemagh" then
-                        if player.mask=="smugglersshemagh" then 
+                        if player.mask=="smugglersshemagh" then
                             player.mask=nil
                         else
                             player.mask="smugglersshemagh"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="cowboyhat" then
-                        if player.hat=="cowboyhat" then 
+                        if player.hat=="cowboyhat" then
                             player.hat=nil
                         else
                             player.hat="cowboyhat"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="riothelmet" then
-                        if player.hat=="riothelmet" then 
+                        if player.hat=="riothelmet" then
                             player.hat=nil
                         else
                             player.hat="riothelmet"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="merctacticalhelmet" then
-                        if player.hat=="merctacticalhelmet" then 
+                        if player.hat=="merctacticalhelmet" then
                             player.hat=nil
                         else
                             player.hat="merctacticalhelmet"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="blackopstacticalhelmet" then
-                        if player.hat=="blackopstacticalhelmet" and player.mask=="blackopstacticalhelmet" then 
+                        if player.hat=="blackopstacticalhelmet" and player.mask=="blackopstacticalhelmet" then
                             player.hat=nil
 							player.mask=nil
                         else
@@ -14763,7 +14763,7 @@ Citizen.CreateThread(function()
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="maraudercombathelmet" then
-                        if player.hat=="maraudercombathelmet" and player.mask=="maraudercombathelmet" then 
+                        if player.hat=="maraudercombathelmet" and player.mask=="maraudercombathelmet" then
                             player.hat=nil
 							player.mask=nil
                         else
@@ -14772,7 +14772,7 @@ Citizen.CreateThread(function()
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="specopscommsgear" then
-                        if player.hat=="specopscommsgear" and player.mask=="specopscommsgear" then 
+                        if player.hat=="specopscommsgear" and player.mask=="specopscommsgear" then
                             player.hat=nil
 							player.mask=nil
                         else
@@ -14781,7 +14781,7 @@ Citizen.CreateThread(function()
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="cheekiheavyhelmet" then
-                        if player.hat=="cheekiheavyhelmet" and player.mask=="cheekiheavyhelmet" then 
+                        if player.hat=="cheekiheavyhelmet" and player.mask=="cheekiheavyhelmet" then
                             player.hat=nil
 							player.mask=nil
                         else
@@ -14790,28 +14790,28 @@ Citizen.CreateThread(function()
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="pmccap" then
-                        if player.hat=="pmccap" then 
+                        if player.hat=="pmccap" then
                             player.hat=nil
                         else
                             player.hat="pmccap"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="tacticalglasses" then
-                        if player.glasses=="tacticalglasses" then 
+                        if player.glasses=="tacticalglasses" then
                             player.glasses=nil
                         else
                             player.glasses="tacticalglasses"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="camocap" then
-                        if player.hat=="camocap" then 
+                        if player.hat=="camocap" then
                             player.hat=nil
                         else
                             player.hat="camocap"
                         end
                         check_clothes(pped)
                     elseif inventory[inventory.current].item=="lowcap" then
-                        if player.hat=="lowcap" then 
+                        if player.hat=="lowcap" then
                             player.hat=nil
                         else
                             player.hat="lowcap"
@@ -14846,12 +14846,12 @@ Citizen.CreateThread(function()
                             inventory[inventory.current].amount=inventory[inventory.current].amount-1
                             check_inv_slot_for_zero_amount()
                         end
-                    elseif inventory[inventory.current].item=="rags" 
-					or	inventory[inventory.current].item=="scrapfabrics" 
-					or	inventory[inventory.current].item=="industrialfabrics" 
-					or	inventory[inventory.current].item=="milspecfabrics" 
+                    elseif inventory[inventory.current].item=="rags"
+					or	inventory[inventory.current].item=="scrapfabrics"
+					or	inventory[inventory.current].item=="industrialfabrics"
+					or	inventory[inventory.current].item=="milspecfabrics"
 					then
-                            if player.bleeding>0 then 
+                            if player.bleeding>0 then
                                 player.bleeding=player.bleeding-1
                                 inventory[inventory.current].amount=inventory[inventory.current].amount-1
                                 check_inv_slot_for_zero_amount()
@@ -15166,7 +15166,7 @@ Citizen.CreateThread(function()
 							loop,obj=FindNextObject(handle)
 						end
 						EndFindObject(handle)
-						
+
 						local how_many_doors_opened=0
 						for k,v in pairs(founddoors) do
 							TriggerServerEvent("open_door",k,v.x,v.y)
@@ -15266,17 +15266,17 @@ Citizen.CreateThread(function()
                             amounttodrop=amounttodrop+1
                             if amounttodrop>inventory[inventory.current].amount then amounttodrop=inventory[inventory.current].amount end
                         end
-                        
+
                         -- DrawSprite("lsm", "hand", 0.5025,0.85,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
-                        
+
                         -- local sprite=inventory[inventory.current].item
                         -- if sprite then DrawSprite("lsm", sprite, 0.5,0.875,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255) end
                         -- DrawSprite("lsm", "arrowdown", 0.5,0.950,inv_size_x,inv_size_y,0.0, 255, 255, 255, 255)
                         -- WriteText(7,"~g~E ~c~to drop".." ~w~"..amounttodrop.."~c~/"..inventory[inventory.current].amount.." "..inventory[inventory.current].item,0.45,255,255,255,255,0.53,0.85)
                         -- WriteText(7,"~g~left ~c~and ~g~right ~c~to change amount to drop",0.35,255,255,255,255,0.53,0.89)
                         -- WriteText(7,"~g~backspace ~c~ or ~g~ RMB ~c~to cancel",0.35,255,255,255,255,0.53,0.92)
-                        
-                        
+
+
                         -- for i=1,45 do
                             -- WriteText(7,i.."~g~ "..string.char(i),0.25,255,255,255,255,0.3,0.0+i*0.02)
                         -- end
@@ -15386,14 +15386,14 @@ Citizen.CreateThread(function()
             if zone~=nil then
                 local enemybase
                 local myfaction=GetPedRelationshipGroupHash(myped)
-                
+
                 if GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4 then
                     enemybase=false
                 else
                     enemybase=true
                 end
-                
-                
+
+
                 if zone.tradepos~=nil and not zone.raided then
                     if traderblip~=nil then
                         SetBlipCoords(traderblip,zone.tradepos.x,zone.tradepos.y,zone.tradepos.z)
@@ -15553,7 +15553,7 @@ Citizen.CreateThread(function()
                         SetResourceKvpFloat("x",zone.spawnpos.x)
                         SetResourceKvpFloat("y",zone.spawnpos.y)
                         SetResourceKvpFloat("z",zone.spawnpos.z)
-                        
+
                         SetResourceKvpInt("pedmodel",GetEntityModel(myped))
                     end
 					if zone.tradelistname then TriggerServerEvent("request_trade_table",zone.tradelistname) end
@@ -15621,116 +15621,116 @@ Citizen.CreateThread(function()
             if zone~=nil then
                 local enemybase
                 local myfaction=GetPedRelationshipGroupHash(myped)
-                
+
                 if GetRelationshipBetweenGroups(myfaction,zone.relationship)<=4 then
                     enemybase=false
                 else
                     enemybase=true
                 end
                 if zone.vehpos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(20, zone.vehpos.x, zone.vehpos.y, zone.vehpos.z, 
+                    DrawMarker(20, zone.vehpos.x, zone.vehpos.y, zone.vehpos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    100, 150, 255, 200, 
+                    100, 150, 255, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.garages~=nil and not zone.raided and not enemybase then
 					for k,v in pairs(zone.garages) do
-						DrawMarker(20, v.x, v.y, v.z, 
+						DrawMarker(20, v.x, v.y, v.z,
 						0.0, 0.0, 0.0, --dir
 						0.0, 0.0, 0.0, --rot
 						1.0, 1.0, -1.0, --scl
-						100, 150, 255, 200, 
+						100, 150, 255, 200,
 						true, false, 2, true, 0, 0, false)
 					end
                 end
                 if zone.craftpos~=nil then
-                    DrawMarker(20, zone.craftpos.x, zone.craftpos.y, zone.craftpos.z, 
+                    DrawMarker(20, zone.craftpos.x, zone.craftpos.y, zone.craftpos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    255, 200, 50, 200, 
+                    255, 200, 50, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.storagepos~=nil then
-                    DrawMarker(20, zone.storagepos.x, zone.storagepos.y, zone.storagepos.z, 
+                    DrawMarker(20, zone.storagepos.x, zone.storagepos.y, zone.storagepos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    255, 200, 50, 200, 
+                    255, 200, 50, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.tradepos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(29, zone.tradepos.x, zone.tradepos.y, zone.tradepos.z, 
+                    DrawMarker(29, zone.tradepos.x, zone.tradepos.y, zone.tradepos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, 1.0, --scl
-                    100, 255, 100, 200, 
+                    100, 255, 100, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.sellpos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(29, zone.sellpos.x, zone.sellpos.y, zone.sellpos.z, 
+                    DrawMarker(29, zone.sellpos.x, zone.sellpos.y, zone.sellpos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, 1.0, --scl
-                    100, 100, 255, 200, 
+                    100, 100, 255, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.ransack~=nil and not zone.raided and enemybase then
-                    DrawMarker(20, zone.ransack.x, zone.ransack.y, zone.ransack.z, 
+                    DrawMarker(20, zone.ransack.x, zone.ransack.y, zone.ransack.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    255, 100, 100, 200, 
+                    255, 100, 100, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.join_faction~=nil and not zone.raided and not enemybase then
-                    DrawMarker(20, zone.join_faction.x, zone.join_faction.y, zone.join_faction.z, 
+                    DrawMarker(20, zone.join_faction.x, zone.join_faction.y, zone.join_faction.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    100, 100, 255, 200, 
+                    100, 100, 255, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.extraction~=nil and not zone.raided and not enemybase then
-					DrawMarker(20, zone.extraction.x, zone.extraction.y, zone.extraction.z, 
+					DrawMarker(20, zone.extraction.x, zone.extraction.y, zone.extraction.z,
 					0.0, 0.0, 0.0, --dir
 					0.0, 0.0, 0.0, --rot
 					0.6, 0.6, -0.6, --scl
-					150, 255, 175, 200, 
+					150, 255, 175, 200,
 					true, false, 2, true, 0, 0, false)
                 end
                 if zone.clothespos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(20, zone.clothespos.x, zone.clothespos.y, zone.clothespos.z, 
+                    DrawMarker(20, zone.clothespos.x, zone.clothespos.y, zone.clothespos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    255, 255, 255, 200, 
+                    255, 255, 255, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.changingroompos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(20, zone.changingroompos.x, zone.changingroompos.y, zone.changingroompos.z, 
+                    DrawMarker(20, zone.changingroompos.x, zone.changingroompos.y, zone.changingroompos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    255, 255, 255, 200, 
+                    255, 255, 255, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.provisionpos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(20, zone.provisionpos.x, zone.provisionpos.y, zone.provisionpos.z, 
+                    DrawMarker(20, zone.provisionpos.x, zone.provisionpos.y, zone.provisionpos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    255, 255, 100, 200, 
+                    255, 255, 100, 200,
                     true, false, 2, true, 0, 0, false);
                 end
                 if zone.factionjoinpos~=nil and not zone.raided and not enemybase then
-                    DrawMarker(20, zone.factionjoinpos.x, zone.factionjoinpos.y, zone.factionjoinpos.z, 
+                    DrawMarker(20, zone.factionjoinpos.x, zone.factionjoinpos.y, zone.factionjoinpos.z,
                     0.0, 0.0, 0.0, --dir
                     0.0, 0.0, 0.0, --rot
                     1.0, 1.0, -1.0, --scl
-                    50, 200, 255, 200, 
+                    50, 200, 255, 200,
                     true, false, 2, true, 0, 0, false);
                 end
             end
@@ -15754,9 +15754,9 @@ Citizen.CreateThread(function()
 		zombie_loop=not zombie_loop
 		print(zombie_loop and "zombie_loop enabled" or "zombie_loop disabled")
 	end,false)
-	
+
     SetAllRandomPedsFlee(PlayerId(),false)
-    
+
     _,survivor_hash=AddRelationshipGroup("SURVIVOR")
     _,bandit_hash=AddRelationshipGroup("BANDIT")
     _,government_hash=AddRelationshipGroup("GOVERNMENT")
@@ -15772,16 +15772,16 @@ Citizen.CreateThread(function()
 	_,guerilla_hash=AddRelationshipGroup("GUERILLA")
     _,outlaw_hash=AddRelationshipGroup("OUTLAW")
     _,renegade_hash=AddRelationshipGroup("RENEGADE")
-    
+
     -- 5 shoot on sight
     -- 4 shoot when shoulder them or aim or shoot
     -- 3 shoot when shoulder them or aim or shoot
     -- 2 shoot when shoulder them or aim or shoot
     -- 1 nothing
     -- 0 nothing
-    
+
     -------------------
-	
+
     SetRelationshipBetweenGroups(5, GetHashKey("COUGAR"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("COUGAR"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("COUGAR"), GetHashKey("MARAUDER"))
@@ -15827,9 +15827,9 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUARD_DOG"), GetHashKey("SMUGGLERS"))
-	
-	
-	
+
+
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("SURVIVOR"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(0, GetHashKey("SURVIVOR"), GetHashKey("SURVIVOR"))
@@ -15847,7 +15847,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("SURVIVOR"), GetHashKey("SMUGGLERS"))
-    
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("BANDIT"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(0, GetHashKey("BANDIT"), GetHashKey("BANDIT"))
@@ -15865,7 +15865,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(3, GetHashKey("BANDIT"), GetHashKey("SMUGGLERS"))
     SetRelationshipBetweenGroups(5, GetHashKey("BANDIT"), GetHashKey("RENEGADE"))
-    
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("GOVERNMENT"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(0, GetHashKey("GOVERNMENT"), GetHashKey("COP"))
@@ -15885,8 +15885,8 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("GOVERNMENT"), GetHashKey("SMUGGLERS"))
-    
-    
+
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(0, GetHashKey("RAIDER"), GetHashKey("RAIDER"))
@@ -15906,7 +15906,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("RAIDER"), GetHashKey("SMUGGLERS"))
-    
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RAIDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(0, GetHashKey("MERC"), GetHashKey("MERC"))
@@ -15926,7 +15926,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(3, GetHashKey("MERC"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("MERC"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(3, GetHashKey("MERC"), GetHashKey("SMUGGLERS"))
-    
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("NEUTRAL"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(1, GetHashKey("NEUTRAL"), GetHashKey("NEUTRAL"))
@@ -15944,7 +15944,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("NEUTRAL"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("NEUTRAL"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("NEUTRAL"), GetHashKey("SMUGGLERS"))
-    
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("DAWN"))
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(3, GetHashKey("DAWN"), GetHashKey("NEUTRAL"))
@@ -15962,7 +15962,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("DAWN"), GetHashKey("SMUGGLERS"))
-    
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("MARAUDER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MARAUDER"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("MARAUDER"))
@@ -15980,7 +15980,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(1, GetHashKey("MARAUDER"), GetHashKey("SMUGGLERS"))
-	
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("MILITARY"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("MARAUDER"))
@@ -15998,7 +15998,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("MILITARY"), GetHashKey("SMUGGLERS"))
-	
+
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("HERO"))
     SetRelationshipBetweenGroups(5, GetHashKey("HERO"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -16017,7 +16017,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("HERO"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("HERO"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("HERO"), GetHashKey("SMUGGLERS"))
-	
+
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("VIGILANTE"))
     SetRelationshipBetweenGroups(5, GetHashKey("VIGILANTE"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -16036,7 +16036,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("VIGILANTE"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("VIGILANTE"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("VIGILANTE"), GetHashKey("SMUGGLERS"))
-	
+
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("GUERILLA"))
     SetRelationshipBetweenGroups(5, GetHashKey("GUERILLA"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -16055,7 +16055,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("GUERILLA"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("GUERILLA"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(1, GetHashKey("GUERILLA"), GetHashKey("SMUGGLERS"))
-	
+
 
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("OUTLAW"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
@@ -16074,7 +16074,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("OUTLAW"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("OUTLAW"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(1, GetHashKey("OUTLAW"), GetHashKey("SMUGGLERS"))
-	
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("RENEGADE"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(1, GetHashKey("RENEGADE"), GetHashKey("MARAUDER"))
@@ -16092,7 +16092,7 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("RENEGADE"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(1, GetHashKey("RENEGADE"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(5, GetHashKey("RENEGADE"), GetHashKey("SMUGGLERS"))
-	
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("SMUGGLERS"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(3, GetHashKey("SMUGGLERS"), GetHashKey("MARAUDER"))
@@ -16110,25 +16110,25 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(1, GetHashKey("SMUGGLERS"), GetHashKey("OUTLAW"))
     SetRelationshipBetweenGroups(5, GetHashKey("SMUGGLERS"), GetHashKey("RENEGADE"))
     SetRelationshipBetweenGroups(0, GetHashKey("SMUGGLERS"), GetHashKey("SMUGGLERS"))
-   
+
     -------------------
-    
-    
+
+
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("PLAYER"))
     SetRelationshipBetweenGroups(5, GetHashKey("PLAYER"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
-    
+
     SetRelationshipBetweenGroups(5, GetHashKey("PLAYER"), GetHashKey("HATES_PLAYER"))
     SetRelationshipBetweenGroups(5, GetHashKey("HATES_PLAYER"), GetHashKey("PLAYER"))
     SetRelationshipBetweenGroups(5, GetHashKey("HATES_PLAYER"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("HATES_PLAYER"))
-    
+
     SetRelationshipBetweenGroups(2, GetHashKey("PLAYER"), GetHashKey("MISSION2"))
     SetRelationshipBetweenGroups(2, GetHashKey("MISSION2"), GetHashKey("PLAYER"))
     SetRelationshipBetweenGroups(5, GetHashKey("HATES_PLAYER"), GetHashKey("MISSION2"))
     SetRelationshipBetweenGroups(5, GetHashKey("MISSION2"), GetHashKey("HATES_PLAYER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MISSION2"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("MISSION2"))
-    
+
     SetRelationshipBetweenGroups(0, GetHashKey("PLAYER"), GetHashKey("MISSION3"))
     SetRelationshipBetweenGroups(0, GetHashKey("MISSION3"), GetHashKey("PLAYER"))
     SetRelationshipBetweenGroups(0, GetHashKey("MISSION3"), GetHashKey("MISSION3"))
@@ -16136,9 +16136,9 @@ Citizen.CreateThread(function()
     SetRelationshipBetweenGroups(5, GetHashKey("MISSION3"), GetHashKey("HATES_PLAYER"))
     SetRelationshipBetweenGroups(5, GetHashKey("MISSION3"), GetHashKey("AGGRESSIVE_INVESTIGATE"))
     SetRelationshipBetweenGroups(5, GetHashKey("AGGRESSIVE_INVESTIGATE"), GetHashKey("MISSION3"))
-    
-    
-    
+
+
+
     for k,v in pairs(movementclipsets) do
         RequestAnimSet(v.anim)
         while not HasAnimSetLoaded(v.anim) do Wait(0) end
@@ -16177,7 +16177,7 @@ Citizen.CreateThread(function()
             -- if not GetIsTaskActive(ped,222) then
                 -- local pedpos=GetEntityCoords(ped)
                 -- TaskWanderInArea(ped, pedpos.x, pedpos.y, pedpos.z, math.random(20,50)+0.1, math.random(10,30)+0.1, math.random(1,4)+0.1);
-            -- end 
+            -- end
             if not GetIsTaskActive(ped,221) then
                 TaskWanderStandard(ped, 9.9+0.1, 10);
             end
@@ -16192,16 +16192,16 @@ Citizen.CreateThread(function()
             else
                 TaskGoToCoordAnyMeans(ped, zone.x, zone.y, zone.z, 1.5+.5, 0, 0, 786603, 0xbf800000)
                 -- TaskGoToCoordAndAimAtHatedEntitiesNearCoord(
-                -- ped, 
-                -- zone.x, zone.y, zone.z, 
-                -- 0.0, 0.0, 0.0, 
-                -- 2.5-.5, 
-                -- true, 
-                -- 10.5-.5, 
-                -- 0.0, 
-                -- true, 
-                -- -1, 
-                -- 1, 
+                -- ped,
+                -- zone.x, zone.y, zone.z,
+                -- 0.0, 0.0, 0.0,
+                -- 2.5-.5,
+                -- true,
+                -- 10.5-.5,
+                -- 0.0,
+                -- true,
+                -- -1,
+                -- 1,
                 -- GetHashKey("FullAuto"));
             end
         end
@@ -16318,16 +16318,16 @@ Citizen.CreateThread(function()
                     SetPedCombatAttributes(ped, 1424, false)
                     -- SetPedConfigFlag(ped, 281, true);
                     -- SetPedRagdollBlockingFlags(ped, 1);
-                    
+
                     -- SetPedCombatAttributes(ped, 16, 1)
                     -- SetPedCombatAttributes(ped, 17, 0)
                     -- SetPedCombatAttributes(ped, 46, 1)
                     -- SetPedCombatAttributes(ped, 1424, 0)
                     -- SetPedCombatAttributes(ped, 5, 1)
                     -- TaskWanderStandard(ped, 0.9+1.0, 10)
-                    
+
                     SetPedFleeAttributes(ped, 0, 0);
-                    
+
                     SetPedFleeAttributes(ped, 1, 0)
                     SetPedFleeAttributes(ped, 2, 0)
                     SetPedFleeAttributes(ped, 4, 0)
@@ -16382,21 +16382,21 @@ Citizen.CreateThread(function()
                         change_clothes(ped,suits.dawn_npc)
                     end
                 end
-                DecorSetBool(ped,"raider",true)   
+                DecorSetBool(ped,"raider",true)
                 if math.random(1,8)==1 then
                     DecorSetInt(ped,"questnpc",math.random(1,1000000))
-                end                             
+                end
                 if IsPedUsingAnyScenario(ped) then ClearPedTasksImmediately(ped) end
                 --TaskGuardCurrentPosition(ped, 5.0, 5.0, true);
                 -- if GetPedRelationshipGroupHash(ped)==GetHashKey("COP") then
                     -- --SetEntityHealth(ped,-1)
                     -- --ExplodePedHead(ped,GetHashKey("WEAPON_PISTOL"))
-                    
+
                 -- end
                 SetPedRelationshipGroupHash(ped,zone.relationship)
                 --SetEntityCoords(ped,zone.x, zone.y, zone.z)
                 --if zone.guard then TaskWanderInArea(ped, zone.x, zone.y, zone.z, zone.r, 3.0, 5.0); end
-                --TaskGuardCurrentPosition(ped, 5.1, 5.1, true); 
+                --TaskGuardCurrentPosition(ped, 5.1, 5.1, true);
                 raider_think()
                 SetPedSeeingRange(ped,100.1)
                 SetPedCombatAttributes(ped, 0, true)
@@ -16421,7 +16421,7 @@ Citizen.CreateThread(function()
                     GiveWeaponToPed(ped, warray[randomweapon], 5000, false, true)
                     SetPedCanSwitchWeapon(ped,false)
                 end
-                
+
             end
             SetPedConfigFlag(ped,281,true)
         end
@@ -16497,19 +16497,19 @@ Citizen.CreateThread(function()
             -- end
             zombie_type=DecorGetInt(ped,"zombie_type")
             clipset=randomclipsets[zombie_type]
-            --clipset=movementclipsets.limper        
+            --clipset=movementclipsets.limper
             RequestAnimSet(clipset.anim)
             if HasAnimSetLoaded(clipset.anim) then
                 SetPedMovementClipset(ped,clipset.anim,clipset.speed)
             end
             TaskGoToEntity(ped, target, -1, 1.0, clipset.speed, 1073741824, 0)
-        elseif distance>1.5 then 
+        elseif distance>1.5 then
             -- if IsPedInAnyVehicle(ped,false) then
                 -- SetEntityHealth(ped,0)
             -- end
             zombie_type=DecorGetInt(ped,"zombie_type")
             clipset=randomclipsets[zombie_type]
-            --clipset=movementclipsets.limper        
+            --clipset=movementclipsets.limper
             RequestAnimSet(clipset.anim)
             --WriteHint("~g~ZOMBIE CLOSE ZOMBIE CLOSE ZOMBIE CLOSE ZOMBIE CLOSE ")
             if (DecorGetInt(ped,"zombie_random")<5) then
@@ -16530,13 +16530,13 @@ Citizen.CreateThread(function()
             TaskSetBlockingOfNonTemporaryEvents(ped, 1)
             --TaskCombatPed(ped, target, 0, 16);
             if not IsPedRagdoll(ped) and not IsPedGettingUp(ped) and not IsPedBeingStealthKilled(ped) and not IsPedBeingStunned(ped,0) and not IsPedInMeleeCombat(ped) then
-            
-                local dict="melee@unarmed@streamed_core_fps"--"melee@thrown@streamed_core" 
+
+                local dict="melee@unarmed@streamed_core_fps"--"melee@thrown@streamed_core"
                 local anim="running_shove"--"plyr_takedown_rear"
-                
+
                 local dictlow="melee@unarmed@streamed_core_fps"
                 local animlow="ground_attack_0_psycho"
-                
+
                 if not IsEntityPlayingAnim(ped,dict,anim,3) and not IsEntityPlayingAnim(ped,dictlow,animlow,3) then
                     RequestAnimDict(dict)
                     while not HasAnimDictLoaded(dict) do Wait(0) end
@@ -16560,11 +16560,11 @@ Citizen.CreateThread(function()
                     --SetHighFallTask(ped, 5000, -1, -1)
                 end
             end
-            
+
             TaskGetOffBoat(ped,nil)
             zombie_type=DecorGetInt(ped,"zombie_type")
             clipset=randomclipsets[zombie_type]
-            --clipset=movementclipsets.limper        
+            --clipset=movementclipsets.limper
             RequestAnimSet(clipset.anim)
             if HasAnimSetLoaded(clipset.anim) then
                 SetPedMovementClipset(ped,clipset.anim,clipset.speed)
@@ -16662,29 +16662,29 @@ Citizen.CreateThread(function()
                     if not IsPedAPlayer(ped) and IsPedHuman(ped) then
                         if not IsPedDeadOrDying(ped) then
                             if DecorExistOn(ped,"zm_dying") then
-                                local dict="dam_ko@shot" 
+                                local dict="dam_ko@shot"
                                 local anim={}
                                 anim[1]="ko_front_01" --bad
                                 anim[2]="ko_front_02"
                                 anim[3]="ko_front_03"
                                 anim[4]="ko_front_04"
                                 anim[5]="ko_shot_head"
-                                
+
                                 local randomdeathanim=DecorGetInt(ped,"zm_dying")
                                 local currenttime=GetEntityAnimCurrentTime(ped,dict,anim[randomdeathanim])
                                 --local totaltime=GetEntityAnimTotalTime(ped,dict,anim[randomdeathanim])
-                                
-                                
+
+
                                 -- SetPedRagdollOnCollision(ped,true)
                                 -- SetPedConfigFlag(ped, 33, true);
-                                
+
                                 if (currenttime>0.1) then
                                     ApplyDamageToPed(ped, 5, false);
                                 end
-                                
+
                                 --ApplyDamageToPed(ped, 3, false);
-                                
-                                
+
+
                             elseif DecorExistOn(ped,"zombie_type") then
 								if cool_zombie_anims then
                                 local bonebool,bone=GetPedLastDamageBone(ped)
@@ -16705,26 +16705,26 @@ Citizen.CreateThread(function()
                                                 armordif=DecorGetInt(ped,"zm_armor")-armor
                                             end
                                             if (health+armor-healthdif*5-armordif*5<100) then
-                                                local dict="dam_ko@shot" 
+                                                local dict="dam_ko@shot"
                                                 local anim={}
                                                 anim[1]="ko_front_01" --bad
                                                 anim[2]="ko_front_02"
                                                 anim[3]="ko_front_03"
                                                 anim[4]="ko_front_04"
                                                 anim[5]="ko_shot_head"
-                                                
+
                                                 RequestAnimDict(dict)
                                                 while not HasAnimDictLoaded(dict) do Wait(0) end
                                                 --ClearPedTasksImmediately(ped)
                                                 local randomdeathanim=math.random(2,5)
                                                 TaskPlayAnim(ped, dict, anim[randomdeathanim], 8.0, 8.0, -1, 2, 0.001, false, false, false)
-                                                
+
                                                 --SetHighFallTask(ped, 10000, -1, -1)
                                                 DecorSetInt(ped,"zm_dying",randomdeathanim)
                                             else
                                                 ApplyDamageToPed(ped, healthdif*5, false);
                                                 ApplyDamageToPed(ped, armordif*5, true);
-                                                local dict="melee@unarmed@streamed_core" 
+                                                local dict="melee@unarmed@streamed_core"
                                                 local anim={}
                                                 anim[1]="hit_heavy_punch_a"
                                                 anim[2]="hit_heavy_punch_b"
@@ -16738,7 +16738,7 @@ Citizen.CreateThread(function()
                                             local hp=GetEntityHealth(ped)
                                             DecorSetInt(ped,"zm_health",hp)
                                             DecorSetInt(ped,"zm_armor",GetPedArmour(ped))
-                                            -- local dict="melee@knife@streamed_variations" 
+                                            -- local dict="melee@knife@streamed_variations"
                                             -- local anim="victim_knife_front_takedown_variation_b"
                                             -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
                                                 -- RequestAnimDict(dict)
@@ -16762,12 +16762,12 @@ Citizen.CreateThread(function()
                                                -- end
                                                -- while not HasNamedPtfxAssetLoaded(libname) do Wait(0) WriteHint("Trying to load effect") end
                                                -- UseParticleFxAssetNextCall(libname)
-                                               -- StartParticleFxNonLoopedOnPedBone(effectname, ped, 
+                                               -- StartParticleFxNonLoopedOnPedBone(effectname, ped,
                                                -- 0.0, 0.0, 0.0, --offset
                                                -- 0.0, 90.0, 0.0, --rot
                                                -- 31086, 1.5,  --bone index, scale
                                                -- false, false, false);
-                                               -- StartParticleFxNonLoopedOnPedBone(effectname2, ped, 
+                                               -- StartParticleFxNonLoopedOnPedBone(effectname2, ped,
                                                -- 0.0, 0.0, 0.0, --offset
                                                -- 0.0, 90.0, 0.0, --rot
                                                -- 31086, 1.0,  --bone index, scale
@@ -16776,30 +16776,30 @@ Citizen.CreateThread(function()
                                         end
                                             --SetPedToRagdoll(ped, 1000, 1000, 2, false, false, false);
                                             -- SetPedToRagdollWithFall(
-                                            -- ped, 5000, 5000, 2, 
-                                            -- pedpos.x, pedpos.y, pedpos.z, 
+                                            -- ped, 5000, 5000, 2,
+                                            -- pedpos.x, pedpos.y, pedpos.z,
                                             -- 0.5+0.5, --force
                                             -- 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
                                             -- if armor>0 then
                                                 -- SetPedArmour(ped,math.floor(armor/2))
                                             -- end
                                             --SetEntityHealth(ped,math.floor(health/2))
-                                            
-                                            
+
+
                                         -- local pedpos=GetEntityCoords(ped)
                                         -- local pedbonepos=GetPedBoneCoords(ped, 24818, 0.0, 0.0, 0.0);
                                         -- ShootSingleBulletBetweenCoords(
-                                        -- pedpos.x, pedpos.y, pedpos.z, 
-                                        -- pedbonepos.x, pedbonepos.y, pedbonepos.z, 
-                                        -- 10, true, GetHashKey("weapon_pistol"), 
+                                        -- pedpos.x, pedpos.y, pedpos.z,
+                                        -- pedbonepos.x, pedbonepos.y, pedbonepos.z,
+                                        -- 10, true, GetHashKey("weapon_pistol"),
                                         -- ped, false, true, 1.01);
                                         -- AddExplosion(pedpos.x, pedpos.y, pedpos.z,
-                                        -- 19, 0.05, false, 
+                                        -- 19, 0.05, false,
                                         -- true, 0.0);
                                         -- ApplyDamageToPed(ped, 5, false);
                                     elseif bone==36864 or bone==51826 or bone==63931 or bone==58271 then
                                         if DecorGetInt(ped,"zm_lastbone")~=bone then
-                                            local dict="nm@recover@normal@" 
+                                            local dict="nm@recover@normal@"
                                             local anim="nm_kneedown_recovery"
                                             -- if not IsEntityPlayingAnim(ped,dict,anim,3) then
                                                 -- RequestAnimDict(dict)
@@ -16810,18 +16810,18 @@ Citizen.CreateThread(function()
                                                 --SetPedToRagdoll(ped, 5000, 5000, 0, false, false, false);
                                             --end
                                             DecorSetInt(ped,"zm_lastbone",bone)
-                                            
+
                                             DecorSetInt(ped,"zm_health",health)
                                             DecorSetInt(ped,"zm_armor",armor)
                                         end
                                     else
                                         if DecorGetInt(ped,"zm_lastbone")~=bone then
-                                            local dict="melee@unarmed@streamed_core" 
+                                            local dict="melee@unarmed@streamed_core"
                                             local anim={}
                                             anim[1]="hit_heavy_punch_a"
                                             anim[2]="hit_heavy_punch_b"
                                             anim[3]="hit_heavy_punch_c"
-                                             -- if not IsEntityPlayingAnim(ped,dict,anim[1],3) 
+                                             -- if not IsEntityPlayingAnim(ped,dict,anim[1],3)
                                              -- and not IsEntityPlayingAnim(ped,dict,anim[2],3)
                                              -- and not IsEntityPlayingAnim(ped,dict,anim[3],3)
                                              -- then
@@ -16835,7 +16835,7 @@ Citizen.CreateThread(function()
                                              --end
                                             --end
                                             DecorSetInt(ped,"zm_lastbone",bone)
-                                            
+
                                             DecorSetInt(ped,"zm_health",health)
                                             DecorSetInt(ped,"zm_armor",armor)
                                         end
@@ -16895,7 +16895,7 @@ Citizen.CreateThread(function()
                     if DecorExistOn(ped,"zombie_type") then
                         zombie_attack()
                     elseif DecorExistOn(ped,"raider") then
-                        
+
                         --SetPedAccuracy(ped,0)
                     else
                        -- if DecorGetInt(ped,"zombie_type")~=4 then
@@ -16972,7 +16972,7 @@ Citizen.CreateThread(function()
 end)
 -- Citizen.CreateThread(function()
     -- while true do Wait(0)
-        -- local pped=PlayerPedId() 
+        -- local pped=PlayerPedId()
         -- if IsPedUsingActionMode(pped) then
             -- SetPedUsingActionMode(pped, false, false, "DEFAULT_ACTION");
         -- end
@@ -17041,7 +17041,7 @@ Citizen.CreateThread(function()
             local randomitem
             local platenumber=GetHashKey(GetVehicleNumberPlateText(veh))
             if (platenumber&3)~=0 then
-            
+
                 local vehpos=GetEntityCoords(veh)
                 local time=GetGameTimer()
                 local random_number=math.abs(math.floor((vehpos.x+vehpos.y+vehpos.z)*10)+time+(platenumber>>2))
@@ -17054,18 +17054,18 @@ Citizen.CreateThread(function()
                 elseif  tier>60 then    chosentier=rewards.trunkrewards.tier3
                 elseif  tier>33 then    chosentier=rewards.trunkrewards.tier2
                 else                    chosentier=rewards.trunkrewards.tier1 end
-                
+
                 local reward=chosentier[random_number%#chosentier+1]
                 local item=reward[1]
                 local count=reward[2]
-				
+
 				if item=="blueprint" then
 					local randomchosenitem=math.random(1,#normal_crafts)
 					item="blueprint_"..normal_crafts[randomchosenitem][1]
 				end
-				
+
                 if count<0 then count=math.random(1,-count) end
-                
+
                 if not DecorExistOn(veh,"item") then
                     DecorSetInt(veh,"item",item_name_to_index[item])
                     DecorSetInt(veh,"count",count)
@@ -17134,7 +17134,7 @@ Citizen.CreateThread(function()
                 loop=(handle~=-1)
                 while loop do
                     local reward=deadbodiesrewards[GetEntityModel(ped)]
-                    if reward==nil then 
+                    if reward==nil then
                         if DecorExistOn(ped,"raider") then
                             -- 98-100 - tier6 (2%) --big guns/medkits
                             -- 93-97 - tier5 (4%) --small guns
@@ -17150,7 +17150,7 @@ Citizen.CreateThread(function()
                             elseif  tier>28 then    chosentier=rewards.deadbodies.tier3
                             elseif  tier>3 then    chosentier=rewards.deadbodies.tier2
                             else                    chosentier=rewards.deadbodies.tier1 end
-                            reward=chosentier[math.random(1,#chosentier)] 
+                            reward=chosentier[math.random(1,#chosentier)]
                             if debug_mode then
                                 SimpleNotification("Debug random loot number is: ~1~",tier)
                                 print("Debug random loot number is: "..tier)
@@ -17162,7 +17162,7 @@ Citizen.CreateThread(function()
                             elseif  tier>98 then        chosentier=rewards.deadbodies.tier3
                             elseif  tier>97 then        chosentier=rewards.deadbodies.tier2
                             else                    chosentier=rewards.deadbodies.tier1 end
-                            reward=chosentier[math.random(1,#chosentier)] 
+                            reward=chosentier[math.random(1,#chosentier)]
                             if debug_mode then
                                 SimpleNotification("Debug random loot number is: ~1~",tier)
                                 print("Debug random loot number is: "..tier)
@@ -17205,7 +17205,7 @@ Citizen.CreateThread(function()
                     loop,ped=FindNextPed(handle)
                 end
                 EndFindPed(handle)
-                
+
                 handle,veh=FindFirstVehicle()
                 loop=(handle~=-1)
                 while loop do
@@ -17267,7 +17267,7 @@ Citizen.CreateThread(function()
                                 end
                             end
                         end
-                        
+
                     end
                     loop,veh=FindNextVehicle(handle)
                 end
@@ -17755,7 +17755,7 @@ AddEventHandler('populationPedCreating', function(x, y, z, model, setters)
 				if square_dist(mypos,theirpos)<2500 then
 					CancelEvent()
 					return
-				else				
+				else
 					setters.setModel(0xFFFFFFFF&newmodel)
 					setters.setPosition(x, y, z + 1.0)
 				end
@@ -17931,9 +17931,9 @@ if devmode then
 			saving_kvp_mode.SetResourceKvpInt("reputation",player.reputation)
 		end
 	end,false)
-	RegisterCommand('rearm',function(source,args,raw)		
+	RegisterCommand('rearm',function(source,args,raw)
 		local myped=PlayerPedId()
-		local myveh=GetVehiclePedIsIn(myped)								
+		local myveh=GetVehiclePedIsIn(myped)
 		local model=GetEntityModel(myveh)
 		local using_vehicle_weapon,weapon=GetCurrentPedVehicleWeapon(myped)
 		if using_vehicle_weapon and vehicles_ammo[model] and vehicles_ammo[model][weapon] then
@@ -18035,8 +18035,8 @@ end
             -- local pped=PlayerPedId(i)
             -- playersposs=GetEntityCoords(pped)
             -- local dist = #(vector3(playersposs.x, playersposs.y, 0.0) - vector3(x, y, 0.0))
-            -- if dist>300.0 then 
-                
+            -- if dist>300.0 then
+
             -- else
                 -- Wait(0)
                 -- goto regenerate_x_y_pos
@@ -18076,7 +18076,7 @@ end
             -- SetBlipSprite(checkpoint,161)
             -- SetBlipColour(checkpoint,2)
             -- SetBlipScale(checkpoint,1.0)
-        -- end 
+        -- end
         -- ---
         -- myped=PlayerPedId()
         -- mypos=GetEntityCoords(myped)
@@ -18088,25 +18088,25 @@ end
         -- WriteText(7,height and ("~g~height z43dc1: ~s~"..(bool and "true" or "false").." "..height) or "nil",0.2,255,255,255,255,0.3,0.62)
         -- bool,height=GetGroundZFor_3dCoord(mypos.x, mypos.y, mypos.z,false)
         -- WriteText(7,height and ("~g~height z43dc0: ~s~"..(bool and "true" or "false").." "..height) or "nil",0.2,255,255,255,255,0.3,0.64)
-        
+
         -- local dist = #(vector3(mypos.x, mypos.y, 0.0) - vector3(x, y, 0.0))
-        
+
         -- if object==nil then
             -- print("Created Object")
             -- object=CreateObject(GetHashKey("prop_mb_crate_01a"), x, y, -250.0, false, false, false);
             -- FreezeEntityPosition(object,true)
         -- end
-        
+
         -- local objectpos=GetEntityCoords(object)
-        
+
         -- ::lowerofmeter::
-        -- if GetEntityHeightAboveGround(object)>5.0 then 
-            -- SetEntityCoords(object, x, y, objectpos.z-1.0, false, false, false, false) 
-            -- goto lowerofmeter 
+        -- if GetEntityHeightAboveGround(object)>5.0 then
+            -- SetEntityCoords(object, x, y, objectpos.z-1.0, false, false, false, false)
+            -- goto lowerofmeter
         -- end
-        
-        
-        
+
+
+
         -- if dist<6.0 then
             -- SetTextCentre(true)
             -- WriteText(7,"You're close to checkpoint thing",1.0,255,255,255,255,0.5,0.7)
@@ -18267,7 +18267,7 @@ AddEventHandler('updatesignal', function(id,x,y,z,b,m,r,t,name)
                     name="Survivor Loot"
                 end
             end
-                
+
             SetBlipAsShortRange(signal.blip,true)
         else
             SetBlipCoords(signal.blip,x,y,0)
@@ -18383,7 +18383,7 @@ Citizen.CreateThread(function()
             or zone.garages~=nil and (dist_to_closest_point(zone.garages,mypos)<225)
             or zone.vehpos~=nil and in_radius(mypos,zone.vehpos,1)
             or zone.storagepos~=nil and in_radius(mypos,zone.storagepos,1)
-            then 
+            then
                 WriteHint(6,messages.press_e_to_interact)
             end
             if zone.factionjoinpos~=nil and in_radius(mypos,zone.factionjoinpos,1) then
@@ -18450,7 +18450,7 @@ end)
 
 --[[
 local gasstations={
-    
+
     {
         trader={x=162.09725952148,y=6636.5678710938,z=31.556589126587,blip=361},
         tank={x=172.08010864258,y=6622.7368164063,z=31.832139968872,blip=431},
@@ -18466,12 +18466,12 @@ local gasstations={
         tank={x=1192.6104736328,y=2662.490234375,z=37.822631835938,blip=431},
         gasoline=0,
     },
-    
+
 }
 local gasoline_generators={
-    
+
     {x=1527.603515625,y=-2113.7202148438,z=76.686614990234,blip=648,color=51},
-    
+
 }
 
 RegisterNetEvent("gasstation_update")
@@ -18490,7 +18490,7 @@ Citizen.CreateThread(function()
         -- SetBlipAsShortRange(blip,true)
         -- SetBlipColour(blip, 4)
         -- SetBlipName(blip, "Sell fuel tank")
-        
+
         blip=AddBlipForCoord(v.trader.x,v.trader.y,v.trader.z)
         SetBlipSprite(blip, v.trader.blip)
         SetBlipAsShortRange(blip,true)
@@ -18513,13 +18513,13 @@ Citizen.CreateThread(function()
                     TriggerServerEvent("request_gasstation",k)
                     v.firsttimecheckdone=true
                 end
-                DrawMarker(20, v.trader.x, v.trader.y, v.trader.z, 
+                DrawMarker(20, v.trader.x, v.trader.y, v.trader.z,
                 0.0, 0.0, 0.0, --dir
                 0.0, 0.0, 0.0, --rot
                 1.0, 1.0, -1.0, --scl
-                200, 200, 200, 200, 
+                200, 200, 200, 200,
                 true, false, 2, true, 0, 0, false);
-            
+
                 if in_radius(mypos,v.trader,2) then
                     --TriggerServerEvent("ask_for_gasoline_amount",k)
                     local inv_index_price=0
@@ -18541,8 +18541,8 @@ Citizen.CreateThread(function()
                         WriteText(4,{"Gas station has ~o~~1~ ~s~gasoline",v.gasoline},0.65,255,255,255,255,0.4,0.65)
                     end
                     WriteText(4,{"You have ~o~~1~ ~s~gasoline and ~g~$~1~",youhaveamount_goods,youhaveamount_price},0.65,255,255,255,255,0.4,0.70)
-                    
-                    
+
+
                     if IsControlJustPressed(0,86) then
                         if youhaveamount_price>=price and v.gasoline>0 then
                             if give_item_to_inventory("gasoline",1) then
@@ -18556,11 +18556,11 @@ Citizen.CreateThread(function()
                 end
             end
             if in_radius(mypos,v.tank,20) then
-                DrawMarker(20, v.tank.x, v.tank.y, v.tank.z, 
+                DrawMarker(20, v.tank.x, v.tank.y, v.tank.z,
                 0.0, 0.0, 0.0, --dir
                 0.0, 0.0, 0.0, --rot
                 1.0, 1.0, -1.0, --scl
-                200, 200, 100, 200, 
+                200, 200, 100, 200,
                 true, false, 2, true, 0, 0, false);
                 if in_radius(mypos,v.tank,5) then
                     if v.gasoline<2000 then
@@ -18589,7 +18589,7 @@ Citizen.CreateThread(function()
                                                 end
                                             else
                                                 reward=curgas*3
-                                                if give_item_to_inventory("cash",reward) then 
+                                                if give_item_to_inventory("cash",reward) then
                                                     --SetEntityAsMissionEntity(trailer)
                                                     --DeleteVehicle(trailer)
                                                     DecorRemove(trailer,"gasoline")
@@ -18623,11 +18623,11 @@ Citizen.CreateThread(function()
         end
         for k,v in ipairs(gasoline_generators) do
             if in_radius(mypos,v,15) then
-                DrawMarker(20, v.x, v.y, v.z, 
+                DrawMarker(20, v.x, v.y, v.z,
                 0.0, 0.0, 0.0, --dir
                 0.0, 0.0, 0.0, --rot
                 1.0, 1.0, -1.0, --scl
-                250, 200, 50, 200, 
+                250, 200, 50, 200,
                 true, false, 2, true, 0, 0, false);
                 local myveh=GetVehiclePedIsIn(myped)
                 if GetPedInVehicleSeat(myveh,-1)==myped then
@@ -18679,7 +18679,7 @@ Citizen.CreateThread(function()
     {x=731.84368896484,y=-1082.7537841797,z=22.147554397583,sprite=446,color=13,name="Car parts shop"}, --anarchy
     {x=-205.81533813477,y=-1319.939453125,z=30.238958358765,sprite=446,color=13,name="Car parts shop"}, --benny
     {x=-1156.0357666016,y=-2009.0445556641,z=12.529552459717,sprite=446,color=13,name="Car parts shop"}, --airport
-    
+
     {x=1962.7620849609,y=3744.193359375,z=32.343746185303,sprite=52,name="Provision store"}, --sandy
     {x=1733.9096679688,y=6414.2333984375,z=35.037258148193,sprite=52,name="Provision store"}, --norrth
     {x=-49.969524383545,y=-1753.4479980469,z=29.421014785767,sprite=52,name="Provision store"}, --ghetto
@@ -18690,15 +18690,15 @@ Citizen.CreateThread(function()
     {x=-1488.1184082031,y=-381.16339111328,z=40.163387298584,sprite=52,name="Provision store"}, --WEST exit ls
     {x=-1824.0257568359,y=790.37286376953,z=138.19316101074,sprite=52,name="Provision store"}, --WEST NORTH exit ls
     {x=-2969.3889160156,y=390.57669067383,z=15.043313980103,sprite=52,name="Provision store"}, --banham 1 (southern)
-    {x=-3042.4968261719,y=588.54547119141,z=7.9089293479919,sprite=52,name="Provision store"}, --banham 2 
-    {x=-3243.7302246094,y=1005.2648925781,z=12.830717086792,sprite=52,name="Provision store"}, --banham 3 
+    {x=-3042.4968261719,y=588.54547119141,z=7.9089293479919,sprite=52,name="Provision store"}, --banham 2
+    {x=-3243.7302246094,y=1005.2648925781,z=12.830717086792,sprite=52,name="Provision store"}, --banham 3
     {x=377.5036315918,y=326.63232421875,z=103.56637573242,sprite=52,name="Provision store"}, --ls north
     {x=544.240234375,y=2669.169921875,z=42.156532287598,sprite=52,name="Provision store"}, --HARMONY
     {x=2678.7194824219,y=3284.6645507813,z=55.24112701416,sprite=52,name="Provision store"}, --east near you tool
     {x=1702.1368408203,y=4927.0517578125,z=42.063678741455,sprite=52,name="Provision store"}, --GRAPESEED
     {x=1166.4211425781,y=2707.5710449219,z=38.15771484375,sprite=52,name="Provision store"}, --GRAND SENORA
     {x=2555.1860351563,y=385.80474853516,z=108.62294769287,sprite=52,name="Provision store"}, --swat east
-    
+
     {x=136.49124145508,y=-1708.3150634766,z=29.291620254517,sprite=71}, --barber ghetto near station
     {x=-1283.5354003906,y=-1117.2982177734,z=6.9901118278503,sprite=71}, --barber NEAR BEACH
     {x=-815.05908203125,y=-184.52572631836,z=37.56888961792,sprite=71}, --barber elite
@@ -18706,14 +18706,14 @@ Citizen.CreateThread(function()
     {x=1212.4984130859,y=-472.68957519531,z=66.208000183105,sprite=71}, --barber east
     {x=1932.1176757813,y=3729.2197265625,z=32.84423828125,sprite=71}, --barber sandy
     {x=-278.52871704102,y=6228.6616210938,z=31.695261001587,sprite=71}, --barber paleto
-    
+
     {x=1323.6118164063,y=-1652.4865722656,z=52.275413513184,sprite=75}, --tatoo east
     {x=322.22174072266,y=181.4826965332,z=103.5864944458,sprite=75}, --tatoo north
     {x=-3170.7678222656,y=1076.0648193359,z=20.82918548584,sprite=75}, --tatoo west
     {x=1863.7347412109,y=3748.7912597656,z=33.031890869141,sprite=75}, --tatoo sandy
     {x=-292.48239135742,y=6197.263671875,z=31.488706588745,sprite=75}, --tatoo paleto
     {x=-1153.3564453125,y=-1426.2795410156,z=4.9544591903687,sprite=75}, --tatoo THE PIT
-    
+
     {x=-326.86383056641,y=6080.3544921875,z=31.45477104187,sprite=110}, --paleto
     {x=2569.3251953125,y=297.60437011719,z=108.73485565186,sprite=110}, --swat east
     {x=1695.0667724609,y=3756.5124511719,z=34.70531463623,sprite=110}, --sandy
@@ -18726,7 +18726,7 @@ Citizen.CreateThread(function()
     {x=843.78741455078,y=-1029.9522705078,z=28.194849014282,sprite=110}, --NEAR ANARCHISTS
     {x=-1308.6551513672,y=-392.06604003906,z=36.695762634277,sprite=110}, --diagonal
     }
-    for k,v in ipairs(map_icons) do        
+    for k,v in ipairs(map_icons) do
         blip=AddBlipForCoord(v.x,v.y,v.z)
         SetBlipSprite(blip, v.sprite)
         SetBlipAsShortRange(blip,true)
@@ -18736,7 +18736,7 @@ Citizen.CreateThread(function()
             SetBlipName(blip, v.name)
         end
     end
-    for k,v in ipairs(safezones) do        
+    for k,v in ipairs(safezones) do
         v.bliphandler=AddBlipForCoord(v.x,v.y,v.z)
 		SetBlipDisplay(v.bliphandler,2)
         SetBlipSprite(v.bliphandler, v.blip)
@@ -18817,10 +18817,10 @@ death_event=function()
 		if killer and killer~=0 and IsEntityAPed(killer) and killer~=ped then
 			local killerfaction=GetPedRelationshipGroupHash(killer)
 			local myfaction=GetPedRelationshipGroupHash(ped)
-			
+
 			local myfaction_cost=relationship_reputation_changes.player[myfaction]
 			local killerfaction_cost=relationship_reputation_changes.player[killerfaction]
-			
+
 			if myfaction_cost~=nil and killerfaction_cost~=nil and myfaction_cost~=0 and killerfaction_cost~=0 then
 				if (myfaction_cost~killerfaction_cost)<0 then -- means it's either - and + or + and -
 					change_reputation(myfaction_cost)
@@ -18828,7 +18828,7 @@ death_event=function()
 				end
 			end
 		end
-		
+
         inventory.total=0
         inventory.current=0
         inventory.scroll=0
@@ -18846,7 +18846,7 @@ end
 RegisterNetEvent("zonestatus")
 AddEventHandler("zonestatus",function(name,status)
     --print("zonestatus ")
-    for k,v in pairs(safezones) do 
+    for k,v in pairs(safezones) do
         if v.name==name then
             if status then
                 SetBlipColour(v.bliphandler, 39)
@@ -18963,11 +18963,11 @@ Citizen.CreateThread(function()
         for k,v in ipairs(teleports) do
             local dist=sqrt_dist(mypos,v)
             if dist<100.0 then
-                DrawMarker(0, v.x, v.y, v.z, 
+                DrawMarker(0, v.x, v.y, v.z,
                 0.0, 0.0, 0.0, --dir
                 0.0, 0.0, 0.0, --rot
                 0.6, 0.6, 0.6, --scl
-                255, 255, 150, 200, 
+                255, 255, 150, 200,
                 true, false, 2, true, 0, 0, false)
                 if dist<1.0 then
                     if IsControlJustPressed(0,86) then
@@ -19143,7 +19143,7 @@ end)
 
 -- Citizen.CreateThread(function()
     -- local xxxxxxx=0.0
-    
+
     -- local neutral={}
     -- neutral.r=255
     -- neutral.g=235
@@ -19156,9 +19156,9 @@ end)
     -- enemy.r=200
     -- enemy.g=50
     -- enemy.b=50
-    
+
     -- local r,g,b
-    
+
     -- while true do Wait(0)
         -- local myped=PlayerPedId()
         -- local mypos=GetEntityCoords(myped)
@@ -19170,23 +19170,23 @@ end)
         -- end
         -- if zone and zone.relationship and not disablehud then
             -- local myrel=GetPedRelationshipGroupHash(myped)
-            
+
             -- local relnumber=GetRelationshipBetweenGroups(myrel,zone.relationship)
-            
+
             -- local chunk_x=0.049
             -- local chunk_y=0.008
-        
-        
+
+
             -- SetTextCentre(true)
             -- DrawRect(0.5,0.05,0.301,0.012,0,0,0,255) -- -0.00025 --black bar
-            
+
             -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,50,50,50,255) --grey
             -- DrawRect(0.5-.075,0.05,chunk_x,chunk_y,50,50,50,255)
             -- DrawRect(0.5-.025,0.05,chunk_x,chunk_y,50,50,50,255)
             -- DrawRect(0.5+.025,0.05,chunk_x,chunk_y,50,50,50,255)
             -- DrawRect(0.5+.075,0.05,chunk_x,chunk_y,50,50,50,255)
             -- DrawRect(0.5+.125,0.05,chunk_x,chunk_y,50,50,50,255)
-            
+
             -- if relnumber==0 then
                 -- r=friends.r
                 -- g=friends.g
@@ -19233,7 +19233,7 @@ end)
                 -- b=enemy.b
                 -- DrawRect(0.5-.125,0.05,chunk_x,chunk_y,r,g,b,255)
             -- end
-            
+
             -- if zone.name then
                 -- local newname=zone.name
                 -- local firstchar=string.sub(newname,1,1)
@@ -19242,9 +19242,9 @@ end)
                 -- end
                 -- WriteText(4,{"~a~ - ~a~",newname,relationship_names[zone.relationship]},0.5,r,g,b,255,0.5,0.008) --base name
             -- end
-            
+
             -- SetTextRightJustify(true)
-            -- SetTextWrap(0.0,0.34)            
+            -- SetTextWrap(0.0,0.34)
             -- WriteText(4,"Hostile",0.4,r,g,b,255,xxxxxxx,0.035) --My faction
             -- WriteText(4,"Friendly",0.4,r,g,b,255,0.66,0.035) --Their faction
             -- -- WriteText(4,relationship_names[myrel],0.4,r,g,b,255,xxxxxxx,0.035) --My faction
@@ -19291,11 +19291,11 @@ Citizen.CreateThread(function()
 							elseif repchange<0 then
 								SimpleNotification(messages.you_lost_num_retutation_for_killing_str,(repchange*-1),relationship_name[theirfaction])
 							end
-							
+
 							-- local myfactionposition=relationship_reputation_changes.player[myfaction]
 							-- local theirfactionposition=relationship_reputation_changes.player[theirfaction]
-							
-							
+
+
 						end
 					else
 						if relationship_reputation_changes.npc[theirfaction] then
@@ -19331,20 +19331,20 @@ Citizen.CreateThread(function()
 						-- end
                         -- SimpleNotification("You have ~r~lost reputation ~s~for killing a ~g~~a~",relationship_name[theirfaction])
                     -- end
-					
+
 					-- if theirfaction==myfaction then
-						-- if plusorminus=="plus" then change_reputation(50) 
+						-- if plusorminus=="plus" then change_reputation(50)
 						-- elseif plusorminus=="minus" then change_reputation(-50) end
 						-- SimpleNotification("~r~You've killed ~a~ and got expelled from your faction.",relationship_name[theirfaction])
 						-- player.faction=nil
 						-- saving_kvp_mode.DeleteResourceKvp("player_faction")
-						
+
 					-- end
-                    
+
                     local npcpos=GetEntityCoords(npc)
                     local npcrel=GetPedRelationshipGroupHash(npc)
                     local patrolindex,patrol=is_in_patrol(npcpos.x,npcpos.y,npcpos.z,npcrel)
-                    if patrol~=nil and patrol.lives~=nil then                            
+                    if patrol~=nil and patrol.lives~=nil then
                         -- local possible_bases={}
                         -- for _,base in pairs(safezones) do
                             -- if base.relationship==patrol.relationship then
@@ -19356,7 +19356,7 @@ Citizen.CreateThread(function()
                             SimpleNotification(messages.patrol_eliminated)
                         end
                     end
-                    
+
                 end
 			elseif checkeddeadbodies[npc] then
 				checkeddeadbodies[npc]=nil
@@ -19382,7 +19382,7 @@ Citizen.CreateThread(function()
             -- WriteHint(8,{"NPCs: ~1~ / ~1~",npcslimiter.current,npcslimiter.max})
         -- end
         -- WriteHint(8,"----------------------------------------------")
-		
+
 		-- WriteHint(8,"-------------------Debug----------------------")
 		-- WriteHint(8,{"Reputation: ~1~",player.reputation})
 		-- local myveh=GetVehiclePedIsIn(myped)
@@ -19396,8 +19396,8 @@ Citizen.CreateThread(function()
 		-- end
 		-- local selweapon=GetSelectedPedWeapon(myped)
 		-- WriteHint(8,{"Current weapon: ~1~ / Clip: ~a~ / Ammo: ~a~ / Ammotype: ~a~",selweapon,tostring(GetAmmoInClip(myped,selweapon)),tostring(GetAmmoInPedWeapon(myped,selweapon)),tostring(GetPedAmmoTypeFromWeapon(myped,selweapon))})
-	-- 
-		
+	--
+
     end
 end)
 
@@ -19410,11 +19410,11 @@ Citizen.CreateThread(function()
         for k,v in ipairs(extraction) do
             local dist=sqrt_dist(mypos,v)
             if dist<1000.0 then
-                DrawMarker(20, v.x, v.y, v.z, 
+                DrawMarker(20, v.x, v.y, v.z,
                 0.0, 0.0, 0.0, --dir
                 0.0, 0.0, 0.0, --rot
                 0.6, 0.6, -0.6, --scl
-                150, 255, 175, 200, 
+                150, 255, 175, 200,
                 true, false, 2, true, 0, 0, false)
             end
         end
@@ -19453,23 +19453,19 @@ end)
 
 Citizen.CreateThread(function()
     while true do Wait(0)
-        --WriteTextNoOutline(4,"Drakeling Labs",0.4,200,200,200,255,0.025,0.007) 
+        --WriteTextNoOutline(4,"Drakeling Labs",0.4,200,200,200,255,0.025,0.007)
         DrawSprite("lsm", "dlabs", 0.045,0.02   ,0.065*1.3,0.025*1.05,   0.0, 255, 255, 255, 255)
-        WriteTextNoOutline(0,GetPlayerName(PlayerId()),0.4,200,200,200,55,0.005,0.035) 
+        WriteTextNoOutline(0,GetPlayerName(PlayerId()),0.4,200,200,200,55,0.005,0.035)
         --WriteText(4,"Your character will not be saved if you disconnect without extracting. \nUse extraction points to save your character safely.",0.2,200,200,200,255,0.165,0.975) --status
     end
 end)
 
 Citizen.CreateThread(function()
-    while true do 
-        Wait(10000)
+    while true do
+        Wait(30000)
         SimpleNotification("Welcome to Los Santos Muertos! We humbly request that unauthorized streamers refrain from broadcasting from this server without permission. Violators of this policy may be removed. Thank you!")
-        Wait(300000)
-		SimpleNotification("Thanks for playing Los Santos Muertos! If you enjoy our server, and want to support development... consider donating at ~b~https://donorbox.org/lossantosmuertos")
-		Wait(300000)
+				Wait(10000)
         SimpleNotification("Your character will not be saved if you disconnect without extracting. Use extraction points to save your character safely.")
-        Wait(300000)
-        SimpleNotification("Join the Los Santos Muertos Discord community! Use our invite link at ~b~discord.gg/w9mZMqJ")
     end
 end)
 
@@ -19490,7 +19486,7 @@ end)
     -- local h=GetEntityHeightAboveGround(ped)
     -- local pos=GetEntityCoords(ped)
         -- if IsControlJustPressed(0,344) then
-			
+
             -- --local weaponhash=GetSelectedPedWeapon(ped)
             -- --strip_weapon_upgrades(weaponhash)
         -- -- elseif IsControlJustPressed(0,57) then
@@ -19551,7 +19547,7 @@ local function update_blips_relationship_colors()
 end
 
 
-    
+
 Citizen.CreateThread(function()
     while true do Wait(10000)
         update_blips_relationship_colors()
@@ -19594,10 +19590,10 @@ Citizen.CreateThread(function()-- if true then return end
 			DisableControlAction(0,37,false) --enable weapon wheel
 		else
 			DisableControlAction(0,37,true) --hide weapon wheel
-			BlockWeaponWheelThisFrame() --cant switch weapons but weapon wheel is active 
+			BlockWeaponWheelThisFrame() --cant switch weapons but weapon wheel is active
 		end
 		--SetPedCanSwitchWeapon(myped,false) --cant switch weapons even automatically when entering car
-		
+
 		if false and IsDisabledControlJustPressed(0,15) then
 			local cur_selected=GetSelectedPedWeapon(myped)
 			if cur_selected==-1569615261 then
@@ -19877,7 +19873,7 @@ Citizen.CreateThread(function()-- if true then return end
 								break
 							end
 							-- if not HasPedGotWeapon(myped,weapon_hash) then
-								
+
 							-- end
 						end
 					end
@@ -20013,7 +20009,7 @@ Citizen.CreateThread(function()-- lights on bases
 	--{x=-592.65832519531,y=2076.7241210938,z=131.37731933594,r=200,g=255,b=100,distance=50.0,brightness=1.0,hardness=0.0,roundness=0.1,radius=80.0,roundness=1.0,falloff=1.0,shadow=1.0}, --mine
 	{x=-2346.2736816406,y=3267.4633789063,z=34.858726501465,r=200,g=255,b=100,range=15.0,intensity=1.0,shadow=1.0}, --military base
 	{x=-2353.6850585938,y=3260.9162597656,z=33.850387573242,r=200,g=255,b=100,range=15.0,intensity=1.0,shadow=1.0}, --military base
-	
+
 	{x=454.69134521484,y=-990.87878417969,z=32.688674926758,r=170,g=255,b=200,range=10.0,intensity=0.8,shadow=1.0}, --lspd
 	{x=440.91799926758,y=-983.01861572266,z=32.188743591309,r=170,g=255,b=200,range=10.0,intensity=0.8,shadow=1.0}, --lspd
 	{x=451.81185913086,y=-980.51165771484,z=32.102115631104,r=170,g=255,b=200,range=5.0,intensity=0.8,shadow=1.0}, --lspd
@@ -20023,10 +20019,10 @@ Citizen.CreateThread(function()-- lights on bases
 	while true do Wait(0)
 		for k,v in pairs(lights) do
 			DrawLightWithRange(v.x, v.y, v.z, v.r, v.g, v.b, v.range, v.intensity);
-			-- DrawSpotLightWithShadow(v.x, v.y, v.z, 
-			-- 0.0, 0.0, -90.0, 
-			-- v.r, v.g, v.b, 
-			-- v.distance, v.brightness, 
+			-- DrawSpotLightWithShadow(v.x, v.y, v.z,
+			-- 0.0, 0.0, -90.0,
+			-- v.r, v.g, v.b,
+			-- v.distance, v.brightness,
 			-- v.roundness, v.radius, v.falloff,46346537);
 		end
 	end
@@ -20056,11 +20052,11 @@ Citizen.CreateThread(function()-- car lights
 					bones.extralight_2=GetEntityBoneIndexByName(veh,"extralight_2")
 					bones.extralight_3=GetEntityBoneIndexByName(veh,"extralight_3")
 					bones.extralight_4=GetEntityBoneIndexByName(veh,"extralight_4")
-					
+
 					-- alwayslight.taillight_l=GetEntityBoneIndexByName(veh,"taillight_l")
 					-- alwayslight.taillight_r=GetEntityBoneIndexByName(veh,"taillight_r")
-					
-					
+
+
 					local brightness=0.7
 					local radius=25.0
 					local distance=25.0
@@ -20069,19 +20065,19 @@ Citizen.CreateThread(function()-- car lights
 						brightness=1.0
 						radius=35.0
 					end
-					
+
 					for k,v in pairs(bones) do
 						if v~=-1 then
 							--WriteHint(145,{"boneindex: ~1~",v})
 							local bonepos=GetWorldPositionOfEntityBone(veh,v)
-							DrawSpotLightWithShadow(bonepos.x+(myvehdir.x*0.1), bonepos.y+(myvehdir.y*0.1), bonepos.z+(myvehdir.z*0.1), 
-							myvehdir.x, myvehdir.y, myvehdir.z, 
+							DrawSpotLightWithShadow(bonepos.x+(myvehdir.x*0.1), bonepos.y+(myvehdir.y*0.1), bonepos.z+(myvehdir.z*0.1),
+							myvehdir.x, myvehdir.y, myvehdir.z,
 							255, 255, 255,
 							distance, brightness,
 							0.5, radius, 1.0,h)
 							h=h+1
-							DrawSpotLight(bonepos.x+(myvehdir.x*0.1), bonepos.y+(myvehdir.y*0.1), bonepos.z+(myvehdir.z*0.1), 
-							-myvehdir.x, -myvehdir.y, -myvehdir.z, 
+							DrawSpotLight(bonepos.x+(myvehdir.x*0.1), bonepos.y+(myvehdir.y*0.1), bonepos.z+(myvehdir.z*0.1),
+							-myvehdir.x, -myvehdir.y, -myvehdir.z,
 							255, 255, 255,
 							0.2, brightness*99.9,
 							0.5, 99.0, 99.0, 1.0)
@@ -20090,8 +20086,8 @@ Citizen.CreateThread(function()-- car lights
 					-- for k,v in pairs(alwayslight) do
 						-- if v~=-1 then
 							-- local bonepos=GetWorldPositionOfEntityBone(veh,v)
-							-- DrawSpotLight(bonepos.x-(myvehdir.x*0.2), bonepos.y-(myvehdir.y*0.2), bonepos.z-(myvehdir.z*0.2), 
-							-- myvehdir.x, myvehdir.y, myvehdir.z, 
+							-- DrawSpotLight(bonepos.x-(myvehdir.x*0.2), bonepos.y-(myvehdir.y*0.2), bonepos.z-(myvehdir.z*0.2),
+							-- myvehdir.x, myvehdir.y, myvehdir.z,
 							-- 255, 0, 0,
 							-- 0.3, brightness*99.9,
 							-- 0.5, 99.0, 99.0, 1.0)
@@ -20203,7 +20199,7 @@ Citizen.CreateThread(function()
 															DrawRect(0.921-(0.018*id),0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
 															DrawSprite("lsm", "gradient", 0.921-(0.018*id),0.9,0.013,0.175,0.0, 255, 255, 255, 255)
 															DrawRect(0.921-(0.018*id),0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) --
-															
+
 															if HasStreamedTextureDictLoaded("lsm") then
 																DrawSprite("lsm", weapon.pool, 0.921-(0.018*id),0.97,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
 															end
@@ -20218,7 +20214,7 @@ Citizen.CreateThread(function()
                                             DecorSetInt(veh,decor,0)
                                             --drawtext(decor,.75,.75)
                                         end
-                                    else 
+                                    else
 										--WriteHint(356,"~y~DEBUG: no weapondata")
                                     end
                                 --end
@@ -20266,7 +20262,7 @@ Citizen.CreateThread(function()
 											DrawRect(0.921-(0.018*id),0.9,0.001,0.1,hudcolor.new.bkg.r,hudcolor.new.bkg.g,hudcolor.new.bkg.b,hudcolor.new.bkg.a)
 											DrawSprite("lsm", "gradient", 0.921-(0.018*id),0.9,0.013,0.175,0.0, 255, 255, 255, 255)
 											DrawRect(0.921-(0.018*id),0.9+0.0975*0.5*(maxammo-ammo)/maxammo,0.001,0.0975*ammo/maxammo,hudcolor.new.r,hudcolor.new.g,hudcolor.new.b,hudcolor.new.a) --
-											
+
 											if HasStreamedTextureDictLoaded("lsm") then
 												DrawSprite("lsm", weapon.pool, 0.921-(0.018*id),0.97,0.0166666667,0.0296296296,0.0, 255, 255, 255, 255)
 											end
@@ -20303,7 +20299,7 @@ end)
 Citizen.CreateThread(function()
 	while true do Wait(0)
         local loop,handle,pickup
-        
+
         handle,pickup=FindFirstPickup()
         loop=(handle~=-1)
         while loop do
@@ -20342,7 +20338,7 @@ end)
 		-- WriteHint(536,{"GetFollowPedCamZoomLevel: ~a~",tostring(GetFollowPedCamZoomLevel())})
 	-- end
 -- end)
-		
+
 -- Citizen.CreateThread(function()
     -- local curcam
 	-- while true do Wait(0)
@@ -20428,7 +20424,7 @@ end)
 RegisterNetEvent("updatetradelist")
 AddEventHandler("updatetradelist",function(zonetradename,list,timetoupdate)
 	time_to_update_shops=timetoupdate
-    for k,v in pairs(safezones) do 
+    for k,v in pairs(safezones) do
 		if v.tradelistname==zonetradename then
 			--v.trade={}
 			--v.selltrade={}
@@ -20463,7 +20459,7 @@ end)
 RegisterNetEvent("updatevehshoplist")
 AddEventHandler("updatevehshoplist",function(zonetradename,list,timetoupdate)
 	time_to_update_shops=timetoupdate
-    for k,v in pairs(safezones) do 
+    for k,v in pairs(safezones) do
 		if v.tradelistname==zonetradename then
 			v.vehshop=list
 		end
@@ -20487,7 +20483,7 @@ end)
 			-- SetFollowPedCamViewMode(0)
 			-- local gettime=GetGameTimer()
 			-- AnimateGameplayCamZoom(1.1-.1,1.1-.1)
-			-- while true do 
+			-- while true do
 				-- if GetGameTimer()-gettime>1000 then break end
 				-- if not IsPedSprinting(myped) then
 					-- AnimateGameplayCamZoom(1.1-.1,1.1-.1)
@@ -20526,10 +20522,10 @@ end)
 -- end
     -- local maxtimer=10
     -- local timer=maxtimer
-    
+
     -- local maradeurs_models={
     -- {1581098148},--cop
-    
+
     -- }
     -- local maradeurs_vehicles={
     -- --{GetHashKey("imperator")},
@@ -20552,17 +20548,17 @@ end)
             -- DecorSetBool(veh,"post_apoc_car",true)
             -- DecorSetFloat(veh,"zm_fuel",79.5)
             -- SetVehicleFuelLevel(veh,79.5)
-            
+
             -- local driver=CreatePedInsideVehicle(veh, 6, pedmodel, -1, true, false)
             -- DecorSetBool(driver,"raider",true)
             -- SetPedAsCop(driver,true)
             -- SetPedRelationshipGroupHash(driver,GetHashKey("COP"))
-            
+
             -- makepedcombatreadydriver(driver)
             -- GiveWeaponToPed(driver, GetHashKey("weapon_pistol"), 5000, false, true)
             -- SetPlayerWantedCentrePosition(PlayerId(),mypos.x,mypos.y,mypos.z)
             -- --TaskVehicleDriveWander(driver, veh, 1000.0, 0);
-            
+
             -- SimpleNotification("Spawned marauder vehicle "..veh.." and ped "..driver)
             -- local vehblip=AddBlipForEntity(veh)
                           -- SetBlipSprite(vehblip,198)
@@ -20575,7 +20571,7 @@ end)
     -- while true do Wait(0)
     -- SimpleHelpText("BCKS ~INPUT_CELLPHONE_CANCEL~ ENTER ~INPUT_FRONTEND_RDOWN~")
     -- end
-    
+
 -- end)
 
 -- Citizen.CreateThread(function()

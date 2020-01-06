@@ -2792,26 +2792,26 @@ end)
 local heists={ --,t="raiders" r=150
 --{x=3090.9416503906,y=-4717.8530273438,z=15.262616157532,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --carrier
 --{x=-2051.8083496094,y=3237.236328125,z=31.501235961914,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --military bunker base
-{x=445.91668701172,y=5572.1088867188,z=781.18475341797,r=0,health=30,content="military",b=568,t="raiders",name="Military Weapons Cache"}, --mountain top
-{x=3536.2355957031,y=3665.2844238281,z=28.121892929077,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --research labs
+{x=445.91668701172,y=5572.1088867188,z=781.18475341797,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --mountain top
+--{x=3536.2355957031,y=3665.2844238281,z=28.121892929077,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --research labs
 {x=2746.4077148438,y=1487.2686767578,z=30.791791915894,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --power plant
-{x=1238.3894042969,y=-2951.0502929688,z=9.3192529678345,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --container ship
-{x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --mercenary warehouse
+{x=1238.3894042969,y=-2951.0502929688,z=9.3192529678345,r=0,health=30,content="governmentweapons",b=568,t="raiders",name="Government Weapons Cache"}, --container ship
+--{x=568.62316894531,y=-3124.1098632813,z=18.768627166748,r=0,health=30,content="blackops",b=568,t="raiders",name="Black Ops Weapons Cache"}, --mercenary warehouse
 {x=236.56707763672,y=-3262.6123046875,z=40.538223266602,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --container building
-{x=-936.50152587891,y=-2931.2546386719,z=13.945076942444,r=0,health=30,content="medical",b=568,t="raiders",name="Medical Supply Drop"}, --airport
+{x=-936.50152587891,y=-2931.2546386719,z=13.945076942444,r=0,health=30,content="military",b=568,t="raiders",name="Military Weapons Cache"}, --airport
 {x=2.5822401046753,y=524.87506103516,z=170.61721801758,r=0,health=30,content="provision",b=568,t="raiders",name="Provisions Supply Drop"}, --fancy house
-{x=1661.3355712891,y=1.8060301542282,z=166.11805725098,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --the dam
+{x=1661.3355712891,y=1.8060301542282,z=166.11805725098,r=0,health=30,content="military",b=568,t="raiders",name="Military Weapons Cache"}, --the dam
 {x=1451.8610839844,y=1135.7989501953,z=114.33403778076,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --horse place
-{x=758.7587890625,y=1274.16015625,z=360.29653930664,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --radio station
+{x=758.7587890625,y=1274.16015625,z=360.29653930664,r=0,health=30,content="marauderweapons",b=568,t="raiders",name="Marauder Weapons Cache"}, --radio station
 {x=-2953.1159667969,y=55.811592102051,z=11.608504295349,r=0,health=30,content="governmentweapons",b=568,t="raiders",name="Government Weapons Cache"}, --business area
 {x=-555.87243652344,y=5321.4926757813,z=73.599678039551,r=0,health=30,content="governmentweapons",b=568,t="raiders",name="Government Weapons Cache"}, --grain refinery
 {x=-106.81156158447,y=6201.3974609375,z=31.025737762451,r=0,health=30,content="provision",b=568,t="raiders",name="Provisions Supply Drop"}, --chicken processing plant
 {x=1541.8145751953,y=6335.2880859375,z=24.075588226318,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --northern vagrant warehouse
-{x=2812.8129882813,y=5972.2504882813,z=350.70419311523,r=0,health=30,content="governmentweapons",b=568,t="raiders",name="Government Weapons Cache"}, --mountain top radio station
-{x=2435.546875,y=4967.5439453125,z=42.34757232666,r=0,health=30,content="provision",b=568,t="raiders",name="Provisions Supply Drop"}, --heroin house
+{x=2812.8129882813,y=5972.2504882813,z=350.70419311523,r=0,health=30,content="military",b=568,t="raiders",name="Military Weapons Cache"}, --mountain top radio station
+--{x=2435.546875,y=4967.5439453125,z=42.34757232666,r=0,health=30,content="provision",b=568,t="raiders",name="Provisions Supply Drop"}, --heroin house
 {x=2940.3942871094,y=4623.1337890625,z=48.720832824707,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --shitty train station
 {x=1716.3363037109,y=3322.0368652344,z=41.22350692749,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --airport hanger
-{x=-507.38482666016,y=-672.91925048828,z=11.808968544006,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --subway terminal
+--{x=-507.38482666016,y=-672.91925048828,z=11.808968544006,r=0,health=30,content="governmentrelief",b=568,t="raiders",name="Government Relief Supplies"}, --subway terminal
 --{x=-1125.8520507813,y=4896.5424804688,z=218.47247314453,r=0,health=30,content="survivorstockpile",b=568,t="raiders",name="Survival Stockpile"}, --survivor base
 --{x=1694.9357910156,y=2552.8166503906,z=45.564903259277,r=0,health=30,content="marauderweapons",b=568,t="raiders",name="Marauder Weapons Cache"}, --marauder base
 }
